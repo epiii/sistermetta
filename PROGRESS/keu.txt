@@ -1,0 +1,63 @@
+ _________________
+| NOTE  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|  
+|  * : menu	  |
+|_________________|
+_________________________  transact  ___________________________
+
+* transaksi (P)
+	- pemasukkan 
+	+ submenu : jurnal_umum 
+	+ jurnal umum : form edit : autosuggest tidak aktif
+	+ jurnal umum : button edit blum aktif
+	+ report : buku besar : saldo rekening (sementara) @akun
+	* report :
+		- jurnal umum 	:  print 
+		- neraca saldo 	:  report & print & filter (tgl+jenis Trans) 
+		- buku besar 	:  report & print & filter (tgl+jenis Trans)
+		- neraca lajur 	:  report & print & filter (tgl+jenis Trans)
+		- laba/ rugi 	:  report & print & filter (tgl+jenis Trans)
+		- lap. neraca 	:  report & print & filter (tgl+jenis Trans)
+		- kas / bank 	:  report & print & filter (tgl+jenis Trans)
+		- buku tambahan	:  report & print & filter (tgl+jenis Trans)
+* modul pembayaran(C)
+	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
+* pembayaran pendaftaran(C)
+	+ print/ pdf : error
+* pembayaran uang pangkal(C)
+* pembayaran uang sekolah(C)
+	+ spp : report (header's info)
+_____________________________________________________
+	+ Rincian nominal pembayaran uang sekolah dan uang pangkal
+* inventory(P)
+	- ALL
+________________________   master  ____________________________
+
+* tahun buku (P)
+	- add : trigger -> rekap data saldo rekening @tahun
+	- delete : trigger -> hapus data saldo rekening @tahun
+* kategori rekening (C)
+	+ CRUD
+* detil rekening (C)
+	+ view : tidak tampil 
+	+ filtering : combo rekening tidak tampil
+	+ dll 
+* anggaran (C)
+	* kategori 
+		+ tambah field : rekening 
+	* detil anggaran 
+		+ tambah field : tingkat
+		+ hapus field : rekening 
+	+ view : tidak tampil 
+	+ filtering : combo rekening tidak tampil
+* detil anggaran (C)
+	+ CRUD 
+	+ report (PDF)
+* sub rekening (C)
+	+ CRUD 
+* status rekening (C)
+	+ CRUD 

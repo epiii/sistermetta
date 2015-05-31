@@ -1,0 +1,64 @@
+ _________________
+| NOTE  	  |	
+|  + : solved 	  |
+|  - : error/bug  |
+|  C : completed  |
+|  P : progress	  |
+|_________________|  
+|  * : menu	  |
+|_________________|
+____________________________________________________
+* daftar koleksi (P)
+	- select all (checkbox) 
+	- delete : all & per-record
+	+ searching : all column, tidak ngefek ke "tabel" (C)
+	+ filtering > combo :  jenis_buku & tingkat_buku , tidak ngefek ke "table"  (C)
+	+ form (edit_mode) : tidak tampil		(+)
+	- SQL Where pengarang, penerbit, klasifikasi belum bisa
+	- paging -> SQl
+
+	- sorting : all column (belum ada lib/contoh) 
+* katalog (P)
+	+ Tambah Koleksi menampilkan hasil yang sama meskipun pilih koleksi yang lain 
+	+ Edit Informasi Katalog pada View Katalog (+) --> ditambahkan ajax yang sama pada edit katalog
+	+ pencarian judul pas jumlahnya 2 hasilnya ikut 2 (+) --> menggunakan SQL Group By
+	+ data katalog berhasil di insert tapi di searching ga nampil (+) --> di SQL tampil pakai JOIN seharusnya LEFT JOIN
+	+ cara memasukkan replid pada textbox klasifikasi,pengarang, penerbit (+) -->ditambahkan id hidden pada masing2 inputan
+	+ pas edit katalog nyimpan klasifikasi,pengarang, penerbit tidak bisa (+) --> SQL ditambahkan select replid pada tabel
+	+ combo lokasi pada view katalog (+) --> tambah filter pada cmblokasi
+	+ pas tambah koleksi jumlah dan sumber ga nampil --> ARRAY disamakan namanya
+	+ simpan koleksi belum bisa 
+	+ pas tambah katalog form edit katalog juga muncul dibawah
+	- cara membuat generate id buku( dan barcode (lokasi,tingkatbuku, tahun, urut pd pus_buku)
+	- Ketika kode barcode pd perangkat di update otomatis kode barcode pd koleksi berubah
+* data anggota (P)
+	- view siswa, pegawai dan member lain hanya bisa menampilkan yang sudah pinjam aja (SQL)
+	-
+* sirkulasi (P)
+	- Peminjaman  -> cara mengatur waktu pengembalian
+	- view sirkulasi -> field peminjam, Tgl Pengembalian, Tgl dikembalikan dan terlambat tidak tampil (sudah buat fungsi selisih tgl)
+	- view sirkulasi - field aksi -> tombol aksi kalau dipinjam muncul kalau dikembalikan tidak
+	- view sirkulasi - filter checkbox blm bisa
+	- cara sinkron status peminjaman pada tabel pus_peminjaman dan pus_buku ?
+	- combobox peminjaman 
+	
+	* statistik
+	- menampilkan jumlah yang dipinjam (filter tanggal)
+	- cmb statistik
+	
+
+* OPAC (P)
+	- Cara Membuat menunya Gimana karena buka tab baru??
+____________________________________________________
+* perangkat (P)
+	- cara edit dan simpan di perangkat
+	- tombol edit form check tidak muncul??
+* lokasi (C)
+* daftar penerbit (C)
+* daftar pengarang (C)
+* klasifikasi (C)
+* jenis koleksi (C)
+* tingkat koleksi (C)
+* daftar bahasa (C)
+* satuan mata uang (C)
+_____________________________________________________
