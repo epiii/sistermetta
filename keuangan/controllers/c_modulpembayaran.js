@@ -3,9 +3,9 @@ var dir  ='models/m_'+mnu+'.php';
 var mnu2 ='katmodulpembayaran'; 
 var dir2 ='models/m_'+mnu2+'.php';
 var mnu3 ='angkatan'; 
-var dir3 ='../akademik/models/m_'+mnu3+'.php';
+var dir3 ='../akademik_sister/models/m_'+mnu3+'.php';
 var mnu4 ='departemen'; 
-var dir4 ='../akademik/models/m_'+mnu4+'.php';
+var dir4 ='../akademik_sister/models/m_'+mnu4+'.php';
 var contentFR ='';
 
 // main function ---

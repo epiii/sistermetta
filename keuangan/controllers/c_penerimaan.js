@@ -9,14 +9,14 @@ var mnu8 ='subtingkat';
 var mnu9 ='kelas'; 
 
 var dir  ='models/m_'+mnu+'.php';
-var dir2 ='../akademik/models/m_'+mnu2+'.php';
-var dir3 ='../akademik/models/m_'+mnu3+'.php';
+var dir2 ='../akademik_sister/models/m_'+mnu2+'.php';
+var dir3 ='../akademik_sister/models/m_'+mnu3+'.php';
 var dir4 ='../psb/models/m_'+mnu4+'.php';
 var dir5 ='../psb/models/m_'+mnu5+'.php';
-var dir6 ='../akademik/models/m_'+mnu6+'.php';
-var dir7 ='../akademik/models/m_'+mnu7+'.php';
-var dir8 ='../akademik/models/m_'+mnu8+'.php';
-var dir9 ='../akademik/models/m_'+mnu9+'.php';
+var dir6 ='../akademik_sister/models/m_'+mnu6+'.php';
+var dir7 ='../akademik_sister/models/m_'+mnu7+'.php';
+var dir8 ='../akademik_sister/models/m_'+mnu8+'.php';
+var dir9 ='../akademik_sister/models/m_'+mnu9+'.php';
 
 var contentFR ='';
 // main function load first 
