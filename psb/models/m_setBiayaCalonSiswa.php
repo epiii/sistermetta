@@ -15,22 +15,11 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
-				// $sql ='SELECT
-				// 			k.*,(
-				// 				SELECT count(*)
-				// 				FROM psb_golongan
-				// 			) jumgol
-				// 		FROM 
-				// 			psb_setbiaya b
-				// 			LEFT JOIN psb_kriteria k ON k.replid = b.krit
-				// 		WHERE
-				// 			b.kel = '.$kelompok.'
-				// 		GROUP by
-				// 			k.replid';
-				$sql ='SELECT k.*,( SELECT count(*) FROM psb_golongan ) jumgol 
-					       FROM psb_kriteria k 
-					       LEFT JOIN psb_setbiaya b ON k.replid = b.krit 
-					       GROUP by k.replid';
+				$sql ='SELECT k.kriteria,k.replid,(
+								SELECT count(*)
+								FROM psb_golongan
+							) jumgol
+						FROM psb_kriteria k';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){
 					$starting=$_POST['starting'];
@@ -50,29 +39,49 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$out.= '<tr><td valign="middle" rowspan="'.($res['jumgol']+1).'">'.$nox.'. '.$res['kriteria'].'</td>';
-						$sql2= 'SELECT 
-									ps.replid, 
-									ps.daftar, 
-									ps.spp, 
-									ps.nilai dpp, 
-									ps.joiningf,	
-									g.golongan, 
-									g.keterangan 
-								FROM 
-									psb_setbiaya ps
-									LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
-									LEFT JOIN psb_golongan g ON g.replid = ps.gol
-									LEFT JOIN psb_kelompok k ON k.replid = ps.kel
-								WHERE
-									pk.replid = '.$res['replid'].' AND 
-									ps.kel = '.$kelompok.'
-								GROUP by
-									ps.gol';
-						print_r($sql2);exit();
+						$out.= '<tr>
+									<td valign="middle" rowspan="'.($res['jumgol']+1).'">
+										'.$nox.'. '.$res['kriteria'].'</td>';
+						$sql2='SELECT
+									g.replid,
+									g.golongan,
+									s.nilai dpp,
+									s.daftar,
+									s.spp,
+									s.joiningf
+								FROM
+									psb_golongan g
+									LEFT JOIN (
+										SELECT * 
+										FROM  psb_setbiaya s 
+										WHERE 
+											krit ='.$res['replid'].' AND 
+											kel = '.$kelompok.'
+									)s ON s.gol = g.replid
+									';
 
+						// print_r($sql2);exit();
 						$qry2 = mysql_query($sql2);
 						$num  = mysql_num_rows($qry2);
+						// $out.='<tr>
+						// 	<td>1</td>
+						// 	<td>2</td>
+						// 	<td>3</td>
+						// 	<td>4</td>
+						// 	<td>5</td>
+						// </tr><tr>
+						// 	<td>1</td>
+						// 	<td>2</td>
+						// 	<td>3</td>
+						// 	<td>4</td>
+						// 	<td>5</td>
+						// </tr><tr>
+						// 	<td>1</td>
+						// 	<td>2</td>
+						// 	<td>3</td>
+						// 	<td>4</td>
+						// 	<td>5</td>
+						// </tr>';
 
 						while ($r2=mysql_fetch_assoc($qry2)) {
 							$out.= '<tr>
