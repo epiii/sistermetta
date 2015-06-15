@@ -49,14 +49,17 @@
         </script>
 
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
-        <title>SISTERMETA</title>
+        <title>SISTER</title>
     </head>
     
     <body class="metro">
         <!--menu utama / module-->
         <div class="tile-area tile-area-dark" id="tile-module">
         <div class="container">
-            <h1 class="tile-area-title fg-white">SISTERMETA</h1>
+            <h1 class="tile-area-title fg-white">
+            <img src="images/sistermeta2.png" width="250" height="200">
+            </h1>
+            <!-- <img src="images/meta.png" style="float:left; line-height:3px; margin-top:0px; padding:2px 5px 0px 20px;" width="85" height="71"> -->
             <div class="user-id">
                 <div class="user-id-image">
                     <span class="icon-user no-display1"></span>
@@ -69,6 +72,8 @@
                 <button class="button inverse" onclick="logout();">logout</button>
             </div>
             
+                                    <!-- <div class="email-data-text">Keterangan :</div> -->
+                                    <!-- <div class="email-data-text">'.$vv['keterangan'].'</div> -->
             <?php 
                 $out='';
                 // looping grup modul
@@ -83,8 +88,6 @@
                                     </center>
                                 </div>
                                 <div class="tile-content email">
-                                    <div class="email-data-text">Keterangan :</div>
-                                    <div class="email-data-text">'.$vv['keterangan'].'</div>
                                 </div>
                                 <div class="brand">
                                     <div class="label">

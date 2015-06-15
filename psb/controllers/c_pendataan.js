@@ -315,7 +315,7 @@ var contentFR = '';
             cmbagama('');
             cmbangsuran('');
             cmbdiskon('');
-            // kodeTrans($('#nopendaftaranTB').val());
+            kodeTrans();
         // $('#').on('click',switchPN);
     });$("#importBC").on('click',function(){
             switchPN2();             
@@ -1188,21 +1188,13 @@ var contentFR = '';
     // }
 // end of get uang --------------------------
 
-   function kodeTrans(typ){
-        var ret;
-        $.ajax({
-            url:dir,
-            type:'post',
-            async:false,
-            dataType:'json',
-            data :'aksi=codeGen&subaksi=transNo&tipe='+typ,
-            success:function(dt){
-                if(dt.status!='sukses')
-                    ret=dt.status;
-                else
-                    ret=dt.kode;
-            }
-        });return ret;
+   function kodeTrans(){
+     // alert(typ); return false;
+        var url = dir;
+        var data = 'aksi=codeGen&subaksi=transNo';
+        ajax(url,data).done(function(dt){
+            $('#nopendaftaranTB').val(dt.kode);
+        });
     }
     
 // notifikasi

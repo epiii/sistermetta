@@ -15,18 +15,22 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
-				$sql ='SELECT
-							k.*,(
-								SELECT count(*)
-								FROM psb_golongan
-							) jumgol
-						FROM 
-							psb_setbiaya b
-							LEFT JOIN psb_kriteria k ON k.replid = b.krit
-						WHERE
-							b.kel = '.$kelompok.'
-						GROUP by
-							k.replid';
+				// $sql ='SELECT
+				// 			k.*,(
+				// 				SELECT count(*)
+				// 				FROM psb_golongan
+				// 			) jumgol
+				// 		FROM 
+				// 			psb_setbiaya b
+				// 			LEFT JOIN psb_kriteria k ON k.replid = b.krit
+				// 		WHERE
+				// 			b.kel = '.$kelompok.'
+				// 		GROUP by
+				// 			k.replid';
+				$sql ='SELECT k.*,( SELECT count(*) FROM psb_golongan ) jumgol 
+					       FROM psb_kriteria k 
+					       LEFT JOIN psb_setbiaya b ON k.replid = b.krit 
+					       GROUP by k.replid';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){
 					$starting=$_POST['starting'];
@@ -59,11 +63,13 @@
 									psb_setbiaya ps
 									LEFT JOIN psb_kriteria pk ON pk.replid = ps.krit
 									LEFT JOIN psb_golongan g ON g.replid = ps.gol
+									LEFT JOIN psb_kelompok k ON k.replid = ps.kel
 								WHERE
-									pk.replid = '.$res['replid'].'
+									pk.replid = '.$res['replid'].' AND 
+									ps.kel = '.$kelompok.'
 								GROUP by
 									ps.gol';
-						// print_r($sql2);exit();
+						print_r($sql2);exit();
 
 						$qry2 = mysql_query($sql2);
 						$num  = mysql_num_rows($qry2);
