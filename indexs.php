@@ -49,7 +49,7 @@
         </script>
 
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
-        <title>SISTER</title>
+        <title>SISTER METTA</title>
     </head>
     
     <body class="metro">

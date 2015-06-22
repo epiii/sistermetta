@@ -42,7 +42,7 @@
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
 
-    <title>.:SISTER:.</title>
+    <title>.:SISTER METTA:.</title>
 </head>
 
 <body class="metro">
@@ -126,8 +126,8 @@
                     case 'modulpembayaran':
                         require $d.'v_modulpembayaran.php';
                     break;
-                    case 'penerimaan':
-                        require $d.'v_penerimaan.php';
+                    case 'penerimaansiswa':
+                        require $d.'v_penerimaansiswa.php';
                     break;
                     case 'inventory':
                         require $d.'v_inventory.php';
