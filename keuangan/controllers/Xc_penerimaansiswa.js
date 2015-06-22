@@ -304,12 +304,17 @@ var contentFR ='';
 // end of main function ---------
     
     function switchPN (par) {
-        if(par=='' || par=='pendaftaran'){ // default : pendaftaran => formulir
-            cmbproses('filter',$('#departemenS').val());
-        }else if(par=='spp'){ // spp
-            cmbtahunajaran('filter',$('#departemenS').val());
-        }else{ // dpp (uang pangkal)
+        // if(par=='' || par=='pendaftaran'){ // default : pendaftaran => formulir
+        if(par==''){ // default : registration (formulir)
+            console.log('masuk registration');
             cmbangkatan('filter',$('#departemenS').val());
+            // cmbproses('filter',$('#departemenS').val());
+        }else if(par=='spp'){ // tuition fee (spp)
+            console.log('masuk tuition');
+            cmbtahunajaran('filter',$('#departemenS').val());
+        }else{ // material fee  (joining fee)
+            console.log('masuk joining');
+            cmbproses('filter',$('#departemenS').val());
         }
     }
 
@@ -318,12 +323,12 @@ var contentFR ='';
         var str2 = str.replace('TAB','');
         var str3 = str2.replace('#','');
         var out='';
-        if(str3=='pendaftaran') {
+        if(str3=='dpp') {
             x = $('.level2').find('li.active a').attr('href');
             x2 = x.replace('TAB','');
             x3 = x2.replace('#','');
             out=x3;
-        }else {
+        } else {
             out = str3;
         }return out;
     }
@@ -891,10 +896,10 @@ var contentFR ='';
                 }
                 if(typ=='filter'){
                     $('#kelompokS').html(out);  
-                    // $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
                     var x =curTab();
-                    // alert(x);
-                    viewTB(x);
+                    // console.log(x);
+                    alert(x);
+                    viewTB();
                 }else{
                     $('#kelompokTB').html(out);
                 }
