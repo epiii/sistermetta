@@ -9,7 +9,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
 <!--end of combo grid -->
 
-<h4 style="color:white;">Penerimaan</h4>
+<h4 style="color:white;">Penerimaan Siswa</h4>
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
