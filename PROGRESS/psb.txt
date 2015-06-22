@@ -1,5 +1,5 @@
  ________________
-| NOTE  	  |	
+| NOTE  	  	  |	
 |  + : solved 	  |
 |  - : error/bug  |
 |  C : completed  |
@@ -63,8 +63,8 @@ ____________________________________________________
 		+ event onkeydown (enter)  
 
 * Set Biaya Calon Siswa (P)
-	- Belum
-
+	- create  keloompok --auto--> set biaya baru 
+	
 * set angsuran (C)
 	+ view :
 		+ table header (theme)  

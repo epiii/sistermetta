@@ -27,9 +27,12 @@ _________________________  transact  ___________________________
 * modul pembayaran(C)
 	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
 * pembayaran pendaftaran(C)
+	- rename label (lampiran revisi)
 	+ print/ pdf : error
-* pembayaran uang pangkal(C)
+* pembayaran uang pangkal
+	- rename label (lampiran revisi)
 * pembayaran uang sekolah(C)
+	- rename label (lampiran revisi)
 	+ spp : report (header's info)
 _____________________________________________________
 	+ Rincian nominal pembayaran uang sekolah dan uang pangkal
