@@ -38,7 +38,7 @@
                 <div  data-effect="fade" class="tab-control" data-role="tab-control">
                     <ul class="tabs level2">
                         <!-- <li onclick="switchPN('pendaftaran');" class="active"><a href="#formulirTAB">Formulir </a></li> -->
-                        <li onclick="switchPN('pendaftaran');"><a href="#joiningfTAB">Material Fee</a></li>
+                        <li onclick="switchPN('pendaftaran');" class="active"><a href="#joiningfTAB">Material Fee</a></li>
                         <li class="place-right">
                             <div class="input-control select">
                                 <div class="input-control select span3">

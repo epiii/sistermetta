@@ -318,6 +318,7 @@ var contentFR ='';
         var str2 = str.replace('TAB','');
         var str3 = str2.replace('#','');
         var out='';
+        // if(str3=='pendaftaran') {
         if(str3=='pendaftaran') {
             x = $('.level2').find('li.active a').attr('href');
             x2 = x.replace('TAB','');
@@ -893,7 +894,7 @@ var contentFR ='';
                     $('#kelompokS').html(out);  
                     // $('#kelompokS').html('<option value="">-SEMUA-</option>'+out);
                     var x =curTab();
-                    // alert(x);
+                    // alert('masuk tab : '+x);
                     viewTB(x);
                 }else{
                     $('#kelompokTB').html(out);
