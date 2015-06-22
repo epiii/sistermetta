@@ -22,8 +22,8 @@
     -->
     <div  data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs level1">
-            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Material Fee </a></li>
-            <li onclick="switchPN('dpp');"><a href="#dppTAB">Registration Fee</a></li>
+            <li onclick="switchPN('dpp');" class="active"><a href="#dppTAB">Registration Fee</a></li>
+            <li onclick="switchPN('pendaftaran');"><a href="#pendaftaranTAB">Material Fee </a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">Tuition Fee</a></li>
             <li class="place-right">
                 <div class="input-control select">
