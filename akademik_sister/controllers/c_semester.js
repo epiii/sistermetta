@@ -20,7 +20,7 @@ var contentFR = '';
                         
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="input-control text">'
-                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
+                            +'<input type="text" name="tahunajaranH" id="tahunajaranH">'
                             +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
@@ -149,29 +149,22 @@ var contentFR = '';
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
-        // edit mode
-        if($('#idformH').val()!=''){
-            urlx += '&replid='+$('#idformH').val();
-        }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#departemenS').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }
-                notif(cont,clr);
+        if($('#idformH').val()!='') urlx += '&replid='+$('#idformH').val();
+
+        var u = dir;
+        var d =$('form').serialize()+urlx;
+        ajax(u,d).done(function(dt){
+            if(dt.status!='sukses'){
+                cont = 'Gagal menyimpan data';
+                clr  = 'red';
+            }else{
+                $.Dialog.close();
+                kosongkan();
+                viewTB();
+                cont = 'Berhasil menyimpan data';
+                clr  = 'green';
             }
+            notif(cont,clr);
         });
     }
 //end of save process ---
@@ -224,6 +217,7 @@ var contentFR = '';
                 var d = 'aksi=ambiledit&replid='+id;
                 if(id!=''){ // edit
                     ajax(u,d).done(function(dt){
+                        $('#idformH').val(id);
                         $('#tahunajaranH').val($('#tahunajaranS').val());
                         $('#tahunajaranTB').val(dt.tahunajaran);
                         $('#tglMulaiTB').val(dt.tglMulai);
@@ -234,8 +228,10 @@ var contentFR = '';
                                 $(this).attr('checked',true);
                         })
                     });
-                }else{
-                    $('#tahunajaranH').val($('#tahunajaranS').val());
+                }else{ // add
+                    setTimeout(function() {
+                        $('#tahunajaranH').val($('#tahunajaranS').val());
+                    },300);
                     cmbdepartemen('form',$('#departemenS').val());
                     cmbtahunajaran('form',$('#departemenS').val(),$('#tahunajaranS').val());
                 }
@@ -285,23 +281,18 @@ var contentFR = '';
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=hapus&replid='+id,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                    clr  ='red';
-                }else{
-                    viewTB($('#departemenS').val());
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                    clr  ='green';
-                }
-                notif(cont,clr);
-            }
+        u=dir;
+        d='aksi=hapus&replid='+id;
+        ajax(u,d).done(function(dt){
+            var cont,clr;
+            if(dt.status!='sukses'){
+                cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                clr  ='red';
+            }else{
+                viewTB();
+                cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                clr  ='green';
+            }notif(cont,clr);
         });
     }
 //end of del process ---
