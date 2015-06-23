@@ -29,15 +29,14 @@
         <tr style="color:white;"class="info">
             <th class="text-center">Nama Pembayaran</th>
             <th class="text-center">Rekening</th>
-            <!-- <th class="text-left">Nominal</th> -->
-            <th class="text-left">Keterangan</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">Keterangan</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-right"><div class="input-control text"><input  class="cari" placeholder="nama" id="namaS" name="namaS"></div></th>
-            <th class="text-left"></th>
-            <th class="text-left"><div class="input-control text"><input  class="cari" placeholder="keterangan" id="keteranganS" name="keteranganS"></div></th>
-            <th class="text-left"></th>
+            <th class="text-center"></th>
+            <th class="text-center"><div class="input-control text"><input  class="cari" placeholder="keterangan" id="keteranganS" name="keteranganS"></div></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
 

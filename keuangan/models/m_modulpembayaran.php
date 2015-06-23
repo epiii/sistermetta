@@ -106,7 +106,7 @@
 					$nox 	= $starting+1;
 					$curKat = '';
 					while($res = mysql_fetch_assoc($result)){
-						$btn ='<td>
+						$btn ='<td align="center">
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
@@ -115,13 +115,13 @@
 									</button>
 								 </td>';
 						$rekening='';
-						// $modul = getModulPembayaran('');
-						// var_dump($modul);exit();
 						if($res['rek1']!=0){
 							$rekening.= '<b> Kas :</b> '.getRekening($res['rek1']).'<br>'; 
-						}if($res['rek2']!=0){
+						}
+						if($res['rek2']!=0){
 							$rekening.= '<b> Pendapatan :</b> '.getRekening($res['rek2']).'<br>'; 
-						}if($res['rek3']!=0){
+						}
+						if($res['rek3']!=0){
 							$rekening.= '<b> Piutang :</b> '.getRekening($res['rek3']).'<br>'; 
 						}
 						
@@ -131,7 +131,6 @@
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
-								// <td align="right">Rp. '.number_format($res['nominal']).'</td>
 						$nox++;
 					}
 				}else{ #kosong
