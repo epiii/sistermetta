@@ -1,7 +1,6 @@
 <?php
 	session_start();
 	require_once '../../lib/dbcon.php';
-	require_once 'keu_func.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	$mnu  = 'modulpembayaran';
@@ -116,18 +115,14 @@
 									</button>
 								 </td>';
 						$rekening='';
+						// $modul = getModulPembayaran('');
+						// var_dump($modul);exit();
 						if($res['rek1']!=0){
-							$kode = keuField(array('kode'),$tb2,$res['rek1']);
-							$nama = keuField(array('nama'),$tb2,$res['rek1']);
-							$rekening.= '<b> Kas :</b> ['.$kode[0].'] '.$nama[0].'<br>'; 
+							$rekening.= '<b> Kas :</b> '.getRekening($res['rek1']).'<br>'; 
 						}if($res['rek2']!=0){
-							$kode = keuField(array('kode'),$tb2,$res['rek2']);
-							$nama = keuField(array('nama'),$tb2,$res['rek2']);
-							$rekening.= '<b> Pendapatan :</b> ['.$kode[0].'] '.$nama[0].'<br>'; 
+							$rekening.= '<b> Pendapatan :</b> '.getRekening($res['rek2']).'<br>'; 
 						}if($res['rek3']!=0){
-							$kode = keuField(array('kode'),$tb2,$res['rek3']);
-							$nama = keuField(array('nama'),$tb2,$res['rek3']);
-							$rekening.= '<b> Piutang :</b> ['.$kode[0].'] '.$nama[0].'<br>'; 
+							$rekening.= '<b> Piutang :</b> '.getRekening($res['rek3']).'<br>'; 
 						}
 						
 						$out.= '<tr>
@@ -183,7 +178,6 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-							// m.nominal,
 				$s = 'SELECT 
 							m.katmodulpembayaran,
 							m.nama,
@@ -191,7 +185,6 @@
 							m.rek1,
 							m.rek2,
 							m.rek3,
-							m.cicilan,
 							m.diskon,
 							m.biayaadmin
 						FROM '.$tb.' m 
@@ -199,8 +192,9 @@
 						WHERE 
 							m.replid='.$_POST['replid'];
 				$e   = mysql_query($s);
-				// print_r($s);exit();
 				$r   = mysql_fetch_assoc($e);
+				// var_dump($r);exit();
+				// 
 				$out = json_encode(array(
 							'katmodulpembayaran' =>$r['katmodulpembayaran'],
 							'nama'               =>$r['nama'],
@@ -208,10 +202,9 @@
 							'idrek1'             =>$r['rek1'],
 							'idrek2'             =>$r['rek2'],
 							'idrek3'             =>$r['rek3'],
-							'rek1'               =>keuField(array('nama'),$tb2,$r['rek1']),
-							'rek2'               =>keuField(array('nama'),$tb2,$r['rek2']),
-							'rek3'               =>keuField(array('nama'),$tb2,$r['rek3']),
-							'cicilan'            =>$r['cicilan'],
+							'rek1'               =>getRekening($r['rek1']),
+							'rek2'               =>getRekening($r['rek2']),
+							// 'rek3'               =>($r['rek3']==''?getRekening($r['rek3']),
 							'diskon'             =>$r['diskon'],
 							'biayaadmin'         =>$r['biayaadmin'],
 						));

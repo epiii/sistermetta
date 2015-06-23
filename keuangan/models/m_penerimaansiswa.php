@@ -754,9 +754,9 @@
 								WHERE
 									m.angkatan = '.$r1['angkatan'].' AND 
 									k.nama = "formulir"';
+						// var_dump($s2);exit();
 						$e2       = mysql_query($s2);
 						$r2       = mysql_fetch_assoc($e2);
-						// print_r($r2);exit();
 						$stat     = ($e2)?'sukses':'gagal';
 						$biaya    = getBiaya('formulir',$_POST['replid']);
 						$terbayar = getTerbayar('formulir',$_POST['replid']);
@@ -784,61 +784,29 @@
 					break;					
 
 					case 'joiningf';
-						// get angkatan by : siswa -> kelompok -> angkatan
-						$s1 = 'SELECT
-									p.angkatan,
-									c.nopendaftaran,	
-									c.replid idsiswa,	
-									c.nama siswa,	
-									b.joiningf nominal
-								FROM
-									psb_calonsiswa c 
-									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
-									LEFT JOIN psb_kelompok k on k.replid = c.kelompok
-									LEFT JOIN psb_proses p on p.replid = k.proses
-								WHERE
-									c.replid ='.$_POST['replid']; 
-						$e1 = mysql_query($s1);
-						$r1 = mysql_fetch_assoc($e1);
-
-						// get data : modul pembayaran (untuk form) 
-						$s2   = 'SELECT
-									m.replid,
-									m.rek1,	
-									m.rek2,	
-									m.rek3,	
-									m.nama modul,
-									m.replid idmodul
-								FROM
-									keu_modulpembayaran m
-									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-								WHERE
-									m.angkatan = '.$r1['angkatan'].' AND 
-									k.nama = "Joining Fee"';
-						$e2   = mysql_query($s2);
-						$r2   = mysql_fetch_assoc($e2);
-							// print_r($r2);exit();
-						$stat = ($e2)?'sukses':'gagal';
+						$angkatan = getSiswa('angkatan',$_POST['replid']);
+						$modul    = getModulPembayaran('Joining Fee',$angkatan);
+						// var_dump($angkatan);exit();
 						$nominal  = getBiaya('joiningf',$_POST['replid']);
 						$terbayar = getTerbayar('Joining Fee',$_POST['replid']);
 						$maxbayar = getBiaya('joiningf',$_POST['replid'])-getTerbayar('Joining Fee',$_POST['replid']);
 						$out  = json_encode(array(
-									'status' =>$stat,
+									'status' =>($modul!=null?'sukses':'gagal'),
 									'datax'  =>array(
 										//data siswa 
-										'nopendaftaran' =>$r1['nopendaftaran'],
+										'nopendaftaran' =>$modul['nopendaftaran'],
 										'idsiswa'       =>$_POST['replid'],
-										'siswa'         =>$r1['siswa'],
+										'siswa'         =>$modul['siswa'],
 										//data pembayaran
 										'nomer'         =>getNoTrans($_POST['subaksi']),
 										'tanggal'       =>tgl_indo5(date('Y-m-d')),
-										'rekkas'        =>$r2['rek1'],
-										'rekitem'       =>$r2['rek2'],
-										'rek1'          =>($r2['rek1']=='0'?'':getRekening($r2['rek1'])),
-										'rek2'          =>($r2['rek2']=='0'?'':getRekening($r2['rek2'])),
-										'rek3'          =>($r2['rek3']=='0'?'':getRekening($r2['rek3'])),
-										'modul'         =>$r2['modul'],
-										'idmodul'       =>$r2['idmodul'],
+										'rekkas'        =>$modul['rek1'],
+										'rekitem'       =>$modul['rek2'],
+										'rek1'          =>($modul['rek1']=='0'?'':getRekening($modul['rek1'])),
+										'rek2'          =>($modul['rek2']=='0'?'':getRekening($modul['rek2'])),
+										'rek3'          =>($modul['rek3']=='0'?'':getRekening($modul['rek3'])),
+										'modul'         =>$modul['modul'],
+										'idmodul'       =>$modul['idmodul'],
 										'nominal'       =>$nominal,
 										'nominal2'       =>'Rp. '.number_format($nominal),
 										'terbayar'      =>$terbayar,
