@@ -108,7 +108,7 @@
                                     <tr style="color:white;"class="info">
                                         <th class="text-center">No. Pendaftaran</th>
                                         <th class="text-center">Nama</th>
-                                        <th class="text-center">Joining Fee</th>
+                                        <th class="text-center">Material Fee</th>
                                         <th class="text-center">Kurangan</th>
                                         <th class="text-center">Tanggal Pembayaran</th>
                                         <th class="text-center">Status</th>
