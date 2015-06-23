@@ -169,7 +169,7 @@ var contentFR = '';
     }
 //end of save process ---
 
-    // view table ---
+// view table ---
     function viewTB(subaksi){
         var aksi ='aksi=tampil';
         var cari ='';

@@ -8,22 +8,26 @@ var contentFR ='';
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
+                        // departemen
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
                             +'<input  type="hidden" name="departemenH" id="departemenH" class="span2">'
                             +'<input disabled="disabled" name="departemenTB" id="departemenTB" class="span2">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+                        // angkatan
                         +'<label>angkatan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="angkatanTB" id="angkatanTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input name="angkatanH" id="angkatanH" type="hidden">' 
+                            +'<input required type="number" min="1945" max="9999" name="angkatanTB" id="angkatanTB">'
                         +'</div>'
+                        // keterangan
                         +'<label>keterangan</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="keteranganTB" id="keteranganTB">'
+                            +'<input type="text" name="keteranganTB" id="keteranganTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -31,10 +35,7 @@ var contentFR ='';
                     +'</form>';
 
         //combo departemen
-        cmbdepartemen();
-        
-        //load table
-        // viewTB();
+        cmbdepartemen('filter','');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -63,10 +64,10 @@ var contentFR ='';
 // end of main function ---
 
 // combo departemen ---
-    function cmbdepartemen(){
+    function cmbdepartemen(typ,dep){
         $.ajax({
             url:dir2,
-            data:'aksi=cmbdepartemen',
+            data:'aksi=cmbdepartemen'+(dep!=''?'&replid='+dep:''),
             dataType:'json',
             type:'post',
             success:function(dt){
@@ -77,13 +78,25 @@ var contentFR ='';
                     $.each(dt.departemen, function(id,item){
                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
                     });
-                    //panggil fungsi viewTB() ==> tampilkan tabel 
-                    viewTB(dt.departemen[0].replid); 
-                }$('#departemenS').html(out);
+                }
+                if(typ=='filter'){
+                    $('#departemenS').html(out);
+                    viewTB();
+                }else // form
+                    $('#departemenTB').html(dt.departemen[0].nama);
             }
         });
     }
 //end of combo departemen ---
+
+function ajax (u,d) {
+    return $.ajax({
+        url:u,
+        data:d,
+        dataType:'json',
+        type:'post'
+    });
+}
 
 //save process ---
     function simpan(){
@@ -92,50 +105,61 @@ var contentFR ='';
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
         }
-        $.ajax({
-            url:dir,
-            cache:false,
-            type:'post',
-            dataType:'json',
-            data:$('form').serialize()+urlx,
-            success:function(dt){
-                if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
-                    clr  = 'red';
-                }else{
-                    $.Dialog.close();
-                    kosongkan();
-                    viewTB($('#departemenS').val());
-                    cont = 'Berhasil menyimpan data';
-                    clr  = 'green';
-                }
-                notif(cont,clr);
-            }
+        var u = dir;
+        var d = $('form').serialize()+urlx;
+        ajax(u,d).done(function(dt){
+            if(dt.status=='gagal'){
+                cont = 'Gagal menyimpan data';
+                clr  = 'red';
+            }else if(dt.status=='unavailable'){
+                cont = 'angkatan sudah terdaftar';
+                clr  = 'red';
+            }else{
+                $.Dialog.close();
+                kosongkan();
+                viewTB();
+                cont = 'Berhasil menyimpan data';
+                clr  = 'green';
+            }notif(cont,clr);
         });
     }
 //end of save process ---
 
 // view table ---
-    function viewTB(dep){
+    function viewTB(subaksi){
         var aksi ='aksi=tampil';
-        var cari = '&departemenS='+dep
-                    +'&angkatanS='+$('#angkatanS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        var cari ='';
+        var el,el2;
+
+        // alert(subaksi);
+        // return false;
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="4"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
-                    // $('#tbody').delay(4000).fadeIn().html(data);
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
     }
-// end of view table ---
 
 // form ---
     function viewFR(id){
@@ -170,6 +194,7 @@ var contentFR ='';
                             $('#idformH').val(id);
                             $('#departemenH').val($('#departemenS').val());
                             $('#departemenTB').val(dt.nama);
+                            $('#angkatanH').val(dt.angkatan);
                             $('#angkatanTB').val(dt.angkatan);
                             $('#keteranganTB').val(dt.keterangan);
                         }
@@ -230,7 +255,7 @@ function pagination(page,aksix,subaksi){
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }
