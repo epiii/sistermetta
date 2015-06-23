@@ -10,9 +10,17 @@
 		$s = 'SELECT '.$typ.'
 			  FROM aka_angkatan
 			  WHERE replid ='.$id;
+		// var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
 		return $r[$typ];
+	}function getAngkatan2($f,$w,$id){
+		$s = 'SELECT '.$f.'
+			  FROM aka_angkatan
+			  WHERE '.$w.' ="'.$id.'"';
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r[$f];
 	}function getProses($typ,$id){
 		$s = 'SELECT '.$typ.'
 			  FROM psb_proses
