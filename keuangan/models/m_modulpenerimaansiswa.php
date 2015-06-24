@@ -2,6 +2,7 @@
 	session_start();
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
+	require_once '../../lib/tglindo.php';
 	require_once '../../lib/pagination_class.php';
 	$mnu  = 'modulpembayaran';
 	$tb   = 'keu_'.$mnu;
@@ -25,7 +26,7 @@
 				WHERE 
 					'.((isset($_GET['nama']) AND $_GET['nama']=='piutang')?' dr.nama LIKE "%piutang%" AND':' kr.nama="'.$_GET['subaksi'].'"  AND ').'
 					(dr.kode LIKE "%'.$searchTerm.'%" OR dr.nama LIKE "%'.$searchTerm.'%")';
-			// print_r($ss);exit();
+			// var_dump($ss);exit();
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -65,23 +66,33 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$katmodulpembayaran = (isset($_POST['katmodulpembayaranS']) AND $_POST['katmodulpembayaranS']!='')?'m.katmodulpembayaran ='.$_POST['katmodulpembayaranS'].' AND ':'';
+				$tahunajaran        = (isset($_POST['tahunajaranS']) AND $_POST['tahunajaranS']!='')?'s.tahunajaran ='.$_POST['tahunajaranS'].' AND ':'';
+				$semester           = (isset($_POST['semesterS']) AND $_POST['semesterS']!='')?'m.semester ='.$_POST['semesterS'].' AND ':'';
+				$bulan           	= (isset($_POST['bulanS']) AND $_POST['bulanS']!='')?'m.bulan ='.$_POST['bulanS'].' AND ':'';
 				$angkatan           = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
 				$nama               = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				// $nominal            = isset($_POST['nominalS'])?filter($_POST['nominalS']):'';
 				$keterangan         = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				
-				// m.nominal
 				$sql = 'SELECT 
 							m.replid,
 							m.nama,
 							m.keterangan,
 							m.rek1,
 							m.rek2,
-							m.rek3
+							m.rek3,
+							m.bulan,
+							t.tahunajaran,
+							case s.semester
+								when 1 then "Ganjil"
+								when 2 then "Genap"
+								else "-"
+							end as semester
 						FROM '.$tb.' m 
-							left join keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+							LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+							LEFT JOIN aka_semester s on s.replid = m.semester
+							LEFT JOIN aka_tahunajaran t on t.replid = s.tahunajaran
 						WHERE 
-							'.$katmodulpembayaran.'
+							'.$katmodulpembayaran.$tahunajaran.$semester.$bulan.'
 							m.angkatan = '.$angkatan.' and
 							m.nama like "%'.$nama.'%" and
 							m.keterangan like "%'.$keterangan.'%" 
@@ -105,30 +116,34 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					$curKat = '';
-					while($res = mysql_fetch_assoc($result)){
+					while($r = mysql_fetch_assoc($result)){
+						// var_dump($r);exit();
 						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  class="button" onclick="viewFR('.$r['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus"  class="button" onclick="del('.$r['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$rekening='';
-						if($res['rek1']!=0){
-							$rekening.= '<b> Kas :</b> '.getRekening($res['rek1']).'<br>'; 
+						if($r['rek1']!=0){
+							$rekening.= '<b> Kas :</b> '.getRekening($r['rek1']).'<br>'; 
 						}
-						if($res['rek2']!=0){
-							$rekening.= '<b> Pendapatan :</b> '.getRekening($res['rek2']).'<br>'; 
+						if($r['rek2']!=0){
+							$rekening.= '<b> Pendapatan :</b> '.getRekening($r['rek2']).'<br>'; 
 						}
-						if($res['rek3']!=0){
-							$rekening.= '<b> Piutang :</b> '.getRekening($res['rek3']).'<br>'; 
+						if($r['rek3']!=0){
+							$rekening.= '<b> Piutang :</b> '.getRekening($r['rek3']).'<br>'; 
 						}
 						
 						$out.= '<tr>
-									<td>'.$res['nama'].'</td>
+									<td>'.$r['nama'].'</td>
 									<td>'.$rekening.'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>'.$r['tahunajaran'].'</td>
+									<td>'.$r['semester'].'</td>
+									<td>'.($r['bulan']!=0?bln_nama($r['bulan'],'id','s'):'-').'</td>
+									<td>'.$r['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
