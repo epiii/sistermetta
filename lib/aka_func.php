@@ -1,6 +1,16 @@
 <?php
 
 /*aka*/
+	function getSemester($id){
+		$s = 'SELECT 
+				if(semester=1,"Ganjil","Genap") semester
+			  FROM aka_semester
+			  WHERE replid ='.$id;
+			  // var_dump($s);exit();
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r['semester'];
+	}
 	function getTahunAjaran($typ,$id){
 		$s = 'SELECT '.$typ.'
 			  FROM aka_tahunajaran

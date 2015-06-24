@@ -36,7 +36,7 @@
             <th class="text-center">Aksi</th>
         </tr>
         <tr xstyle="display:none;" id="cariTR" class="selected">
-            <th class="text-right"><div class="input-control text"><input  class="cari" placeholder="nama" id="namaS" name="namaS"></div></th>
+            <th class="text-right"></th>
             <th class="text-center"></th>
             <th class="text-center"><div class="input-control select">
                 <select data-hint="Tahun Ajaran" class="cari" id="tahunajaranS" name="tahunajaranS">

@@ -70,7 +70,6 @@
 				$semester           = (isset($_POST['semesterS']) AND $_POST['semesterS']!='')?'m.semester ='.$_POST['semesterS'].' AND ':'';
 				$bulan           	= (isset($_POST['bulanS']) AND $_POST['bulanS']!='')?'m.bulan ='.$_POST['bulanS'].' AND ':'';
 				$angkatan           = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
-				$nama               = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$keterangan         = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				
 				$sql = 'SELECT 
@@ -81,7 +80,10 @@
 							m.rek2,
 							m.rek3,
 							m.bulan,
+							t.replid idtahunajaran,
 							t.tahunajaran,
+							m.angkatan,
+							m.katmodulpembayaran idkat,
 							case s.semester
 								when 1 then "Ganjil"
 								when 2 then "Genap"
@@ -94,7 +96,6 @@
 						WHERE 
 							'.$katmodulpembayaran.$tahunajaran.$semester.$bulan.'
 							m.angkatan = '.$angkatan.' and
-							m.nama like "%'.$nama.'%" and
 							m.keterangan like "%'.$keterangan.'%" 
 						ORDER BY 
 							m.nama asc';
@@ -127,18 +128,15 @@
 									</button>
 								 </td>';
 						$rekening='';
-						if($r['rek1']!=0){
-							$rekening.= '<b> Kas :</b> '.getRekening($r['rek1']).'<br>'; 
-						}
-						if($r['rek2']!=0){
-							$rekening.= '<b> Pendapatan :</b> '.getRekening($r['rek2']).'<br>'; 
-						}
-						if($r['rek3']!=0){
-							$rekening.= '<b> Piutang :</b> '.getRekening($r['rek3']).'<br>'; 
-						}
+						if($r['rek1']!=0) $rekening.= '<b> Kas :</b> '.getRekening($r['rek1']).'<br>'; 
+						if($r['rek2']!=0) $rekening.= '<b> Pendapatan :</b> '.getRekening($r['rek2']).'<br>'; 
+						if($r['rek3']!=0) $rekening.= '<b> Piutang :</b> '.getRekening($r['rek3']).'<br>'; 
 						
+						$kat  = getKatModulPembayaran('nama',$r['idkat']);
+						$nama = $kat;
+						$nama.= $kat=='Registration'?'/ Angkatan '.getAngkatan('angkatan',$r['angkatan']):'/ Tahun Ajaran '.getTahunAjaran('tahunajaran',$r['idtahunajaran']).($kat=='Tuition Fee'?'/ Semester '.$r['semester']:'');
 						$out.= '<tr>
-									<td>'.$r['nama'].'</td>
+									<td>'.$nama.'</td>
 									<td>'.$rekening.'</td>
 									<td>'.$r['tahunajaran'].'</td>
 									<td>'.$r['semester'].'</td>

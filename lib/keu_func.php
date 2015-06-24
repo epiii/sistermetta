@@ -419,6 +419,13 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['detjenistrans'];
+	}function getKatModulPembayaran($f,$id){
+		$s='SELECT '.$f.' 
+			FROM keu_katmodulpembayaran 
+			WHERE replid='.$id;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$f];
 	}function getModulPembayaran($typ,$angkatan){
 		$s = 'SELECT
 				m.replid idmodul,
