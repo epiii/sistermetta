@@ -20,7 +20,7 @@ var contentFR = '';
                         
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="input-control text">'
-                            +'<input type="text" name="tahunajaranH" id="tahunajaranH">'
+                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
                             +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'

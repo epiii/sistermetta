@@ -23,23 +23,23 @@ var contentFR = '';
                             +'</div>'
                         +'</div>'
 
-                        +'<label>Tanggal Mulai</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
+                        // +'<label>Tanggal Mulai</label>'
+                        // +'<div class="input-control text" data-role="datepicker"'
+                        //     +'data-date="2014-10-23"'
+                        //     +'data-format="yyyy-mm-dd"'
+                        //     +'data-effect="slide">'
+                        //     +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
+                        //     +'<button class="btn-date"></button>'
+                        // +'</div>'
 
-                        +'<label>Tanggal Akhir</label>'
-                        +'<div class="input-control text" data-role="datepicker"'
-                            +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
-                            +'data-effect="slide">'
-                            +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
-                            +'<button class="btn-date"></button>'
-                        +'</div>'
+                        // +'<label>Tanggal Akhir</label>'
+                        // +'<div class="input-control text" data-role="datepicker"'
+                        //     +'data-date="2014-10-23"'
+                        //     +'data-format="yyyy-mm-dd"'
+                        //     +'data-effect="slide">'
+                        //     +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
+                        //     +'<button class="btn-date"></button>'
+                        // +'</div>'
 
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
@@ -165,8 +165,8 @@ var contentFR = '';
                             $('#departemenH').val(dt.id_departemen);
                             $('#departemenTB').val(dt.departemen);
                             $('#tahunajaranTB').val(dt.tahunajaran);
-                            $('#tglmulaiTB').val(dt.tglmulai);
-                            $('#tglakhirTB').val(dt.tglakhir);
+                            // $('#tglmulaiTB').val(dt.tglmulai);
+                            // $('#tglakhirTB').val(dt.tglakhir);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });

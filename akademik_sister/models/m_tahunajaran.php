@@ -31,14 +31,11 @@
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result  =$obj->result;
 
 				#ada data
 				$jum	= mysql_num_rows($result);
@@ -71,12 +68,12 @@
 						$out.= '<tr class="'.($res['aktif']==1?'bg-lightGreen':'').'">
 									<td>'.$nox.'</td>
 									<td id="tahunajaranTD_'.$res['replid'].'">'.$res['tahunajaran'].'</td>
-									<td>'.tgl_indo($res['tglmulai']).'</td>
-									<td>'.tgl_indo($res['tglakhir']).'</td>
 									<td>'.$res['keterangan'].'</td>
 									<td>'.($res['aktif']==1?'Aktif':'Tidak Aktif').'</td>
 									'.$btn.'
 								</tr>';
+								// <td>'.tgl_indo($res['tglmulai']).'</td>
+								// <td>'.tgl_indo($res['tglakhir']).'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -94,9 +91,9 @@
 			case 'simpan':
 				$s = $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
 								tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
-								tglmulai    = "'.filter($_POST['tglmulaiTB']).'",
-								tglakhir    = "'.filter($_POST['tglakhirTB']).'",
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
+								// tglmulai    = "'.filter($_POST['tglmulaiTB']).'",
+								// tglakhir    = "'.filter($_POST['tglakhirTB']).'",
 				
 				if(!isset($_POST['replid'])){ //add
 					if(mysql_num_rows(mysql_query('SELECT * from '.$tb))>0){
@@ -146,8 +143,8 @@
 				$out 	= json_encode(array(
 							'status'        =>$stat,
 							'tahunajaran'   =>$r['tahunajaran'],
-							'tglmulai'      =>$r['tglmulai'],
-							'tglakhir'      =>$r['tglakhir'],
+							// 'tglmulai'      =>$r['tglmulai'],
+							// 'tglakhir'      =>$r['tglakhir'],
 							'keterangan'    =>$r['keterangan'],
 							'id_departemen' =>$r['id_departemen'],
 							'departemen'    =>$r['departemen']

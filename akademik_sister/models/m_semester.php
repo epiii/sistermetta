@@ -129,22 +129,23 @@
 			// ambiledit -----------------------------------------------------------------
 			// cmbsemester -----------------------------------------------------------------
 			case 'cmbsemester':
-				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
-					}else{ /*epiii*/
-						$w='where tahunajaran ='.$_POST['tahunajaran']; /*epiii*/
-					} /*epiii*/
+					if(isset($_POST[$mnu])) $w='where '.$mnu.'='.$_POST[$mnu];
+					elseif(isset($_POST['tahunajaran'])) $w='where tahunajaran ='.$_POST['tahunajaran']; 
+					else $w=''; 
 				}
 				
-				$s	= ' SELECT *
+				$s	= ' SELECT 
+							replid,
+							if(semester=1,"Ganjil","Genap")semester,
+							tglMulai,
+							tglSelesai
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY replid asc';
-
+						ORDER  BY semester asc';
+// var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
@@ -162,7 +163,7 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-						$ar = array('status'=>'sukses','nama'=>$dt);
+						$ar = array('status'=>'sukses','semester'=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;
