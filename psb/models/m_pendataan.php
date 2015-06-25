@@ -93,82 +93,67 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				// $departemen    = trim($_POST['departemenSS'])?filter($_POST['departemenSS']):'';
-				// $prosesS       = trim($_POST['prosesSS'])?filter($_POST['prosesSS']):'';
-				// $kelompok      = trim($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$proses        = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$sql = 'SELECT pc.*
-						FROM psb_calonsiswa pc
-						LEFT JOIN psb_kelompok pk ON pk.replid = pc.kelompok
-						LEFT JOIN psb_proses pp ON pp.replid = pk.proses
-						LEFT JOIN departemen d ON d.replid = pp.departemen
+				$sql = 'SELECT
+							c.replid,
+							c.nopendaftaran,
+							c.nama,
+							c.setbiaya,
+							c.angsur
+						FROM
+							psb_calonsiswa c
+							LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+							LEFT JOIN psb_proses p ON p.replid = k.proses
+							LEFT JOIN departemen d ON d.replid = p.departemen
 						WHERE
-						pc.kelompok = '.$kelompok.' AND
-						pc.nopendaftaran LIKE "'.$nopendaftaran.'%" AND
-						pc.nama LIKE "'.$nama.'%"
-							ORDER 
-							BY nopendaftaran asc';
+							c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+							AND c.nama LIKE "%'.$nama.'%"
+							AND c.kelompok = '.$kelompok.'
+						ORDER BY
+							c.nopendaftaran ASC,
+							c.nama ASC
+							';
 				// print_r($sql);exit();	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
-				// $menu='tampil';	
-				$recpage= 5;//jumlah data per halaman
+
+				$recpage = 5;//jumlah data per halaman
 				$aksi    ='tampil';
 				$subaksi ='';
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				$obj 	= new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-
-				// $obj 	= new pagination_class($menu,$sql,$starting,$recpage);
-				// $obj 	= new pagination_class($sql,$starting,$recpage);
-				$result =$obj->result;
-
-				#ada data
-				$jum	= mysql_num_rows($result);
-				$out ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result  =$obj->result;
+				$jum     = mysql_num_rows($result);
+				$out     ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
-							$dis  = 'disabled';
-							$ico  = 'checkmark';
-							$hint = 'telah Aktif';
-							$func = '';
-						}else{
-							$dis  = '';
-							$ico  = 'blocked';
-							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
-						}
-						
-						$btn ='<td>
-									<button data-hint="ubah"  onclick="Modal('.$res['replid'].');">
+					while($r = mysql_fetch_assoc($result)){	
+						$btn ='<td align="center">
+									<button data-hint="ubah"  onclick="Modal('.$r['replid'].');">
 										<i class="icon-zoom-in on-left"></i>
 									</button>
-									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
+									<button data-hint="ubah"  onclick="viewFR('.$r['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button data-hint="hapus" onclick="del('.$r['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nopendaftaran'].'</td>
-									
-									<td>'.$res['nama'].'</td>
-									<td>'.number_format($res['sumpokok']).'</td>
-									<td>'.number_format($res['disctb']).'</td>
-									<td>'.number_format($res['discsaudara']).'</td>
-									<td>'.number_format($res['disctunai']).'</td>
-									<td>'.number_format($res['denda']).'</td>
-									<td>'.number_format($res['sumnet']).'</td>
-									<td>'.number_format($res['angsuran']).'</td>
+									<td>'.$r['nopendaftaran'].'</td>
+									<td>'.$r['nama'].'</td>
+									<td align="right">Rp. '.number_format(getBiaya('dpp',$r['replid'])).'</td>
+									<td align="right">Rp. '.number_format(getDisc('discsubsidi',$r['replid'])).'</td>
+									<td align="right">Rp. '.number_format(getDisc('discsaudara',$r['replid'])).'</td>
+									<td align="right">Rp. '.number_format(getDisc('disctunai',$r['replid'])).'</td>
+									<td style="font-weight:bold;" class="fg-white bg-green" align="right">Rp. '.number_format(getBiayaNet('dpp',$r['replid'])).'</td>
+									<td align="center">'.($r['angsur']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -247,13 +232,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
+									// jmlangsur     = "'.filter($_POST['angsuranTB']).'",
+									// angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
 				$siswa = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
 									golongan      = "'.filter($_POST['golonganTB']).'",
 									kelompok      = "'.filter($_POST['kelompokS']).'",
 									sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
 									sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
-									jmlangsur     = "'.filter($_POST['angsuranTB']).'",
-									angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
 									disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
 									discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
 									disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
