@@ -83,6 +83,7 @@
 							t.replid idtahunajaran,
 							t.tahunajaran,
 							m.angkatan,
+							m.bulan,
 							m.katmodulpembayaran idkat,
 							case s.semester
 								when 1 then "Ganjil"
@@ -98,7 +99,10 @@
 							m.angkatan = '.$angkatan.' and
 							m.keterangan like "%'.$keterangan.'%" 
 						ORDER BY 
-							m.nama asc';
+							m.katmodulpembayaran asc,
+							t.tahunajaran asc,
+							s.semester asc
+							';
 				// var_dump($sql);exit();	
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -118,7 +122,6 @@
 					$nox 	= $starting+1;
 					$curKat = '';
 					while($r = mysql_fetch_assoc($result)){
-						// var_dump($r);exit();
 						$btn ='<td align="center">
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$r['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -132,9 +135,12 @@
 						if($r['rek2']!=0) $rekening.= '<b> Pendapatan :</b> '.getRekening($r['rek2']).'<br>'; 
 						if($r['rek3']!=0) $rekening.= '<b> Piutang :</b> '.getRekening($r['rek3']).'<br>'; 
 						
-						$kat  = getKatModulPembayaran('nama',$r['idkat']);
-						$nama = $kat;
-						$nama.= $kat=='Registration'?'/ Angkatan '.getAngkatan('angkatan',$r['angkatan']):'/ Tahun Ajaran '.getTahunAjaran('tahunajaran',$r['idtahunajaran']).($kat=='Tuition Fee'?'/ Semester '.$r['semester']:'');
+						$kat = getKatModulPembayaran('nama',$r['idkat']);
+						$thn = $kat!='Registration'?'/ Th. Ajaran '.getTahunAjaran('tahunajaran',$r['idtahunajaran']):'/ Angkatan '.getAngkatan('angkatan',$r['angkatan']);
+						$sem = $kat!='Registration'?'/ Sem. '.$r['semester']:'';
+						$bln = ($kat=='Tuition Fee' && $r['bulan']!=0)?'/ '.bln_nama($r['bulan'],'id','c'):'';
+
+						$nama = $kat.$thn.$sem.$bln;
 						$out.= '<tr>
 									<td>'.$nama.'</td>
 									<td>'.$rekening.'</td>
@@ -144,7 +150,6 @@
 									<td>'.$r['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
-						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -160,16 +165,13 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s 	  = $tb.' set 	katmodulpembayaran = "'.$_POST['katmodulpembayaranTB'].'",
-									angkatan           = "'.$_POST['angkatanH'].'",
-									nama               = "'.filter($_POST['namaTB']).'",
+									angkatan           = '.$_POST['angkatanH'].',
 									rek1               = "'.filter($_POST['rek1H']).'",
 									rek2               = "'.filter($_POST['rek2H']).'",
 									rek3               = "'.filter($_POST['rek3H']).'",
-									keterangan         = "'.filter($_POST['keteranganTB']).'"';
-									// cicilan            = "'.getuang($_POST['cicilanTB']).'",
-									// diskon             = "'.getuang($_POST['diskonTB']).'",
-									// biayaadmin         = "'.getuang($_POST['biayaadminTB']).'",
-									// nominal            = "'.getuang($_POST['nominalTB']).'",
+									keterangan         = "'.filter($_POST['keteranganTB']).'",
+									bulan         	   = "'.$_POST['bulanTB'].'",
+									semester           = "'.$_POST['semesterTB'].'"';
 
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e    = mysql_query($s2);
@@ -191,36 +193,42 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s = 'SELECT 
-							m.katmodulpembayaran,
-							m.nama,
+							m.replid,
 							m.keterangan,
 							m.rek1,
 							m.rek2,
 							m.rek3,
-							m.diskon,
-							m.biayaadmin
+							m.bulan,
+							s.tahunajaran,
+							m.angkatan,
+							m.bulan,
+							m.katmodulpembayaran,
+							s.semester,
+							t.departemen
 						FROM '.$tb.' m 
-							left join keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+							LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
+							LEFT JOIN aka_semester s on s.replid = m.semester
+							LEFT JOIN aka_tahunajaran t on t.replid = s.tahunajaran
 						WHERE 
-							m.replid='.$_POST['replid'];
+							m.replid ='.$_POST['replid'];
 				$e   = mysql_query($s);
 				$r   = mysql_fetch_assoc($e);
 				// var_dump($r);exit();
-				// 
 				$out = json_encode(array(
 							'katmodulpembayaran' =>$r['katmodulpembayaran'],
-							'nama'               =>$r['nama'],
-							'keterangan'         =>$r['keterangan'],
+							'departemen'         =>$r['departemen'],
+							'angkatan'           =>$r['angkatan'],
+							'tahunajaran'        =>$r['tahunajaran'],
+							'semester'           =>$r['semester'],
+							'bulan'              =>$r['bulan'],
 							'idrek1'             =>$r['rek1'],
 							'idrek2'             =>$r['rek2'],
 							'idrek3'             =>$r['rek3'],
 							'rek1'               =>getRekening($r['rek1']),
 							'rek2'               =>getRekening($r['rek2']),
-							// 'rek3'               =>($r['rek3']==''?getRekening($r['rek3']),
-							'diskon'             =>$r['diskon'],
-							'biayaadmin'         =>$r['biayaadmin'],
+							'rek3'               =>getRekening($r['rek3']),
+							'keterangan'         =>$r['keterangan']
 						));
-							// 'nominal'            =>$r['nominal'],
 			break;
 			// ambiledit -----------------------------------------------------------------
 			

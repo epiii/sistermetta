@@ -118,7 +118,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 							'.$w.'		
-						ORDER  BY nama asc';
+						ORDER  BY replid asc';
 
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);

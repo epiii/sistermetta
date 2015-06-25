@@ -17,21 +17,44 @@ var contentFR ='';
 // main function ---
     $(document).ready(function(){
         contentFR +='<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+                        // id form (edit mode)
                         +'<input id="idformH" type="hidden">' 
-                        
+                        // angkatan
                         +'<input name="angkatanH"  id="angkatanH" type="hidden">' 
+                        
+                        // kategori
                         +'<label>Kategori Modul</label>'
-                            +'<div class="input-control select">'
-                                +'<select name="katmodulpembayaranTB" id="katmodulpembayaranTB"></select>'
-                            +'</div>'
+                        +'<div class="input-control select">'
+                            +'<select onchange="fieldFR($(this).val());" name="katmodulpembayaranTB" id="katmodulpembayaranTB"></select>'
+                            // +'<select onchange="fieldFR(this);" name="katmodulpembayaranTB" id="katmodulpembayaranTB"></select>'
+                        +'</div>'
+                        // onchange="cmbtahunajaran(\'form\',\'\',\'\');"
+                        
+                        //Angkatan
+                        +'<label>Angkatan</label>'
+                        +'<div class="input-control select">'
+                            +'<select required name="angkatanTB" id="angkatanTB"></select>'
                         +'</div>'
 
-                        +'<label>Nama Pembayaran</label>'
-                            +'<div class="input-control text">'
-                                +'<input placeholder="Nama Pembayaran" required name="namaTB" id="namaTB">'
-                            +'</div>'
+                        // Tahun Ajaran
+                        +'<label style="display:none;" class="tahunajaranDV">Tahun Ajaran</label>'
+                        +'<div  style="display:none;" class="tahunajaranDV input-control select">'
+                            +'<select onchange="cmbsemester(\'form\',$(this).val(),\'\');" name="tahunajaranTB" id="tahunajaranTB"></select>'
                         +'</div>'
 
+                        // Semester
+                        +'<label  style="display:none;" class="semesterDV">Semester</label>'
+                        +'<div  style="display:none;"  class="semesterDV input-control select">'
+                            +'<select  onchange="cmbbulan(\'form\',$(this).val(),\'\');" name="semesterTB" id="semesterTB"><option value="">-Pilih Tahun Ajaran-</option></select>'
+                        +'</div>'
+
+                        // Bulan
+                        +'<label  style="display:none;" class="bulanDV">Bulan </label>'
+                        +'<div  style="display:none;"  class="bulanDV input-control select">'
+                            +'<select name="bulanTB" id="bulanTB"><option value="">-Pilih Semester-</option></select>'
+                        +'</div>'
+
+                        // kas
                         +'<label>Rek. Kas</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" id="rek1H" name="rek1H" />'
@@ -39,6 +62,7 @@ var contentFR ='';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
+                        // pendapatan
                         +'<label>Rek. Pendapatan</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" id="rek2H" name="rek2H" />'
@@ -46,6 +70,7 @@ var contentFR ='';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
+                        // piutang
                         +'<label>Rek. Piutang</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" id="rek3H" name="rek3H" />'
@@ -53,30 +78,7 @@ var contentFR ='';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
-                        // +'<label>Nominal</label>'
-                        // +'<div class="input-control text">'
-                            // +'<input onclick="inputuang(this);" placeholder="Nominal" name="nominalTB" id="nominalTB">'
-                            // +'<button class="btn-clear"></button>'
-                        // +'</div>'
-                        
-                        // +'<label>Cicilan</label>'
-                        // +'<div class="input-control text">'
-                        //     +'<input placeholder="cicilan" onclick="inputuang(this);"  name="cicilanTB" id="cicilanTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
-                        
-                        // +'<label>Diskon</label>'
-                        // +'<div class="input-control text">'
-                        //     +'<input placeholder="diskon" onclick="inputuang(this);"  name="diskonTB" id="diskonTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
-
-                        // +'<label>Biaya Administrasi</label>'
-                        // +'<div class="input-control text">'
-                        //     +'<input placeholder="biayaadmin" onclick="inputuang(this);"  name="biayaadminTB" id="biayaadminTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
-                        
+                        // keterangan
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
@@ -123,6 +125,30 @@ var contentFR ='';
     }); 
 // end of main function ---
 
+// switch field of form
+    function fieldFR (id) {
+        if(id==1){ // registration
+            $('.tahunajaranDV').attr('style','display:none');
+            $('.semesterDV').attr('style','display:none');
+            $('.bulanDV').attr('style','display:none');
+                $('#tahunajaranTB').removeAttr('required');
+                $('#semesterTB').removeAttr('required');
+                $('#bulanTB').removeAttr('required');
+        }else{ // selain registration
+            $('.tahunajaranDV').removeAttr('style');
+            $('.semesterDV').removeAttr('style');
+            $('#tahunajaranTB').attr('required',true);
+            $('#semesterTB').attr('required',true);
+            if(id==3){// tuition fee
+                $('.bulanDV').removeAttr('style');
+                $('#bulanTB').attr('required',true);
+            }else{ // material fee
+                $('.bulanDV').attr('style','display:none');
+                $('#bulanTB').removeAttr('required');
+            }
+        }
+    }
+
 // combo departemen ---
     function cmbdepartemen(typ,dep){
         var u = dir4;
@@ -155,13 +181,13 @@ var contentFR ='';
                 notif(dt.status,'red');
             }else{
                 $.each(dt.angkatan, function(id,item){
-                    out+='<option value="'+item.replid+'">Angkatan '+item.angkatan+'</option>';
+                    out+='<option '+(angk==item.replid?'selected':'')+' value="'+item.replid+'">Angkatan '+item.angkatan+'</option>';
                 });
                 if(typ=='filter'){ // filtering 
                     $('#angkatanS').html(out);
                     cmbkatmodulpembayaran('filter','');
                 }else{ // form (add || edit)
-                    $('#angkatanTB').html(out);
+                    $('#angkatanTB').html('<option value="">-Pilih Angkatan-</option>'+out);
                 }
             }
         });
@@ -184,7 +210,7 @@ var contentFR ='';
                     cmbtahunajaran('filter',$('#departemenS').val(),'');
                     // viewTB();
                 }else{ // form (add || edit)
-                    $('#katmodulpembayaranTB').html(out);
+                    $('#katmodulpembayaranTB').html('<option value="">-Pilih Kategori-</option>'+out);
                 }
             }
         });
@@ -206,7 +232,11 @@ var contentFR ='';
                     $('#tahunajaranS').html('<option value="">-SEMUA-</option>'+out);
                     cmbsemester('filter','','');
                 }else{ // form (add || edit)
-                    $('#tahunajaranTB').html(out);
+                    var kat = $('#katmodulpembayaranTB').val();
+                    // if(kat==2 || kat==3) { // mat || tuit
+                        // $('.tahunajaranDV').removeAttr('style');
+                        $('#tahunajaranTB').html('<option value="">-Pilih Tahun Ajaran-</option>'+out);
+                    // }
                 }
             }
         });
@@ -228,7 +258,7 @@ var contentFR ='';
                     $('#semesterS').html('<option value="">-SEMUA-</option>'+(thn!=''?out:''));
                     cmbbulan('filter','','');
                 }else{ // form (add || edit)
-                    $('#semesterTB').html(out);
+                    $('#semesterTB').html('<option value="">-Pilih Semester-</option>'+out);
                 }
             }
         });
@@ -265,8 +295,13 @@ var contentFR ='';
                             if((id+1)>b2) disx = 'disabled'; // 8,9,10,11,12(disabled) | 1,2,3,4,5,6,7(enabled)
                             out+='<option '+disx+' value="'+(parseInt(id)+1)+'">'+item+'</option>';
                         });
-                    }$('#bulanS').html(out);
-                    viewTB();
+                    }
+                    if(typ=='filter') {// filtering
+                        $('#bulanS').html(out);
+                        viewTB();
+                    }else {// form (add ||  edit)
+                        $('#bulanTB').html(out);
+                    }
                 }
             });
         }
@@ -333,7 +368,6 @@ var contentFR ='';
         });
     }
 
-
 // form ---
     function viewFR(id){
         $.Dialog({
@@ -347,6 +381,9 @@ var contentFR ='';
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
                     cmbkatmodulpembayaran('form','');
+                    cmbangkatan('form',$('#departemenS').val(),'');
+                    cmbtahunajaran('form',$('#departemenS').val(),'');
+                    cmbbulan('form',$('#tahunajaranS').val(),'');
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
@@ -356,19 +393,19 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            // $('#nominalTB').val(dt.nominal);
-                            $('#diskonTB').val(dt.diskon);
-                            $('#cicilanTB').val(dt.cicilan);
-                            $('#biayaadminTB').val(dt.biayaadmin);
                             $('#rek1TB').val(dt.rek1);
                             $('#rek2TB').val(dt.rek2);
                             $('#rek3TB').val(dt.rek3);
                             $('#rek1H').val(dt.idrek1);
                             $('#rek2H').val(dt.idrek2);
                             $('#rek3H').val(dt.idrek3);
-                            $('#namaTB').val(dt.nama);
                             $('#keteranganTB').val(dt.keterangan);
                             cmbkatmodulpembayaran('form',dt.katmodulpembayaran);
+                            cmbangkatan('form',dt.departemen,dt.angkatan);
+                            cmbtahunajaran('form',dt.departemen,dt.tahunajaran);
+                            cmbsemester('form',dt.tahunajaran,dt.semester);
+                            cmbbulan('form',dt.semester,dt.bulan);
+                            fieldFR(dt.katmodulpembayaran);
                         }
                     });
                 }
@@ -526,27 +563,20 @@ var contentFR ='';
 //del process ---
     function del(id){
         if(confirm('melanjutkan untuk menghapus data?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=hapus&replid='+id,
-            dataType:'json',
-            success:function(dt){
-                var cont,clr;
-                if(dt.status!='sukses'){
-                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
-                    clr  ='red';
-                }else{
-                    // viewTB($('#tempatS').val());
-                    viewTB($('#'+mnu2+'S').val());
-                    cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
-                    clr  ='green';
-                }
-                notif(cont,clr);
-            }
+        var u  = dir;
+        var d  = 'aksi=hapus&replid='+id;
+        ajax(u,d).done(function(dt){
+            var cont,clr;
+            if(dt.status!='sukses'){
+                cont = '..Gagal Menghapus '+dt.terhapus+' ..';
+                clr  ='red';
+            }else{
+                viewTB();
+                cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
+                clr  ='green';
+            }notif(cont,clr);
         });
     }
-//end of del process ---
     
 // notifikasi
 function notif(cont,clr) {
