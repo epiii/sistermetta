@@ -9,17 +9,19 @@
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$kelompok  = isset($_POST['kelompokS'])?filter(trim($_POST['kelompokS'])):'';
-				$sql ='SELECT k.kriteria,k.replid,(
+				$kelompok = isset($_POST['kelompokS'])?$_POST['kelompokS']:'';
+				$sql ='SELECT 
+							k.kriteria,
+							k.replid,(
 								SELECT count(*)
 								FROM psb_golongan
 							) jumgol
-						FROM psb_kriteria k';
+						FROM 
+							psb_kriteria k';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){
 					$starting=$_POST['starting'];
@@ -33,16 +35,16 @@
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
 				$result  =$obj->result;
 
-				#ada data
 				$jum = mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_assoc($result)){	
+					while($r1 = mysql_fetch_assoc($result)){	
 						$out.= '<tr>
-									<td valign="middle" rowspan="'.($res['jumgol']+1).'">
-										'.$nox.'. '.$res['kriteria'].'</td>';
-						$sql2='SELECT
+									<td valign="middle" rowspan="'.($r1['jumgol']+1).'">
+										'.$nox.'. '.$r1['kriteria'].'
+									</td>';
+						$s2 ='	SELECT
 									g.replid,
 									g.golongan,
 									s.nilai dpp,
@@ -55,35 +57,13 @@
 										SELECT * 
 										FROM  psb_setbiaya s 
 										WHERE 
-											krit ='.$res['replid'].' AND 
+											krit ='.$r1['replid'].' AND 
 											kel = '.$kelompok.'
 									)s ON s.gol = g.replid
 									';
-
-						// print_r($sql2);exit();
-						$qry2 = mysql_query($sql2);
-						$num  = mysql_num_rows($qry2);
-						// $out.='<tr>
-						// 	<td>1</td>
-						// 	<td>2</td>
-						// 	<td>3</td>
-						// 	<td>4</td>
-						// 	<td>5</td>
-						// </tr><tr>
-						// 	<td>1</td>
-						// 	<td>2</td>
-						// 	<td>3</td>
-						// 	<td>4</td>
-						// 	<td>5</td>
-						// </tr><tr>
-						// 	<td>1</td>
-						// 	<td>2</td>
-						// 	<td>3</td>
-						// 	<td>4</td>
-						// 	<td>5</td>
-						// </tr>';
-
-						while ($r2=mysql_fetch_assoc($qry2)) {
+						print_r($s2);exit();
+						$e2  = mysql_query($s2);
+						while ($r2=mysql_fetch_assoc($e2)) {
 							$out.= '<tr>
 										<td>'.$r2['golongan'].' ('.$r2['golongan'].')<input name="biaya['.$r2['replid'].']" type="hidden"></td> 
 										<td align="right"><input value="Rp. '.number_format($r2['daftar']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="daftarTB_'.$r2['replid'].'"></td> 
