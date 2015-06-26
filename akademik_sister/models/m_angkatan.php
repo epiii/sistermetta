@@ -72,7 +72,7 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$cek =getAngkatan2('angkatan','angkatan',$_POST['angkatanTB']);
-				$s = $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
+				$s = $tb.' set 	departemen 	= "'.$_POST['departemenH'].'",
 								angkatan 	= "'.filter($_POST['angkatanTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				if(isset($_POST['replid']) && $_POST['replid']	!=''){ // edit mode 

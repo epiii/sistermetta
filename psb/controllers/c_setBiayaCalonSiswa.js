@@ -115,7 +115,6 @@ var contentFR = '';
         var urlx ='&aksi=simpan';
         $.ajax({
             url:dir,
-            cache:false,
             type:'post',
             dataType:'json',
             data:$('form').serialize()+urlx,
@@ -133,7 +132,7 @@ var contentFR = '';
                 }else{
                     $.Dialog.close();
                     kosongkan();
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }
@@ -146,6 +145,7 @@ var contentFR = '';
     // view table ---
     function viewTB(subaksi){
         var aksi ='aksi=tampil';
+        console.log('ini subaksi='+subaksi);
         if(typeof subaksi!=='undefined'){
             aksi+='&subaksi='+subaksi;
         }
@@ -165,7 +165,7 @@ var contentFR = '';
             var v = $(this).val();
             cari+='&'+p+'='+v;
         });
-
+        console.log('cari='+cari);
         $.ajax({
             url : dir,
             type: 'post',

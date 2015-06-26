@@ -1,4 +1,32 @@
 <?php
+	// set biaya checking 
+	function getNumRows($tb){
+		$s='SELECT * FROM psb_'.$tb;
+		$e = mysql_query($s);
+		$n = mysql_num_rows($e);
+		return intval($n);
+	}
+	function checkSetBiaya($kel){
+		$s = 'SELECT * FROM psb_setbiaya WHERE kel ='.$kel;
+		$e = mysql_query($s);
+		$n = mysql_num_rows($e);
+		if($n<=0) addSetBiaya($kel);
+	}
+	function addSetBiaya($kel){
+		$sk = 'SELECT replid FROM psb_kriteria';
+		$ek = mysql_query($sk);
+		while ($rk=mysql_fetch_assoc($ek)) {
+			$sg = 'SELECT replid FROM psb_golongan';
+			$eg = mysql_query($sg);
+			while ($rg=mysql_fetch_assoc($eg)) {
+				$ss='INSERT INTO psb_setbiaya SET 
+						kel  ='.$kel.',
+						gol  ='.$rg['replid'].',
+						krit ='.$rk['replid'];
+				$es=mysql_query($ss);
+			}
+		}
+	}
 	function getSiswa($typ,$id){
 		$s = 'SELECT '.$typ.'
 			  FROM psb_calonsiswa
