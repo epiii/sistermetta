@@ -647,6 +647,7 @@ var contentFR = '';
                    notif(data.status,'red');
                 }else{
                     notif(data.status,'green'); 
+                   switchPN('view','');
                 }
             },error: function(jqXHR, textStatus, errorThrown){
                 console.log('ERRORS savedata2: ' + textStatus);
@@ -1406,10 +1407,10 @@ function notif(cont,clr) {
     }
 
 // no pendaftaran auto 
-    function nopendaftaranFC () {
-        var u = ;
-        var d = 'aksi=nopendaftaran' ;
-        ajax(u,d).done(function (dt){
-            $('#nopendaftaranTB').val(dt.no);
-        });
-    }
+    // function nopendaftaranFC () {
+    //     var u = ;
+    //     var d = 'aksi=nopendaftaran' ;
+    //     ajax(u,d).done(function (dt){
+    //         $('#nopendaftaranTB').val(dt.no);
+    //     });
+    // }

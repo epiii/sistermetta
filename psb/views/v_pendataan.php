@@ -75,7 +75,7 @@
                       <div class="input-control select size3">
                         <select  onchange="getBiaya();" required  id="golonganTB" name="golonganTB"></select>
                       </div>
-                      <input type="text" id="setbiayaTB" name="setbiayaTB">
+                      <input type="hidden" id="setbiayaTB" name="setbiayaTB">
 
                     </div>
                       
