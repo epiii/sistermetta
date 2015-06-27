@@ -1,5 +1,15 @@
 <?php
 	// set biaya checking 
+	function getSetBiaya($kel,$krit,$gol){
+		$s = '	SELECT replid,registration, material,tuition 
+				FROM psb_setbiaya 
+				WHERE 	kel  ='.$kel.' AND 
+						krit ='.$krit.' AND 
+						gol  ='.$gol;
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r;
+	}
 	function getNumRows($tb){
 		$s='SELECT * FROM psb_'.$tb;
 		$e = mysql_query($s);
@@ -67,9 +77,9 @@
 		return $r[$typ];
 	}function getSiswaBy($f,$w){
 		$s='SELECT '.$f.' FROM psb_calonsiswa WHERE replid ='.$w;
+		// var_dump($s);exit();
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		// var_dump($s);exit();
 		return $r[$f];
 	}
 ?>

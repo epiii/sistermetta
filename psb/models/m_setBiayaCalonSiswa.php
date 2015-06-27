@@ -54,9 +54,9 @@
 									s.replid,
 									g.golongan,
 									g.keterangan,
-									s.nilai dpp,
-									s.spp,
-									s.joiningf
+									s.registration,
+									s.tuition,
+									s.material
 								FROM
 									psb_golongan g
 									LEFT JOIN (
@@ -72,9 +72,9 @@
 						while ($r2=mysql_fetch_assoc($e2)) {
 							$out.= '<tr>
 										<td>'.$r2['golongan'].' ('.$r2['keterangan'].') <input name="golongan[]" value="'.$r2['replid'].'" type="hidden"></td> 
-										<td align="right"><div class="input-control text"><input class="text-right" value="Rp. '.number_format($r2['dpp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="dppTB_'.$r2['replid'].'"></div></td> 
-										<td align="right"><div class="input-control text"><input class="text-right"value="Rp. '.number_format($r2['spp']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="sppTB_'.$r2['replid'].'"></div></td> 
-										<td align="right"><div class="input-control text"><input class="text-right"value="Rp. '.number_format($r2['joiningf']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="joiningfTB_'.$r2['replid'].'"></div></td> 
+										<td align="right"><div class="input-control text"><input class="text-right" value="Rp. '.number_format($r2['registration']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="registrationTB_'.$r2['replid'].'"></div></td> 
+										<td align="right"><div class="input-control text"><input class="text-right"value="Rp. '.number_format($r2['tuition']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="tuitionTB_'.$r2['replid'].'"></div></td> 
+										<td align="right"><div class="input-control text"><input class="text-right"value="Rp. '.number_format($r2['material']).'"   onclick="inputuang(this);" onfocus="inputuang(this);" type="text" name="materialTB_'.$r2['replid'].'"></div></td> 
 									</tr>';
 						}
 						$out.= '</tr>';
@@ -94,12 +94,10 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$stat2= true;
-				// print_r($_POST['golongan']);exit();
 				foreach ($_POST['golongan'] as $i => $v) {
-
-					$s = 'UPDATE '.$tb.' set 	spp      = '.filter(getuang($_POST['sppTB_'.$v])).',
-												joiningf = '.filter(getuang($_POST['joiningfTB_'.$v])).',
-												nilai    = '.filter(getuang($_POST['dppTB_'.$v])).'
+					$s = 'UPDATE '.$tb.' set 	tuition      = '.filter(getuang($_POST['tuitionTB_'.$v])).',
+												material     = '.filter(getuang($_POST['materialTB_'.$v])).',
+												registration = '.filter(getuang($_POST['registrationTB_'.$v])).'
 										WHERE 	replid 	 = '.$v;
 					// print_r($s);exit();
 					$e     = mysql_query($s);

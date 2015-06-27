@@ -24,20 +24,20 @@
             <th class="text-center" rowspan="2">Nomor Pendaftaran</th>
             <th class="text-center" rowspan="2">Nama</th>
             <th class="text-center" rowspan="2">Registration Fee</th>
-            <th class="text-center" colspan="3">Discount</th>
+            <th class="text-center" colspan="4">Discount</th>
             <th class="text-center" rowspan="2">Registration Fee(Net)</th>
-            <th class="text-center" rowspan="2">Diangsur</th>
+            <th class="text-center" rowspan="2">Bayar</th>
             <th class="text-center" rowspan="2">Aksi</th>
         </tr>
         <tr style="color:white;" class="info">
             <th class="text-center">Subsidi</th>
             <th class="text-center">Saudara</th>
             <th class="text-center">Tunai</th>
+            <th class="text-center">Angsuran</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="nopendaftaranS" name="nopendaftaranS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ...." id="namaS" name="namaS"></div></th>
-            <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
@@ -51,7 +51,7 @@
 </table>
 
 <!-- panel 2 : form (edit || add ) -->
-<div class="table hovered bordered striped panelx" id="pendataanFR" style="display:none;" >
+<div class=" panelx" id="pendataanFR" style="display:none;" >
   <div style="background-color:#dddddd;overflow:scroll;height:600px;" >
     <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="siswa_form"> 
       <input id="idformH" type="hidden"> 
@@ -63,72 +63,92 @@
                   <div class="row">
 
                   <!-- grup biodata -->
-                    <div class="span6">
-                      <label>Kriteria calon :</label>
+                    <div class="span6"> <!-- kolom kiri -->
+                    <!-- calon siswa -->
+                      <b> Calon Siswa</b>
+                      <label>Kriteria :</label>
                       <div class="input-control select size3">
-                        <select required id="kriteriaTB" name="kriteriaTB"></select>
+                        <select onchange="getBiaya();" required id="kriteriaTB" name="kriteriaTB"></select>
                       </div>
 
                       <label>Golongan :</label>
                       <div class="input-control select size3">
-                        <select required  id="golonganTB" name="golonganTB"></select>
+                        <select  onchange="getBiaya();" required  id="golonganTB" name="golonganTB"></select>
                       </div>
-                            
-                      <label><b>Registration :</b></label>
-                      <label>Registration Fee</label>
-                      <div class="input-control text size3">
-                          <input readonly type="text" name="uang_pangkalTB" id="uang_pangkalTB">
-                      </div>
-                      
-                      <label>Uang Registration Fee (net)</label>
-                      <div class="input-control text size3">
-                          <input type="hidden" onclick="inputuang(this);" name="uang_pangkalnetH" id="uang_pangkalnetH">
-                          <input readonly type="text" name="uang_pangkalnetTB" id="uang_pangkalnetTB">
-                      </div>
-                          
-                      <label>Material Fee</label>
-                      <div class="input-control text size3">
-                          <input type="hidden" onclick="inputuang(this);" name="joiningH" id="joiningH">
-                          <input readonly type="text" name="joiningTB" id="joiningTB">
-                      </div>
+                      <input type="text" id="setbiayaTB" name="setbiayaTB">
 
-                      <label><b>Tuition :</b></label>
-                      <label>Tuition Fee</label>
-                      <div class="input-control text size3">
-                          <input readonly type="text" name="sppTB" id="sppTB">
-                      </div>
                     </div>
                       
                     <!-- grup pembayaran  -->
-                    <div class="span6">
-                      <label><b>Discount:</b></label>
-                      <label>Discount Subsidi :</label>
-                      <div class="input-control text size3">
-                          <input type="text" value="0" placeholder="Diskon Subsidi" name="diskon_subsidiTB" id="diskon_subsidiTB">
-                          <button class="btn-clear"></button>
-                      </div>                                
+                    <div class="span6"> <!-- kolom kanan  -->
+                      <!-- tabel pembayaran  -->
+                      <table width="100%" class="table hovered bordered">
+                        <tr class="fg-white bg-blue">
+                          <th width="70%" colspan="2">Pembayaran</th>
+                          <th width="30%">Nominal</th>
+                        </tr>
+                        <tr>
+                          <td colspan="2">Registration Fee</td>
+                          <td align="right" id="registrationTD">Rp. 0</td>
+                        </tr>
+                        <tr>
+                          <td width="30%" >Jumlah Angsuran</td>
+                          <td  width="40%" align="right">
+                            <div class="input-control select">
+                              <select required onchange="getDiscAngsuran();" id="angsuranTB" name="angsuranTB"></select>
+                            </div>
+                          </td>
+                          <td  width="30%"rowspan="5"></td>
+                        </tr>
+                        <tr>
+                          <td width="30%" >Diskon Angsuran</td>
+                          <td  width="40%" id="discangsuranTD" align="right"></td>
+                        </tr>
+                        <tr>
+                          <td width="30%" >Diskon Subsidi</td>
+                          <td  width="40%" align="right">
+                            <div class="input-control text">
+                              <input id="discsubsidiTB" onkeyup="getDiscTotal();" name="discsubsidiTB" placeholder="diskon subsidi" type="text" onfocus="inputuang(this);" class="text-right" value="Rp. 0">
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Diskon Saudara</td>
+                          <td align="right">
+                            <div class="input-control text">
+                              <input id="discsaudaraTB" onkeyup="getDiscTotal();" name="discsaudaraTB" placeholder="diskon saudara" type="text" onfocus="inputuang(this);" class="text-right" value="Rp. 0">
+                            </div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>Diskon Tunai</td>
+                          <td align="right">
+                            <div class="input-control select">
+                              <select onchange="getDiscTunai()" name="disctunaiTB" id="disctunaiTB">
+                                <option value="">-Pilih Diskon-</option>
+                              </select>
+                            </div>
+                            <div id="disctunai2TD">Rp. 0</div>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td colspan="2" align="right">Total Diskon :</td>
+                          <td align="right" id="disctotalTD">Rp. 0</td>
+                        </tr>
+                        <tr class="bg-lightTeal" >
+                          <td colspan="2"  >Registration Fee (Net) :</td>
+                          <td align="right" id="registrationnetTD">Rp. 0</td>
+                        </tr>
+                        <tr class="bg-lightTeal" >
+                          <td colspan="2"  >Material Fee (@semester) :</td>
+                          <td align="right" id="materialTD">Rp. 0</td>
+                        </tr>
+                        <tr class="bg-lightTeal" >
+                          <td colspan="2"  >Tuition Fee(@bulan) :</td>
+                          <td align="right" id="tuitionTD">Rp. 0</td>
+                        </tr>
 
-                      <label>Discount Saudara :</label>
-                      <div class="input-control text size3">
-                          <input type="text" value="0" placeholder="Diskon Saudara" name="diskon_saudaraTB" id="diskon_saudaraTB">
-                          <button class="btn-clear"></button>
-                      </div>                                
-
-                      <label>Discount tunai :</label>
-                      <div class="input-control select size2">
-                        <input type="hidden" name="diskon_tunaiH" id="diskon_tunaiH">
-                        <select id="diskon_tunai" name="diskon_tunai"></select>
-                      </div>
-
-                      <div class="input-control text size3">
-                          <input readonly type="text" value="0" name="diskon_tunaiTB" id="diskon_tunaiTB">
-                          <button class="btn-clear"></button>
-                      </div>                                
-
-                      <label><b>Total Discount :</b></label>
-                      <div class="input-control text size3">
-                          <input readonly type="text" name="diskon_totalTB" id="diskon_totalTB">
-                      </div>                                
+                      </table>
 
                     </div>
                   </div>
@@ -146,19 +166,19 @@
                       <div class="span6">
                         <label>Nomor Pendaftaran</label>
                         <div class="input-control text size4">
-                            <input placeholder="No Pendaftaran" type="text" name="nopendaftaranTB" id="nopendaftaranTB">
+                            <input required placeholder="No Pendaftaran" type="text" name="nopendaftaranTB" id="nopendaftaranTB">
                         </div>
                         
                         <label>Nama Lengkap</label>
                         <div class="input-control text size5">
-                            <input placeholder="Nama Lengkap" type="text" name="namaTB" id="namaTB">
+                            <input required placeholder="Nama Lengkap" type="text" name="namaTB" id="namaTB">
                             <button class="btn-clear"></button>
                         </div>
 
                         <label>Jenis Kelamin</label>
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" value="L" name="jkTB"/>
+                            <input required type="radio" value="L" name="jkTB"/>
                             <span class="check"></span>
                             Laki-Laki
                         </label>
@@ -166,7 +186,7 @@
 
                         <div class="input-control radio">
                         <label>
-                            <input type="radio" value="P" name="jkTB"/>
+                            <input  required  type="radio" value="P" name="jkTB"/>
                             <span class="check"></span>
                             Perempuan
                         </label>
@@ -178,9 +198,8 @@
                         </div>
 
                         <label>Tanggal Lahir</label>
-                        <div class="input-control text size2" data-role="datepicker"
-                            // data-date="2014-10-23"
-                            data-format="yyyy-mm-dd"
+                        <div class="input-control text size2" data-role="datepicker" placeholder="tanggal lahir"
+                            data-format="dd mmmm yyyy"
                             data-effect="slide">
                             <input id="tgllahiranakTB" name="tgllahiranakTB" type="text">
                             <button class="btn-date"></button>
@@ -228,8 +247,8 @@
                         </div>
 
                         <label>Tanggal Lahir</label>
-                        <div class="input-control text size2" data-role="datepicker"
-                            data-format="yyyy-mm-dd"
+                        <div class="input-control text size2" data-role="datepicker" placeholder="tanggal lahir"
+                            data-format="dd mmmm yyyy"
                             data-effect="slide">
                             <input id="tgllahir_ayahTB" name="tgllahir_ayahTB" type="text">
                             <button class="btn-date"></button>
@@ -252,7 +271,8 @@
 
                         <label>Email :</label>
                         <div class="input-control text size5">
-                            <input placeholder="Email" type="text" name="email_ayahTB" id="email_ayahTB">
+                            <input placeholder="Email" type="email" name="email_ayahTB" id="email_ayahTB">
+                            <!-- <input placeholder="Email" type="text" name="email_ayahTB" id="email_ayahTB"> -->
                         </div>
 
                         <!-- Data Ibu -->
@@ -274,8 +294,8 @@
                         </div>
 
                         <label>Tanggal Lahir</label>
-                        <div class="input-control text size2" data-role="datepicker"
-                            data-format="yyyy-mm-dd"
+                        <div class="input-control text size2" data-role="datepicker" placeholder="tanggal lahir"
+                            data-format="dd mmmm yyyy"
                             data-effect="slide">
                             <input id="tgllahir_ibuTB" name="tgllahir_ibuTB" type="text">
                             <button class="btn-date"></button>
@@ -298,7 +318,7 @@
 
                         <label>Email :</label>
                         <div class="input-control text size5">
-                            <input placeholder="Email" type="text" name="email_ibuTB" id="email_ibuTB">
+                            <input placeholder="Email" type="email" name="email_ibuTB" id="email_ibuTB">
                         </div>
 
                         <label><b>Data Keluarga (Opsional) :</b></label>

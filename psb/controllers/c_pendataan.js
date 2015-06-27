@@ -266,13 +266,6 @@ var contentFR = '';
             hitung_diskon();
             hitung_dpp();
         });
-        $("#kriteriaTB,#golonganTB").change(function(){
-            getbiaya();
-        });
-        $("#angsuranTB").change(function(){
-            setangsuran();
-            hitung_angsuran();
-        });
     }); 
 
 //preview image sebelum upload -------
@@ -443,6 +436,7 @@ var contentFR = '';
         // panel    
             $('#pendataanTBL').removeAttr('style');
             $('#pendataanFR').attr('style','display:none;');
+            $('.cari').removeAttr('style');
             viewTB();
         }else{ // form (add||edit)
         // button
@@ -451,6 +445,7 @@ var contentFR = '';
         // panel    
             $('#pendataanFR').removeAttr('style');
             $('#pendataanTBL').attr('style','display:none;');
+            $('.cari').attr('style','display:none;');
             
             if(id==''){ // add mode 
                 cmbkriteria('');
@@ -458,6 +453,8 @@ var contentFR = '';
                 cmbdiskon('');
                 cmbgolongan('');
                 cmbagama('');
+                cmbangsuran('');
+                noependaftaranFC();
             }else{ //edit mode
                 var u =dir;
                 var d ='aksi=ambiledit&replid='+id;
@@ -897,31 +894,20 @@ var contentFR = '';
 
 // combo agama
     function cmbagama (agama) {
-        $.ajax({
-            url:dir,   
-            type:'post',
-            dataType:'json',
-            data:'aksi=cmbagama',
-            success:function(dt){
-                var opt='';
-                if (dt.status!='sukses') {
-                    notif(dt.status,'red');
-                    opt+='<option value="">'+dt.status+'</option>'
-                }else{
-                    // alert(id);return false;
-                    var opt = '';
-                    $.each(dt.agama,function(id,item){
-                        if(agama==item.replid)
-                            opt+='<option selected="selected" value="'+item.replid+'">'+item.agama+'</option>'
-                        else{
-                            if (item.urutan=='3') 
-                            opt+='<option selected="selected" value="'+item.replid+'">'+item.agama+'</option>'
-                        else 
-                            opt+='<option value="'+item.replid+'">'+item.agama+'</option>'
-                        }
-                    });$('#agamaTB').html('<option value="">Pilih Agama ..</option>'+opt);
-                }
-            },
+        var u = dir;
+        var d ='aksi=cmbagama';
+        ajax(u,d).done(function(dt){
+            var opt='';
+            if (dt.status!='sukses') {
+                notif(dt.status,'red');
+                opt+='<option value="">'+dt.status+'</option>'
+            }else{
+                var opt = '';
+                $.each(dt.agama,function(id,item){
+                    opt+='<option '+(item.agama==agama?'selected':'')+' value="'+item.replid+'">'+item.agama+'</option>'
+                });
+            }
+            $('#agamaTB').html('<option value="">Pilih Agama ..</option>'+opt);
         });
     }
 
@@ -959,6 +945,25 @@ var contentFR = '';
         });
     }*/
 
+// combo angsuran 
+    function cmbangsuran (ang) {
+        var u = dir6;
+        var d ='aksi=cmb'+mnu6;
+        ajax(u,d).done(function(dt){
+            var opt='';
+            if (dt.status!='sukses') {
+                notif(dt.status,'red');
+                opt+='<option value="">'+dt.status+'</option>'
+            }else{
+                var opt = '';
+                $.each(dt.angsuran,function(id,item){
+                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.cicilan+' x </option>'
+                });
+            }
+            $('#angsuranTB').html('<option value="">-Pilih Angsuran-</option>'+opt);
+        });
+    }        
+
 // combo diskon 
     function cmbdiskon (nilai) {
         var u = dir7;
@@ -969,44 +974,98 @@ var contentFR = '';
                 notif(dt.status,'red');
                 opt+='<option value="">'+dt.status+'</option>'
             }else{
-                // alert(id);return false;
                 var opt = '';
                 $.each(dt.nilai,function(id,item){
-                    if(nilai==item.replid)
-                        opt+='<option selected="selected" value="'+item.replid+'">'+item.nilai+'</option>'
-                    else
-                        opt+='<option value="'+item.replid+'">'+item.nilai+'</option>'
-                });$('#diskon_tunai').html('<option value="">Pilih Diskon..</option>'+opt);
+                    opt+='<option '+(nilai==item.replid?'selected':'')+' value="'+item.replid+'">'+item.keterangan+' ('+item.nilai+' %)</option>'
+                });
             }
+            $('#disctunaiTB').html('<option value="">-Pilih Diskon-</option>'+opt);
         });
     }        
 
 // combo get biaya
-    function getbiaya(){
-        $.ajax({
-            url : dir,
-            type: 'post',
-            data:'aksi=getbiaya&kriteria='+$('#kriteriaTB').val()+'&golongan='+$('#golonganTB').val()+'&kelompok='+$('#kelompokS').val(),
-            dataType:'json',
-            success:function(dt){
-                $('#uang_pangkalTB').val(dt.nilai);
-                $('#uang_pangkalnetTB').val(dt.nilai);
-                $('#sppTB').val(dt.spp);
-                $('#joiningTB').val(dt.joiningf);
-                
-            }
-        });            
+    function getBiaya(){
+        if($('#kelompokS').val()!='' && $('#kriteriaTB').val()!='' && $('#golonganTB').val()!=''){
+            var u = dir;
+            var d ='aksi=getBiaya'
+                    +'&kelompok='+$('#kelompokS').val()
+                    +'&kriteria='+$('#kriteriaTB').val()
+                    +'&golongan='+$('#golonganTB').val();
+            ajax(u,d).done(function (dt){
+                $('#setbiayaTB').val(dt.replid);
+                $('#registrationTD').html('Rp. '+parseInt(dt.registration).setCurr());
+                $('#materialTD').html('Rp. '+parseInt(dt.material).setCurr());
+                $('#tuitionTD').html('Rp. '+parseInt(dt.tuition).setCurr());
+                getDiscTotal();
+            });            
+        }
     }
 
-// combo get diskon  
-    function getdiskon(){
-            return  $.ajax({
-                url : dir,
-                type: 'post',
-                data:'aksi=getdiskon&replid='+$('#diskon_tunai').val(),
-                dataType:'json',
-            });            
+//get discount tunai  
+    function getDiscTunai(){
+        var replid = $('#disctunaiTB').val();
+        if(replid=='') $('#disctunai2TD').val('Rp. 0');
+        else{
+            var u = dir;
+            var d ='aksi=getDisc&replid='+replid;
+            ajax(u,d).done(function (dt) {
+                var regVal    = $('#registrationTD').html();
+                var regNum    = getCurr((typeof regVal=='NaN' || regVal=='' || regVal=='Rp. 0')?0:regVal);
+                var discNum   = parseInt(dt.nilai);
+                var discTunai = regNum*discNum/100;
+                $('#disctunai2TD').html('Rp. '+parseInt(discTunai).setCurr());
+                getDiscTotal();
+            });
+        }
     }
+// get discount angsuran 
+    function getDiscAngsuran () {
+        var u = dir;
+        var d ='aksi=getDiscAngsuran'
+                +'&discAngsuran='+$('#angsuranTB').val()
+                +'&regNum='+$('#registrationTD').html();
+        ajax(u,d).done(function (dt) {
+            var discNum = 'Rp. '+dt.discNum.setCurr();
+            $('#discangsuranTD').html(discNum);
+            getDiscTotal();
+        });
+    }
+
+    // function getSetBiaya () {
+    //     if($('#kriteriaTB').val()!='' & $('#kriteriaTB').val()!=''){
+    //         var u = dir;
+    //         var d = 'aksi=getSetBiaya'
+    //                 +'&kelompok='+$('#kelompokS').val()
+    //                 +'&kriteria='+$('#kriteriaTB').val()
+    //                 +'&golongan='+$('#golonganTB').val();
+    //         ajax(u,d).done(function (dt) {
+    //             $('#setbiayaTB').val(dt.setbiaya);
+    //         });
+    //     }
+    // }
+// get discount total
+    function getDiscTotal () {
+        var discangsuran = getCurr($('#discangsuranTD').html());
+        var discsubsidi  = getCurr($('#discsubsidiTB').val());
+        var discsaudara  = getCurr($('#discsaudaraTB').val());
+        var disctunai    = getCurr($('#disctunai2TD').html());
+        var disctotal    = discangsuran + discsubsidi + discsaudara + disctunai ;
+        // var disctotal   = parseInt(discsubsidi) + parseInt(discsaudara) + parseInt(disctunai);
+        console.log('angsuran : '+discangsuran);
+        console.log('subsi : '+discsubsidi);
+        console.log('saud : '+discsaudara);
+        console.log('tunai: '+disctunai);
+        $('#disctotalTD').html('Rp. '+disctotal.setCurr());
+        getRegistrationNet();
+    }
+
+// biaya  : registration net
+     function getRegistrationNet(){
+        var regNum       = getCurr($('#registrationTD').html());
+        var disctotalNum = getCurr($('#disctotalTD').html());
+        var regNetNum    = 'Rp. '+(regNum - disctotalNum).setCurr();
+        $('#registrationnetTD').html(regNetNum);
+     }
 
 // combo get angsuran
     function getangsuran(){
@@ -1203,8 +1262,6 @@ var contentFR = '';
             affixesStay: true
         });
     }
-// end of input uang --------------------------
-
 // get uang --------------------------
     // function getuang(e) {
     //     x = $(e).val().replace(/[^0-9]/g,'');
@@ -1331,5 +1388,28 @@ function notif(cont,clr) {
             data:d,
             type:'post',
             dataType:'json'
+        });
+    }
+
+// currency to number (ex : Rp. 500.000 -> 500000)
+    function getCurr(n){  
+        // var x = Number(n.replace(/[^0-9\,.]+/g,""));
+        var num = n==''?'0':n;
+        var x   = num.replace(/[^0-9]+/g,"");
+        var y   = parseInt(x);
+        return y;
+    }
+
+// number to currency (ex : 500000 -> 500.000)  
+    Number.prototype.setCurr=function(){
+        return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
+    }
+
+// no pendaftaran auto 
+    function nopendaftaranFC () {
+        var u = ;
+        var d = 'aksi=nopendaftaran' ;
+        ajax(u,d).done(function (dt){
+            $('#nopendaftaranTB').val(dt.no);
         });
     }

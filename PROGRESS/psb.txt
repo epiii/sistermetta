@@ -37,7 +37,7 @@ PSB V2.0
 * penerimaan siswa baru (P)
 	+ paging > klik next, table tidak tampil
 	+ simpan > proses menyimpan ketika tombol Belum Diterima dari tabel psb_calonsiswa ke tabel aka_siswa
-	- view   > 
+	+ view   > 
 			+ Dialog pada Tombol Diterima res data undefined  
 			+ Combo kelompok ditampilkan semua 
 ____________________________________________________
@@ -62,8 +62,8 @@ ____________________________________________________
 		+ button search 	
 		+ event onkeydown (enter)  
 
-* Set Biaya Calon Siswa (P)
-	- create  keloompok --auto--> set biaya baru 
+* Set Biaya Calon Siswa (C)
+	+ create  keloompok --auto--> set biaya baru 
 	
 * set angsuran (C)
 	+ view :

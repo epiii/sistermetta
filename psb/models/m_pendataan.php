@@ -103,12 +103,13 @@
 							c.nopendaftaran,
 							c.nama,
 							c.setbiaya,
-							c.angsur
+							a.cicilan
 						FROM
 							psb_calonsiswa c
 							LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
 							LEFT JOIN psb_proses p ON p.replid = k.proses
 							LEFT JOIN departemen d ON d.replid = p.departemen
+							LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
 						WHERE
 							c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
 							AND c.nama LIKE "%'.$nama.'%"
@@ -148,14 +149,16 @@
 						$out.= '<tr>
 									<td>'.$r['nopendaftaran'].'</td>
 									<td>'.$r['nama'].'</td>
-									<td align="right">Rp. '.number_format(getBiaya('dpp',$r['replid'])).'</td>
-									<td align="right">Rp. '.number_format(getDisc('discsubsidi',$r['replid'])).'</td>
-									<td align="right">Rp. '.number_format(getDisc('discsaudara',$r['replid'])).'</td>
-									<td align="right">Rp. '.number_format(getDisc('disctunai',$r['replid'])).'</td>
-									<td style="font-weight:bold;" class="fg-white bg-green" align="right">Rp. '.number_format(getBiayaNet('dpp',$r['replid'])).'</td>
-									<td align="center">'.($r['angsur']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
+									<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
+									<td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
+									<td align="right">'.setuang(getDisc('discsaudara',$r['replid'])).'</td>
+									<td align="right">'.setuang(getDisc('disctunai',$r['replid'])).'</td>
+									<td align="right">'.setuang(getDisc('discangsuran',$r['replid'])).'</td>
+									<td align="right" class="bg-green fg-white">'.setuang(getBiayaNet('registration',$r['replid'])).'</td>
+									<td align="center">'.($r['cicilan']==1?'Cash':'Angsur '.$r['cicilan'].' x').'</td>
 									'.$btn.'
 								</tr>';
+									// <td align="center">'.($r['angsuran']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -169,85 +172,85 @@
 			break; 
 			// view -----------------------------------------------------------------
 
-			case 'getbiaya':
-				$s 		='SELECT 
-							*
-						FROM 
-							psb_setbiaya
-						WHERE
-							kel = '.$_POST['kelompok'].' AND
-							krit = '.$_POST['kriteria'].' AND
-							gol = '.$_POST['golongan'] 
-							;
-
-									// print_r($s);exit();
-				$e 		= mysql_query($s) or die(mysql_error());
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out    = json_encode(array(
-							'status'   =>$stat,
-							'spp'      =>$r['spp'],
-							'joiningf' =>$r['joiningf'],
-							'nilai'    =>$r['nilai']
-						));				
+			case 'getBiaya':
+				if(!isset($_POST['kelompok']) || !isset($_POST['kriteria']) || !isset($_POST['golongan'])){
+					$o = array('status' =>'invalid_no_post' );
+				}else{
+					$biaya = getSetBiaya($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
+					$o     = array(
+								'status'       =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
+								'replid'       =>$biaya['replid'],
+								'registration' =>$biaya['registration'],
+								'material'     =>$biaya['material'],
+								'tuition'      =>$biaya['tuition'],
+							);				
+				}$out = json_encode($o);
 			break;
 
-			case 'getdiskon':
-				$s 		='SELECT 
-							*
-						FROM 
-							psb_disctunai
-						WHERE
-							nilai = '.$_POST['replid']
-							;
-
-									// print_r($s);exit();
-				$e 		= mysql_query($s) or die(mysql_error());
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out    = json_encode(array(
-							'status'          =>$stat,
-							'nilai'          =>$r['nilai']
-						));				
+			case 'nopendaftaran':
+				$no = getField($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
+				$o  = array(
+						'status'  =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
+						'tuition' =>$biaya['tuition'],
+					);				
+				$out = json_encode($o);
 			break;
 
-			case 'getangsuran':
-				$s 		='SELECT 
-							*
-						FROM 
-							psb_angsuran
-						WHERE
-							cicilan = '.$_POST['replid']
-							;
+			case 'getSetBiaya':
+				if(!isset($_POST['kelompok']) || !isset($_POST['kriteria']) || !isset($_POST['golongan'])){
+					$o = array('status' =>'invalid_no_post' );
+				}else{
+					$biaya = getSetBiaya($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
+					$o     = array(
+								'status'   =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
+								'setbiaya' =>$biaya['replid'],
+							);				
+				}$out = json_encode($o);
+			break;
 
-									// print_r($s);exit();
-				$e 		= mysql_query($s) or die(mysql_error());
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out    = json_encode(array(
-							'status'          =>$stat,
-							'cicilan'         =>$r['cicilan']
-						));				
+			case 'getDisc':
+				if(!isset($_POST['replid'])){
+					$o = array('status' =>'invalid_no_post' );
+				}else{
+					$disc = getField('nilai','psb_disctunai','replid',$_POST['replid']);
+					// var_dump($disc);exit();
+					$o    = array(
+								'status' =>(($disc!=null || $disc!='')?'sukses':'gagal'),
+								'nilai'  =>$disc
+							);
+				}$out = json_encode($o);
+			break;
+
+			case 'getDiscAngsuran':
+				if(!isset($_POST['discAngsuran'])){
+					$o = array('status' =>'invalid_no_post' );
+				}else{
+					$disc = getDiscAngsuran($_POST['regNum'],$_POST['discAngsuran']);
+					$o    = array(
+								'status'  =>(($disc!=null || $disc!='')?'sukses':'gagal'),
+								'discNum' =>$disc
+							);
+				}$out = json_encode($o);
 			break;
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 									// jmlangsur     = "'.filter($_POST['angsuranTB']).'",
 									// angsuran      = "'.filter($_POST['angsuranbulanTB']).'",
-				$siswa = $tb.' set 	kriteria 		= "'.filter($_POST['kriteriaTB']).'",
+				$siswa = $tb.' set 	kriteria 	  = "'.filter($_POST['kriteriaTB']).'",
 									golongan      = "'.filter($_POST['golonganTB']).'",
 									kelompok      = "'.filter($_POST['kelompokS']).'",
-									sumpokok      = "'.filter($_POST['uang_pangkalTB']).'",
-									sumnet        = "'.filter($_POST['uang_pangkalnetTB']).'",
-									disctb        = "'.filter($_POST['diskon_subsidiTB']).'",
-									discsaudara   = "'.filter($_POST['diskon_saudaraTB']).'",
-									disctunai     = "'.filter($_POST['diskon_tunaiTB']).'",
-									disctotal     = "'.filter($_POST['diskon_totalTB']).'",
+									discsubsidi   = "'.getuang(filter($_POST['discsubsidiTB'])).'",
+									discsaudara   = "'.getuang(filter($_POST['discsaudaraTB'])).'",
+									disctunai     = "'.filter($_POST['disctunaiTB']).'",
+									setbiaya     = "'.filter($_POST['setbiayaTB']).'",
+									angsuran     = "'.filter($_POST['angsuranTB']).'",
+									
 									nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
 									nama          = "'.filter($_POST['namaTB']).'",
 									kelamin       = "'.filter($_POST['jkTB']).'",
 									tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
-									tgllahir      = "'.filter($_POST['tgllahiranakTB']).'",
+									tgllahir      = "'.tgl_indo6(filter($_POST['tgllahiranakTB'])).'",
 									agama         = "'.filter($_POST['agamaTB']).'",
 									alamat        = "'.filter($_POST['alamatsiswaTB']).'",
 									telpon        = "'.filter($_POST['telpsiswaTB']).'",
@@ -261,7 +264,7 @@
 				$ayah = $tb_ayah.' set 	nama 	  = "'.filter($_POST['ayahTB']).'",
 										warga     = "'.filter($_POST['kebangsaan_ayahTB']).'",
 										tmplahir  = "'.filter($_POST['tempatlahir_ayahTB']).'",
-										tgllahir  = "'.filter($_POST['tgllahir_ayahTB']).'",
+										tgllahir  = "'.tgl_indo6(filter($_POST['tgllahir_ayahTB'])).'",
 										pekerjaan = "'.filter($_POST['pekerjaan_ayahTB']).'",
 										telpon    = "'.filter($_POST['telpayahTB']).'",
 										pinbb     = "'.filter($_POST['pinbb_ayahTB']).'",
@@ -269,7 +272,7 @@
 
 				$ibu    = $tb_ibu.' set 	nama 	  = "'.filter($_POST['ibuTB']).'",
 										tmplahir  = "'.filter($_POST['tempatlahir_ibuTB']).'",
-										tgllahir  = "'.filter($_POST['tgllahir_ibuTB']).'",
+										tgllahir  = "'.tgl_indo6(filter($_POST['tgllahir_ibuTB'])).'",
 										warga     = "'.filter($_POST['kebangsaan_ibuTB']).'",
 										pekerjaan = "'.filter($_POST['pekerjaan_ibuTB']).'",
 										telpon    = "'.filter($_POST['telpibuTB']).'",
@@ -423,12 +426,12 @@
 							'status'          =>$stat,
 							'kriteria'        =>$r['kriteria'],
 							'golongan'        =>$r['golongan'],
-							'sumpokok'        =>'Rp. '.number_format($r['sumpokok']),
+							'sumpokok'        =>setuang($r['sumpokok']),
 							'sumnet'          =>$r['sumnet'],
 							'spp'             =>$r['spp'],
 							'jmlangsur'       =>$r['jmlangsur'],
 							'angsuran'        =>$r['angsuran'],
-							'disctb'          =>$r['disctb'],
+							'discsubsidi'          =>$r['discsubsidi'],
 							'discsaudara'     =>$r['discsaudara'],
 							'disctunai'       =>$r['disctunai'],
 							'disctotal'       =>$r['disctotal'],
@@ -577,7 +580,7 @@
 								// 'sppbulan'        =>$r['sppbulan'],
 								// 	// 'jmlangsuran'     =>$r['jmlangsuran'],
 								// 'angsuran'        =>$r['angsuran'],
-								// 'disctb'          =>$r['disctb'],
+								// 'discsubsidi'          =>$r['discsubsidi'],
 								// 'discsaudara'     =>$r['discsaudara'],
 								// 'disctunai'       =>$r['disctunai'],
 								// 'disctotal'       =>$r['disctotal'],
@@ -702,10 +705,9 @@
 			// cmbtingkat -----------------------------------------------------------------
 			
 			case 'cmbagama':
-								
 				$s	= ' SELECT *
-						from mst_agama
-						ORDER  BY urutan desc';
+						from psb_agama
+						ORDER  BY urutan asc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
