@@ -454,7 +454,7 @@ var contentFR = '';
                 cmbgolongan('');
                 cmbagama('');
                 cmbangsuran('');
-                noependaftaranFC();
+                // nopendaftaranFC();
             }else{ //edit mode
                 var u =dir;
                 var d ='aksi=ambiledit&replid='+id;
@@ -1242,7 +1242,7 @@ var contentFR = '';
                     cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
                 }else{
-                    viewTB($('#departemenS').val());
+                    viewTB();
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
                 }

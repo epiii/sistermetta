@@ -371,7 +371,8 @@
 			// delete -----------------------------------------------------------------
 			case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE replid='.isset($_POST['replid']);
+				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
+				// var_dump($s);exit();
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
 				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['replid']));
