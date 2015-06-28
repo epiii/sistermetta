@@ -54,9 +54,8 @@ var contentFR = '';
                     +'<tr>'
                         +'<td>Nama</td>'
                         +'<td class="span3">: <span id="nama_siswaTD"></span></td>'
-                        +'<input type="hidden" id="photo2H"/>'
+                        +'<input type="hidden" id="photoH"/>'
                         +'<td rowspan="6"> <img width="150" id="previmg" src="../img/no_image.jpg" ><br></td>'
-                        // +'<input onchange="PreviewImage2(this);" id="photoTD" name="photoTD" type="file">'
                     +'</tr>'
                     +'<tr>'
                         +'<td>Jenis kelamin</td>'
@@ -331,101 +330,101 @@ var contentFR = '';
     };
 
 // autosuggest
-    function autoSuggest(el,subaksi,opsi){
-        if(subaksi=='saudara'){
-            var urlx = '?aksi=autocomp&subaksi='+subaksi;
-            var col= [{
-                    'align':'left',
-                    'columnName':'siswa',
-                    'hide':true,
-                    'width':'55',
-                    'label':'Nama'
-                },{   
-                    'columnName':'sekolah',
-                    'width':'40',
-                    'label':'Sekolah'
-                }];
-        }
-        /*else{ // anggaran 
-            var urlx= '?aksi=autocomp&subaksi='+subaksi;
-            var col =[{
-                    'align':'left',
-                    'columnName':'nama',
-                    'hide':true,
-                    'width':'30',
-                    'label':'Anggaran'
-            },{   
-                    'align':'left',
-                    'columnName':'kategorianggaran',
-                    'width':'15',
-                    'label':'Kategori'
-            },{   
-                    'align':'left',
-                    'columnName':'tingkat',
-                    'width':'25',
-                    'label':'Jenjang'
-            },{   
-                    'align':'right',
-                    'columnName':'sisaBilCur',
-                    'width':'15',
-                    'label':'Sisa'
-            },{   
-                    'align':'right',
-                    'columnName':'kuotaBilCur',
-                    'width':'15',
-                    'label':'Nominal'
-            }];
-        }*/
-        urly = dir+urlx;
-        var t= terpilihx = '';
-        if(rekArr!='' || rekArr!=null){
-            t         = rekArr.filter(function(item) { return item !== ''; });
-            terpilihx = '&terpilihArr='+t.toString();
-        }
+    // function autoSuggest(el,subaksi,opsi){
+    //     if(subaksi=='saudara'){
+    //         var urlx = '?aksi=autocomp&subaksi='+subaksi;
+    //         var col= [{
+    //                 'align':'left',
+    //                 'columnName':'siswa',
+    //                 'hide':true,
+    //                 'width':'55',
+    //                 'label':'Nama'
+    //             },{   
+    //                 'columnName':'sekolah',
+    //                 'width':'40',
+    //                 'label':'Sekolah'
+    //             }];
+    //     }
+    //     /*else{ // anggaran 
+    //         var urlx= '?aksi=autocomp&subaksi='+subaksi;
+    //         var col =[{
+    //                 'align':'left',
+    //                 'columnName':'nama',
+    //                 'hide':true,
+    //                 'width':'30',
+    //                 'label':'Anggaran'
+    //         },{   
+    //                 'align':'left',
+    //                 'columnName':'kategorianggaran',
+    //                 'width':'15',
+    //                 'label':'Kategori'
+    //         },{   
+    //                 'align':'left',
+    //                 'columnName':'tingkat',
+    //                 'width':'25',
+    //                 'label':'Jenjang'
+    //         },{   
+    //                 'align':'right',
+    //                 'columnName':'sisaBilCur',
+    //                 'width':'15',
+    //                 'label':'Sisa'
+    //         },{   
+    //                 'align':'right',
+    //                 'columnName':'kuotaBilCur',
+    //                 'width':'15',
+    //                 'label':'Nominal'
+    //         }];
+    //     }*/
+    //     urly = dir+urlx;
+    //     var t= terpilihx = '';
+    //     if(rekArr!='' || rekArr!=null){
+    //         t         = rekArr.filter(function(item) { return item !== ''; });
+    //         terpilihx = '&terpilihArr='+t.toString();
+    //     }
 
-        $('#'+el+'TB').combogrid({
-            debug:true,
-            width:'750px',
-            colModel: col ,
-            url: urly+terpilihx,
-            select: function( event, ui ) { // event setelah data terpilih 
-                $('#'+el+'H').val(ui.item.replid);
-                if(subaksi=='saudara'){ // diskon dari saudara 
-                    saudaraAdd(ui.item.replid,ui.item.siswa,ui.item.sekolah);
-                    $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
-                }
-                else if (subaksi=='rek') { // rekening 
-                    $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
-                    var arr = rekArrFC();
-                    var str = arr.toString();
-                    console.log('terpilih in auto 1 =>'+str);
-                }
+    //     $('#'+el+'TB').combogrid({
+    //         debug:true,
+    //         width:'750px',
+    //         colModel: col ,
+    //         url: urly+terpilihx,
+    //         select: function( event, ui ) { // event setelah data terpilih 
+    //             $('#'+el+'H').val(ui.item.replid);
+    //             if(subaksi=='saudara'){ // diskon dari saudara 
+    //                 saudaraAdd(ui.item.replid,ui.item.siswa,ui.item.sekolah);
+    //                 $('#nama_saudaraTB').combogrid( "option", "url", dir+'?aksi=autocomp&lokasi='+$('#lokasiS').val()+'&saudara='+saudaraArr() );
+    //             }
+    //             else if (subaksi=='rek') { // rekening 
+    //                 $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
+    //                 var arr = rekArrFC();
+    //                 var str = arr.toString();
+    //                 console.log('terpilih in auto 1 =>'+str);
+    //             }
 
-                // validasi input (tidak sesuai data dr server)
-                    $('#'+el+'TB').on('keyup', function(e){
-                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-                        var keyCode = $.ui.keyCode;
-                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-                            if($('#'+el+'H').val()!=''){
-                                $('#'+el+'H').val('');
-                                $('#'+el+'TB').val('');
+    //             // validasi input (tidak sesuai data dr server)
+    //                 $('#'+el+'TB').on('keyup', function(e){
+    //                     var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+    //                     var keyCode = $.ui.keyCode;
+    //                     if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+    //                         if($('#'+el+'H').val()!=''){
+    //                             $('#'+el+'H').val('');
+    //                             $('#'+el+'TB').val('');
             
-                                var str = rekArr.toString();
-                                console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
-                                if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
-                            }
-                        }
-                    });
-                    $('#'+el+'TB').on('blur,change',function(){
-                        if($('#'+el+'H').val()=='') {
-                            $('#'+el+'TB').val(''); // :: all 
-                            if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
-                        }
-                    });
-                return false;
-            }
-        });
-    }
+    //                             var str = rekArr.toString();
+    //                             console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
+    //                             if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+    //                         }
+    //                     }
+    //                 });
+    //                 $('#'+el+'TB').on('blur,change',function(){
+    //                     if($('#'+el+'H').val()=='') {
+    //                         $('#'+el+'TB').val(''); // :: all 
+    //                         if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+    //                     }
+    //                 });
+    //             return false;
+    //         }
+    //     });
+    // }
 
 // switch panel 
     function switchPN(typ,id){
@@ -450,7 +449,7 @@ var contentFR = '';
             if(id==''){ // add mode 
                 cmbkriteria('');
                 cmbgolongan('');
-                cmbdiskon('');
+                cmbdisctunai('');
                 cmbgolongan('');
                 cmbagama('');
                 cmbangsuran('');
@@ -460,56 +459,67 @@ var contentFR = '';
                 var d ='aksi=ambiledit&replid='+id;
                 ajax(u,d).done(function  (dt) {
                     $('#idformH').val(id);
-                    $('#uang_pangkalTB').val(dt.sumpokok);
-                    $('#uang_pangkalnetTB').val(dt.sumnet);
-                    $('#angsuranTB').val(dt.angsuran);
-                    $('#sppTB').val(dt.sppbulan);
-                    $('#diskon_subsidiTB').val(dt.disctb);
-                    $('#diskon_saudaraTB').val(dt.discsaudara);
-                    $('#diskon_tunaiTB').val(dt.disctunai);
-                    $('#diskon_totalTB').val(dt.disctotal);
-                    $('#joiningTB').val(dt.joining);
+                // data siswa
+                    cmbkriteria(dt.kriteria);
+                    cmbgolongan(dt.golongan);
                     $('#nopendaftaranTB').val(dt.nopendaftaran);
-                    $('#namaTB').val(dt.siswa);
+                    $('#namaTB').val(dt.namaSiswa);
+                    $.each($('[name="jkTB"]'),function(){
+                        if(dt.kelamin==$(this).val()) $(this).attr('checked',true);
+                    });
                     $('#tempatlahirTB').val(dt.tmplahir);
-                    $('#jkTB').val(dt.kelamin);
                     $('#tgllahiranakTB').val(dt.tgllahir);
+                    cmbagama(dt.agama);
                     $('#alamatsiswaTB').val(dt.alamat);
                     $('#telpsiswaTB').val(dt.telpon);
                     $('#asalsekolahTB').val(dt.sekolahasal);
+                    $('#goldarahTB').val(dt.darah);
+                    $('#penyakitTB').val(dt.kesehatan);
+                    $('#catatan_kesehatanTB').val(dt.ketkesehatan);
                     var img;
-                    if(dt.photo2!='' && dt.photo2!=null){//ada gambar
-                        img='./img/upload/'+dt.photo2;
-                    }else{
-                        img='./img/no_image.jpg';
-                    }
-                    $('#previmg').attr('src',img);
-                    $('#photoH').val(dt.photo2);
+                    if(dt.photo!='' && dt.photo!=null)   img='./img/upload/'+dt.photo; // ada foto 
+                    else img='./img/no_image.jpg'; // tdak ada foto
+
+                    $('#previmg2').attr('src',img);
+                    $('#photoH').val(dt.photo);
+                // pembayaran
+                    $('#setbiayaTB').val(dt.setbiaya);
+                    $('#registrationTD').html(dt.registration);
+                    cmbangsuran(dt.angsuran);
+                    $('#discangsuranTD').html(dt.discangsuran);
+                    $('#discsubsidiTB').val(dt.discsubsidi);
+                    $('#discsaudaraTB').val(dt.discsaudara);
+                    $('#disctotalTD').html(dt.disctotal);
+                    $('#registrationnetTD').html(dt.registrationnet);
+                    cmbdisctunai(dt.iddisctunai);
+                    $('#disctunai2TD').html(dt.disctunai);
+                    $('#materialTD').html(dt.material);
+                    $('#tuitionTD').html(dt.tuition);
                 //ayah
-                    $('#ayahTB').val(dt.nama_ayah);
-                    $('#kebangsaan_ayahTB').val(dt.kebangsaan_ayah);
-                    $('#tempatlahir_ayahTB').val(dt.tempatlahir_ayah);
-                    $('#tgllahir_ayahTB').val(dt.tgllahir_ayah);
-                    $('#pekerjaan_ayahTB').val(dt.pekerjaan_ayah);
-                    $('#telpayahTB').val(dt.telpayah);
-                    $('#pinbb_ayahTB').val(dt.pinbb_ayah);
-                    $('#email_ayahTB').val(dt.email_ayah);
+                    $('#ayahTB').val(dt.namaAyah);
+                    $('#kebangsaan_ayahTB').val(dt.kebangsaanAyah);
+                    $('#tempatlahir_ayahTB').val(dt.tmplahirAyah);
+                    $('#tgllahir_ayahTB').val(dt.tgllahirAyah);
+                    $('#pekerjaan_ayahTB').val(dt.pekerjaanAyah);
+                    $('#telpayahTB').val(dt.telponAyah);
+                    $('#pinbb_ayahTB').val(dt.pinbbAyah);
+                    $('#email_ayahTB').val(dt.emailAyah);
                 //ibu
-                    $('#ibuTB').val(dt.nama_ibu);
-                    $('#kebangsaan_ibuTB').val(dt.kebangsaan_ibu);
-                    $('#tempatlahir_ibuTB').val(dt.temp_lahir_ibu);
-                    $('#tgllahir_ibuTB').val(dt.tgllahir_ibu);
-                    $('#pekerjaan_ibuTB').val(dt.pekerjaan_ibu);
-                    $('#telpibuTB').val(dt.telepon_ibu);
-                    $('#pinbb_ibuTB').val(dt.pinbb_ibu);
-                    $('#email_ibuTB').val(dt.email_ibu);
+                    $('#ibuTB').val(dt.namaIbu);
+                    $('#kebangsaan_ibuTB').val(dt.kebangsaanIbu);
+                    $('#tempatlahir_ibuTB').val(dt.tmplahirIbu);
+                    $('#tgllahir_ibuTB').val(dt.tgllahirIbu);
+                    $('#pekerjaan_ibuTB').val(dt.pekerjaanIbu);
+                    $('#telpibuTB').val(dt.telponIbu);
+                    $('#pinbb_ibuTB').val(dt.pinbbIbu);
+                    $('#email_ibuTB').val(dt.emailIbu);
                 // kontak darurat
-                    $('#nama_kontakTB').val(dt.namalain);
+                    $('#nama_kontakTB').val(dt.namaDarurat);
                     $('#hubunganTB').val(dt.hubungan);
-                    $('#nomorTB').val(dt.telponlain);
+                    $('#nomorTB').val(dt.telponDarurat);
                 // kakek nenek
-                    $('#kakekTB').val(dt.kakek);
-                    $('#nenekTB').val(dt.nenek);
+                    $('#kakekTB').val(dt.namaKakek);
+                    $('#nenekTB').val(dt.namaNenek);
 
                     // var tbl='';
                     // $.each(dt.saudaraArr,function(id,item){
@@ -522,14 +532,9 @@ var contentFR = '';
 
                     // $('#kakekTB').val(dt.kakek-nama);
                     // $('#nenekTB').val(dt.nenek-nama);
-                    cmbkriteria(dt.kriteria);
-                    cmbgolongan(dt.golongan);
-                    cmbagama(dt.agama);
-                    cmbangsuran(dt.jmlangsur);
-                    cmbdiskon(dt.nilai);
                 });            
             }
-            autoSuggest('nama_saudara','saudara','');
+            // autoSuggest('nama_saudara','saudara','');
         }
         // $('#pendataanFR').toggle('slow');
         // $('#pendataanTBL').toggle('slow');
@@ -594,10 +599,8 @@ var contentFR = '';
             filesAdd.append(key, value);
         });
 
-        if($('#photoTB').val()=='')//upload
-            siswaDb('');
-        else// ga upload
-            siswaUp(filesAdd);
+        if($('#photoTB').val()=='') siswaDb(''); // upload
+        else siswaUp(filesAdd); // ga upload
     }
 
 // upload image
@@ -617,7 +620,7 @@ var contentFR = '';
                     notif(data.status,'red');
                 }
             },error: function(jqXHR, textStatus, errorThrown){
-                notif('error'+textStatus,'red');// $('#loadarea').html('<img src="../img/loader.gif"> ').fadeOut();
+                notif('error'+textStatus,'red');
             }
         });
     }
@@ -757,7 +760,7 @@ var contentFR = '';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr>');
+                $(el2).html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -791,13 +794,13 @@ var contentFR = '';
                 $('#telpsiswaTB').val(dt.telpon);
                 $('#asalsekolahTB').val(dt.sekolahasal);
                 var img;
-                if(dt.photo2!='' && dt.photo2!=null){//ada gambar
-                    img='./img/upload/'+dt.photo2;
+                if(dt.photo!='' && dt.photo!=null){//ada gambar
+                    img='./img/upload/'+dt.photo;
                 }else{
                     img='./img/no_image.jpg';
                 }
                 $('#previmg').attr('src',img);
-                $('#photoH').val(dt.photo2);
+                $('#photoH').val(dt.photo);
             //ayah
                 $('#ayahTB').val(dt.nama_ayah);
                 $('#kebangsaan_ayahTB').val(dt.kebangsaan_ayah);
@@ -839,7 +842,7 @@ var contentFR = '';
                 cmbgolongan(dt.golongan);
                 cmbagama(dt.agama);
                 cmbangsuran(dt.jmlangsur);
-                cmbdiskon(dt.nilai);
+                cmbdisctunai(dt.nilai);
             });
         }else{ // add 
 
@@ -905,7 +908,7 @@ var contentFR = '';
             }else{
                 var opt = '';
                 $.each(dt.agama,function(id,item){
-                    opt+='<option '+(item.agama==agama?'selected':'')+' value="'+item.replid+'">'+item.agama+'</option>'
+                    opt+='<option '+(item.replid==agama?'selected':'')+' value="'+item.replid+'">'+item.agama+'</option>'
                 });
             }
             $('#agamaTB').html('<option value="">Pilih Agama ..</option>'+opt);
@@ -965,8 +968,8 @@ var contentFR = '';
         });
     }        
 
-// combo diskon 
-    function cmbdiskon (nilai) {
+// combo diskon tunai 
+    function cmbdisctunai (nilai) {
         var u = dir7;
         var d ='aksi=cmb'+mnu7;
         ajax(u,d).done(function(dt){
@@ -1179,13 +1182,13 @@ var contentFR = '';
                         $('#penyakitTD').html(res.data.penyakit);
                         $('#alergiTD').html(res.data.alergi);
                         var img;
-                        if(res.data.photo2!='' && res.data.photo2!=null){//ada gambar
-                            img='../img/upload/'+res.data.photo2;
+                        if(res.data.photo!='' && res.data.photo!=null){//ada gambar
+                            img='../img/upload/'+res.data.photo;
                         }else{
                             img='../img/no_image.jpg';
                         }
                         $('#previmg2').attr('src',img);
-                        $('#photo2H').html(res.data.photo2); 
+                        $('#photoH').html(res.data.photo); 
                     //Saudara Siswa                       
                         $('#nama_saudaraTD').html(res.data.nama_saudara);
                         $('#tgl_lahir_saudaraTD').html(res.data.tgl_lahir_saudara);
@@ -1294,50 +1297,61 @@ function notif(cont,clr) {
 
 //reset form ---
     function kosongkan(){
-        // $('#idformTB').val('');
-        $('#uang_pangkalTB').val('');
-        $('#uang_pangkalnetTB').val('');
-        $('#angsuranTB').val('');
-        $('#sppTB').val('');
-        $('#diskon_subsidiTB').val('');
-        $('#diskon_saudaraTB').val('');
-        $('#diskon_tunaiTB').val('');
-        $('#diskon_totalTB').val('');
-        $('#joiningTB').val('');
+        $('#idformH').val('');
+    // data siswa
+        $('#kriteriaTB').val('');
+        $('#golonganTB').val('');
         $('#nopendaftaranTB').val('');
         $('#namaTB').val('');
-        // $('#tempatlahirTB').val(dt.tmplahir);
+        $.each($('[name="jkTB"]'),function(){
+            $(this).removeAttr('checked');
+        });
+        $('#tempatlahirTB').val('');
         $('#tgllahiranakTB').val('');
+        $('#agamaTB').val('');
         $('#alamatsiswaTB').val('');
         $('#telpsiswaTB').val('');
         $('#asalsekolahTB').val('');
-        // $('#photoH').val(dt.photo2);
-        //Orangtua
+        $('#goldarahTB').val('');
+        $('#penyakitTB').val('');
+        $('#catatan_kesehatanTB').val('');
+        $('#previmg2').removeAttr('src');
+        $('#photoH').val('');
+    // pembayaran
+        $('#setbiayaTB').val('');
+        $('#registrationTD').html('');
+        $('#angsuranTB').val('');
+        $('#discangsuranTD').html('');
+        $('#discsubsidiTB').val('');
+        $('#discsaudaraTB').val('');
+        $('#disctotalTD').html('');
+        $('#registrationnetTD').html('');
+        $('#disctunaiTB').val('');
+        $('#disctunai2TD').html('');
+        $('#materialTD').html('');
+        $('#tuitionTD').html('');
+    //ayah
         $('#ayahTB').val('');
         $('#kebangsaan_ayahTB').val('');
         $('#tempatlahir_ayahTB').val('');
-        // $('#tgllahir_ayahTB').val('');
+        $('#tgllahir_ayahTB').val('');
         $('#pekerjaan_ayahTB').val('');
         $('#telpayahTB').val('');
         $('#pinbb_ayahTB').val('');
         $('#email_ayahTB').val('');
-
+    //ibu
         $('#ibuTB').val('');
         $('#kebangsaan_ibuTB').val('');
-        // $('#tempatlahir_ibuTB').val(dt.temp_lahir_ibu);
+        $('#tempatlahir_ibuTB').val('');
         $('#tgllahir_ibuTB').val('');
         $('#pekerjaan_ibuTB').val('');
         $('#telpibuTB').val('');
         $('#pinbb_ibuTB').val('');
         $('#email_ibuTB').val('');
-
+    // kontak darurat
         $('#nama_kontakTB').val('');
         $('#hubunganTB').val('');
         $('#nomorTB').val('');
-
-        $('#kakekTB').val('');
-        $('#nenekTB').val('');
-
     }
 //end of reset form ---
 

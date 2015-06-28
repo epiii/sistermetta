@@ -45,6 +45,7 @@
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
     <tbody id="tbody"></tbody>
@@ -207,10 +208,7 @@
 
                         <label>Agama</label>
                         <div class="input-control select size3">
-                            <input type="hidden" name="agamaH" id="agamaH">
-                            <select id="agamaTB" name="agamaTB">
-                              <!-- <option>Kristen</option> -->
-                            </select>
+                            <select id="agamaTB" name="agamaTB"></select>
                         </div>
                         
                         <label>Alamat rumah</label>
@@ -336,8 +334,8 @@
                       <!-- grup foto siswa -->
                       <div class="span6">
                           <label><b>Foto Siswa :</b></label>
-                             <img width="150" id="previmg" src="../img/no_image.jpg" >
-                           <div class="input-control file info-state size5" data-role="input-control" >
+                             <img width="150" id="previmg2" src="../img/no_image.jpg" >
+                             <div class="input-control file info-state size5" data-role="input-control" >
                              <input type="hidden" id="photoH"/>
                              <div id="photoDV" class="input-control file" data-role="input-control">
                              <input onchange="PreviewImage(this);" id="photoTB" name="photoTB" type="file">

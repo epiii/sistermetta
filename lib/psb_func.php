@@ -1,4 +1,11 @@
 <?php
+	function getNoPendaftaran(){
+		$s = 'SELECT max(nopendaftaran) no FROM psb_calonsiswa ';
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		// todo : 
+		// no. pedaftaran auto ex : PMB2015 (dr. psb_proses) 0001 (dr.psb_calonsiswa -> autoincrement)
+	}
 	// set biaya checking 
 	function getSetBiaya($kel,$krit,$gol){
 		$s = '	SELECT replid,registration, material,tuition 
