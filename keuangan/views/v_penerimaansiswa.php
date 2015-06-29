@@ -26,7 +26,7 @@
             <li onclick="switchPN('dpp');"><a href="#dppTAB">Registration</a></li>
             <li onclick="switchPN('spp');"><a href="#sppTAB">Tuition Fee</a></li>
             <li class="place-right">
-                <div class="input-control select">
+                <div style="display:none;" class="input-control select">
                     <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
                 </div>
             </li>
@@ -38,7 +38,7 @@
                 <div  data-effect="fade" class="tab-control" data-role="tab-control">
                     <ul class="tabs level2">
                         <!-- <li onclick="switchPN('pendaftaran');" class="active"><a href="#formulirTAB">Formulir </a></li> -->
-                        <li onclick="switchPN('pendaftaran');" class="active"><a href="#joiningfTAB">Material Fee</a></li>
+                        <li style="display:none;" onclick="switchPN('pendaftaran');" class="active"><a href="#joiningfTAB">Material Fee</a></li>
                         <li class="place-right">
                             <div class="input-control select">
                                 <div class="input-control select span3">

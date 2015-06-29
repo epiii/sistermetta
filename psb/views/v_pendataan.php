@@ -7,7 +7,7 @@
 <button data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Lihat Data" id="lihatBC" style="display:none;"><span class="icon-list"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<div class="input-control select span3">
+<div style="display:none;" class="input-control select span3">
     <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
