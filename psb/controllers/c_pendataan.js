@@ -268,7 +268,7 @@ var contentFR = '';
     }); 
 
 //preview image sebelum upload -------
-    function PreviewImage2(e){
+/*    function PreviewImage2(e){
         var typex   = e.files[0].type;
         var sizex   = e.files[0].size;
         var namex   = e.files[0].name;
@@ -297,7 +297,7 @@ var contentFR = '';
             return false;
         }
     };
-
+*/
 //preview image sebelum upload -------
     function PreviewImage(e){
         var typex   = e.files[0].type;
@@ -305,23 +305,27 @@ var contentFR = '';
         var namex   = e.files[0].name;
         
         if(typex =='image/png'||typex =='image/jpg'||typex =='image/jpeg'|| typex =='image/gif'){ //validasi format
+            // alert('masuk valid type');
             if(sizex>(900*900)){ //validasi size
+                // alert('masuk invalid size');
                 notif('ukuran max 1 MB','red');
                 $(e).val('');
                 return false;   
             }else{ 
-                $('#previmg').attr('src','../img/w8loader.gif');
+                // alert('masuk preview');
+                $('#previmg2').attr('src','../img/w8loader.gif');
                 var reader = new FileReader();
                 reader.readAsDataURL(e.files[0]);
     
                 reader.onload = function (oFREvent){
                     var urlx  = oFREvent.target.result;
                     setTimeout(function(){
-                        $('#previmg').attr('src',urlx);//.removeAttr('style');
+                        $('#previmg2').attr('src',urlx);//.removeAttr('style');
                     },1000);
                 };
             }
         }else{ // format salah
+            // alert('masuk invalid type');
             $('#previmg').attr('src','<img src="../img/loader.gif">');
             $(e).val('');
             notif('hanya format gambar(jpeg,jpg,png)','red');
@@ -455,7 +459,7 @@ var contentFR = '';
                 cmbagama('');
                 cmbangsuran('');
                 cmbkelompok('',$('#kelompokS').val());
-                // nopendaftaranFC();
+                getNoPendaftaran();
             }else{ //edit mode
                 var u =dir;
                 var d ='aksi=ambiledit&replid='+id;
@@ -1076,51 +1080,6 @@ var contentFR = '';
         $('#registrationnetTD').html(regNetNum);
      }
 
-// combo get angsuran
-    function getangsuran(){
-            return  $.ajax({
-                url : dir,
-                type: 'post',
-                data:'aksi=getangsuran&replid='+$('#angsuranTB').val(),
-                dataType:'json',
-            });            
-    }        
-
-
-    function hitung_angsuran(){
-        var pangkalnet    = $("#uang_pangkalnetTB").val();
-        var angsuran  = parseInt($("#angsuranTB").val());
-        var hasil_angsuran = parseInt(pangkalnet)/parseInt(angsuran);
-        $("#angsuranbulanTB").val(parseInt(hasil_angsuran));
-    }
-
-    function hitung_diskon(){
-        var pangkal       = $("#uang_pangkalTB").val();
-        var disc_subsidi  = parseInt($("#diskon_subsidiTB").val());
-        var disc_saudara  = parseInt($("#diskon_saudaraTB").val());
-        var diskon_total  = parseInt($("#diskon_totalTB").val());
-
-        var persen    = parseInt($("#diskon_tunai").val());
-        var tunai    = parseInt($("#diskon_tunaiTB").val());
-        var total_diskon_tunai = (parseInt(persen)/100)*parseInt(pangkal);
-        $("#diskon_tunaiTB").val(total_diskon_tunai);
-
-            var total_diskon = parseInt(disc_subsidi)+parseInt(disc_saudara)+parseInt(total_diskon_tunai);
-            //Hitung Total Diskon
-            $("#diskon_totalTB").val(total_diskon);
-        // alert(diskon_tunaiTB); 
-        // return false;
-        // }
-    }
-        function hitung_dpp (){
-            var pangkalnet    = $("#uang_pangkalnetTB").val();
-            var diskon_total  = parseInt($("#diskon_totalTB").val());
-            var total_dpp    = parseInt(pangkalnet)-parseInt(diskon_total);
-            
-                //Hitung Total DPP
-                $("#uang_pangkalnetTB").val(total_dpp);
-        }
-
     function pagination(page,aksix,subaksi){ 
         var aksi ='aksi='+aksix+'&subaksi='+subaksi+'&starting='+page;
         var cari ='';
@@ -1320,7 +1279,7 @@ function notif(cont,clr) {
         $('#goldarahTB').val('');
         $('#penyakitTB').val('');
         $('#catatan_kesehatanTB').val('');
-        $('#previmg2').removeAttr('src');
+        $('#previmg2').attr('src','../img/no_image.jpg');
         $('#photoH').val('');
     // pembayaran
         $('#setbiayaTB').val('');
@@ -1426,10 +1385,10 @@ function notif(cont,clr) {
     }
 
 // no pendaftaran auto 
-    // function nopendaftaranFC () {
-    //     var u = ;
-    //     var d = 'aksi=nopendaftaran' ;
-    //     ajax(u,d).done(function (dt){
-    //         $('#nopendaftaranTB').val(dt.no);
-    //     });
-    // }
+    function getNoPendaftaran () {
+        var u = dir;
+        var d = 'aksi=nopendaftaran' ;
+        ajax(u,d).done(function (dt){
+            $('#nopendaftaranTB').val(dt.nopendaftaran);
+        });
+    }

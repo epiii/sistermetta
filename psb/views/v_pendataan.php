@@ -171,7 +171,7 @@
                       <div class="span6">
                         <label>Nomor Pendaftaran</label>
                         <div class="input-control text size4">
-                            <input required placeholder="No Pendaftaran" type="text" name="nopendaftaranTB" id="nopendaftaranTB">
+                            <input readonly placeholder="No Pendaftaran" type="text" name="nopendaftaranTB" id="nopendaftaranTB">
                         </div>
                         
                         <label>Nama Lengkap</label>

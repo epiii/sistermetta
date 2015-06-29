@@ -147,7 +147,7 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$r['nopendaftaran'].'</td>
+									<td>'.getNoPendaftaran($r['replid']).'</td>
 									<td>'.$r['nama'].'</td>
 									<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
@@ -188,11 +188,11 @@
 			break;
 
 			case 'nopendaftaran':
-				$no = getField($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
+				$no = getNoPendaftaran('');
 				$o  = array(
-						'status'  =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
-						'tuition' =>$biaya['tuition'],
-					);				
+						'status'        =>(($no!=null || $no!='')?'sukses':'gagal'),
+						'nopendaftaran' =>$no,
+					);
 				$out = json_encode($o);
 			break;
 

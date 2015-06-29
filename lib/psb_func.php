@@ -1,11 +1,21 @@
 <?php
-	function getNoPendaftaran(){
-		$s = 'SELECT max(nopendaftaran) no FROM psb_calonsiswa ';
+	function getNoPendaftaran($replid){
+		if(isset($replid) && is_numeric($replid)) // view
+			$s = 'SELECT nopendaftaran no FROM psb_calonsiswa WHERE replid='.$replid;
+		else {// create new 
+			$awal = getField('kodeawalan','psb_proses','aktif',1);
+			$s = 'SELECT LPAD((max(nopendaftaran)+1),6,0) no FROM psb_calonsiswa ';
+
+		}
+			// var_dump($s);exit();
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
-		// todo : 
-		// no. pedaftaran auto ex : PMB2015 (dr. psb_proses) 0001 (dr.psb_calonsiswa -> autoincrement)
-	}
+		if(mysql_num_rows($e)<=0) $akhir = 000001; // kosong
+		else  $akhir =$r['no']; // ada
+
+		$awal = getField('kodeawalan','psb_proses','aktif',1);
+		return $awal.$akhir;
+	}	
 	// set biaya checking 
 	function getSetBiaya($kel,$krit,$gol){
 		$s = '	SELECT replid,registration, material,tuition 
