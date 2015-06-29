@@ -253,7 +253,7 @@
 									alamat        = "'.filter($_POST['alamatsiswaTB']).'",
 									telpon        = "'.filter($_POST['telpsiswaTB']).'",
 									sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
-									darah         = "'.filter($_POST['goldarahTB']).'",
+									darah         = "'.($_POST['goldarahTB']!=''?filter($_POST['goldarahTB']):'-').'",
 									kesehatan     = "'.filter($_POST['penyakitTB']).'",
 									ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"
 									'.(isset($_POST['file'])?', photo= "'.$_POST['file'].'"':'');

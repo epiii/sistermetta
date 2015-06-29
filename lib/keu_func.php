@@ -428,7 +428,7 @@
 			WHERE
 				m.angkatan = '.$angkatan.' 
 				'.($typ!=''?' AND k.nama = "'.$typ.'"':'');
-		var_dump($s);exit();
+		// var_dump($s);exit();
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r;

@@ -67,6 +67,10 @@
                     <div class="span6"> <!-- kolom kiri -->
                     <!-- calon siswa -->
                       <b> Calon Siswa</b>
+                      <label>
+                        Kelompok :
+                        <b id="kelompokTD"></b>
+                      </label>
                       <label>Kriteria :</label>
                       <div class="input-control select size3">
                         <select onchange="getBiaya();" required id="kriteriaTB" name="kriteriaTB"></select>

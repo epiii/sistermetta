@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-06-29 02:46:52
+Date: 2015-06-29 14:25:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -126,12 +126,13 @@ CREATE TABLE `psb_calonsiswa` (
   KEY `FK_calonsiswa_agama` (`agama`),
   KEY `FK_calonsiswa_statusiswa` (`status`),
   KEY `FK_calonsiswa_kondisisiswa` (`kondisi`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_calonsiswa
 -- ----------------------------
-INSERT INTO `psb_calonsiswa` VALUES ('1', 'PMB20150001', null, 'Ucil Marucil', '', '', '0', '0', null, '1', '0', 'sd angkasa', '1', '1', '3', '0', '5', '0', '0', 'P', 'opook 99', '2013-03-14', null, '0', '0', null, '0.0', '0.0', 'O', '1_c923bec194.jpeg', 'jl sepanjang jalan kenangna ', null, '8357498', null, null, 'sakit hati', 'gak sakit bro', null, null, null, null, '500000', '300000', '1', '3', '0', '', '', '0', '8');
+INSERT INTO `psb_calonsiswa` VALUES ('1', 'PMB0001', null, 'paijo parto', '', '', '0', '0', null, '1', '0', '', '2', '1', '3', '0', '0', '0', '0', 'L', 'sby', '2015-06-11', null, '0', '0', null, '0.0', '0.0', 'B', '1_b0cd42b213.jpeg', '', null, '', null, null, '', '', null, null, null, null, '0', '0', '1', '15', '0', '', '', '0', '10');
+INSERT INTO `psb_calonsiswa` VALUES ('7', 'PMB20150003', null, 'chika jessica', '', '', '0', '0', null, '1', '0', '', '2', '1', '2', '0', '0', '0', '0', 'P', '', '0000-00-00', null, '0', '0', null, '0.0', '0.0', '-', null, '', null, '', null, null, '', '', null, null, null, null, '0', '0', '1', '14', '0', '', '', '0', '2');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_ayah
@@ -152,12 +153,18 @@ CREATE TABLE `psb_calonsiswa_ayah` (
   `pinbb` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_calonsiswa_ayah
 -- ----------------------------
-INSERT INTO `psb_calonsiswa_ayah` VALUES ('1', '1', 'bapak e dw', 'hutan', '2015-06-03', '0', 'bangsa srigala', '', 'kerja', '0', '2837492834098', 'klsaur90sdfj', 'a@k.dd');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('1', '1', '', '', '2015-06-03', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('7', '7', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('2', '2', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('3', '3', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('4', '4', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('5', '5', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ayah` VALUES ('6', '6', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_ibu
@@ -178,12 +185,18 @@ CREATE TABLE `psb_calonsiswa_ibu` (
   `pinbb` varchar(20) NOT NULL,
   `email` varchar(100) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_calonsiswa_ibu
 -- ----------------------------
-INSERT INTO `psb_calonsiswa_ibu` VALUES ('1', '1', 'ibu', '', '2015-06-12', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('1', '1', '', '', '2015-06-12', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('7', '7', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('2', '2', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('3', '3', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('4', '4', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('5', '5', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('6', '6', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_keluarga
@@ -198,12 +211,18 @@ CREATE TABLE `psb_calonsiswa_keluarga` (
   `nenek_tgllahir` date NOT NULL DEFAULT '0000-00-00',
   `tglnikah` date NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_calonsiswa_keluarga
 -- ----------------------------
-INSERT INTO `psb_calonsiswa_keluarga` VALUES ('1', '1', '', '0000-00-00', '', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('1', '1', '6666', '0000-00-00', '6666', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('2', '2', '6666', '0000-00-00', '6666', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('3', '3', '6666', '0000-00-00', '6666', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('4', '4', '6666', '0000-00-00', '6666', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('5', '5', '6666', '0000-00-00', '6666', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('6', '6', '6666', '0000-00-00', '6666', '0000-00-00', '0000-00-00');
+INSERT INTO `psb_calonsiswa_keluarga` VALUES ('7', '7', '', '0000-00-00', '', '0000-00-00', '0000-00-00');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_kontakdarurat
@@ -216,12 +235,18 @@ CREATE TABLE `psb_calonsiswa_kontakdarurat` (
   `hubungan` varchar(30) NOT NULL,
   `telpon` varchar(50) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_calonsiswa_kontakdarurat
 -- ----------------------------
-INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('1', '1', 'ok', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('1', '1', '', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('2', '2', '', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('3', '3', '', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('4', '4', '', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('5', '5', '', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('6', '6', '', '', '');
+INSERT INTO `psb_calonsiswa_kontakdarurat` VALUES ('7', '7', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_saudara
@@ -426,13 +451,13 @@ INSERT INTO `psb_setbiaya` VALUES ('9', '0', '0', '0', '3', '3', '1');
 INSERT INTO `psb_setbiaya` VALUES ('10', '0', '0', '0', '4', '1', '1');
 INSERT INTO `psb_setbiaya` VALUES ('11', '0', '0', '0', '4', '2', '1');
 INSERT INTO `psb_setbiaya` VALUES ('12', '0', '0', '0', '4', '3', '1');
-INSERT INTO `psb_setbiaya` VALUES ('13', '0', '0', '80000', '1', '1', '2');
-INSERT INTO `psb_setbiaya` VALUES ('14', '800000', '0', '0', '1', '2', '2');
-INSERT INTO `psb_setbiaya` VALUES ('15', '0', '0', '0', '1', '3', '2');
-INSERT INTO `psb_setbiaya` VALUES ('16', '0', '0', '0', '2', '1', '2');
-INSERT INTO `psb_setbiaya` VALUES ('17', '0', '0', '0', '2', '2', '2');
-INSERT INTO `psb_setbiaya` VALUES ('18', '0', '0', '0', '2', '3', '2');
-INSERT INTO `psb_setbiaya` VALUES ('19', '0', '0', '0', '3', '1', '2');
+INSERT INTO `psb_setbiaya` VALUES ('13', '4500000', '15000000', '2500000', '1', '1', '2');
+INSERT INTO `psb_setbiaya` VALUES ('14', '800000', '35000000', '7000000', '1', '2', '2');
+INSERT INTO `psb_setbiaya` VALUES ('15', '7000000', '6000000', '8000000', '1', '3', '2');
+INSERT INTO `psb_setbiaya` VALUES ('16', '2500000', '5500000', '1500000', '2', '1', '2');
+INSERT INTO `psb_setbiaya` VALUES ('17', '15000000', '25000000', '3500000', '2', '2', '2');
+INSERT INTO `psb_setbiaya` VALUES ('18', '15000000', '25000000', '5500000', '2', '3', '2');
+INSERT INTO `psb_setbiaya` VALUES ('19', '1500000', '3500000', '1700000', '3', '1', '2');
 INSERT INTO `psb_setbiaya` VALUES ('20', '0', '0', '0', '3', '2', '2');
 INSERT INTO `psb_setbiaya` VALUES ('21', '0', '0', '0', '3', '3', '2');
 INSERT INTO `psb_setbiaya` VALUES ('22', '0', '0', '0', '4', '1', '2');
