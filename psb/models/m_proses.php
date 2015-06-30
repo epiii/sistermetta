@@ -221,7 +221,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
+						ORDER  BY aktif asc';
 				// var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);

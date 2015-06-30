@@ -67,10 +67,16 @@
                     <div class="span6"> <!-- kolom kiri -->
                     <!-- calon siswa -->
                       <b> Calon Siswa</b>
-                      <label>
-                        Kelompok :
-                        <b id="kelompokTD"></b>
-                      </label>
+                      <label>Tahun Ajaran :</label>
+                      <div class="input-control select size3">
+                        <select onchange="getBiaya();" required id="prosesTB" name="prosesTB"></select>
+                      </div>
+                      <label>Kelompok :</label>
+                      <div class="input-control select size3">
+                        <input type="hidden" name="nopendaftaranH" id="nopendaftaranH">
+                        <select onchange="getNoPendaftaran(this);" required id="kelompokTB" name="kelompokTB"></select>
+                        <!-- <select onchange="getBiaya();" required id="kelompokTB" name="kelompokTB"></select> -->
+                      </div>
                       <label>Kriteria :</label>
                       <div class="input-control select size3">
                         <select onchange="getBiaya();" required id="kriteriaTB" name="kriteriaTB"></select>
@@ -340,7 +346,7 @@
                           <label><b>Foto Siswa :</b></label>
                              <img width="150" id="previmg2" src="../img/no_image.jpg" >
                              <div class="input-control file info-state size5" data-role="input-control" >
-                             <input type="hidden" id="photoH"/>
+                             <input type="hidden" name="photoH" id="photoH"/>
                              <div id="photoDV" class="input-control file" data-role="input-control">
                              <input onchange="PreviewImage(this);" id="photoTB" name="photoTB" type="file">
                              <button class="btn-file"></button>

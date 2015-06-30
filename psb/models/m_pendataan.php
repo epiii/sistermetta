@@ -103,7 +103,8 @@
 							c.nopendaftaran,
 							c.nama,
 							c.setbiaya,
-							a.cicilan
+							a.cicilan,
+							c.kelompok
 						FROM
 							psb_calonsiswa c
 							LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
@@ -135,19 +136,23 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($r = mysql_fetch_assoc($result)){	
+						$token=base64_encode($_SESSION['id_loginS'].$r['replid']);
+									// <button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
 						$btn ='<td align="center">
-									<button data-hint="ubah"  onclick="Modal('.$r['replid'].');">
-										<i class="icon-zoom-in on-left"></i>
-									</button>
+									<a class="button" href="report/r_pendataan.php?token='.$token.'&replid='.$r['replid'].'" target="_blank" data-hint="cetak">
+										<i class="icon-zoom-in"></i>
+									</a>
 									<button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
-										<i class="icon-pencil on-left"></i>
+										<i class="icon-pencil"></i>
 									</button>
 									<button data-hint="hapus" onclick="del('.$r['replid'].');">
-										<i class="icon-remove on-left"></i>
+										<i class="icon-remove"></i>
 									</button>
 								 </td>';
+						$no=getNoPendaftaran($r['replid'],$r['kelompok']);
+						// var_dump($no);exit();
 						$out.= '<tr>
-									<td>'.getNoPendaftaran($r['replid']).'</td>
+									<td>'.$no['full'].'</td>
 									<td>'.$r['nama'].'</td>
 									<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
@@ -188,10 +193,11 @@
 			break;
 
 			case 'nopendaftaran':
-				$no = getNoPendaftaran('');
+				$no = getNoPendaftaran('',$_POST['kelompok']);
 				$o  = array(
-						'status'        =>(($no!=null || $no!='')?'sukses':'gagal'),
-						'nopendaftaran' =>$no,
+						'status'         =>(($no!=null || $no!='')?'sukses':'gagal'),
+						'nopendaftaran'  =>$no['full'],
+						'nopendaftaranH' =>$no['akhir'],
 					);
 				$out = json_encode($o);
 			break;
@@ -237,23 +243,23 @@
 			case 'simpan':
 				$siswa = $tb.' set 	kriteria 	  = "'.filter($_POST['kriteriaTB']).'",
 									golongan      = "'.filter($_POST['golonganTB']).'",
-									kelompok      = "'.filter($_POST['kelompokS']).'",
+									kelompok      = "'.filter($_POST['kelompokTB']).'",
 									discsubsidi   = "'.getuang(filter($_POST['discsubsidiTB'])).'",
 									discsaudara   = "'.getuang(filter($_POST['discsaudaraTB'])).'",
 									disctunai     = "'.filter($_POST['disctunaiTB']).'",
 									setbiaya     = "'.filter($_POST['setbiayaTB']).'",
 									angsuran     = "'.filter($_POST['angsuranTB']).'",
 									
-									nopendaftaran = "'.filter($_POST['nopendaftaranTB']).'",
+									nopendaftaran = "'.filter($_POST['nopendaftaranH']).'",
 									nama          = "'.filter($_POST['namaTB']).'",
 									kelamin       = "'.filter($_POST['jkTB']).'",
 									tmplahir      = "'.filter($_POST['tempatlahirTB']).'",
-									tgllahir      = "'.($_POST['tgllahiranakTB']!=''?tgl_indo6(filter($_POST['tgllahiranakTB'])):'').'",
+									'.(($_POST['tgllahiranakTB']=='' || $_POST['tgllahiranakTB']=='00  0000')?'':'tgllahir  ="'.tgl_indo6(filter($_POST['tgllahiranakTB'])).'",').'
 									agama         = "'.filter($_POST['agamaTB']).'",
 									alamat        = "'.filter($_POST['alamatsiswaTB']).'",
 									telpon        = "'.filter($_POST['telpsiswaTB']).'",
 									sekolahasal   = "'.filter($_POST['asalsekolahTB']).'",
-									darah         = "'.($_POST['goldarahTB']!=''?filter($_POST['goldarahTB']):'-').'",
+									darah         = "'.($_POST['goldarahTB']==''?filter($_POST['goldarahTB']):'-').'",
 									kesehatan     = "'.filter($_POST['penyakitTB']).'",
 									ketkesehatan  = "'.filter($_POST['catatan_kesehatanTB']).'"
 									'.(isset($_POST['file'])?', photo= "'.$_POST['file'].'"':'');
@@ -423,30 +429,39 @@
 							LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
 					 WHERE 
 						c.replid='.$_POST['replid'];
-				// print_r($s);exit();
 				$e 		= mysql_query($s) or die(mysql_error());
 				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$regNum    = setuang(getBiaya('registration',$_POST['replid']));
-				$regNumNet = setuang(getBiayaNet('registration',$_POST['replid']));
+				// print_r($r);exit();
+				$stat          = ($e)?'sukses':'gagal';
+				$regNum        = setuang(getBiaya('registration',$_POST['replid']));
+				$regNumNet     = setuang(getBiayaNet('registration',$_POST['replid']));
+				$nopendaftaran = getNoPendaftaran($_POST['replid'],$r['kelompok'])['full'];
+				$proses        = getField('proses','psb_kelompok','replid',$r['kelompok']);
+				$discangsuran  = setuang(getDiscAngsuran($regNum, $r['angsuran']));
+				$disctunai 	   = setuang(getDisc('disctunai',$_POST['replid']));
+				// var_dump($discangsuran);exit();
 				$out    = json_encode(array(
 							'status'          =>$stat,
 						// pembayaran
 							'setbiaya'        =>$r['setbiaya'],
 							'registration'    =>$regNum,
 							'angsuran'        =>$r['angsuran'],
-							'discangsuran'    =>setuang(getDiscAngsuran($regNum, $r['angsuran'])),
+							'discangsuran'    =>$discangsuran,
 							'discsubsidi'     =>setuang($r['discsubsidi']),
 							'discsaudara'     =>setuang($r['discsaudara']),
 							'iddisctunai'     =>$r['disctunai'],
-							'disctunai'       =>setuang(getDisc('disctunai',$_POST['replid'])),
+							'disctunai'       =>$disctunai,
 							'disctotal'       =>setuang(getDiscTotal($_POST['replid'])),
 							'registrationnet' =>$regNumNet,
 							'material'        =>setuang($r['material']),
 							'tuition'         =>setuang($r['tuition']),
 						// data siswa
-							'nopendaftaran'  =>$r['nopendaftaran'],
+							
+							'nopendaftaranH'  =>$r['nopendaftaran'],
+							'nopendaftaran'  =>$nopendaftaran,
 							'namaSiswa'      =>$r['namaSiswa'],
+							'proses'         =>$proses,
+							'kelompok'       =>$r['kelompok'],
 							'kriteria'       =>$r['kriteria'],
 							'golongan'       =>$r['golongan'],
 							'kelamin'        =>$r['kelamin'],
@@ -645,7 +660,7 @@
 			break;
 			// aktifkan -----------------------------------------------------------------
 
-			case 'codeGen':
+			/*case 'codeGen':
 				switch ($_POST['subaksi']) {
 					case'transNo':
 						$no = 'PMB';
@@ -661,7 +676,7 @@
 						$out=json_encode(array('status'=>$stat,'kode'=>$kode));
 					break;
 				}
-			break;
+			break;*/
 
 			// cmbkelompok -----------------------------------------------------------------
 			case 'cmb'.$mnu:
