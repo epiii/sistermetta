@@ -25,7 +25,7 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::'.$mod.' - '.$mnu.'</title>
           </head>';
-          $status = (isset($_GET['replid']) AND $_GET['replid']!='') ?'replid="'.filter($_GET['replid']).'"':'';
+          $replid = (isset($_GET['replid']) AND $_GET['replid']!='')?filter($_GET['replid']):'';
       
         // table content
         $s = 'SELECT 
@@ -72,10 +72,10 @@
               LEFT JOIN psb_calonsiswa_keluarga k ON k.calonsiswa = c.replid
               LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
            WHERE 
-            c.replid='.$_GET['replid'];
+            c.replid='.$replid;
+// var_dump($s);exit();
           $e = mysql_query($s) or die(mysql_error());
           $n = mysql_num_rows($e);
-
           $out.='<body>
                     <table width="100%">
                       <tr>
@@ -89,7 +89,44 @@
                     </table><br />';
             $r=mysql_fetch_assoc($e);
             $out.='<table xclass="isi" width="100%">';
-              // bioadata siswa
+            
+            $proses   = getProses('proses',$r['kelompok']);
+            $kelompok = getKelompok ('kelompok',$r['kelompok']);
+            $kriteria = getField('kriteria','psb_kriteria','replid',$r['kriteria']);
+            $golongan = getField('golongan','psb_golongan','replid',$r['golongan']);
+            // var_dump($proses);exit();
+            // bioadata siswa
+              $out.='
+                  <tr class="head">
+                    <td colspan="3">Kriteria Siswa</td>
+                  </tr><tr>
+                    <td width="20%">Tahun Ajaran</td>
+                    <td>: '.$proses.'</td>
+                  </tr><tr>
+                    <td width="20%">Kelompok</td>
+                    <td>: '.$kelompok.'</td>
+                  </tr><tr>
+                    <td width="20%">Kriteria</td>
+                    <td>: '.$kriteria.'</td>
+                  </tr><tr>
+                    <td width="20%">Golongan</td>
+                    <td>: '.$golongan.'</td>
+                  </tr>';
+              // Pembayaran 
+              $out.='
+                  <tr class="head">
+                    <td colspan="3">Pembayaran</td>
+                  </tr><tr>
+                    <td width="20%">Registration Fee</td>
+                    <td>: '.setuang(getBiayaNet('registration',$r['replid'])).' ('.($r['angsuran']==1?'cash':$r['angsuran'].'x angsuran').')</td>
+                  </tr><tr>
+                    <td width="20%">Material Fee</td>
+                    <td>: '.setuang(getBiaya('material',$r['replid'])).'</td>
+                  </tr><tr>
+                    <td width="20%">Tuition Fee</td>
+                    <td>: '.setuang(getBiaya('tuition',$r['replid'])).'</td>
+                  </tr>';
+              // bio data calon siswa
               $out.='
                   <tr class="head">
                     <td colspan="3">Biodata Siswa</td>
@@ -122,7 +159,7 @@
                     <td width="20%">Golongan Darah</td>
                     <td colspan="2">: '.$r['darah'].'</td>
                   </tr><tr>
-                    <td width="20%">Penyakit (yg pernah di derita)</td>
+                    <td width="20%">Penyakit</td>
                     <td colspan="2">: '.$r['kesehatan'].'</td>
                   </tr><tr>
                     <td width="20%">Catatan kesehatan</td>
@@ -132,11 +169,74 @@
                   ';
               $out.='
                   <tr class="head">
-                    <td colspan="3">Kontak Darurat</td>
+                    <td colspan="3">Keluarga</td>
+                  </tr><tr>
+                    <td width="20%">Ayah</td>
+                    <td colspan="2">: '.$r['namaAyah'].'</td>
+                  </tr><tr>
+                    <td width="20%">Kebangasaan Ayah</td>
+                    <td colspan="2">: '.$r['warga'].'</td>
+                  </tr><tr>
+                    <td width="20%">Tempat. Tg Lahir Ayah</td>
+                    <td colspan="2">: '.$r['tmplahir'].', '.tgl_indo8($r['tgllahirAyah']).'</td>
+                  </tr><tr>
+                    <td width="20%">Pekerjaan Ayah</td>
+                    <td colspan="2">: '.$r['pekerjaanAyah'].'</td>
+                  </tr><tr>
+                    <td width="20%">No. Telpon Ayah</td>
+                    <td colspan="2">: '.$r['telponAyah'].'</td>
+                  </tr><tr>
+                    <td width="20%">Pin BB Ayah</td>
+                    <td colspan="2">: '.$r['pinbbAyah'].'</td>
+                  </tr><tr>
+                    <td width="20%">Email Ayah</td>
+                    <td colspan="2">: '.$r['emailAyah'].'</td>
+                  </tr>
+
+                  <tr>
+                    <td width="20%">Ibu</td>
+                    <td colspan="2">: '.$r['namaIbu'].'</td>
+                  </tr><tr>
+                    <td width="20%">Kebangasaan Ibu</td>
+                    <td colspan="2">: '.$r['warga'].'</td>
+                  </tr><tr>
+                    <td width="20%">Tempat. Tg Lahir Ibu</td>
+                    <td colspan="2">: '.$r['tmplahir'].', '.tgl_indo8($r['tgllahirIbu']).'</td>
+                  </tr><tr>
+                    <td width="20%">Pekerjaan Ibu</td>
+                    <td colspan="2">: '.$r['pekerjaanIbu'].'</td>
+                  </tr><tr>
+                    <td width="20%">No. Telpon Ibu</td>
+                    <td colspan="2">: '.$r['telponIbu'].'</td>
+                  </tr><tr>
+                    <td width="20%">Pin BB Ibu</td>
+                    <td colspan="2">: '.$r['pinbbIbu'].'</td>
+                  </tr><tr>
+                    <td width="20%">Email Ibu</td>
+                    <td colspan="2">: '.$r['emailIbu'].'</td>
+                  </tr>
+
+                  <tr>
+                    <td width="20%">Kakek</td>
+                    <td colspan="2">: '.$r['namaKakek'].'</td>
+                  </tr><tr>
+                    <td width="20%">Nenek</td>
+                    <td colspan="2">: '.$r['namaNenek'].'</td>
+                  </tr>';
+
+              $out.='<tr class="head">
+                    <td colspan="3" width="20%">Kontak Darurat (Selain Orang Tua)</td>
                   </tr><tr>
                     <td width="20%">Nama</td>
                     <td colspan="2">: '.$r['namaDarurat'].'</td>
+                  </tr><tr>
+                    <td width="20%">Hubungan </td>
+                    <td colspan="2">: '.$r['hubungan'].'</td>
+                  </tr><tr>
+                    <td width="20%">Telpon</td>
+                    <td colspan="2">: '.$r['telponDarurat'].'</td>
                   </tr>';
+
             $out.='</table>';
             $out.='</body>';
             echo $out;

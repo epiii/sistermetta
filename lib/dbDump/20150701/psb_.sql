@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-07-01 02:04:35
+Date: 2015-07-01 05:07:54
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -131,9 +131,7 @@ CREATE TABLE `psb_calonsiswa` (
 -- ----------------------------
 -- Records of psb_calonsiswa
 -- ----------------------------
-INSERT INTO `psb_calonsiswa` VALUES ('25', '000003', null, 'valentina dijah yellow', '', '', '0', '0', null, '1', '0', '', '2', '1', '1', '0', '0', '0', '0', 'P', '', '2015-06-11', null, '0', '0', null, '0.0', '0.0', '-', '1_7b110ff883.jpeg', '', null, '', null, null, '', '', null, null, null, null, '200000', '0', '0', '1', '0', '', '', '0', '1');
-INSERT INTO `psb_calonsiswa` VALUES ('26', '000002', null, 'anisa lidya', '', '', '0', '0', null, '1', '0', '', '1', '1', '3', '0', '1', '0', '0', 'P', 'bandung', '2015-07-24', null, '0', '0', null, '0.0', '0.0', '-', '1_75a897a77f.jpeg', '', null, '', null, null, '', '', null, null, null, null, '30000', '0', '0', '3', '0', '', '', '0', '1');
-INSERT INTO `psb_calonsiswa` VALUES ('27', '000003', null, 'valentina dijah yellow', '', '', '0', '0', null, '1', '0', '', '2', '1', '1', '0', '0', '0', '0', 'P', '', '0000-00-00', null, '0', '0', null, '0.0', '0.0', '-', '1_2f950167a1.jpeg', '', null, '', null, null, '', '', null, null, null, null, '200000', '0', '0', '1', '0', '', '', '0', '1');
+INSERT INTO `psb_calonsiswa` VALUES ('25', '000003', null, 'valentina dijah yellow', '', '', '0', '0', null, '1', '0', '', '2', '1', '1', '0', '0', '0', '0', 'L', 'medan', '2015-07-03', null, '0', '0', null, '0.0', '0.0', '-', '1_67614e26e8.jpeg', 'jl.panjang', null, '', null, null, '', '', null, null, null, null, '200000', '0', '0', '1', '0', '', '', '0', '1');
 
 -- ----------------------------
 -- Table structure for psb_calonsiswa_ayah
@@ -187,7 +185,7 @@ CREATE TABLE `psb_calonsiswa_ibu` (
 -- ----------------------------
 -- Records of psb_calonsiswa_ibu
 -- ----------------------------
-INSERT INTO `psb_calonsiswa_ibu` VALUES ('24', '25', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
+INSERT INTO `psb_calonsiswa_ibu` VALUES ('24', '25', '', '', '2015-07-02', '0', '', '', '', '0', '', '', '');
 INSERT INTO `psb_calonsiswa_ibu` VALUES ('25', '26', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
 INSERT INTO `psb_calonsiswa_ibu` VALUES ('26', '27', '', '', '0000-00-00', '0', '', '', '', '0', '', '', '');
 

@@ -140,7 +140,7 @@
 									// <button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
 						$btn ='<td align="center">
 									<a class="button" href="report/r_pendataan.php?token='.$token.'&replid='.$r['replid'].'" target="_blank" data-hint="cetak">
-										<i class="icon-zoom-in"></i>
+										<i class="icon-printer"></i>
 									</a>
 									<button data-hint="ubah"  onclick="switchPN(\'form\','.$r['replid'].');">
 										<i class="icon-pencil"></i>
