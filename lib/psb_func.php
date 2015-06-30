@@ -1,4 +1,8 @@
 <?php
+	function getAgama($id){
+		$ret = getField('agama','psb_agama','replid',$id);
+		return $ret;
+	}
 	function getNoPendaftaran($siswa,$kel){
 		if(isset($siswa) && is_numeric($siswa)) {// view
 			$s      = 'SELECT nopendaftaran no FROM psb_calonsiswa WHERE replid='.$siswa;
