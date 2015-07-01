@@ -198,21 +198,18 @@
 			case 'ambiledit':
 				switch ($_POST['subaksi']) {
 					case 'status';
-						$s    = 'SELECT
-									c.nama,
-									c.nopendaftaran,
-									d.nama AS departemen,
-									a.replid idangkatan,
-									a.angkatan
-								FROM
-									psb_calonsiswa c
-									JOIN psb_kelompok k ON k.replid = c.kelompok
-									JOIN psb_proses p ON p.replid = k.proses
-									JOIN departemen d ON d.replid = p.departemen
-									LEFT JOIN aka_angkatan a ON a.replid = p.angkatan
-								WHERE
-									c.replid ='.$_POST['replid'];
-									// print_r($s);exit();
+						$s = 'SELECT
+								c.nama,
+								c.nopendaftaran,
+								a.angkatan
+							FROM
+								psb_calonsiswa c
+								JOIN psb_kelompok k ON k.replid = c.kelompok
+								JOIN psb_proses p ON p.replid = k.proses
+								LEFT JOIN aka_angkatan a ON a.replid = p.angkatan
+							WHERE
+								c.replid='.$_POST['replid'];
+						print_r($s);exit();
 						$e    = mysql_query($s);
 						$r    = mysql_fetch_assoc($e);
 						$stat = ($e)?'sukses':'gagal';
