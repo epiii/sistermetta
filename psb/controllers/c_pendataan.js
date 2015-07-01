@@ -217,11 +217,14 @@ var contentFR = '';
     // button action
         $("#batalBC").on('click',function(){
             switchPN('view','');
-        });$("#lihatBC").on('click',function(){
-            switchPN('view','');
-        });$("#tambahBC").on('click',function(){
-            switchPN('form',''); 
-        });$("#tambahsdrBC").on('click',function(){
+        });
+        // $("#lihatBC").on('click',function(){
+        //     switchPN('view','');
+        // });
+        // $("#tambahBC").on('click',function(){
+        //     switchPN('form',''); 
+        // });
+        $("#tambahsdrBC").on('click',function(){
             $('#cetak').toggle('slow');
         });
         $("#saudara2TB").on('click',function(){

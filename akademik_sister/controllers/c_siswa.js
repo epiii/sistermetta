@@ -25,6 +25,11 @@ var contentFR ='';
                             +'<select onchange="viewTB(\'belum\');" class="belum_cari" name="angkatanS" id="angkatanS"></select>'
                         +'</div>'
                         
+                        +'<label>Tingkat </label>'
+                        +'<div class="input-control text">'
+                            +'<input disable type="text" name="kriteriaTB" id="kriteriaTB" />'
+                        +'</div>'
+                        
                         +'<table class="table hovered bordered striped">'
                             +'<thead>'
                                 +'<tr style="color:white;"class="info">'
@@ -339,6 +344,7 @@ var contentFR ='';
                 }else{ // form mode : add  
                     titl='Tambah '+mnu;
                     cmbangkatan($('#departemenS').val());
+                    $('#kriteriaTB').val($('#tingkatS').val());
                 }$.Dialog.title(titl);
                 $.Dialog.content(contentFR);
             }
