@@ -2,7 +2,7 @@
 <h4 style="color:white;">Set Biaya Calon Siswa</h4>
 <div id="loadarea"></div>
 
-<div class="input-control select span3">
+<div style="display:none;"class="input-control select span3">
     <select xclass="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">

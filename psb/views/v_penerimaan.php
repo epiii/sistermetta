@@ -9,7 +9,7 @@
 
 <!-- <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button> -->
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<div class="input-control select span3">
+<div style="display:none;"class="input-control select span3">
     <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
@@ -22,20 +22,20 @@
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
-            <th class="text-left">No</th>
-            <th class="text-left">Nama </th>
-            <th class="text-left">NIS</th>
-            <th class="text-left">NISN</th>
-            <th class="text-left">Status</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">No</th>
+            <th class="text-center">Nama </th>
+            <th class="text-center">NIS</th>
+            <th class="text-center">NISN</th>
+            <th class="text-center">Status</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></th>
-            <th class="text-left"><input class="cari" placeholder="nama" id="namaS" name="namaS"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="nama" id="namaS" name="namaS"></div></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
 

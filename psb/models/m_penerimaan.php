@@ -12,7 +12,6 @@
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
@@ -20,21 +19,6 @@
 				$nopendaftaran = isset($_POST['no_pendaftaranS'])?filter($_POST['no_pendaftaranS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				// $sql = 'SELECT c.nama,
-				// 				c.replid,
-				// 				c.nopendaftaran,
-				// 				c.kelompok,
-				// 				c.status,
-				// 				s.nis,
-				// 				s.nisn
-				// 		FROM '.$tb.' c 
-				// 		LEFT JOIN aka_siswa s ON s.nopendaftaran = c.nopendaftaran
-				// 		WHERE 
-				// 			c.nopendaftaran like "%'.$nopendaftaran.'%" and
-				// 			c.nama like "%'.$nama.'%" and
-				// 			c.kelompok = '.$kelompok.'
-				// 		ORDER 
-				// 			BY c.nopendaftaran asc';
 				$sql = 'SELECT c.nama,
 								c.replid,
 								c.nopendaftaran,
@@ -66,8 +50,8 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						if($res['aktif']=1){
+					while($r = mysql_fetch_assoc($result)){	
+						if($r['aktif']=1){
 							$dis  = 'disabled';
 							$ico  = 'checkmark';
 							$hint = 'telah Aktif';
@@ -76,42 +60,33 @@
 							$dis  = '';
 							$ico  = 'blocked';
 							$hint = 'Aktifkan';
-							$func = 'onclick="aktifkan('.$res['replid'].');"';
+							$func = 'onclick="aktifkan('.$r['replid'].');"';
 						}
 
 						$btn ='<td>
-									<button data-hint="Lihat detail siswa"  onclick="loadModal(\'sudah\','.$res['replid'].');">
+									<button data-hint="Lihat detail siswa"  onclick="loadModal(\'sudah\','.$r['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
 						//Tombol Status								 
-						if($res['status']==1){
+						if($r['status']==1){
 							$btn_terima ='<td>
-										<button data-hint="Klik untuk membatalkan penerimaan"  class="bg-darkGreen fg-white" onclick="loadModal(\'sudah\','.$res['replid'].');">
+										<button data-hint="Klik untuk membatalkan penerimaan"  class="bg-darkGreen fg-white" onclick="loadModal(\'sudah\','.$r['replid'].');">
 											Diterima
 										</button>
 									 </td>';
 						}else{
 							$btn_terima ='<td>
-										<button data-hint="Klik untuk melakukan penerimaan"  onclick="loadModal(\'belum\','.$res['replid'].');">
+										<button data-hint="Klik untuk melakukan penerimaan"  onclick="loadModal(\'belum\','.$r['replid'].');">
 											Blm diterima
 										</button>
 									 </td>';						
 						}
-								//Jika sudah diterima tampilkan nisn
-								// if($res['replid']!=0){
-								// 	$ts=mysql_query("SELECT nis,nisn FROM aka_siswa WHERE replid='".$res['replid']."'");
-								// 	$rs=mysql_fetch_array($ts);
-								// 	$res['nis']=$rs['nis'];
-								// 	$res['nisn']=$rs['nisn'];
-								// }
-							// $xtable->td($r['nis']==''?'-':$r['nis'],100);
-
 						$out.= '<tr>
-									<td>'.$res['nopendaftaran'].'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>'.($res['nis']==''?'-':$res['nis']).'</td>
-									<td>'.($res['nisn']==''?'-':$res['nisn']).'</td>
+									<td>'.getNoPendaftaran($r['replid'],$r['kelompok'])['full'].'</td>
+									<td>'.$r['nama'].'</td>
+									<td>'.($r['nis']==''?'-':$r['nis']).'</td>
+									<td>'.($r['nisn']==''?'-':$r['nisn']).'</td>
 									'.$btn_terima.'
 									'.$btn.'
 								</tr>';

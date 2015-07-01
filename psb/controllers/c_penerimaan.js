@@ -22,7 +22,7 @@ var content_stat = content_det = '';
         content_stat += '<form autocomplete="off" onsubmit="terima(this);return false;" id="'+mnu+'FR">' 
                         +'<table>'
                             +'<tr>'
-                                +'<td colspan="2">Terima calon siswa berikut ini </td>'
+                                +'<td colspan="2"><b>Terima calon siswa berikut ini </b></td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Nama</td>'
@@ -33,7 +33,7 @@ var content_stat = content_det = '';
                                 +'<td>: <span id="nopendaftaranTD"></span></td>'
                             +'</tr>'
                             +'<tr>'
-                                +'<td colspan="2">sebagai siswa aktif pada </td>'
+                                +'<td colspan="2"><b>sebagai siswa aktif pada</b> </td>'
                             +'</tr>'
                             +'<tr>'
                                 +'<td>Departemen</td>'
@@ -49,14 +49,14 @@ var content_stat = content_det = '';
                         +'<input id="idformH_terima" name="idformH_terima" type="hidden">' 
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
-                        +'<div class="input-control text size2">'
-                            +'<input required type="text" name="nisTB" id="nisTB">'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="NIS" required type="text" name="nisTB" id="nisTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
                         +'<label>NISN</label>'
-                        +'<div class="input-control text size3">'
-                            +'<input required type="text" name="nisnTB" id="nisnTB">'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="NIS" required type="text" name="nisnTB" id="nisnTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -77,10 +77,6 @@ var content_stat = content_det = '';
                                 +'<td>: <b id="nama_batalTD"></b></td>'
                             +'</tr>'
                         +'</table>'
-                        // +'<div class="input-control text">'
-                        //     +'<input disabled type="text" name="namaTB" id="namaTB">'
-                        //     +'<button class="btn-clear"></button>'
-                        // +'</div>'
                                                 
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -362,12 +358,10 @@ var content_stat = content_det = '';
             onShow: function(){
                 var titl,cont;
                 if(typ=='belum'){ //form mode : belum diterima 
-                    // alert(calon);
+                    console.log('masuk belum ');
                     cont= content_stat;
                     titl= 'Calon Siswa (belum dikonfirmasi)';
-                    // url : dir,'aksi=ambiledit&subaksi=status&replid='+calon);
                     ajax(dir,'aksi=ambiledit&subaksi=status&replid='+calon).done(function(dt){
-
                         $('#idformH_terima').val(calon);
                         $('#idformH_angkatan').val(dt.data.idangkatan);
                         $('#namaTD').html(dt.data.nama);
@@ -375,9 +369,8 @@ var content_stat = content_det = '';
                         $('#departemenTD').html(dt.data.departemen);
                         $('#angkatanTD').html(dt.data.angkatan);
                     });
-                    // setTimeout(function(){
-                    // },200);
                 }else if(typ='sudah'){ // form mode : sudah diterima
+                    console.log('masuk belum sudah');
                     cont= content_det;
                     titl= 'Batalkan Penerimaan Siswa';
                     ajax(dir,'aksi=ambiledit&subaksi=batal&replid='+calon).done(function(res){
