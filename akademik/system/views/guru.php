@@ -14,9 +14,9 @@ $pelajaran=pelajaran_r($pel,$tajar,1);
 
 // Query
 if($pel==0){
-$t=mysql_query("SELECT aka_guru.*,hrd_pegawai.nip,hrd_pegawai.nama,aka_pelajaran.nama as namapelajaran FROM aka_guru LEFT JOIN hrd_pegawai ON aka_guru.pegawai=hrd_pegawai.replid LEFT JOIN aka_pelajaran ON aka_pelajaran.replid=aka_guru.pelajaran WHERE aka_guru.tahunajaran='$tajar' ORDER BY aka_pelajaran.nama, hrd_pegawai.nama");
+$t=mysql_query("SELECT aka_guru.*,hrd_karyawan.nip,hrd_karyawan.nama,aka_pelajaran.nama as namapelajaran FROM aka_guru LEFT JOIN hrd_karyawan ON aka_guru.pegawai=hrd_karyawan.replid LEFT JOIN aka_pelajaran ON aka_pelajaran.replid=aka_guru.pelajaran WHERE aka_guru.tahunajaran='$tajar' ORDER BY aka_pelajaran.nama, hrd_karyawan.nama");
 } else {
-$t=mysql_query("SELECT aka_guru.*,hrd_pegawai.nip,hrd_pegawai.nama FROM aka_guru LEFT JOIN hrd_pegawai ON aka_guru.pegawai=hrd_pegawai.replid WHERE aka_guru.tahunajaran='$tajar' AND aka_guru.pelajaran='$pel' ORDER BY hrd_pegawai.nama");
+$t=mysql_query("SELECT aka_guru.*,hrd_karyawan.nip,hrd_karyawan.nama FROM aka_guru LEFT JOIN hrd_karyawan ON aka_guru.pegawai=hrd_karyawan.replid WHERE aka_guru.tahunajaran='$tajar' AND aka_guru.pelajaran='$pel' ORDER BY hrd_karyawan.nama");
 }
 $xtable->ndata=mysql_num_rows($t);
 

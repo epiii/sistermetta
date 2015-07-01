@@ -5,10 +5,10 @@ $c=gpost('c');
 $c=$c==""?"aka_setguru":$c;
 if($opt=='find'){
 	$keyw=gpost('name');
-	$sql="SELECT aka_guru.*,hrd_pegawai.nip,hrd_pegawai.nama FROM aka_guru LEFT JOIN hrd_pegawai ON aka_guru.pegawai=hrd_pegawai.replid WHERE hrd_pegawai.nip='$keyw' OR hrd_pegawai.nama LIKE '%$keyw%' GROUP BY aka_guru.pegawai ORDER BY hrd_pegawai.nama";
+	$sql="SELECT aka_guru.*,hrd_karyawan.nip,hrd_karyawan.nama FROM aka_guru LEFT JOIN hrd_karyawan ON aka_guru.pegawai=hrd_karyawan.id WHERE hrd_karyawan.nip='$keyw' OR hrd_karyawan.nama LIKE '%$keyw%' GROUP BY aka_guru.pegawai ORDER BY hrd_karyawan.nama";
 	
 	//echo $sql;
-	//$sql="SELECT * FROM ".DB_HRD." WHERE nip='$keyw' OR name LIKE '%$keyw%' ORDER BY name";
+	//$sql="SELECT * FROM hrd_karyawan WHERE nip='$keyw' OR name LIKE '%$keyw%' ORDER BY name";
 	//echo $sql;
 	$t=mysql_query($sql);
 	$ndata=mysql_num_rows($t);
@@ -36,7 +36,7 @@ if($opt=='find'){
 	<div class="infobox" style="float:left">Tidak ditemukan guru dengan nip atau nama <b><?=$keyw?></b></div>
 	<?php }
 } else {
-$sql="SELECT aka_guru.*,".DB_HRD.".nip,".DB_HRD.".nama FROM aka_guru LEFT JOIN ".DB_HRD." ON aka_guru.pegawai=".DB_HRD.".replid GROUP BY aka_guru.pegawai ORDER BY ".DB_HRD.".nama";
+$sql="SELECT aka_guru.*,hrd_karyawan.nip,hrd_karyawan.nama FROM aka_guru LEFT JOIN hrd_karyawan ON aka_guru.pegawai=hrd_karyawan.replid GROUP BY aka_guru.pegawai ORDER BY hrd_karyawan.nama";
 //echo $sql;
 $t=mysql_query($sql);
 $ndata=mysql_num_rows($t);

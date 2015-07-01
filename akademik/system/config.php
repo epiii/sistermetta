@@ -1,6 +1,6 @@
 <?php
 /* Database */
-define('DBNAME','josh');
+define('DBNAME','sistermeta');
 
 /* Links */
 define('RLNK',ROOTLNK.'akademik/');
