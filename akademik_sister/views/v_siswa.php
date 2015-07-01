@@ -13,7 +13,7 @@
 
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
-<div class="input-control select span3">
+<div style="display:none;" class="input-control select span3">
     <select class="aktif_cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
@@ -39,22 +39,12 @@
             <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-center"><input  class="aktif_cari" placeholder="NIS" id="nisS" name="nisS"></th>
-            <th class="text-center"><input  class="aktif_cari" placeholder="NISN" id="nisnS" name="nisnS"></th>
-            <th class="text-center"><input  class="aktif_cari" placeholder="Nama" id="namaS" name="namaS"></th>
+            <th class="text-center"><div class="input-control text"><input class="aktif_cari" placeholder="cari. .." id="nisS" name="nisS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="aktif_cari" placeholder="cari. .." id="nisnS" name="nisnS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="aktif_cari" placeholder="cari. .." id="namaS" name="namaS"></div></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>
     </thead>
-
-    <tbody id="aktif_tbody">
-        <!-- row table -->
-    </tbody>
-    <tfoot>
-        
-    </tfoot>
+    <tbody id="aktif_tbody"></tbody>
 </table>
-<!-- 
-    // ---------------------- //
-    // -- created by rovi -- //
-    // ---------------------- // -->

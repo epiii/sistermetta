@@ -142,11 +142,17 @@
 						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 
-						$sql = 'SELECT *
-								FROM '.$tb.' s	
+						$sql = 'SELECT
+									*
+								FROM
+									psb_calonsiswa c
+									LEFT JOIN psb_kelompok k on k.replid = c.kelompok
+									LEFT JOIN psb_proses p on p.replid = k.proses
 								WHERE
-									s.nama LIKE "%'.$nama.'%" AND
-									s.nis LIKE "%'.$nis.'%"';
+									c.status=1 
+									AND c.nama LIKE "%'.$nama.'%"
+									AND c.nis LIKE "%'.$nis.'%"
+									AND p.angkatan ='.$angkatan;
 						// print_r($sql);exit();
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];

@@ -20,14 +20,9 @@ var contentFR ='';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
-                        +'<label>Departemen</label>'
-                        +'<div class="input-control text">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                        +'</div>'
-                        
                         +'<label>Angkatan </label>'
-                        +'<div class="input-control text">'
-                            +'<input disabled type="text" name="angkatanTB" id="angkatanTB">'
+                        +'<div class="input-control select">'
+                            +'<select onchange="viewTB(\'belum\');" class="belum_cari" name="angkatanS" id="angkatanS"></select>'
                         +'</div>'
                         
                         +'<table class="table hovered bordered striped">'
@@ -115,9 +110,9 @@ var contentFR ='';
                         out+='<option value="">kosong</option>';
                     }else{
                         $.each(dt.angkatan, function(id,item){
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                            out+='<option value="'+item.replid+'">'+item.angkatan+'</option>';
                         });
-                    }$('#angkatanTB').html(out);
+                    }$('#angkatanS').html(out);
                 }viewTB('belum'); 
             }
         });
@@ -126,58 +121,48 @@ var contentFR ='';
 
 // combo departemen ---
     function cmbdepartemen(typ){
-        $.ajax({
-            url:dir2,
-            data:'aksi=cmb'+mnu2,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
+        var u = dir2;
+        var d ='aksi=cmb'+mnu2;
+        ajax(u,d).done(function  (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.departemen.length==0){
+                    out+='<option value="">kosong</option>';
                 }else{
-                    if(dt.departemen.length==0){
-                        out+='<option value="">kosong</option>';
-                    }else{
-                        $.each(dt.departemen, function(id,item){
-                            out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                        });
-                    }
+                    $.each(dt.departemen, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                    });
                 }
-                if(typ=='filter'){ // filter
-                    $('#departemenS').html(out);
-                    cmbtahunajaran(dt.departemen[0].replid);
-                }else{ // form
-                    $('#departemenTB').html(dt.departemen[0].nama);
-                    cmbangkatan(dt.departemen[0].replid);
-                }
+            }
+            if(typ=='filter'){ // filter
+                $('#departemenS').html(out);
+                cmbtahunajaran(dt.departemen[0].replid);
+            }else{ // form
+                $('#departemenTB').html(dt.departemen[0].nama);
+                cmbangkatan(dt.departemen[0].replid);
             }
         });
     }
-//end of combo departemen ---
 
 // combo tahunajaran ---
     function cmbtahunajaran(dep){
-        $.ajax({
-            url:dir3,
-            data:'aksi=cmb'+mnu3+'&departemen='+dep,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
+        var u = dir3;
+        var d ='aksi=cmb'+mnu3+'&departemen='+dep;
+        ajax(u,d).done(function  (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.tahunajaran.length==0){
+                    out+='<option value="">kosong</option>';
                 }else{
-                    if(dt.tahunajaran.length==0){
-                        out+='<option value="">kosong</option>';
-                    }else{
-                        $.each(dt.tahunajaran, function(id,item){
-                            out+='<option value="'+item.replid+'">'+item.tahunajaran+(item.aktif=='1'?' (aktif)':'')+'</option>';
-                            // out+='<option '+(item.aktif=='1'?'selected':'')+' value="'+item.replid+'">'+item.tahunajaran+(item.aktif=='1'?' (aktif)':'')+'</option>';
-                        });
-                    }$('#tahunajaranS').html(out);
-                }cmbtingkat(dt.tahunajaran[0].replid);
-            }
+                    $.each(dt.tahunajaran, function(id,item){
+                        out+='<option value="'+item.replid+'">'+item.tahunajaran+(item.aktif=='1'?' (aktif)':'')+'</option>';
+                    });
+                }$('#tahunajaranS').html(out);
+            }cmbtingkat(dt.tahunajaran[0].replid);
         });
     }
 //end of combo tahunajaran ----
@@ -353,13 +338,9 @@ var contentFR ='';
                     });
                 }else{ // form mode : add  
                     titl='Tambah '+mnu;
-                    cmbdepartemen('form');
-                    viewTB('belum');
-                    // cmbtahunajaran('form',$('#departemenS').val(),$('#tahunajaranS').val());
-                    // cmbtingkat('form',$('#tahunajaranS').val(),$('#tingkatS').val());
+                    cmbangkatan($('#departemenS').val());
                 }$.Dialog.title(titl);
                 $.Dialog.content(contentFR);
-                // $('#tingkatH').val($('#tingkatS').val());
             }
         });
     }
@@ -522,8 +503,13 @@ function notif(cont,clr) {
             }
         });
     }
-//end of aktifkan process ---
 
-    // ---------------------- //
-    // -- created by rovi -- //
-    // ---------------------- //
+// ajax
+    function ajax (u,d) {
+        return $.ajax({
+            url:u,
+            data:d,
+            type:'post',
+            dataType:'json'
+        });
+    }
