@@ -35,13 +35,8 @@ var content_stat = content_det = '';
                             +'<tr>'
                                 +'<td colspan="2"><b>sebagai siswa aktif pada</b> </td>'
                             +'</tr>'
-                            // +'<tr>'
-                            //     +'<td>Departemen</td>'
-                            //     +'<td>: <span id="departemenTD"></span></td>'
-                            // +'</tr>'
                             +'<tr>'
                                 +'<td>Angkatan</td>'
-                                +'<input id="idformH_angkatan" name="idformH_angkatan" type="text">' 
                                 +'<td>: <span id="angkatanTD"></span></td>'
                             +'</tr>'
                         +'</table>'
@@ -50,14 +45,12 @@ var content_stat = content_det = '';
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="NIS" required type="text" name="nisTB" id="nisTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input placeholder="NIS" required type="number" min="1" max="99999" name="nisTB" id="nisTB">'
                         +'</div>'
 
                         +'<label>NISN</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="NIS" required type="text" name="nisnTB" id="nisnTB">'
-                            +'<button class="btn-clear"></button>'
+                            +'<input   placeholder="NIS" required type="number" min="1" max="99999" name="nisnTB" id="nisnTB">'
                         +'</div>'
                         
                         +'<div class="form-actions">' 
@@ -272,31 +265,28 @@ var content_stat = content_det = '';
     function terima(e){
         var datax = $(e).serialize()+'&aksi=simpan&subaksi=penerimaan';
         ajax(dir,datax).done(function(res){
-                    viewTB();
-                    if(res.status == "gagal"){
-                        clr = "red";
-                    }else{
-                        clr = "green"
-                    }
-                notif(res.status,clr);
-                // alert(res.status);
+            if(res.status == "gagal") clr = "red";
+            else {
+                clr = "green";
+                viewTB();
+                $.Dialog.close();   
+            }notif(res.status,clr);
         });
     }
     
 //save process ---
     function tolak(e){ //Tombol Terima
-        // var urlx ='&aksi=terima&subaksi=tidak_terima';
         var datax = $(e).serialize()+'&aksi=simpan&subaksi=tidak_terima';
-// alert(datax); return false;
         ajax(dir,datax).done(function(res){
-                    viewTB();
-                    if(res.status == "gagal"){
-                        clr = "red";
-                    }else{
-                        clr = "green"
-                    }
-                notif(res.status,clr);
-                // alert(res.status);
+            viewTB();
+            if(res.status == "gagal"){
+                clr = "red";
+            }else{
+                clr = "green"
+                viewTB();
+                $.Dialog.close();   
+            }
+            notif(res.status,clr);
         });       
     }
 //end of save process ---
@@ -363,7 +353,6 @@ var content_stat = content_det = '';
                     titl= 'Calon Siswa (belum dikonfirmasi)';
                     ajax(dir,'aksi=ambiledit&subaksi=status&replid='+calon).done(function(dt){
                         $('#idformH_terima').val(calon);
-                        $('#idformH_angkatan').val(dt.data.idangkatan);
                         $('#namaTD').html(dt.data.nama);
                         $('#nopendaftaranTD').html(dt.data.nopendaftaran);
                         $('#departemenTD').html(dt.data.departemen);
@@ -491,3 +480,11 @@ function notif(cont,clr) {
     }
 //end of aktifkan process ---
 
+
+// input angka --------------------------
+    function inputangka(e) {
+        $(e).maskMoney({
+            precision:0,
+            affixesStay: true
+        });
+    }

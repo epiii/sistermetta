@@ -27,12 +27,9 @@
             <th class="text-center">NIS</th>
             <th class="text-center">NISN</th>
             <th class="text-center">Status</th>
-            <th class="text-center">Aksi</th>
-        </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="No Pendaftaran" id="no_pendaftaranS" name="no_pendaftaranS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="nama" id="namaS" name="namaS"></div></th>
-            <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
