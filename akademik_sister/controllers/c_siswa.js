@@ -5,6 +5,7 @@ var mnu4      = 'tingkat';
 var mnu5      = 'subtingkat';
 var mnu6      = 'kelas';
 var mnu7      = 'angkatan';
+var mnu8      = 'kriteriaCalonSiswa';
 
 var dir       = 'models/m_'+mnu+'.php';
 var dir2      = 'models/m_'+mnu2+'.php';
@@ -13,6 +14,7 @@ var dir4      = 'models/m_'+mnu4+'.php';
 var dir5      = 'models/m_'+mnu5+'.php';
 var dir6      = 'models/m_'+mnu6+'.php';
 var dir7      = 'models/m_'+mnu7+'.php';
+var dir8      = '../psb/models/m_'+mnu8+'.php';
 var contentFR ='';
 
 // main function ---
@@ -27,6 +29,7 @@ var contentFR ='';
                         
                         +'<label>Tingkat </label>'
                         +'<div class="input-control text">'
+                            +'<input type="text" name="kriteriaH" id="kriteriaH" />'
                             +'<input disable type="text" name="kriteriaTB" id="kriteriaTB" />'
                         +'</div>'
                         
@@ -62,9 +65,9 @@ var contentFR ='';
         // cmbdepartemen(false,'');
 
         //add form
-        $("#tambahBC").on('click', function(){
-            viewFR('');
-        });
+        // $("#tambahBC").on('click', function(){
+        //     viewFR('');
+        // });
 
         //search action
         $('#departemenS').on('change',function(){
@@ -118,7 +121,9 @@ var contentFR ='';
                             out+='<option value="'+item.replid+'">'+item.angkatan+'</option>';
                         });
                     }$('#angkatanS').html(out);
-                }viewTB('belum'); 
+                }
+                getKriteria();
+                // viewTB('belum'); 
             }
         });
     }
@@ -150,6 +155,27 @@ var contentFR ='';
             }
         });
     }
+
+// combo kriteria ---
+    function getKriteria(){
+        var u = dir;
+        var d ='aksi=getKriteria&tingkat='+$('#tingkatS').val();
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                if(dt.kriteria.length==0){
+                    notif('kosong','red');
+                }else{
+                    $('#kriteriaH').val(dt.idkriteria);
+                    $('#kriteriaTB').val(dt.kriteria);
+                    viewTB('belum');
+                }
+            }
+        });
+    }
+//end of combo tahunajaran ----
 
 // combo tahunajaran ---
     function cmbtahunajaran(dep){

@@ -258,11 +258,6 @@ var contentFR = '';
         });
 
     // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#namaS').val('');
-            $('#nopendaftaranS').val('');
-        });
         $("#diskon_subsidiTB,#diskon_saudaraTB").keyup(function(){
             hitung_diskon();
             hitung_dpp();
@@ -273,6 +268,12 @@ var contentFR = '';
         });
     }); 
 
+    function cariFC() {
+        $('#cariTR').toggle('slow');
+        $('#namaS').val('');
+        $('#nopendaftaranS').val('');
+    }
+        
 //preview image sebelum upload -------
 /*    function PreviewImage2(e){
         var typex   = e.files[0].type;

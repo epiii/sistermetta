@@ -11,7 +11,7 @@
 <h4 style="color:white;">Pendataan Siswa</h4>
 <div id="loadarea"></div>
 
-<button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
+<button onclick="viewFR('');" data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 <div style="display:none;" class="input-control select span3">
     <select class="aktif_cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
