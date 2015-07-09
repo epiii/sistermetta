@@ -106,21 +106,27 @@
 			// ambiledit -----------------------------------------------------------------
 
 			case 'cmb'.$mnu:
-				$w='';
+				$w=$f='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['departemen'])){
-						$w.='where departemen ='.$_POST['departemen'];
+					if(isset($_POST['tahunajaran'])){
+						$f.=',(
+							if((
+								SELECT
+									t.kriteria 
+								FROM aka_tingkat t
+								WHERE 
+									t.kriteria = k.replid AND
+									t.tahunajaran = '.$_POST['tahunajaran'].'
+								)is null, 1,0)
+							)isActive';
 					}
 				}
-				
-				$s	= ' SELECT *
-						from '.$tb.'
+				$s	= ' SELECT k.* '.$f.'
+						from '.$tb.' k
 						'.$w.'		
-						ORDER  BY kriteria desc';
+						ORDER  BY k.kriteria desc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);

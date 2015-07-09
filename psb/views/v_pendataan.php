@@ -11,10 +11,10 @@
     <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select class="cari" data-hint="Tahun Ajaran" name="prosesS" id="prosesS"></select>
+    <select  onchange="cmbkelompok('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="prosesS" id="prosesS"></select>
 </div>
 <div class="input-control select span3">
-    <select class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
+    <select onchange="viewTB();" class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
 <!-- panel 1 : view table -->

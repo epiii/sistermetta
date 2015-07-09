@@ -233,13 +233,15 @@ var contentFR = '';
         });
 
     //search action
-        $('#departemenS').on('change',function(){
-            cmbproses('filter',$(this).val(),'');
-        });$('#prosesS').on('change',function (){
-            cmbkelompok('filter',$(this).val(),'');
-        });$('#kelompokS').on('change',function (){
-            viewTB(); 
-        })
+        // $('#departemenS').on('change',function(){
+        //     cmbproses('filter',$(this).val(),'');
+        // });
+        // $('#prosesS').on('change',function (){
+        //     cmbkelompok('filter',$(this).val(),'');
+        // });
+        // $('#kelompokS').on('change',function (){
+        //     viewTB(); 
+        // })
         $('#prosesTB').on('change',function(){
             cmbkelompok('form',$(this).val(),'');
         });

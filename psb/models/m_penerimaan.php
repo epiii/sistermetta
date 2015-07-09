@@ -79,8 +79,8 @@
 						$out.= '<tr>
 									<td>'.getNoPendaftaran($r['replid'],$r['kelompok'])['full'].'</td>
 									<td>'.$r['nama'].'</td>
-									<td>'.($r['nis']==''?'-':$r['nis']).'</td>
-									<td>'.($r['nisn']==''?'-':$r['nisn']).'</td>
+									<td>'.($r['nis']=='' || $r['nis']==0?'-':$r['nis']).'</td>
+									<td>'.($r['nisn']==''|| $r['nisn']==0?'-':$r['nisn']).'</td>
 									'.$btn_terima.'
 								</tr>';
 						$nox++;
