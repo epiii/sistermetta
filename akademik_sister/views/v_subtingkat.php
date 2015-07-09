@@ -1,10 +1,5 @@
 <script src="controllers/c_subtingkat.js"></script>
 
-<!-- <script src="js/metro/metro-button-set.js"></script> -->
-<!-- <script src="js/metro/metro-hint.js"></script> -->
-
-<!-- D:\xampp\htdocs\sister\js\combogrid -->
-<!-- <script src="../js/combogrid/jquery-1.9.1.min.js"></script> -->
 <script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
 <script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
 
@@ -18,7 +13,7 @@
 <button data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
 
-<div class="input-control select span3">
+<div style="display:none;" class="input-control select span3">
     <select  class="cari" data-hint="departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
@@ -31,10 +26,10 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Subtingkat (Kelas)</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="info">
-            <th class="text-left"><input class="cari" placeholder="subtingkat" id="subtingkatS"></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="subtingkat" id="subtingkatS"></div></th>
             <th></th>
         </tr>
     </thead>
