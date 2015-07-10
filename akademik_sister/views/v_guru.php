@@ -17,10 +17,11 @@
     <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
+    <select onchange="cmbpelajaran($(this).val(),'filter','')" class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
-    <select data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>
+    <select class="cari" data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>
+    <!-- <select onchange="viewTB();" class="cari" data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select> -->
 </div>
 <!-- <button data-hint="Field Pencarian" class="large" id="cariBC"><span class="icon-search"></span> </button>
  -->
@@ -34,8 +35,8 @@
             <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-center"><div class="input-control text"><input onkeypress="cariFC();" placeholder="cari NIP Guru" id="nipS" name="nipS" type="text"></div></th>
-            <th class="text-center"><div class="input-control text"><input placeholder="cari nama Guru" id="guruS" name="guruS" type="text"></div></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="nipS" class="cari" type="text"></div></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="cari ... " id="namaS" class="cari" type="text"></div></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>

@@ -258,7 +258,4 @@ var contentFR ='';
         // }
     }
 //end of urutan tabel
-
-    // ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- //
+//

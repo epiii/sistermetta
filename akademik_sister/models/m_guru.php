@@ -76,8 +76,9 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
+				$nip         = isset($_POST['nipS'])?filter($_POST['nipS']):'';
+				$nama        = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
 				$sql = 'SELECT 
 							g.*,
@@ -90,8 +91,9 @@
 							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
 							LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
 						WHERE 
-							t.departemen ='.$departemen.' and 
-							t.replid ='.$tahunajaran.$pelajaran.'
+							k.nama LIKE "%'.$nama.'%" AND
+							k.nip LIKE "%'.$nip.'%" AND
+							g.tahunajaran ='.$tahunajaran.$pelajaran.'
 						ORDER 
 							BY g.replid asc';
 				// print_r($sql);exit();
@@ -101,7 +103,7 @@
 					$starting=0;
 				}
 
-				$recpage= 5;//jumlah data per halaman
+				$recpage= 10;//jumlah data per halaman
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 

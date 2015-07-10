@@ -10,23 +10,19 @@
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$kriteria    = isset($_POST['kriteriaS'])?filter(trim($_POST['kriteriaS'])):'';
-				$keterangan  = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
-				$sql = 'SELECT t.replid,k.kriteria,t.keterangan
-						FROM '.$tb.' t 
-							left join psb_kriteria k on k.replid = t.kriteria
+				$tingkat    = isset($_POST['tingkatS'])?filter(trim($_POST['tingkatS'])):'';
+				$keterangan = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
+				$sql = 'SELECT *
+						FROM '.$tb.'
 						WHERE 
-							t.tahunajaran ="'.$tahunajaran.'" and
-							t.kriteria like "%'.$kriteria.'%" and
-							t.keterangan like "%'.$keterangan.'%"
+							tingkat like "%'.$tingkat.'%" and
+							keterangan like "%'.$keterangan.'%"
 						ORDER 
-							BY t.urutan asc';
+							BY urutan asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -44,7 +40,7 @@
 				$out ='';
 				if($jum!=0){	
 					$nox = $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -54,7 +50,7 @@
 									</button>
 								 </td>';
 						$out.= '<tr align="center">
-									<td>'.$res['kriteria'].'</td>
+									<td>'.$res['tingkat'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -73,8 +69,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								kriteria 	= "'.filter($_POST['kriteriaTB']).'",
+				$s = $tb.' set 	tingkat 	= "'.filter($_POST['tingkatTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				// var_dump($s2);exit();
@@ -98,14 +93,13 @@
 			case 'ambiledit':
 				$s 		= ' SELECT *
 							from '.$tb.' 
-							WHERE 
-								replid='.$_POST['replid'];
+							WHERE replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'kriteria'   =>$r['kriteria'],
+							'tingkat'    =>$r['tingkat'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;
@@ -173,6 +167,37 @@
 				$out=json_encode($ar);
 			break;
 			// cmbtingkat -----------------------------------------------------------------
+			// urutan -----------------------------------------------------------------
+			case 'urutan':
+				// 1 = asal
+				// 2 = tujuan
+				$_1 = mysql_fetch_assoc(mysql_query('SELECT urutan from '.$tb.' WHERE replid='.$_POST['replid1']));
+				$_2 = mysql_fetch_assoc(mysql_query('SELECT replid from '.$tb.' WHERE urutan='.$_POST['urutan2']));
+				$s1		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_POST['urutan2'].'  
+							WHERE 
+								replid='.$_POST['replid1'];
+				$s2		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_1['urut'].'  
+							WHERE 
+								replid='.$_2['replid'];
+				// var_dump($s1);exit();
+				$e1 	= mysql_query($s1);
+				if(!$e1){
+					$stat='gagal ubah urutan semula ';
+				}else{
+					$e2 = mysql_query($s2);
+					if(!$e2)
+						$stat = 'gagal ubah urutan kedua';
+					else
+						$stat= 'sukses';
+				}
+				$out 	= json_encode(array(
+							'status'  =>$stat,
+						));
+			break;
+			// urutan ------			
+
 
 		}
 	}
