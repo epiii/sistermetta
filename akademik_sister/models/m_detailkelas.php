@@ -6,6 +6,7 @@
 	require_once '../../lib/tglindo.php';
 	$mnu = 'kelas';
 	$tb  = 'aka_'.$mnu;
+	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
@@ -84,27 +85,30 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tingkat    = isset($_POST['tingkatS']) && $_POST['tingkatS']!=''?' s.tingkat='.$_POST['tingkatS'].' AND ':'';
-				$subtingkat = isset($_POST['subtingkatS']) && $_POST['subtingkatS']!=''?' k.subtingkat='.$_POST['subtingkatS'].' AND ':'';
+				$subtingkat = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
 				$kelas      = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
-				$keterangan = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$wali       = isset($_POST['waliS'])?filter($_POST['waliS']):'';
 
-				$sql =' SELECT 
+				$sql ='SELECT 
 							k.replid,
 							k.kelas,
-							t.tingkat,
-							s.subtingkat,
-							k.keterangan
+							p.nama AS wali,
+							k.kapasitas,
+							k.keterangan,(
+								SELECT COUNT(*) 
+								FROM aka_siswa_kelas a
+								WHERE a.kelas=k.replid
+							)terisi
 						FROM aka_kelas k
-							LEFT JOIN aka_subtingkat s on s.replid  = k.subtingkat 
-							LEFT JOIN aka_tingkat t on t.replid  = s.tingkat 
+							LEFT JOIN hrd_pegawai p ON p.replid = k.wali
+							LEFT JOIN aka_tahunajaran t ON t.replid=k.tahunajaran
+							LEFT JOIN departemen d ON d.replid=t.departemen
+							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
 						WHERE
-							'.$tingkat.$subtingkat.' 
-							k.kelas LIKE"%'.$kelas.'%" AND
-							k.keterangan LIKE"%'.$keterangan.'%"
+							k.subtingkat ='.$subtingkat.' AND 
+							p.nama LIKE"%'.$wali.'%" AND
+							k.kelas LIKE"%'.$kelas.'%"
 						ORDER BY
-							t.urutan ASC, 
-							s.subtingkat ASC, 
 							k.kelas ASC';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
@@ -113,7 +117,7 @@
 					$starting=0;
 				}
 
-				$recpage= 10;//jumlah data per halaman
+				$recpage= 5;//jumlah data per halaman
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
@@ -132,12 +136,14 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$res['tingkat'].'</td>
-									<td>'.$res['subtingkat'].'</td>
 									<td>'.$res['kelas'].'</td>
+									<td>'.$res['wali'].'</td>
+									<td>'.$res['kapasitas'].'</td>
+									<td>'.$res['terisi'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
+								// <td>'.$res['terisi'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -154,7 +160,9 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	kelas       = "'.filter($_POST['kelasTB']).'",
-								subtingkat  = "'.$_POST['subtingkatTB'].'",
+								kapasitas   = "'.filter($_POST['kapasitasTB']).'",
+								subtingkat  = "'.$_POST['subtingkatH'].'",
+								wali        = "'.$_POST['guruH'].'",
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -183,11 +191,14 @@
 				$s 	= ' SELECT 
 							k.kelas, 
 							k.keterangan, 
-							k.subtingkat,
-							s.tingkat
+							k.kapasitas, 
+							k.subtingkat idsubtingkat, 
+							k.wali idwali, 
+							p.nip nip, 
+							p.nama nama
 						FROM  
 							aka_kelas k 
-							LEFT JOIN aka_subtingkat s on s.replid = k.subtingkat
+							LEFT JOIN hrd_pegawai p on p.replid = k.wali
 						WHERE
 							k.replid ='.$_POST['replid'];
 				// print_r($s);exit();
@@ -197,11 +208,13 @@
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-								'kelas'      =>$r['kelas'],
-								'tingkat'    =>$r['tingkat'],
-								'subtingkat' =>$r['subtingkat'],
-								'kelas'      =>$r['kelas'],
-								'keterangan' =>$r['keterangan']
+								'kelas'        =>$r['kelas'],
+								'idwali'       =>$r['idwali'],
+								'idsubtingkat' =>$r['idsubtingkat'],
+								'nip'          =>$r['nip'],
+								'nama'         =>$r['nama'],
+								'kapasitas'    =>$r['kapasitas'],
+								'keterangan'   =>$r['keterangan']
 						)));
 			break;
 			// ambiledit -----------------------------------------------------------------

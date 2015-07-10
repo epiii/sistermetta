@@ -23,8 +23,10 @@
 						WHERE 
 							'.$tingkat.' 
 							s.subtingkat LIKE "%'.$subtingkat.'%"
-						ORDER  
-							BY tingkat asc';
+						ORDER BY 
+							t.urutan asc,
+							s.subtingkat asc
+							';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -53,8 +55,8 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td align="center">'.$res['subtingkat'].'</td>
 									<td align="center">'.$res['tingkat'].'</td>
+									<td align="center">'.$res['subtingkat'].'</td>
 									'.$btn.'
 								</tr>';
 						// $nox++;
