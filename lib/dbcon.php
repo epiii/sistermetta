@@ -4,7 +4,7 @@
 	$username = "root";
 	$password = "";
 	// $database = "sister_siadu_demo";
-	$database = "sistermeta";
+	$database = "sistermetta";
 	
 	//online
 	// $server   = "mysql.idhotinger.com";
