@@ -131,16 +131,13 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];
-					}elseif (isset($_POST['tahunajaran'])) {
-						$w='where t.tahunajaran='.$_POST['tahunajaran'];
 					}
 				}
 				
-				$s	= ' SELECT t.replid, t.keterangan,k.kriteria
-						from '.$tb.' t 
-							LEFT JOIN psb_kriteria k on k.replid = t.kriteria 
+				$s	= ' SELECT * 
+						from '.$tb.'
 						'.$w.'		
-						ORDER  BY t.'.$mnu.' asc';
+						ORDER  BY '.$mnu.' asc';
 				// var_dump($s);exit();
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
@@ -150,7 +147,6 @@
 					$ar = array('status'=>'error');
 				}else{
 					if($n==0){ // kosong 
-						// var_dump($n);exit();
 						$ar = array('status'=>'kosong');
 					}else{ // ada data
 						if(!isset($_POST['replid'])){
@@ -160,11 +156,8 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-					}
-					$ar = array('status'=>'sukses','tingkat'=>$dt);
-				}
-				// print_r($n);exit();
-				$out=json_encode($ar);
+					}$ar = array('status'=>'sukses','tingkat'=>$dt);
+				}$out=json_encode($ar);
 			break;
 			// cmbtingkat -----------------------------------------------------------------
 			// urutan -----------------------------------------------------------------
