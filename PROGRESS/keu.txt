@@ -24,8 +24,10 @@ _________________________  transact  ___________________________
 		- lap. neraca 	:  report & print & filter (tgl+jenis Trans)
 		- kas / bank 	:  report & print & filter (tgl+jenis Trans)
 		- buku tambahan	:  report & print & filter (tgl+jenis Trans)
-* modul pembayaran(C)
+* modul penerimaan - siswa (P)
 	+ kode rekening (perlu dibuatkan tabel detilmodulpembayaran kah=> rekening multi (pendatpaan, kas, piutang) )
+	+ form : ambiledit ==> combo box semester & bulan belum tampil data 
+	- view : material , reg, tuition : tidak tampil data 
 * pembayaran pendaftaran(C)
 	- rename label (lampiran revisi)
 	+ print/ pdf : error

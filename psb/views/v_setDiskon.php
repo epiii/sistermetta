@@ -8,7 +8,7 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-left">No.</th>
-            <th class="text-left">Diskon (%)</th>
+            <th class="text-left">Diskon</th>
             <th class="text-left">Keterangan</th>
             <th class="text-left">Aksi</th>
         </tr>

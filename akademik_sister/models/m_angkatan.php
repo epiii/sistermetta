@@ -53,12 +53,10 @@
 										<i class="icon-remove on-left"></i>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
 									<td>'.$res['angkatan'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
-						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -73,13 +71,28 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
-										angkatan 	= "'.filter($_POST['angkatanTB']).'",
-										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e 		= mysql_query($s2);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array('status'=>$stat));
+				$cek =getAngkatan2('angkatan','angkatan',$_POST['angkatanTB']);
+				$s = $tb.' set 	departemen 	= "'.$_POST['departemenH'].'",
+								angkatan 	= "'.filter($_POST['angkatanTB']).'",
+								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
+				if(isset($_POST['replid']) && $_POST['replid']	!=''){ // edit mode 
+					if($cek !=null && $cek!=$_POST['angkatanH']){ // sama dengan tahun selain tahun awal
+						$stat='unavailable'; // sama dengna tahun awal
+					}else{ // baru / sama dengan tahun awal 	
+						$s2   = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+						$e    = mysql_query($s2);
+						$stat = $e?'sukses':'gagal';
+					}
+				}else{ //  add  mode 
+					if($cek !=null){ // sama dg tahun di DB
+						$stat='unavailable'; // sama dengna tahun awal
+					}else{ // tidak sama 
+						$s2   = 'INSERT INTO '.$s;
+						$e    = mysql_query($s2);
+						$stat = $e?'sukses':'gagal';
+					} 
+				}
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			

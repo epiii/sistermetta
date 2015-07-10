@@ -14,13 +14,17 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tingkat    = isset($_POST['tingkatS'])?$_POST['tingkatS']:'';
+				$tingkat    = isset($_POST['tingkatS']) && $_POST['tingkatS']!=''?' s.tingkat ='.$_POST['tingkatS'].' AND':'';
 				$subtingkat = isset($_POST['subtingkatS'])?$_POST['subtingkatS']:'';
-				$sql = 'SELECT *
-						FROM  aka_subtingkat
-						WHERE tingkat = '.$tingkat.' AND
-							 subtingkat LIKE "%'.$subtingkat.'%"
-						ORDER  BY replid asc';
+				$sql = 'SELECT 
+							s.replid,t.tingkat,s.subtingkat
+						FROM  aka_subtingkat s
+							LEFT JOIN aka_tingkat t on t.replid = s.tingkat
+						WHERE 
+							'.$tingkat.' 
+							s.subtingkat LIKE "%'.$subtingkat.'%"
+						ORDER  
+							BY tingkat asc';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
@@ -50,6 +54,7 @@
 								 </td>';
 						$out.= '<tr>
 									<td align="center">'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['tingkat'].'</td>
 									'.$btn.'
 								</tr>';
 						// $nox++;
@@ -67,7 +72,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tingkat 	= "'.filter($_POST['tingkatH']).'",
+				$s = $tb.' set 	tingkat 	= "'.filter($_POST['tingkatTB']).'",
 								subtingkat 	= "'.filter($_POST['subtingkatTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
@@ -91,24 +96,16 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT 
-								st.replid,
-								st.subtingkat,
-								st.tingkat,
-								t.tahunajaran
-							from '.$tb.' st 
-								LEFT JOIN aka_tingkat t on t.replid = st.tingkat
-							WHERE 
-								st.replid='.$_POST['replid'];
-				// print_r($s);exit();
+				$s 		= ' SELECT *
+							from '.$tb.'
+							WHERE  replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'      =>$stat,
-							'tingkat'     =>$r['tingkat'],
-							'subtingkat'  =>$r['subtingkat'],
-							'tahunajaran' =>$r['tahunajaran']
+							'status'     =>$stat,
+							'tingkat'    =>$r['tingkat'],
+							'subtingkat' =>$r['subtingkat'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

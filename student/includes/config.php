@@ -16,7 +16,7 @@ define('AURACMS_FUNC', true);
 
 $mysql_user = 'root';
 $mysql_password = '';
-$mysql_database = 'pointofsales';
+$mysql_database = 'sistermeta';
 $mysql_host = 'localhost';
 
 /******************

@@ -371,6 +371,13 @@ var rekArr=[];
             affixesStay: true
         });
     }
+// input angka --------------------------
+    function inputangka(e) {
+        $(e).maskMoney({
+            precision:0,
+            affixesStay: true
+        });
+    }
 // end of input uang --------------------------
 
 // notifikasi

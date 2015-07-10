@@ -14,7 +14,7 @@ define('SHAREDFW',ROOTDIR.'shared/framework.php');
 define('DBFILE',ROOTDIR.'shared/db.php');
 define('SHAREDOBJ',SHAREDLIB.'obj/');
 
-// define('DB_HRD','`vita`.`hrd_pegawai`');
+// define('DB_HRD','vita`.`hrd_pegawai`');
 // define('DB_PUS_SO','`vita`.`hrd_pegawai`');
 
 define('DBHOST','localhost');

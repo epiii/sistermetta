@@ -123,8 +123,8 @@
                     case 'katmodulpembayaran':
                         require $d.'v_katmodulpembayaran.php';
                     break;
-                    case 'modulpembayaran':
-                        require $d.'v_modulpembayaran.php';
+                    case 'modulpenerimaansiswa':
+                        require $d.'v_modulpenerimaansiswa.php';
                     break;
                     case 'penerimaansiswa':
                         require $d.'v_penerimaansiswa.php';

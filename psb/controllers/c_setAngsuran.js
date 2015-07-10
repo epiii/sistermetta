@@ -1,20 +1,32 @@
-var dir='models/m_setAngsuran.php';
-var contentFR='';
+var dir       ='models/m_setAngsuran.php';
+var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
         contentFR += '<form onsubmit="simpan();return false;" id="angsuranFR">' 
-                        +'<label>Jumlah Angsuran</label>'
                         +'<input  id="idformH" type="hidden">' 
+                        
+                        // jumlah angsuran 
+                        +'<label>Jumlah Angsuran</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="angsuran" id="angsuran">'
+                            +'<input placeholder="jumlah angsuran "  min="1" max="100" required type="number" name="cicilanTB" id="cicilanTB">'
+                        +'</div>'
+
+                        // diskon 
+                        +'<label>Diskon</label>'
+                        +'<div class="input-control text">'
+                            +'<input  placeholder="diskon  " required value="0" type="text" name="diskonTB" id="diskonTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
+                        // jumlah angsuran 
                         +'<label>Keterangan</label>'
                         +'<div class="input-control text">'
-                            +'<input type="text" name="keteranganTB" id="keteranganTB">'
+                            +'<input  placeholder="keterangan" type="text" name="keteranganTB" id="keteranganTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
+
+                        //button 
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -74,25 +86,42 @@ var contentFR='';
     }
 //end of save process ---
 
-// view table ---
-    function viewTB(){
-        $('#tbody').html('<img src="img/loading82.gif"> ');
+    // view table ---
+    function viewTB(subaksi){
         var aksi ='aksi=tampil';
-        var cari = '&angsuranS='+$('#angsuranS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
-            // data: $('#cariFR').serialize(),
-            success:function(data){
-                $('#tbody').html('<img src="img/loading82.gif">').fadeOut();
-                $('#tbody').hide().html(data).fadeIn(1000);
+            beforeSend:function(){
+                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr>');
+            },success:function(dt){
+                setTimeout(function(){
+                    $(el2).html(dt).fadeIn();
+                },1000);
             }
         });
     }
-// end of view table ---
-
 // add form ---
     function viewFR(id){
         $.Dialog({
@@ -117,7 +146,8 @@ var contentFR='';
                         dataType:'json',
                         success:function(data){
                             $('#idformH').val(id);
-                            $('#angsuran').val(data.cicilan);
+                            $('#cicilanTB').val(data.cicilan);
+                            $('#diskonTB').val(data.diskon);
                             $('#keteranganTB').val(data.keterangan);
                         }
                     });

@@ -1,5 +1,6 @@
 <?php
 	session_start();
+	error_reporting(0);
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
@@ -102,103 +103,9 @@
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
 				switch ($_POST['subaksi']) {
-					case 'formulir':
-						$pre           = 'formulir';
-						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-						$nama          = isset($_POST[$pre.'_namaS'])?filter($_POST[$pre.'_namaS']):'';
-						$nopendaftaran = isset($_POST[$pre.'_nopendaftaranS'])?filter($_POST[$pre.'_nopendaftaranS']):'';
-						$status        = (isset($_POST[$pre.'_statusS']) AND $_POST[$pre.'_statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
-						$sql = 'SELECT
-									t2.*
-								FROM
-									psb_calonsiswa c
-									LEFT JOIN (
-										SELECT 
-											if(t1.cicilan=t1.daftar,"lunas","belum")statbayar,
-											cs.replid,
-											cs.nama, 
-											t1.cicilan,
-											t1.daftar,
-											cs.kelompok,	 	
-											cs.nopendaftaran	 	
-										FROM psb_calonsiswa cs 
-											LEFT JOIN (
-												SELECT ss.replid,	p.cicilan,s.daftar
-												from  psb_calonsiswa ss
-													LEFT JOIN keu_pembayaran p on p.siswa= ss.replid
-													LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
-													LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
-													LEFT JOIN psb_setbiaya s on s.replid = ss.setbiaya
-												WHERE k.nama = "formulir"
-											)t1 on t1.replid = cs.replid 
-									)t2 on t2.replid= c.replid
-								WHERE
-									c.kelompok = '.$kelompok.'
-									AND c.nama LIKE "%'.$nama.'%"
-									AND c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-									'.$status;
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ 
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 10;
-						$aksi    ='tampil';
-						$subaksi = $pre;
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$biaya    = getBiaya($pre,$res['replid']);
-								$terbayar = getTerbayar($pre,$res['replid']);
-								$status   = getStatusBayar($pre,$res['replid']);
-								// var_dump($status);exit();
-								if($status=='lunas'){ // lunas
-									$clr  = 'green';
-									$icon = 'full';
-									$hint = 'lunas';
-									$func = 'onclick="pembayaranFR(\''.$pre.'\','.$res['replid'].');"';
-								}else{ // belum lunas
-									$clr  = 'red';
-									$icon = 'empty';
-									$hint = 'belum lunas';
-									$func = 'onclick="pembayaranFR(\''.$pre.'\','.$res['replid'].');"';
-								}
-								$btn ='<td align="center">
-											<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
-												<i class="icon-battery-'.$icon.'"></i>
-											</button>
-									   </td>';
-							 	$out.= '<tr>
-											<td>'.$res['nopendaftaran'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td align="right">Rp. '.number_format(getBiaya('daftar',$res['replid'])).'</td>
-											<td  align="center">'.getTglTrans($res['replid'],'formulir').'</td>
-											'.$btn.'
-										</tr>';
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// formulir 
-					
-					// joiing fee
+					// material  fee
 					case 'joiningf':
-						// $joiningf      = isset($_POST[$pre.'_joiningfS'])?filter($_POST[$pre.'_joiningfS']):'';
-						$pre = $_POST['subaksi'];
+						$pre           = $_POST['subaksi'];
 						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 						$nama          = isset($_POST[$pre.'_namaS'])?filter($_POST[$pre.'_namaS']):'';
 						$nopendaftaran = isset($_POST[$pre.'_nopendaftaranS'])?filter($_POST[$pre.'_nopendaftaranS']):'';
@@ -209,10 +116,12 @@
 										SELECT	
 											case 
 												when t1.cicilan = 0 OR  t1.cicilan is NULL  then "belum"
-												when t1.cicilan = sb.joiningf then "lunas"
-												when t1.cicilan < sb.joiningf then "kurang"
-											end as statbayar,
-											sb.joiningf,
+												WHEN t1.cicilan = sb.material THEN
+													"lunas"
+												WHEN t1.cicilan < sb.material THEN
+													"kurang"
+											END AS statbayar,
+											sb.material,
 											cs.replid,
 											cs.nama,
 											t1.cicilan,
@@ -261,9 +170,10 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){
-								$biaya    = getBiaya($pre,$res['replid']);
-								$terbayar = getTerbayar('joining fee',$res['replid']);
-								$status   = getStatusBayar('joining fee',$res['replid']);
+								// var_dump($pre);exit();
+								$biaya    = getBiaya('material',$res['replid']);
+								$terbayar = getTerbayar('material',$res['replid']);
+								$status   = getStatusBayar('material',$res['replid']);
 								if($status=='belum'){ // belum
 									$clr  = 'red';
 									$icon = 'empty';
@@ -316,40 +226,50 @@
 						$status   = (isset($_POST[$pre.'statusS']) AND $_POST[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'statusS']).'"':'';
 						$sql = 'SELECT t2.*
 								FROM psb_calonsiswa c
+								LEFT JOIN (
+									SELECT
+										CASE
+									WHEN t1.cicilan = 0
+									OR t1.cicilan IS NULL THEN
+										"belum"
+									WHEN t1.cicilan = sb.registration - (
+										cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai/ 100, 0)
+									) THEN
+										"lunas"
+									WHEN t1.cicilan < sb.registration - (
+										cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai / 100, 0)
+									) THEN
+										"kurang"
+									END AS statbayar,
+									sb.registration - (
+										cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai/ 100, 0)
+									) biayanet,
+									cs.replid,
+									cs.nama,
+									t1.cicilan,
+									p.angkatan,
+									cs.nis
+								FROM
+									psb_calonsiswa cs
+									LEFT JOIN psb_disctunai dt ON dt.replid = cs.disctunai
+									LEFT JOIN psb_setbiaya sb ON sb.replid = cs.setbiaya
 									LEFT JOIN (
-										SELECT	
-											case 
-												when t1.cicilan = 0 OR t1.cicilan is NULL  then "belum"
-												when t1.cicilan = sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))then "lunas"
-												when t1.cicilan < sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))then "kurang"
-											end as statbayar,
-											sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))biayanet,
-											cs.replid,
-											cs.nama,
-											t1.cicilan,
-											p.angkatan,
-											cs.nis
+										SELECT
+											ss.replid,
+											sum(p.cicilan) cicilan
 										FROM
-											psb_calonsiswa cs
-											LEFT JOIN psb_disctunai dt on dt.replid = cs.disctunai
-											LEFT JOIN psb_setbiaya sb on sb.replid = cs.setbiaya
-											LEFT JOIN (
-												SELECT
-													ss.replid,
-													sum(p.cicilan)cicilan
-												FROM
-													psb_calonsiswa ss
-													LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
-													LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
-													LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-													LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
-												WHERE
-													k.nama = "dpp"
-												GROUP BY	
-													ss.replid
-											) t1 ON t1.replid = cs.replid
-											LEFT JOIN psb_kelompok k on k.replid = cs.kelompok
-											LEFT JOIN psb_proses p on p.replid = k.proses
+											psb_calonsiswa ss
+										LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
+										LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+										LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+										LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
+										WHERE
+											k.nama = "dpp"
+										GROUP BY
+											ss.replid
+									) t1 ON t1.replid = cs.replid
+									LEFT JOIN psb_kelompok k ON k.replid = cs.kelompok
+									LEFT JOIN psb_proses p ON p.replid = k.proses
 									) t2 ON t2.replid = c.replid
 								WHERE
 									t2.angkatan = '.$angkatan.' AND
@@ -374,7 +294,7 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
-								$status = getStatusBayar('dpp',$res['replid']);
+								$status = getStatusBayar('registration',$res['replid']);
 								if($status=='belum'){ // belum
 									$clr  = 'red';
 									$icon = 'empty';
@@ -398,14 +318,15 @@
 										<i class="icon-battery-'.$icon.'"></i>
 									</button>
 								</td>';
-								$dpp      = getBiaya('dpp',$res['replid'])-getDiscTotal('dpp',$res['replid']);
-								$kurangan = $dpp-getTerbayar('dpp',$res['replid']);
+								$dpp      = getBiaya('registration',$res['replid'])-getDiscTotal('registration',$res['replid']);
+								$kurangan = $dpp-getTerbayar('registration',$res['replid']);
+// var_dump($kurangan);exit();
 							 	$out.= '<tr>
 									<td>'.$res['nis'].'</td>
 									<td>'.$res['nama'].'</td>
 									<td align="right">Rp. '.number_format($dpp).'</td>
 									<td align="right">Rp. '.number_format($kurangan).'</td>
-									<td  align="center">'.getTglTrans($res['replid'],'dpp').'</td>
+									<td  align="center">'.getTglTrans($res['replid'],'registration').'</td>
 									'.$btn.'
 								</tr>';
 							}
@@ -436,11 +357,11 @@
 									LEFT JOIN aka_siswa_kelas a on a.siswa = c.replid
 									LEFT JOIN (
 										SELECT
-											IF (t1.cicilan = t1.spp,"lunas","belum") statbayar,
+											IF (t1.cicilan = t1.tuition,"lunas","belum") statbayar,
 											cs.replid,
 											cs.nama,
 											t1.cicilan,
-											t1.spp,
+											t1.tuition,
 											cs.kelompok,
 											cs.nis
 										FROM psb_calonsiswa cs
@@ -448,7 +369,7 @@
 												SELECT
 													ss.replid,
 													p.cicilan,
-													s.spp
+													s.tuition
 												FROM
 													psb_calonsiswa ss
 													LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
@@ -456,7 +377,7 @@
 													LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
 													LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
 												WHERE
-													k.nama = "spp"
+													k.nama = "tuition"
 											) t1 ON t1.replid = cs.replid
 									) t2 ON t2.replid = c.replid
 								WHERE
@@ -754,9 +675,9 @@
 								WHERE
 									m.angkatan = '.$r1['angkatan'].' AND 
 									k.nama = "formulir"';
+						// var_dump($s2);exit();
 						$e2       = mysql_query($s2);
 						$r2       = mysql_fetch_assoc($e2);
-						// print_r($r2);exit();
 						$stat     = ($e2)?'sukses':'gagal';
 						$biaya    = getBiaya('formulir',$_POST['replid']);
 						$terbayar = getTerbayar('formulir',$_POST['replid']);
@@ -784,61 +705,29 @@
 					break;					
 
 					case 'joiningf';
-						// get angkatan by : siswa -> kelompok -> angkatan
-						$s1 = 'SELECT
-									p.angkatan,
-									c.nopendaftaran,	
-									c.replid idsiswa,	
-									c.nama siswa,	
-									b.joiningf nominal
-								FROM
-									psb_calonsiswa c 
-									LEFT JOIN psb_setbiaya b on b.replid = c.setbiaya
-									LEFT JOIN psb_kelompok k on k.replid = c.kelompok
-									LEFT JOIN psb_proses p on p.replid = k.proses
-								WHERE
-									c.replid ='.$_POST['replid']; 
-						$e1 = mysql_query($s1);
-						$r1 = mysql_fetch_assoc($e1);
-
-						// get data : modul pembayaran (untuk form) 
-						$s2   = 'SELECT
-									m.replid,
-									m.rek1,	
-									m.rek2,	
-									m.rek3,	
-									m.nama modul,
-									m.replid idmodul
-								FROM
-									keu_modulpembayaran m
-									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-								WHERE
-									m.angkatan = '.$r1['angkatan'].' AND 
-									k.nama = "Joining Fee"';
-						$e2   = mysql_query($s2);
-						$r2   = mysql_fetch_assoc($e2);
-							// print_r($r2);exit();
-						$stat = ($e2)?'sukses':'gagal';
+						$angkatan = getSiswa('angkatan',$_POST['replid']);
+						$modul    = getModulPembayaran('Joining Fee',$angkatan);
+						// var_dump($angkatan);exit();
 						$nominal  = getBiaya('joiningf',$_POST['replid']);
 						$terbayar = getTerbayar('Joining Fee',$_POST['replid']);
 						$maxbayar = getBiaya('joiningf',$_POST['replid'])-getTerbayar('Joining Fee',$_POST['replid']);
 						$out  = json_encode(array(
-									'status' =>$stat,
+									'status' =>($modul!=null?'sukses':'gagal'),
 									'datax'  =>array(
 										//data siswa 
-										'nopendaftaran' =>$r1['nopendaftaran'],
+										'nopendaftaran' =>$modul['nopendaftaran'],
 										'idsiswa'       =>$_POST['replid'],
-										'siswa'         =>$r1['siswa'],
+										'siswa'         =>$modul['siswa'],
 										//data pembayaran
 										'nomer'         =>getNoTrans($_POST['subaksi']),
 										'tanggal'       =>tgl_indo5(date('Y-m-d')),
-										'rekkas'        =>$r2['rek1'],
-										'rekitem'       =>$r2['rek2'],
-										'rek1'          =>($r2['rek1']=='0'?'':getRekening($r2['rek1'])),
-										'rek2'          =>($r2['rek2']=='0'?'':getRekening($r2['rek2'])),
-										'rek3'          =>($r2['rek3']=='0'?'':getRekening($r2['rek3'])),
-										'modul'         =>$r2['modul'],
-										'idmodul'       =>$r2['idmodul'],
+										'rekkas'        =>$modul['rek1'],
+										'rekitem'       =>$modul['rek2'],
+										'rek1'          =>($modul['rek1']=='0'?'':getRekening($modul['rek1'])),
+										'rek2'          =>($modul['rek2']=='0'?'':getRekening($modul['rek2'])),
+										'rek3'          =>($modul['rek3']=='0'?'':getRekening($modul['rek3'])),
+										'modul'         =>$modul['modul'],
+										'idmodul'       =>$modul['idmodul'],
 										'nominal'       =>$nominal,
 										'nominal2'       =>'Rp. '.number_format($nominal),
 										'terbayar'      =>$terbayar,

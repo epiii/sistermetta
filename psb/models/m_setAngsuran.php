@@ -28,7 +28,7 @@
 					$starting=0;
 				}
 				// $menu='tampil';	
-				$recpage = 5;
+				$recpage = 12;
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -39,7 +39,7 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td>
 									<button class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -49,8 +49,8 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td>'.$res['cicilan'].'</td>
+									<td align="center">'.$res['cicilan'].' x</td>
+									<td align="right">'.$res['diskon'].' %</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -72,12 +72,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	cicilan 	= "'.filter($_POST['angsuran']).'",
-										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				$e 		= mysql_query($s2);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(['status'=>$stat]);
+				$s    = $tb.' set 	cicilan    = "'.filter($_POST['cicilanTB']).'",
+									diskon     = "'.mysql_real_escape_string($_POST['diskonTB']).'",
+									keterangan = "'.filter($_POST['keteranganTB']).'"';
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e    = mysql_query($s2);
+				$stat = ($e)?'sukses':'gagal';
+				$out  = json_encode(['status'=>$stat]);
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -97,9 +98,10 @@
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'=>$stat,
-							'cicilan'=>$r['cicilan'],
-							'keterangan'=>$r['keterangan']
+							'status'     =>$stat,
+							'cicilan'    =>$r['cicilan'],
+							'diskon'     =>$r['diskon'],
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -137,7 +139,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','cicilan'=>$dt);
+						}$ar = array('status'=>'sukses','angsuran'=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

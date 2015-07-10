@@ -7,7 +7,7 @@ var contentFR='';
                         +'<label>Diskon (%)</label>'
                         +'<input  id="idformH" type="hidden">' 
                         +'<div class="input-control text">'
-                            +'<input required type="text" name="diskonTB" id="diskonTB">'
+                            +'<input maxlength="3" max="100" min="1" required type="number" name="nilaiTB" id="nilaiTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         +'<label>Keterangan</label>'
@@ -117,7 +117,7 @@ var contentFR='';
                         dataType:'json',
                         success:function(data){
                             $('#idformH').val(id);
-                            $('#diskonTB').val(data.nilai);
+                            $('#nilaiTB').val(data.nilai);
                             $('#keteranganTB').val(data.keterangan);
                         }
                     });
@@ -186,8 +186,7 @@ var contentFR='';
     
 //reset form ---
     function kosongkan(){
-        $('#idformTB').val('');
-        $('#diskonTB').val('');
+        $('#nilaiTB').val('');
         $('#keteranganTB').val('');
     }
 //end of reset form ---

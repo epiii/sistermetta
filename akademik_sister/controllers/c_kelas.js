@@ -17,11 +17,11 @@ var contentFR = '';
                          + '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
-                        +'<label>Departemen</label>'
-                        +'<div class="input-control text">'
+                        // +'<label>Departemen</label>'
+                        // +'<div class="input-control text">'
                             +'<input type="hidden" name="departemenH" id="departemenH">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                        +'</div>'
+                            // +'<input disabled type="text" name="departemenTB" id="departemenTB">'
+                        // +'</div>'
                         
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="input-control text">'
@@ -40,37 +40,38 @@ var contentFR = '';
                             +'<input disabled type="text" name="subtingkatTB" id="subtingkatTB">'
                         +'</div>'
 
-                        +'<legend>Cari Wali Kelas </legend>'
-                        +'<div class="balloon bottom">'
-                            +'<div class="padding20">'
+                        +'<label>Kelas</label>'
+                        +'<div class="input-control text">'
+                            +'<input placeholder="kelas" required type="text" name="kelasTB" id="kelasTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        // +'<legend>Cari Wali Kelas </legend>'
+                        // +'<div class="balloon bottom">'
+                            // +'<div class="padding20">'
+                                +'<label>NIP / Nama Wali Kelas</label>'
                                 +'<div class="input-control text">'
-                                    +'<input placeholder="kode/nama pegawai" id="guruTB">'
+                                    +'<input placeholder="cari NIP / Nama " id="guruTB">'
                                     +'<input  type="text" name="guruH" id="guruH" >'
                                     +'<button class="btn-clear"></button>'
                                 +'</div>'
-                                +'<label>NIP</label>'
-                                +'<div class="input-control text">'
-                                    +'<input disabled="disabled" placeholder="kode" id="nipTB">'
-                                    +'<button class="btn-clear"></button>'
-                                +'</div>'
-                                +'<label>Nama</label>'
-                                +'<div class="input-control text">'
-                                    +'<input disabled="disabled" placeholder="nama wali" id="waliTB">'
-                                    +'<button class="btn-clear"></button>'
-                                +'</div>'
-                            +'</div>'                                
-                        +'</div>'                                
+                                // +'<label>NIP</label>'
+                                // +'<div class="input-control text">'
+                                //     +'<input disabled="disabled" placeholder="kode" id="nipTB">'
+                                //     +'<button class="btn-clear"></button>'
+                                // +'</div>'
+                                // +'<label>Nama</label>'
+                                // +'<div class="input-control text">'
+                                //     +'<input disabled="disabled" placeholder="nama wali" id="waliTB">'
+                                //     +'<button class="btn-clear"></button>'
+                                // +'</div>'
+                            // +'</div>'                                
+                        // +'</div>'                                
 
                         +'<label>Kapasitas</label>'
                         +'<div class="input-control text">'
                             +'<input class="span1" placeholder="kapasitas" required type="text" name="kapasitasTB" id="kapasitasTB">'
                             +'<button class="btn-clear"></button> siswa'
-                        +'</div>'
-
-                        +'<label>Kelas</label>'
-                        +'<div class="input-control text">'
-                            +'<input class="span2" placeholder="kelas" required type="text" name="kelasTB" id="kelasTB">'
-                            +'<button class="btn-clear"></button>'
                         +'</div>'
 
                         +'<label>Keterangan</label>'
@@ -180,26 +181,22 @@ var contentFR = '';
 
 // combo tingkat ---
     function cmbtingkat(typ,thn,ting){
-        $.ajax({
-            url:dir4,
-            data:'aksi=cmbtingkat&'+(thn!=''?'tahunajaran='+thn:'replid='+ting),
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.tingkat, function(id,item){
-                        out+='<option value="'+item.replid+'">'+item.keterangan+' ('+item.tingkat+')</option>';
-                    });
-                }
-                if(typ=='filter'){
-                    $('#tingkatS').html(out);
-                    cmbsubtingkat('filter',$('#tingkatS').val(),'');
-                }else{
-                    $('#tingkatTB').val(dt.tingkat[0].keterangan);
-                }
+        var u=dir4;
+        var d ='aksi=cmbtingkat&'+(thn!=''?'tahunajaran='+thn:'replid='+ting);
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.tingkat, function(id,item){
+                    out+='<option value="'+item.replid+'">'+item.kriteria+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#tingkatS').html(out);
+                cmbsubtingkat('filter',$('#tingkatS').val(),'');
+            }else{
+                $('#tingkatTB').val(dt.tingkat[0].kriteria);
             }
         });
     }
@@ -375,6 +372,60 @@ var contentFR = '';
     }
 // end of form ---
 
+  // autosuggest
+    function autoSuggest(jenis,el,subaksi,tingkat){
+        var urlx= '?aksi=autocomp&subaksi='+subaksi+(jenis!=''?'&jenis='+jenis:'');
+        var col = [{
+                'align':'left',
+                'columnName':'kode',
+                'hide':true,
+                'width':'10',
+                'label':'Kode'
+            },{   
+                'align':'left',
+                'columnName':'nama',
+                'width':'90',
+                'label':'Rekening'
+        }];
+        urly = dir+urlx;
+        $('#'+el+'TB').combogrid({
+            debug:true,
+            width:'750px',
+            colModel: col ,
+            url: urly,
+            select: function( event, ui ) { // event setelah data terpilih 
+                $('#'+el+'H').val(ui.item.replid);
+                $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
+                var arr = rekArrFC();
+                var str = arr.toString();
+
+                // validasi input (tidak sesuai data dr server)
+                    $('#'+el+'TB').on('keyup', function(e){
+                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        var keyCode = $.ui.keyCode;
+                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                            if($('#'+el+'H').val()!=''){
+                                $('#'+el+'H').val('');
+                                $('#'+el+'TB').val('');
+            
+                                var str = rekArr.toString();
+                                console.log('terpilih in auto 2 =>'+str+' arr=> '+rekArr);
+                                if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+                            }
+                        }
+                    });
+                    $('#'+el+'TB').on('blur,change',function(){
+                        if($('#'+el+'H').val()=='') {
+                            $('#'+el+'TB').val(''); // :: all 
+                            if(subaksi=='out_come') $('#detilanggaranV').val(''); // :: out_come
+                        }
+                    });
+                return false;
+            }
+        });
+    }
+
+
 //paging ---
      function pagination(page,aksix){
         var datax = 'starting='+page+'&aksi='+aksix;
@@ -442,33 +493,11 @@ function notif(cont,clr) {
     }
 //end of reset form ---
 
-//aktifkan process ---
-    // function aktifkan(id){
-    // 	var th  = $('#'+mnu+'TD_'+id).html();
-    // 	var dep = $('#'+mnu2+'S').val();
-    // 	//alert('d '+dep);
-    // 	//return false;
-    //     if(confirm(' mengaktifkan "'+th+'"" ?'))
-    //     $.ajax({
-    //         url:dir,
-    //         type:'post',
-    //         data:'aksi=aktifkan&replid='+id+'&departemen='+dep,
-    //         dataType:'json',
-    //         success:function(dt){
-    //             var cont,clr;
-    //             if(dt.status!='sukses'){
-    //                 cont = '..Gagal Mengaktifkan '+th+' ..';
-    //                 clr  ='red';
-    //             }else{
-    //                 viewTB($('#departemenS').val());
-    //                 cont = '..Berhasil Mengaktifkan '+th+' ..';
-    //                 clr  ='green';
-    //             }notif(cont,clr);
-    //         }
-    //     });
-    // }
-//end of aktifkan process ---
-
-    // ---------------------- //
-    // -- created by rovi -- //
-    // ---------------------- //
+    function ajax (u,d) {
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post',
+        });
+    }

@@ -11,6 +11,7 @@ var contentFR = '';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
+                        // Departemen
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" name="departemenH" id="departemenH">'
@@ -18,6 +19,7 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        // tahun ajaran 
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="input-control text size3">'
                             +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
@@ -25,36 +27,32 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        // nama kelompok
                         +'<label>Kelompok</label>'
                         +'<div class="input-control text">'
                             +'<input placeholder="Kelompok" oninvalid="this.setCustomValidity(\'Mohon isi dulu\');" required type="text" name="kelompokTB" id="kelompokTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        // tgl mulai
                         +'<label>Tanggal Mulai</label>'
                         +'<div class="input-control text size2" data-role="datepicker"'
-                            // +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
+                            +'data-format="dd mmmm yyyy"'
                             +'data-effect="slide">'
                             +'<input id="tglmulaiTB" name="tglmulaiTB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
+                        // tgl akhir 
                         +'<label>Tanggal Akhir</label>'
                         +'<div class="input-control text size2" data-role="datepicker"'
-                            // +'data-date="2014-10-23"'
-                            +'data-format="yyyy-mm-dd"'
+                            +'data-format="dd mmmm yyyy"'
                             +'data-effect="slide">'
                             +'<input id="tglakhirTB" name="tglakhirTB" type="text">'
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
-                        +'<label>Biaya Pendaftaran</label>'
-                        +'<div class="input-control text size2">'
-                            +'<input placeholder="Biaya Pendaftaran" oninvalid="this.setCustomValidity(\'Mohon isi dulu\');" required type="text" name="biaya_pendaftaranTB" id="biaya_pendaftaranTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-
+                        // keterangan
                         +'<label>Keterangan</label>'
                         +'<div class="input-control textarea">'
                             +'<textarea placeholder="keterangan" name="keteranganTB" id="keteranganTB"></textarea>'
@@ -256,8 +254,6 @@ var contentFR = '';
                                                 $('#kelompokTB').val(dt3.kelompok);
                                                 $('#tglmulaiTB').val(dt3.tglmulai);
                                                 $('#tglakhirTB').val(dt3.tglselesai);                                                
-                                                $('#biaya_pendaftaranTB').val(dt3.biaya);                                                
-                                                // $('#tingkatTB').val(dt3.tingkat);
                                                 $('#keteranganTB').val(dt3.keterangan);
                                             }
                                         });

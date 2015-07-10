@@ -15,16 +15,14 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-					$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunajaran = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
 				$kelompok    = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-				// $keterangan  = trim($_POST['tglpendaftaranS'])?filter($_POST['tglpendaftaranS']):'';
 				$sql = 'SELECT
 							k.replid,
 							k.kelompok,
 							k.tglmulai,
 							k.tglselesai,
-							k.biaya,
 							(
 								SELECT
 									count(*)
@@ -66,7 +64,7 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
+					while($res = mysql_fetch_assoc($result)){	
 						if($res['aktif']=1){
 							$dis  = 'disabled';
 							$ico  = 'checkmark';
@@ -88,10 +86,8 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['kelompok'].'</td>
-									
+									<td>'.$res['kelompok'].'</td>
 									<td>'.tgl_indo($res['tglmulai']).' s/d '.tgl_indo($res['tglselesai']).'</td>
-									<td>'.$res['biaya'].'</td>
 									<td>'.$res['calonsiswa'].'</td>
 									<td>'.$res['siswaditerima'].'</td>
 									<td>'.$res['keterangan'].'</td>
@@ -114,9 +110,8 @@
 			case 'simpan':
 				$s = $tb.' set 	proses 		= "'.filter($_POST['tahunajaranH']).'",
 								kelompok  	= "'.filter($_POST['kelompokTB']).'",
-								tglmulai  	= "'.filter($_POST['tglmulaiTB']).'",
-								tglselesai  = "'.filter($_POST['tglakhirTB']).'",
-								biaya  		= "'.filter($_POST['biaya_pendaftaranTB']).'",
+								tglmulai  	= "'.tgl_indo6($_POST['tglmulaiTB']).'",
+								tglselesai  = "'.tgl_indo6($_POST['tglakhirTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
@@ -150,10 +145,9 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'     =>$stat,
-							'kelompok'    =>$r['kelompok'],
-							'tglmulai'    =>$r['tglmulai'],
-							'tglselesai'  =>$r['tglselesai'],
-							'biaya'    	  =>$r['biaya'],
+							'kelompok'   =>$r['kelompok'],
+							'tglmulai'   =>tgl_indo5($r['tglmulai']),
+							'tglselesai' =>tgl_indo5($r['tglselesai']),
 							'keterangan' =>$r['keterangan'],
 						));
 			break;

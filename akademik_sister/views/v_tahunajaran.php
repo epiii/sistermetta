@@ -18,8 +18,8 @@
         <tr style="color:white;"class="info">
             <th class="text-center">No.</th>
             <th class="text-left">Tahun Ajaran </th>
-            <th class="text-left">Tanggal Mulai</th>
-            <th class="text-left">Tanggal Akhir</th>
+            <!-- <th class="text-left">Tanggal Mulai</th> -->
+            <!-- <th class="text-left">Tanggal Akhir</th> -->
             <th class="text-left">Keterangan</th>
             <th class="text-left">Status</th>
             <th class="text-left">Aksi</th>
@@ -28,8 +28,8 @@
             <th class="text-left"></th>
             <th class="text-left"><input placeholder="tahunajaran" id="tahunajaranS" name="tahunajaranS"></th>
             <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
+            <!-- <th class="text-left"></th> -->
+            <!-- <th class="text-left"></th> -->
             <th class="text-left"></th>
             <th class="text-left"></th>
         </tr>

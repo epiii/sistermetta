@@ -112,8 +112,8 @@
 							while($res = mysql_fetch_assoc($result)){	
 								$btn ='<td>
 											<button data-hint="detail"  class="button" onclick="viewFR('.$res['replid'].');">
-														<i class="icon-zoom-in"></i>
-													</button>
+												<i class="icon-zoom-in"></i>
+											</button>
 											<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 											</button>
@@ -142,11 +142,17 @@
 						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 
-						$sql = 'SELECT *
-								FROM '.$tb.' s	
+						$sql = 'SELECT
+									*
+								FROM
+									psb_calonsiswa c
+									LEFT JOIN psb_kelompok k on k.replid = c.kelompok
+									LEFT JOIN psb_proses p on p.replid = k.proses
 								WHERE
-									s.nama LIKE "%'.$nama.'%" AND
-									s.nis LIKE "%'.$nis.'%"';
+									c.status=1 
+									AND c.nama LIKE "%'.$nama.'%"
+									AND c.nis LIKE "%'.$nis.'%"
+									AND p.angkatan ='.$angkatan;
 						// print_r($sql);exit();
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -165,13 +171,13 @@
 						if($jum!=0){	
 							$nox = $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
-								$btn ='<td>
+								$btn ='<td align="center">
 											<button data-hint="pilih"  class="button" onclick="pilih('.$res['replid'].');">
 												<i class="icon-remove on-left"></i>
 											</button>
 										 </td>';
 								$out.= '<tr>
-											<td></td>
+											<td align="center"><input type="checkbox"></td>
 											<td>'.$res['nis'].'</td>
 											<td>'.$res['nama'].'</td>
 											'.$btn.'
@@ -242,6 +248,21 @@
 				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['siswa']));
 			break;
 			// delete -----------------------------------------------------------------
+
+			case 'getKriteria':
+				if(!isset($_POST['tingkat'])){
+					$o = array('status' =>'invalid_no_post' );
+				}else{
+					$idkriteria = getField('kriteria','aka_tingkat','replid',$_POST['tingkat']);
+					$kriteria   = getField('kriteria','psb_kriteria','replid',$idkriteria);
+					// var_dump($kriteria);exit();
+					$o = array(
+							'status'     =>(($kriteria!=null || $kriteria!='')?'sukses':'gagal'),
+							'kriteria'   =>$kriteria,
+							'idkriteria' =>$idkriteria
+						);				
+				}$out = json_encode($o);
+			break;
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':

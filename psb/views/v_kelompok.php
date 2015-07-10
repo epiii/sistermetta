@@ -1,9 +1,4 @@
 <script src="controllers/c_kelompok.js"></script>
-<!-- <script src="js/metro/metro-button-set.js"></script>
-<script src="js/metro/metro-hint.js"></script>
-<script src="js/metro/metro-calendar.js"></script>
-<script src="js/metro/metro-datepicker.js"></script>
- -->
 <h4 style="color:white;">Kelompok Pendaftaran</h4>
 <div id="loadarea"></div>
 
@@ -20,21 +15,20 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Kelompok</th>
-            <th class="text-left">Tanggal Pendaftaran </th>
-            <th class="text-left">Biaya Pendaftaran</th>
-            <th class="text-left">Calon Siswa</th>
-            <th class="text-left">Siswa Diterima</th>
-            <th class="text-left">Keterangan</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">Tanggal Pendaftaran </th>
+            <th class="text-center">Calon Siswa</th>
+            <th class="text-center">Siswa Diterima</th>
+            <th class="text-center">Keterangan</th>
+            <th class="text-center">Aksi</th>
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
-            <th class="text-left"><input class="cari" placeholder="kelompok" id="kelompokS" name="kelompokS"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
-            <th class="text-left"></th>
+            <th class="text-center"><input class="cari" placeholder="kelompok" id="kelompokS" name="kelompokS"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
+            <th class="text-center"></th>
         </tr>
     </thead>
 
@@ -50,12 +44,12 @@
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Pendataan Siswa</th>
-            <th class="text-left">Tanggal Pendaftaran </th>
-            <th class="text-left">Biaya Pendaftaran</th>
-            <th class="text-left">Calon Siswa</th>
-            <th class="text-left">Siswa Diterima</th>
-            <th class="text-left">Keterangan</th>
-            <th class="text-left">Aksi</th>
+            <th class="text-center">Tanggal Pendaftaran </th>
+            <th class="text-center">Biaya Pendaftaran</th>
+            <th class="text-center">Calon Siswa</th>
+            <th class="text-center">Siswa Diterima</th>
+            <th class="text-center">Keterangan</th>
+            <th class="text-center">Aksi</th>
         </tr>
     </thead>
 
