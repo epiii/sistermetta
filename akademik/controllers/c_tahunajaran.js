@@ -9,12 +9,12 @@ var contentFR = '';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
-                        +'<label>Departemen</label>'
-                        +'<div class="input-control text">'
+                        // +'<label>Departemen</label>'
+                        // +'<div class="input-control text">'
                             +'<input type="hidden" name="departemenH" id="departemenH">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
+                            // +'<input disabled type="text" name="departemenTB" id="departemenTB">'
+                            // +'<button class="btn-clear"></button>'
+                        // +'</div>'
                         
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="span3">'

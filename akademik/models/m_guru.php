@@ -76,27 +76,25 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$nip         = isset($_POST['nipS'])?filter($_POST['nipS']):'';
 				$nama        = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
 				$sql = 'SELECT 
-							g.*,
-							t.tahunajaran, 
-							j.nama AS pelajaran, 
-							k.nip, 
-							k.nama
+							g.replid,
+							k.nama,
+							k.nip,
+							p.
 						FROM aka_guru g
-							LEFT JOIN hrd_karyawan k  ON k.id=g.pegawai
+							LEFT JOIN hrd_karyawan k  ON k.id=g.karyawan
 							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
 							LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
 						WHERE 
+							'.$pelajaran.'
 							k.nama LIKE "%'.$nama.'%" AND
-							k.nip LIKE "%'.$nip.'%" AND
-							g.tahunajaran ='.$tahunajaran.$pelajaran.'
+							k.nip LIKE "%'.$nip.'%" 
 						ORDER 
 							BY g.replid asc';
-				// print_r($sql);exit();
+				print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{

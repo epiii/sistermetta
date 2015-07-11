@@ -3,8 +3,6 @@
     require_once '../lib/func.php';
     $modul = basename(dirname(__FILE__));
     isModul($modul);
-    // pr($_SESSION);
-    // var_dump(isModul($modul));exit();
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,50 +49,21 @@
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-grid-view"></span>  
-                Start Menu
+                Menu Utama
             </a>
+            <!-- nama modul-->
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
-                Akademik
+                <?php echo $modul;?>
             </a>
+
+            <!-- list menu -->
             <span class="element-divider"></span>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Kesiswaan</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="pendataan-siswa">Pendataan Siswa</a></li>
-                    <li><a href="presensi-siswa">Presensi Siswa</a></li>
-                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <!-- <li><a href="ni">ni</a></li> -->
-                    <li><a href="mutasi">Pendataan Mutasi Siswa</a></li>
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Guru dan Pelajaran</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="pelajaran">Pelajaran</a></li>
-                    <li><a href="guru">guru</a></li>
-                    <li><a href="jadwal-pelajaran">Jadwal Pelajaran</a></li>
-                    <li><a href="presensi-guru">Presensi Guru</a></li>
-                    <li><a href="kegiatan-akademik">Kegiatan Akademik</a></li>
-                </ul>
-            </div>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="departemen">Departemen</a></li>
-                    <li><a href="angkatan">Angkatan</a></li>
-                    <li><a href="tahun-ajaran">Tahun Ajaran</a></li>
-                    <li><a href="tingkat">Tingkat </a></li>
-                    <li><a href="kelas">Kelas </a></li>
-                    <li><a href="semester">Semester </a></li>
-                    <li><a href="jenis-mutasi">Jenis Mutasi</a></li>
-                    <li><a href="pendataan-alumni">Pendataan Alumni</a></li>
-                    <li><a href="tahun-lulus">Tahun Lulus</a></li>
-                    <li><a href="subtingkat">Sub Tingkat</a></li>
-                </ul>
-            </div>
-             
+            <?php
+                topMenu($modul);
+            ?>
+            
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">

@@ -127,7 +127,7 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY replid asc';
+						ORDER  BY subtingkat asc';
 				// print_r($s);exit();
 
 				$e  = mysql_query($s);

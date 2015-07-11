@@ -13,8 +13,7 @@
 
 <button data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Pencarian" onclick="cariTR();"><span class="icon-search"></span> </button>
-
-<!-- <div style="display:none;" class="input-control select span3">
+<div style="display:none;" class="input-control select span3">
     <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
@@ -22,7 +21,9 @@
 </div>
 <div class="input-control select span3">
     <select class="cari" data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>
+    <!-- <select onchange="viewTB();" class="cari" data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select> -->
 </div>
+<!-- <button data-hint="Field Pencarian" class="large" id="cariBC"><span class="icon-search"></span> </button>
  -->
 <table class="table hovered bordered striped">
     <thead>
