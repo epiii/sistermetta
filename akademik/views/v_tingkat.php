@@ -9,7 +9,7 @@
     <ul>
         &nbsp;
         <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
-        <li class="active"><a href="#">Tingkat</a></li>
+        <li class="active"><a href="#"><b>Tingkat</b></a></li>
         <li><a href="subtingkat">Sub Tingkat</a></li>
         <li><a href="kelas">Kelas</a></li>
     </ul>

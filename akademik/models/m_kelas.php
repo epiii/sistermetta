@@ -123,7 +123,7 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td>
+						$btn ='<td align="center">
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>

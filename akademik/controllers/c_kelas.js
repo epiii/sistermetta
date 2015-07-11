@@ -64,7 +64,7 @@ var contentFR = '';
             viewTB(); 
         })
         //textbox
-        $('#kelasS,#waliS').keydown(function (e){
+        $('#kelasS,#keteranganS').keydown(function (e){
             if(e.keyCode == 13) viewTB();
         });
 
@@ -74,8 +74,6 @@ var contentFR = '';
             $('#kelasS').val('');
             $('#waliS').val('');
         });
-
-
     }); 
 // end of save process ---
 

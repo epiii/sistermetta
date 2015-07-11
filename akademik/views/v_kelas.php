@@ -8,7 +8,7 @@
         <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
         <li><a href="tingkat">Tingkat</a></li>
         <li><a href="subtingkat">Sub Tingkat</a></li>
-        <li class="active"><a href="#">Kelas</a></li>
+        <li class="active"><a href="#"><b>Kelas</b></a></li>
     </ul>
 </nav>
  
@@ -32,7 +32,7 @@
                     <select class="cari" data-hint="sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
                 </div>
             </th>
-            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="kelas" id="kelasS" name="kelasS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="kelasS" name="kelasS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="keteranganS" name="keteranganS"></div></th>
             <th></th>
         </tr>
