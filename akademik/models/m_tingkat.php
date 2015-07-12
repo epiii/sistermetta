@@ -41,6 +41,14 @@
 				if($jum!=0){	
 					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
+						// urutan
+							$nox = '<select class="text-center" replid1="'.$res['replid'].'" urutan1="'.$res['urutan'].'" onchange="urutFC(this);" >';
+							for($i=1; $i<=$jum; $i++){
+								if($i==$res['urutan']) $nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
+								else $nox.='<option value="'.$i.'">'.$i.'</option>';
+							}$nox.='</select>';
+						// end of urutan
+
 						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
@@ -50,6 +58,7 @@
 									</button>
 								 </td>';
 						$out.= '<tr align="center">
+									<td><div class="input-control select">'.$nox.'</div></td>
 									<td>'.$res['tingkat'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
@@ -71,8 +80,13 @@
 			case 'simpan':
 				$s = $tb.' set 	tingkat 	= "'.filter($_POST['tingkatTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
+				if(isset($_POST['replid'])){
+					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+				}else{
+					$n  = mysql_num_rows(mysql_query('SELECT * from '.$tb));
+					$s2 = 'INSERT INTO '.$s.', urutan='.($n+1);
+				}
+
 				$e2   = mysql_query($s2);
 				$stat =!$e2?'gagal menyimpan':'sukses';
 				$out  = json_encode(array('status'=>$stat));
@@ -172,7 +186,7 @@
 							WHERE 
 								replid='.$_POST['replid1'];
 				$s2		= ' UPDATE '.$tb.' 
-							SET urutan = '.$_1['urut'].'  
+							SET urutan = '.$_1['urutan'].'  
 							WHERE 
 								replid='.$_2['replid'];
 				// var_dump($s1);exit();

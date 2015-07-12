@@ -4,9 +4,8 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'kelas';
+	$mnu = 'detailkelas';
 	$tb  = 'aka_'.$mnu;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
@@ -18,35 +17,26 @@
 
 			if(!$sidx) 
 				$sidx =1;
-			$ss='SELECT
-					p.nama AS wali,
-					p.nip,
-					p.replid,
-					k.kelas,
-					t.tahunajaran
-				FROM
-					hrd_pegawai p
-					LEFT JOIN aka_kelas k ON k.wali = p.replid
-					LEFT JOIN aka_subtingkat s ON s.replid = k.subtingkat
-					LEFT JOIN aka_tingkat t ON t.replid = s.tingkat
-				WHERE	
-					p.replid not in (
-						SELECT w.replid
-						FROM hrd_pegawai w
-							LEFT JOIN aka_kelas k ON k.wali = w.replid
-							LEFT JOIN aka_subtingkat s ON s.replid = k.subtingkat
-							LEFT JOIN aka_tingkat t ON t.replid = s.tingkat
-						WHERE	
-							t.tahunajaran = '.$_GET['tahunajaran'].'
-						GROUP BY 
-							w.replid
-					)AND (p.nama
-						LIKE "%'.$searchTerm.'%" OR 
-						p.nip LIKE "%'.$searchTerm.'%"
-					)';
-				// ORDER BY	
-				// 	p.nama ASC';
-			// print_r($ss);exit();
+			if(isset($_GET['subaksi']) && $_GET['subaksi']=='wali'){
+				$ss='SELECT
+						g.replid,
+						k.nama wali,
+						k.nip
+					FROM
+						aka_guru g
+						JOIN hrd_karyawan k on k.id = g.karyawan
+					WHERE
+						'.(isset($_GET['guru']) && $_GET['guru']!=''?'g.replid='.$_GET['guru'].' OR ':'').' (
+							k.nama LIKE "%'.$searchTerm.'%" OR 
+							k.nip LIKE "%'.$searchTerm.'%" 
+						) AND g.replid not in (
+							SELECT d.wali
+							FROM aka_detailkelas d 
+							WHERE d.tahunajaran = '.$_GET['tahunajaran'].' AND d.wali!=0
+						)
+						';
+			}
+			// pr($ss);
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -70,7 +60,7 @@
 				$rows[]= array(
 					'replid' =>$row['replid'],
 					'wali'   =>$row['wali'],
-					'nip'   =>$row['nip']
+					'nip'    =>$row['nip']
 				);
 			}$response=array(
 				'page'    =>$page,
@@ -85,39 +75,53 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$subtingkat = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
-				$kelas      = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
-				$wali       = isset($_POST['waliS'])?filter($_POST['waliS']):'';
+				$tingkat     = isset($_POST['tingkatS']) && $_POST['tingkatS']!=''?' s.tingkat='.$_POST['tingkatS'].' AND ':'';
+				$subtingkat  = isset($_POST['subtingkatS']) && $_POST['subtingkatS']!=''?' k.subtingkat='.$_POST['subtingkatS'].' AND ':'';
+				$kelas       = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
+				$nama        = isset($_POST['namaS']) && $_POST['namaS']!=''?' h.nama LIKE"%'.$_POST['namaS'].'%" AND':'';
+				$kapasitas   = isset($_POST['kapasitasS']) && $_POST['kapasitasS']!=''?' d.kapasitas LIKE"%'.$_POST['kapasitasS'].'%" AND':'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 
-				$sql ='SELECT 
-							k.replid,
+				checkDetailKelas($tahunajaran);
+				$sql =' SELECT 
+							d.replid,
+							t.tingkat,
+							s.subtingkat,
 							k.kelas,
-							p.nama AS wali,
-							k.kapasitas,
-							k.keterangan,(
-								SELECT COUNT(*) 
-								FROM aka_siswa_kelas a
-								WHERE a.kelas=k.replid
-							)terisi
+							case d.wali
+								when 0 then "-"
+								when null then "-"
+								else concat(h.nip," / ",h.nama) 
+							end as wali,
+							case d.kapasitas
+								when 0 then "-"
+								when null then "-"
+								else d.kapasitas 
+							end as kapasitas
 						FROM aka_kelas k
-							LEFT JOIN hrd_pegawai p ON p.replid = k.wali
-							LEFT JOIN aka_tahunajaran t ON t.replid=k.tahunajaran
-							LEFT JOIN departemen d ON d.replid=t.departemen
-							LEFT JOIN aka_tingkat g ON g.replid=k.tingkat
+							LEFT JOIN aka_subtingkat s on s.replid  = k.subtingkat 
+							LEFT JOIN aka_tingkat t on t.replid  = s.tingkat 
+							LEFT JOIN aka_detailkelas d on d.kelas  = k.replid 
+							LEFT JOIN aka_guru g on g.replid  = d.wali 
+							LEFT JOIN hrd_karyawan h on h.id  = g.karyawan 
 						WHERE
-							k.subtingkat ='.$subtingkat.' AND 
-							p.nama LIKE"%'.$wali.'%" AND
-							k.kelas LIKE"%'.$kelas.'%"
+							'.$tingkat.$subtingkat.$kapasitas.'   
+							k.kelas LIKE"%'.$kelas.'%" AND
+							'.$nama.'
+							d.tahunajaran = '.$tahunajaran.' 
 						ORDER BY
-							k.kelas ASC';
-				// print_r($sql);exit();
+							t.urutan ASC, 
+							s.subtingkat ASC, 
+							k.kelas ASC,
+							h.nama ASC';
+				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 
-				$recpage= 5;//jumlah data per halaman
+				$recpage= 10;//jumlah data per halaman
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
@@ -127,23 +131,19 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td>
+						$btn ='<td align="center">
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus" onclick="del('.$res['replid'].');">
-										<i class="icon-remove on-left"></i>
-									</button>
 								 </td>';
 						$out.= '<tr>
+									<td>'.$res['tingkat'].'</td>
+									<td>'.$res['subtingkat'].'</td>
 									<td>'.$res['kelas'].'</td>
 									<td>'.$res['wali'].'</td>
 									<td>'.$res['kapasitas'].'</td>
-									<td>'.$res['terisi'].'</td>
-									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
-								// <td>'.$res['terisi'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -159,20 +159,12 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	kelas       = "'.filter($_POST['kelasTB']).'",
-								kapasitas   = "'.filter($_POST['kapasitasTB']).'",
-								subtingkat  = "'.$_POST['subtingkatH'].'",
-								wali        = "'.$_POST['guruH'].'",
-								keterangan  = "'.filter($_POST['keteranganTB']).'"';
-
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
-				$e2 = mysql_query($s2);
-				if(!$e2){
-					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}$out  = json_encode(array('status'=>$stat));
+				$s = $tb.' set 	kapasitas = "'.filter($_POST['kapasitasTB']).'",
+								wali      = "'.filter($_POST['waliH']).'"';
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e2   = mysql_query($s2);
+				$stat = !$e2?'gagal_'.errMsg(mysql_errno()):'sukses';
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -189,18 +181,26 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 	= ' SELECT 
-							k.kelas, 
-							k.keterangan, 
-							k.kapasitas, 
-							k.subtingkat idsubtingkat, 
-							k.wali idwali, 
-							p.nip nip, 
-							p.nama nama
+							ta.departemen
+							,ta.tahunajaran
+							,t.tingkat   
+							,s.subtingkat
+							,k.kelas 
+							    
+							,if(d.kapasitas=0,"",d.kapasitas)kapasitas 
+							,if(d.wali=0,"",d.wali)idwali 
+							,h.nip
+							,h.nama
 						FROM  
-							aka_kelas k 
-							LEFT JOIN hrd_pegawai p on p.replid = k.wali
+							aka_detailkelas d 
+							LEFT JOIN aka_kelas k on k.replid = d.kelas
+							LEFT JOIN aka_guru g on g.replid = d.wali
+							LEFT JOIN hrd_karyawan h on h.id = g.karyawan
+							LEFT JOIN aka_subtingkat s on s.replid = k.subtingkat 
+							LEFT JOIN aka_tingkat t on t.replid = s.tingkat
+							LEFT JOIN aka_tahunajaran ta on ta.replid = d.tahunajaran
 						WHERE
-							k.replid ='.$_POST['replid'];
+							d.replid ='.$_POST['replid'];
 				// print_r($s);exit();
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
@@ -208,13 +208,14 @@
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-								'kelas'        =>$r['kelas'],
-								'idwali'       =>$r['idwali'],
-								'idsubtingkat' =>$r['idsubtingkat'],
-								'nip'          =>$r['nip'],
-								'nama'         =>$r['nama'],
-								'kapasitas'    =>$r['kapasitas'],
-								'keterangan'   =>$r['keterangan']
+								'departemen'  =>$r['departemen'],
+								'tahunajaran' =>$r['tahunajaran'],
+								'tingkat'     =>$r['tingkat'],
+								'subtingkat'  =>$r['subtingkat'],
+								'kelas'       =>$r['kelas'],
+								'kapasitas'   =>$r['kapasitas'],
+								'wali'        =>($r['idwali']==0 || $r['idwali']==null?'':$r['nip'].' / '.$r['nama']),
+								'idwali'      =>$r['idwali']
 						)));
 			break;
 			// ambiledit -----------------------------------------------------------------
@@ -263,8 +264,4 @@
 
 		}
 	}echo $out;
-
-	// ---------------------- //
-	// -- created by rovi -- //
-	// ---------------------- //
 ?>

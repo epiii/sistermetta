@@ -7,6 +7,7 @@
         <li><a href="tingkat">Tingkat</a></li>
         <li class="active"><a href="#"><b>Sub Tingkat</b></a></li>
         <li><a href="kelas">Kelas</a></li>
+        <li><a href="detail-kelas">Detail Kelas</a></li>
     </ul>
 </nav>
 <table class="table hovered bordered striped">

@@ -16,7 +16,7 @@
 			if(!$sidx) 
 				$sidx =1;
 			$ss='';
-			if(isset($_GET['subaksi']) && $_GET['subaksi']=='pegawai'){
+			if(isset($_GET['subaksi']) && $_GET['subaksi']=='karyawan'){
 				$ss.='SELECT *
 					 FROM (
 							SELECT
@@ -25,17 +25,19 @@
 								k.id
 							FROM
 								hrd_karyawan k
-								LEFT JOIN aka_guru g ON g.pegawai = k.id
+								LEFT JOIN aka_guru g ON g.karyawan = k.id
+								LEFT JOIN hrd_jabatan j ON j.id= k.jabatan
 							WHERE
-								'.(isset($_GET['pegawai']) && $_GET['pegawai']!=''?'k.id='.$_GET['pegawai'].' OR ':'').'
-								k.id NOT IN (SELECT gg.pegawai  FROM aka_guru gg WHERE gg.tahunajaran = '.$_GET['tahunajaran'].')
+								'.(isset($_GET['karyawan']) && $_GET['karyawan']!=''?'k.id='.$_GET['karyawan'].' OR ':'').'
+								k.id NOT IN (SELECT gg.karyawan FROM aka_guru gg ) AND
+								j.nama LIKE "%guru%"
 						) tb
 					 WHERE
 			 			tb.nama LIKE "%'.$searchTerm.'%" OR 
 		 				tb.nip LIKE "%'.$searchTerm.'%"
 		 				';
 			}
-// var_dump($ss);exit();
+			// vdump($ss);
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -56,10 +58,10 @@
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
-				if(isset($_GET['subaksi']) && $_GET['subaksi']=='pegawai'){
+				if(isset($_GET['subaksi']) && $_GET['subaksi']=='karyawan'){
 					$rows[]= array(
 						'replid' =>$row['id'],
-						'nip'   =>$row['nip'],
+						'nip'    =>$row['nip'],
 						'nama'   =>$row['nama']
 					);
 				}
@@ -76,27 +78,31 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$nip         = isset($_POST['nipS'])?filter($_POST['nipS']):'';
-				$nama        = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
+				$nip        = isset($_POST['nipS'])?filter($_POST['nipS']):'';
+				$nama       = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$pelajaran  = isset($_POST['pelajaranS'])?filter($_POST['pelajaranS']):'';
+				$keterangan = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT 
-							g.*,
-							t.tahunajaran, 
-							j.nama AS pelajaran, 
-							k.nip, 
-							k.nama
+							g.replid,
+							k.nip,
+							k.nama,
+							p.nama pelajaran, 
+							p.kode, 
+							g.keterangan 
 						FROM aka_guru g
-							LEFT JOIN hrd_karyawan k  ON k.id=g.pegawai
-							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
-							LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
-						WHERE 
-							k.nama LIKE "%'.$nama.'%" AND
-							k.nip LIKE "%'.$nip.'%" AND
-							g.tahunajaran ='.$tahunajaran.$pelajaran.'
+							LEFT JOIN hrd_karyawan k  ON k.id =g.karyawan
+							LEFT JOIN hrd_jabatan j  ON k.id =k.jabatan
+							LEFT JOIN aka_pelajaran p ON p.replid =g.pelajaran
+						WHERE (
+								p.kode LIKE "%'.$nama.'%" AND
+								p.nama LIKE "%'.$nama.'%" 
+							) 
+							AND k.nip LIKE "%'.$nip.'%" 
+							AND p.nama LIKE "%'.$pelajaran.'%" 
+							AND g.keterangan LIKE "%'.$keterangan.'%" 
 						ORDER 
 							BY g.replid asc';
-				// print_r($sql);exit();
+				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -113,7 +119,7 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td>
+						$btn ='<td align="center">
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
@@ -143,9 +149,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	pegawai 	= "'.$_POST['pegawaiH'].'",
-										tahunajaran	= "'.$_POST['tahunajaran'].'",
-										pelajaran 	= "'.$_POST['pelajaranTB'].'",
+				$s 		= $tb.' set 	karyawan 	= "'.filter($_POST['karyawanH']).'",
+										pelajaran 	= "'.filter($_POST['pelajaranTB']).'",
 										keterangan  = "'.filter($_POST['keteranganTB']).'"';
 				$s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e 		= mysql_query($s2);
@@ -158,8 +163,8 @@
 			case 'hapus':
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
-				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
+				$e    = mysql_query($s) ;
+				$stat = ($e)?'sukses':'gagal_'.mysql_error();
 				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['tahunajaran']));
 			break;
 			// delete -----------------------------------------------------------------
@@ -167,30 +172,28 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s = ' SELECT
-							g.pegawai AS idpegawai,
 							k.nip,
+							k.id idkaryawan,
 							k.nama,
 							g.pelajaran,
-							g.tahunajaran,
 							g.keterangan
 						FROM
 							aka_guru g 
-							LEFT JOIN  hrd_karyawan k on k.id = g.pegawai
+							LEFT JOIN  hrd_karyawan k on k.id = g.karyawan
 							LEFT JOIN aka_pelajaran p on p.replid = g.pelajaran
 						WHERE
 							g.replid ='.$_POST['replid'];
-				// print_r($s);exit();
+							// pr($s);
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'      =>$stat,
-							'idpegawai'   =>$r['idpegawai'], 
-							'nip'         =>$r['nip'],
-							'nama'        =>$r['nama'],
-							'pelajaran'   =>$r['pelajaran'],
-							'tahunajaran' =>$r['tahunajaran'],
-							'keterangan'  =>$r['keterangan']
+							'status'     =>$stat,
+							'idkaryawan' =>$r['idkaryawan'], 
+							'nip'        =>$r['nip'],
+							'nama'       =>$r['nama'],
+							'pelajaran'  =>$r['pelajaran'],
+							'keterangan' =>$r['keterangan']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
