@@ -13,4 +13,16 @@
 		$r = mysql_fetch_assoc($e);
 		return $r[$f];
 	}
+	function vdump($x){
+		echo '<pre>';
+			var_dump($x);
+		echo'</pre>';
+		exit();
+	}
+	function pr($x){
+		echo '<pre>';
+			print_r($x);
+		echo'</pre>';
+		exit();
+	}
 ?>

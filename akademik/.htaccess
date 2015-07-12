@@ -24,12 +24,13 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^jadwal-pelajaran/?$							index.php?page=vjadwal
 	RewriteRule   ^presensi-guru/?$								index.php?page=vabsenguru
 	RewriteRule   ^kegiatan-akademik/?$							index.php?page=vkegiatan
+	RewriteRule   ^detail-kelas/?$								index.php?page=vdetailkelas
 	
 	#kesiswaan
 	RewriteRule   ^pendataan-siswa/?$   						index.php?page=vsiswa
 	RewriteRule   ^rapor-siswa/?$								index.php?page=vrapor
 	RewriteRule   ^pendataan-alumni/?$							index.php?page=valumni
-	RewriteRule   ^ni/?$							index.php?page=vni
+	RewriteRule   ^ni/?$										index.php?page=vni
 	RewriteRule   ^presensi-siswa/?$							index.php?page=vpresensisiswa
 	RewriteRule   ^mutasi/?$									index.php?page=vmutasi
 	
