@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2015 at 06:17 PM
+-- Generation Time: Jul 12, 2015 at 06:26 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `hrd_absensi` (
   `bulan` int(2) NOT NULL,
   `tahun` varchar(4) NOT NULL DEFAULT '0000',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `hrd_absensi`
@@ -135,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `hrd_bulan` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
   `bulan` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
 
 --
 -- Dumping data for table `hrd_bulan`
@@ -184,7 +184,7 @@ CREATE TABLE IF NOT EXISTS `hrd_departemen` (
   `tunjangan` varchar(255) NOT NULL,
   `masterdepartemen` int(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `hrd_departemen`
@@ -272,7 +272,7 @@ CREATE TABLE IF NOT EXISTS `hrd_jabatan` (
   `nama` varchar(255) NOT NULL,
   `tunjangan` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=43 ;
 
 --
 -- Dumping data for table `hrd_jabatan`
@@ -411,7 +411,7 @@ CREATE TABLE IF NOT EXISTS `hrd_menikah` (
   `nama` varchar(255) NOT NULL,
   `tunjangan` varchar(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `hrd_menikah`
@@ -653,7 +653,7 @@ CREATE TABLE IF NOT EXISTS `hrd_pendidikan` (
   `nama` varchar(255) NOT NULL,
   `tunjangan` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `hrd_pendidikan`
@@ -715,15 +715,7 @@ CREATE TABLE IF NOT EXISTS `hrd_penggajian` (
   `gajibersih` varchar(50) NOT NULL DEFAULT '0',
   `idbayar` varchar(255) DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `hrd_penggajian`
---
-
-INSERT INTO `hrd_penggajian` (`id`, `karyawan`, `bulan`, `tahun`, `tkt`, `gajipokok`, `tstruktural`, `tfungsional`, `tpengabdian`, `tistrianak`, `tuangtransport`, `tbebantugas`, `twalikelas`, `tkhusus`, `gajibruto`, `tlain`, `totalgaji`, `ppinjaman`, `jamsostek`, `pph21`, `gajibersih`, `idbayar`) VALUES
-(1, 8, 7, '2015', '', '3000000', '0', '0', '0', '0', '0', '0', '0', '0', '3000000', '0', '3000000', '0', '0', '0', '3000000', ''),
-(2, 8, 6, '2015', '', '3000000', '0', '0', '0', '0', '0', '0', '0', '0', '3000000', '0', '3000000', '0', '0', '0', '3000000', '');
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -755,7 +747,7 @@ CREATE TABLE IF NOT EXISTS `hrd_setting` (
   `pph21` varchar(50) NOT NULL DEFAULT '0',
   `jamsostek` varchar(50) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -769,16 +761,7 @@ CREATE TABLE IF NOT EXISTS `hrd_statuskaryawan` (
   `nama` varchar(255) NOT NULL,
   `tunjangan` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
-
---
--- Dumping data for table `hrd_statuskaryawan`
---
-
-INSERT INTO `hrd_statuskaryawan` (`id`, `nama`, `tunjangan`) VALUES
-(3, 'Tetap', '0'),
-(8, 'Part Time', '0'),
-(9, 'Kontrak', '0');
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -813,7 +796,7 @@ CREATE TABLE IF NOT EXISTS `hrd_tipe` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
   `tipe` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
