@@ -36,8 +36,8 @@
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input placeholder="cari ..." id="nipS" class="cari" type="text"></div></th>
             <th class="text-center"><div class="input-control text"><input placeholder="cari ... " id="namaS" class="cari" type="text"></div></th>
-            <th class="text-center"></th>
-            <th class="text-center"></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="cari ... " id="pelajaranS" class="cari" type="text"></div></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="cari ... " id="keteranganS" class="cari" type="text"></div></th>
             <th class="text-center"></th>
         </tr>
     </thead>

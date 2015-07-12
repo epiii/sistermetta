@@ -4,6 +4,16 @@
 	require_once  'aka_func.php';
 	require_once  'psb_func.php';
 	require_once  'pus_func.php';
+
+	// error handling
+	function errMsg($no,$dt){
+		$dt=isset($dt)?$dt:'';
+		switch ($no) {
+			case '1451':
+				return '"'.$dt.'" telah terpakai, silahkan hapus data berkaitan';
+			break;
+		}
+	}
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');

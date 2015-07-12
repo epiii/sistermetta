@@ -47,7 +47,8 @@ var contentFR = '';
                         +'<label>Wali Kelas (NIP/Nama Guru)</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" name="waliH" id="waliH">'
-                            +'<input required placeholder="NIP / Nama" name="waliTB" id="waliTB">'
+                            +'<input onblur="validSelect(\'karyawan\');" onchange="validSelect(\'karyawan\');" required placeholder="NIP / Nama" name="waliTB" id="waliTB">'
+                            +'<button class="btn-clear"></button>'
                         +'</div>'
                         
                         // button
@@ -76,7 +77,7 @@ var contentFR = '';
             viewTB(); 
         })
         //textbox
-        $('#kelasS,#keteranganS').keydown(function (e){
+        $('#kelasS,#keteranganS,#namaS,#kapasitasS').keydown(function (e){
             if(e.keyCode == 13) viewTB();
         });
 
@@ -144,7 +145,6 @@ var contentFR = '';
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
-        // edit mode
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
         }
@@ -156,7 +156,7 @@ var contentFR = '';
             data:$('form').serialize()+urlx,
             success:function(dt){
                 if(dt.status!='sukses'){
-                    cont = 'Gagal menyimpan data';
+                    cont = dt.status;
                     clr  = 'red';
                 }else{
                     $.Dialog.close();
@@ -164,8 +164,7 @@ var contentFR = '';
                     viewTB();
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
-                }
-                notif(cont,clr);
+                }notif(cont,clr);
             }
         });
     }
@@ -219,50 +218,52 @@ var contentFR = '';
             width:'35%',
             padding:20,
             onShow: function(){
-                $.Dialog.content(contentFR);
-                $('#kapasitasTB').focus();
-                $.Dialog.title('Ubah Detail Kelas');
                 var titlex;
                 ajax(dir,'aksi=ambiledit&replid='+id).done(function  (dt) {
+                    // statis
                     $('#idformH').val(id);
                     $('#tahunajaranDV').html(dt.datax.tahunajaran);
                     $('#tingkatDV').html(dt.datax.tingkat);
                     $('#subtingkatDV').html(dt.datax.subtingkat);
                     $('#kelasDV').html(dt.datax.kelas);
-                    
+                    //dinamis
                     $('#kapasitasTB').val(dt.datax.kapasitas);
                     $('#waliTB').val(dt.datax.wali);
-                    autoSuggest('wali','wali');
+                    $('#waliH').val(dt.datax.idwali);
+                    autoSuggest(dt.datax.idwali,'wali','wali');
                 });
+                $.Dialog.content(contentFR);
+                $('#kapasitasTB').focus();
+                $.Dialog.title('Ubah Detail Kelas');
             }
         });
     }
 // end of form ---
 
   // autosuggest
-    function autoSuggest(el,subaksi){
-        var urlx= '?aksi=autocomp&subaksi='+subaksi;
+    function autoSuggest(gur,el,subaksi){
+        var urlx= '?aksi=autocomp&subaksi='+subaksi+'&tahunajaran='+$('#tahunajaranS').val()+(gur!=''?'&guru='+gur:'');
         var col = [{
                 'align':'left',
                 'columnName':'nip',
                 'hide':true,
-                'width':'10',
+                'width':'25',
                 'label':'NIP'
             },{   
                 'align':'left',
-                'columnName':'nama',
-                'width':'90',
+                'columnName':'wali',
+                'width':'75',
                 'label':'NAMA'
         }];
         urly = dir+urlx;
         $('#'+el+'TB').combogrid({
             debug:true,
-            width:'750px',
+            width:'450px',
             colModel: col ,
             url: urly,
             select: function( event, ui ) { // event setelah data terpilih 
                 $('#'+el+'H').val(ui.item.replid);
-                $('#'+el+'TB').val(ui.item.nip+' / '+ui.item.nama);
+                $('#'+el+'TB').val(ui.item.nip+' / '+ui.item.wali);
                 
                 // validasi input (tidak sesuai data dr server)
                     $('#'+el+'TB').on('keyup', function(e){
@@ -406,4 +407,9 @@ function notif(cont,clr) {
                 }
             }
         });
+    }
+    function validSelect (e) {
+        if($('#'+e+'H').val()==''){
+            $('#'+e+'TB').val('');
+        }
     }
