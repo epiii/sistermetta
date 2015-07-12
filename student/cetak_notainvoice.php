@@ -1,5 +1,4 @@
 <?php
-
 include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
@@ -9,7 +8,16 @@ $kode 		= $_POST['kode'];
 }else{
 $kode 		= $_GET['kode'];	
 }
-
+if(isset($_POST['bayarnominal'])){
+$noinvoice 		= $_POST['kode'];	
+$bayarnominal 		= $_POST['bayarnominal'];	
+$query 		= mysql_query ("update pos_pembelian set bayar ='$bayarnominal', hutang='0' where noinvoice='$noinvoice'");
+echo '<meta http-equiv="refresh" content="1; url=admin.php?pilih=hutang&mod=yes" />';
+echo "<script type=\"text/javascript\">
+        window.open('cetak_notainvoice.php?kode=".$kode."&lihat=ok', '_blank')
+    </script>";	
+//$style_include[] ='<meta http-equiv="refresh" content="1; url=cetak_notainvoice.php?kode='.$kode.'&cetak=ok" />';
+	}
 echo "<html><head><title>Nota Transaksi Pembelian </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -45,9 +53,7 @@ echo "</head><body>";
 echo'
 <table align="center"><tr><td>';
 echo'<table  width="100%">
-<tr><td><img src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr></table>';
+<tr><td><img src="images/logo.png" height="70px"></td></tr></table>';
 echo'</td></tr><tr><td>';
 $no=1;
 $query 		= mysql_query ("SELECT * FROM `pos_pembelian` WHERE `noinvoice` like '$kode'");
@@ -75,15 +81,16 @@ echo '
 		<td>:</td>
 		<td>'.$noinvoice.'</td>
 	</tr>';
-	/*
+	
 	if($nopo!=''){
+	$lihatslippo = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&lihat=ok"target="blank">'.$data['nopo'].'</a>';
 echo '
 	<tr>
 		<td>Nomor PO</td>
 		<td>:</td>
-		<td>'.$nopo.'</td>
+		<td>'.$lihatslippo.'</td>
 	</tr>';}
-	*/
+	
 echo '
 	<tr>
 		<td>Tanggal</td>
@@ -144,11 +151,6 @@ echo '
 </tr>';
 	$no++;
 		}
-echo '	
-	<tr class="border">		
-		<td colspan="8" align="right"><b>Total</b></td>
-		<td >'.rupiah_format($total).'</td>
-	</tr>';
 	/*
 echo '	
 	<tr class="border">	
@@ -162,19 +164,40 @@ echo '	<tr class="border">
 	';
 	*/
 echo '	<tr class="border">	
+		<td colspan="8" align="right"><b>Total</b></td>
+		<td >'.rupiah_format($total).'</td>
+	</tr>
+	';
+	if((isset($_GET['bayar']) or isset($_POST['bayar']))and($bayar=='0')){
+echo '<form class="form-inline" method="POST" action="cetak_notainvoice.php?kode='.$kode.'&lihat=ok" enctype ="multipart/form-data" id="posts">';
+echo '<tr class="border">	
+		<td colspan="8" align="right"><b>Bayar</b></td>	
+	<td>
+	<input type="hidden" value="'.$noinvoice.'" name="kode">
+	<input type="hidden" value="'.$total.'" name="bayarnominal">'.rupiah_format($total).'</td>
+	</tr>';
+echo '<tr>
+	<td colspan="8" align="right"></td>
+	<td>
+	<input type="submit" value="Bayar" name="bayar"onclick="return confirm(\'Apakah Anda Yakin Ingin Melunasi Data Ini ?\')"></td>
+	</tr></form>';
+	}else{
+echo '	<tr class="border">	
 		<td colspan="8" align="right"><b>Bayar</b></td>
 		<td >'.rupiah_format($bayar).'</td>
 	</tr>
 	';
+	}
 echo '</table>';	
 		}
 		echo'</td></tr></table>';
 /****************************/
 echo "</body</html>";
 
-if (!isset($_GET['detail'])){
+if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+
 ?>

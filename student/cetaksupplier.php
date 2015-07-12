@@ -40,9 +40,7 @@ img {
 echo "</head><body>";
 echo'
 <table align="center">
-<tr><td colspan="7"><img src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
+<tr><td colspan="7"><img src="images/logo.png" height="70px"></td></tr>';
 
 if(!$detail){
 echo'<tr><td colspan="7"><h4>Laporan Supplier</h4></td></tr>';
