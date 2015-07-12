@@ -1,0 +1,40 @@
+#php_flag display_errors off
+Options -Indexes
+#indexIgnore *
+
+RewriteEngine On
+#ErrorDocument 404 /404.html
+ErrorDocument 404 Maaf-halaman-tidak-ditemukan
+
+	#refrensi
+	RewriteRule   ^home/?$   									index.php?page=vhome
+	RewriteRule   ^departemen/?$   								index.php?page=vdepartemen
+	RewriteRule   ^angkatan/?$   								index.php?page=vangkatan
+	RewriteRule   ^tahun-ajaran/?$   							index.php?page=vtahunajaran
+	RewriteRule   ^tingkat/?$   								index.php?page=vtingkat
+	RewriteRule   ^kelas/?$   									index.php?page=vkelas
+	RewriteRule   ^semester/?$   								index.php?page=vsemester
+	RewriteRule   ^jenis-mutasi/?$								index.php?page=vjenismutasi
+	RewriteRule   ^tahun-lulus/?$								index.php?page=vtahunlulus
+	RewriteRule   ^subtingkat/?$								index.php?page=vsubtingkat
+
+	#guru dan pelajaran
+	RewriteRule   ^guru/?$   									index.php?page=vguru
+	RewriteRule   ^pelajaran/?$   								index.php?page=vpelajaran
+	RewriteRule   ^jadwal-pelajaran/?$							index.php?page=vjadwal
+	RewriteRule   ^presensi-guru/?$								index.php?page=vabsenguru
+	RewriteRule   ^kegiatan-akademik/?$							index.php?page=vkegiatan
+	RewriteRule   ^detail-kelas/?$								index.php?page=vdetailkelas
+	
+	#kesiswaan
+	RewriteRule   ^pendataan-siswa/?$   						index.php?page=vsiswa
+	RewriteRule   ^rapor-siswa/?$								index.php?page=vrapor
+	RewriteRule   ^pendataan-alumni/?$							index.php?page=valumni
+	RewriteRule   ^ni/?$										index.php?page=vni
+	RewriteRule   ^presensi-siswa/?$							index.php?page=vpresensisiswa
+	RewriteRule   ^mutasi/?$									index.php?page=vmutasi
+	
+	RewriteRule   ^keluar/?$ 									index.php?page=logout 
+
+# Send all blocked request to homepage with 403 Forbidden error!
+#RewriteRule ^(.*)$ index.php [F,L]

@@ -45,9 +45,7 @@ echo "</head><body>";
 echo'
 <table align="center"><tr><td>';
 echo'<table  width="100%">
-<tr><td><img src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr></table>';
+<tr><td><img src="images/logo.png" height="70px"></td></tr></table>';
 echo'</td></tr><tr><td>';
 $no=1;
 $query 		= mysql_query ("SELECT * FROM `pos_po` WHERE `nopo` like '$kode'");
@@ -58,6 +56,8 @@ $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
 $discount  			= $data['discount'];
 $netto  			= $data['netto'];
+$carabayar  			= $data['carabayar'];
+$termin  			= $data['termin'];
 	$error 	= '';
 		if (!$nopo) $error .= "Error: kode PO tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -82,7 +82,18 @@ echo '
 		<td>:</td>
 		<td>'.getnamasupplier($kodesupplier).'</td>
 	</tr>';	
-
+echo '
+	<tr>
+		<td>Cara Pembayaran</td>
+		<td>:</td>
+		<td>'.($carabayar).'</td>
+	</tr>';	
+echo '
+	<tr>
+		<td>Termin</td>
+		<td>:</td>
+		<td>'.($termin).'</td>
+	</tr>';	
 echo '</table>';	
 echo '<b>Detail</b>';	
 echo '
@@ -118,6 +129,7 @@ echo '
 		<td colspan="7" align="right"><b>Total</b></td>
 		<td >'.rupiah_format($total).'</td>
 	</tr>';
+	/*
 echo '	
 	<tr class="border">	
 		<td colspan="7" align="right"><b>Discount</b></td>
@@ -128,6 +140,7 @@ echo '	<tr class="border">
 		<td >'.rupiah_format($netto).'</td>
 	</tr>
 	';
+	*/
 echo '</table>';	
 		}
 
@@ -135,7 +148,7 @@ echo'</td></tr></table>';
 		/****************************/
 echo "</body</html>";
 
-if (!isset($_GET['detail'])){
+if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";

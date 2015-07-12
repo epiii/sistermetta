@@ -38,13 +38,27 @@ $admin.='<div class="error">Data Gagal dihapus Dengan ID = '.$id.'</div>';
 }	
 }
 
+if ($_GET['aksi'] == 'reset_user' && is_numeric($_GET['id'])){
+	$id = int_filter ($_GET['id']);
+$s = mysql_query ("SELECT * FROM `useraura` WHERE `UserId`='$id'");	
+$data = mysql_fetch_array($s);
+$user = $data['user'];	
+$newpassword = md5($data['user']);	
+$hapus = mysql_query ("UPDATE `useraura` SET `password`='$newpassword'WHERE `UserId`='$id'");	
+if ($hapus){
+$admin.='<div class="sukses">Password Berhasil Di Reset Dengan ID = '.$id.'</div>';	
+}else {
+$admin.='<div class="error">Password Gagal Di Reset  Dengan ID = '.$id.'</div>';	
+}	
+}
+
+
 if (isset ($_POST['edit_users']) && is_numeric($_GET['id'])){
 	$id = int_filter ($_GET['id']);
 	$level = $_POST['level'];
 	$tipe = $_POST['tipe'];
 	$email	      = text_filter($_POST['email']);
 if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM useraura WHERE email='$email' and UserId!='$id'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
 if ($error) {
 $admin.='<div class="error">'.$error.'</div>';
 } else {
@@ -184,7 +198,7 @@ $qss = "&amp;pg=$pg&amp;stg=$stg&amp;offset=$offset";
 }	
 $admin.='<h5 class="bg text-success">Edit User</h5>';
 
-$admin .= '<form method="post" action="admin.php?pilih=admin_users&amp;id='.$id.''.$qss.'">
+$admin .= '<form method="post" action="admin.php?pilih=user&mod=yes&id='.$id.''.$qss.'">
 <table class="table table-striped">
   <tr>
     <td>Username</td>
@@ -280,7 +294,7 @@ $stg	= int_filter(@$_GET['stg']);
 if($search){
 $query = $koneksi_db->sql_query("SELECT count(user) as t FROM `useraura` WHERE user like '%$search%' or email like '%$search%'");
 }else{
-$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `useraura`");
+$query = $koneksi_db->sql_query("SELECT count(user) as t FROM `useraura` where user<>'superadmin'");
 }
 $rows = mysql_fetch_row ($query);
 $jumlah = $rows[0];
@@ -291,7 +305,7 @@ if ($jumlah > 0){
 if($search){
 $q = mysql_query ("SELECT * FROM `useraura` WHERE user like '%$search%' or email like '%$search%' LIMIT $offset,$limit");
 }else{
-$q = mysql_query ("SELECT * FROM `useraura` LIMIT $offset,$limit");
+$q = mysql_query ("SELECT * FROM `useraura` where user<>'superadmin' LIMIT $offset,$limit");
 }
 if($offset){
 $no = $offset+1;
@@ -309,8 +323,7 @@ $admin.='<tr '.$warna.'>
 <td>'.$data['level'].'</td>
 <td>'.$data['tipe'].'</td>
 <td>
-<a  class="btn btn-info" href="?pilih=user&amp;mod=yes&amp;aksi=edit_user&amp;id='.$data['UserId'].$qss.'">Edit</a> 
-<a  class="btn btn-danger" href="?pilih=user&amp;mod=yes&amp;aksi=hapus&amp;id='.$data['UserId'].$qss.'" onClick="GP_popupConfirmMsg(\'Apakah anda Ingin menghapus Users \n['.$data['user'].']\');return document.MM_returnValue;">Hapus</a></td>
+<a  class="btn btn-danger" href="?pilih=user&amp;mod=yes&amp;aksi=hapus&amp;id='.$data['UserId'].$qss.'" onClick="GP_popupConfirmMsg(\'Apakah anda Ingin menghapus Users \n['.$data['user'].']\');return document.MM_returnValue;">Hapus</a>&nbsp;<a  class="btn btn-warning" href="?pilih=user&amp;mod=yes&amp;aksi=reset_user&amp;id='.$data['UserId'].$qss.'" onClick="GP_popupConfirmMsg(\'Apakah anda Ingin Mereset Password Users \n['.$data['user'].']\');return document.MM_returnValue;">Reset Password</a> &nbsp;<a  class="btn btn-info" href="?pilih=user&amp;mod=yes&amp;aksi=edit_user&amp;id='.$data['UserId'].$qss.'">Edit</a></td>
 </tr>';  
   $no++;
 }

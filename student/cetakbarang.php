@@ -7,6 +7,9 @@ global $koneksi_db,$url_situs;
 $tglmulai 		= $_GET['tglmulai'];
 $tglakhir 		= $_GET['tglakhir'];
 $kodebarang 		= $_GET['kodebarang'];
+$getnamabarang = getnamabarang($kodebarang);
+$wherekodebarang="and kodebarang='$kodebarang'";
+
 echo "<html><head><title>Laporan Stok Barang </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
@@ -41,10 +44,8 @@ img {
 echo "</head><body>";
 echo'
 <table align="center">
-<tr><td colspan="7"><img src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
-echo'<tr><td colspan="7"><h4>Laporan Stok Barang, Periode '.tanggalindo($tglmulai).' - '.tanggalindo($tglakhir).' ,'.$kodebarang.'</h4></td></tr>';
+<tr><td colspan="7"><img src="images/logo.png" height="70px"></td></tr>';
+echo'<tr><td colspan="7"><h4>Laporan Stok Barang, Periode '.tanggalindo($tglmulai).' - '.tanggalindo($tglakhir).'<br><br>Barang : '.getnamabarang($kodebarang).'</h4></td></tr>';
 
 echo '<tr class="border">
 <td>No</td>
@@ -56,35 +57,56 @@ echo '<tr class="border">
 <td>Jumlah</td>
 </tr>';
 $no =1;
-$st = mysql_query ("SELECT * FROM pos_alur_stok where (kodebarang='$kodebarang') and (tgl between '$tglmulai' and '$tglakhir' )order by id asc");	
+
+/**************STOK SEBELUM********/
+$st = mysql_query ("SELECT * FROM pos_alur_stok where tgl < '$tglmulai' $wherekodebarang order by tgl asc");	
 while($datast = mysql_fetch_array($st)){
 $id = $datast['id'];
 $tgl = $datast['tgl'];
 $transaksi = $datast['transaksi'];
 $kode = $datast['kode'];
-$kodebarang = $datast['kodebarang'];
+$kodebaranga = $datast['kodebarang'];
+$jumlahsb = $datast['jumlah'];
+$tjumlah +=$jumlahsb;
+}
+if($tjumlah){
+echo '
+<tr class="border">
+<td class="text-center">'.$no.'</td>
+<td>'.tanggalindo($tglmulai).'</td>
+<td> Stok Sebelumnya </td>
+<td> - </td>
+<td>'.$kodebarang.'</td>
+<td>'.$getnamabarang.'</td>
+<td>'.$tjumlah.'</td>
+</tr>';
+$no++;
+}
+/************* STOK BETWEEN ************/
+$st = mysql_query ("SELECT * FROM pos_alur_stok where tgl >='$tglmulai' and tgl <='$tglakhir' $wherekodebarang order by tgl asc");	
+while($datast = mysql_fetch_array($st)){
+$id = $datast['id'];
+$tgl = $datast['tgl'];
+$transaksi = $datast['transaksi'];
+$kode = $datast['kode'];
+$kodebaranga = $datast['kodebarang'];
 $jumlah = $datast['jumlah'];
-$getnamabarang = getnamabarang($kodebarang);
+$getnamabarang = getnamabarang($kodebaranga);
+if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'or $transaksi=='Mutasi Keluar'){
+$jumlah =$jumlah*(-1);
+}
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.$transaksi.'</td>
 <td>'.$kode.'</td>
-<td>'.$kodebarang.'</td>
+<td>'.$kodebaranga.'</td>
 <td>'.$getnamabarang.'</td>
 <td>'.$jumlah.'</td>
 </tr>';
 $no++;
-if($transaksi=='Saldo Awal'){
-$tjumlah =$jumlah;		
-}
-if($transaksi=='Pembelian' or $transaksi=='Retur Penjualan'){
-$tjumlah +=$jumlah;}
-if($transaksi=='Penjualan' or $transaksi=='Retur Pembelian'){
-$tjumlah -=$jumlah;
-}
-
+$tjumlah +=$jumlah;
 }
 echo '<tr class="border">
 <td colspan="6">Stok Akhir</td>
@@ -94,7 +116,7 @@ echo '</table>';
 /****************************/
 echo "</body</html>";
 
-if (isset($_GET['kodebarang'])){
+if(isset($_GET['cetak'])){
 echo "<script language=javascript>
 window.print();
 </script>";

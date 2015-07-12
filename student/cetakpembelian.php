@@ -9,6 +9,28 @@ $tglakhir 		= $_GET['tglakhir'];
 $carabayar 		= $_GET['carabayar'];
 $detail 		= $_GET['detail'];
 $jenisproduk 		= $_GET['jenisproduk'];
+$kodebarang 		= $_GET['kodebarang'];
+$supplier 		= $_GET['supplier'];
+$namasupplier = getnamasupplier($supplier);
+if($jenisproduk!='Semua'){
+         $wherekodebarang="";
+		 $detail ='ok';
+		 $namajenisproduk = getjenis($jenisproduk);
+$namakodebarang="Semua";
+}
+if($kodebarang!='Semua'){
+         $jenisproduk="Semua";
+		 $detail ='ok';
+$wherekodebarang="and kodebarang='$kodebarang'";
+$namakodebarang=getnamabarang($kodebarang);
+		 $namajenisproduk ="Semua";
+}
+if($supplier=='Semua'){
+         $wheresupplier="";
+		 $namasupplier ='SEMUA';
+}else{
+         $wheresupplier="and kodesupplier='$supplier'";
+}
 switch ($carabayar) {
    case 'Semua':
          $wherestatus="";
@@ -52,12 +74,9 @@ font-family: "Times New Roman", Times, serif;
 echo "</head><body>";
 echo'
 <table align="center">
-<tr><td colspan="7"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
-
-if(!$detail){
-echo'<tr><td colspan="7"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+<tr><td colspan="7"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"></td></tr>';
+if($detail!='ok'){
+echo'<tr><td colspan="7"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.$namasupplier.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -72,7 +91,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wheresupplier order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $noinvoice = $datas['noinvoice'];
@@ -91,10 +110,11 @@ $termin = $termin." Hari";
 }
 $user = $datas['user'];
 $urutan = $no + 1;
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -111,7 +131,7 @@ $thutang+=$hutang;
 }
 echo '
 <tr class="border" align="right">
-<td colspan="5"><b>Grand Total :</b></td>
+<td colspan="6"><b>Grand Total :</b></td>
 <td>'.rupiah_format($ttotal).'</td>
 <td>'.rupiah_format($tbayar).'</td>
 <td>'.rupiah_format($thutang).'</td>
@@ -119,7 +139,7 @@ echo '
 </tr>';
 echo '</table>';
 }else{
-echo'<tr><td colspan="8"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4>Laporan Pembelian, Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).', Supplier '.$namasupplier.', , Jenis / Barang : '.$namajenisproduk.'/'.$namakodebarang.'</h4></td></tr>';
 echo '
 <tr class="border">
 <td>No</td>
@@ -138,7 +158,7 @@ echo '
 <td>User</td>
 </tr>';
 $no =1;
-$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus order by tgl asc");	
+$s = mysql_query ("SELECT * FROM `pos_pembelian` where tgl >= '$tglmulai' and tgl <= '$tglakhir' $wherestatus  $wheresupplier order by tgl asc");	
 while($datas = mysql_fetch_array($s)){
 $id = $datas['id'];
 $noinvoice = $datas['noinvoice'];
@@ -148,8 +168,9 @@ $carabayar = $datas['carabayar'];
 $user = $datas['user'];
 $netto = $datas['netto'];
 $tnetto += $netto;
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$datas['noinvoice'].'&lihat=ok"target="new">'.$datas['noinvoice'].'</a>';
 $urutan = $no + 1;
-$s2 = mysql_query ("SELECT * FROM `pos_pembeliandetail` where noinvoice = '$noinvoice'order by id asc");	
+$s2 = mysql_query ("SELECT * FROM `pos_pembeliandetail` where noinvoice = '$noinvoice' $wherekodebarang order by id asc");	
 while($datas2 = mysql_fetch_array($s2)){
 $kodebarang = $datas2['kodebarang'];
 $jumlah = $datas2['jumlah'];
@@ -161,7 +182,7 @@ if($jenisbarangid==$jenisproduk){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -182,7 +203,7 @@ if($jenisproduk=='Semua'){
 echo '
 <tr class="border">
 <td class="text-center">'.$no.'</td>
-<td>'.$noinvoice.'</td>
+<td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
 <td>'.getnamasupplier($kodesupplier).'</td>
 <td>'.$carabayar.'</td>
@@ -220,11 +241,13 @@ echo '
 echo '</table>';
 }
 /****************************/
+/****************************/
 echo "</body</html>";
-
+/*
 if (isset($_GET['tglmulai'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>

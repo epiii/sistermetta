@@ -53,11 +53,15 @@
                 <span class="icon-grid-view"></span>  
                 Menu Utama
             </a>
+            
+            <!-- nama modul-->
             <span class="element-divider"></span>
             <a class="element brand" href="./">
                 <span class="icon-home"></span>  
                 <?php echo $modul;?>
             </a>
+
+            <!-- list menu -->
             <span class="element-divider"></span>
             <?php
                 topMenu($modul);
