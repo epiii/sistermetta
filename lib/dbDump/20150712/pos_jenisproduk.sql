@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2015 at 04:27 PM
+-- Generation Time: Jul 12, 2015 at 04:28 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -23,33 +23,25 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `hrd_bulan`
+-- Table structure for table `pos_jenisproduk`
 --
 
-DROP TABLE IF EXISTS `hrd_bulan`;
-CREATE TABLE IF NOT EXISTS `hrd_bulan` (
-  `id` int(2) NOT NULL AUTO_INCREMENT,
-  `bulan` varchar(255) NOT NULL,
+DROP TABLE IF EXISTS `pos_jenisproduk`;
+CREATE TABLE IF NOT EXISTS `pos_jenisproduk` (
+  `id` int(5) NOT NULL AUTO_INCREMENT,
+  `nama` varchar(255) NOT NULL,
+  `jenis` enum('BARANG','JASA') NOT NULL DEFAULT 'BARANG',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=13 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
 
 --
--- Dumping data for table `hrd_bulan`
+-- Dumping data for table `pos_jenisproduk`
 --
 
-INSERT INTO `hrd_bulan` (`id`, `bulan`) VALUES
-(1, 'Januari'),
-(2, 'Februari'),
-(3, 'Maret'),
-(4, 'April'),
-(5, 'Mei'),
-(6, 'Juni'),
-(7, 'Juli'),
-(8, 'Agustus'),
-(9, 'September'),
-(10, 'Oktober'),
-(11, 'Nopember'),
-(12, 'Desember');
+INSERT INTO `pos_jenisproduk` (`id`, `nama`, `jenis`) VALUES
+(1, 'SERAGAM', 'BARANG'),
+(3, 'BUKU', 'BARANG'),
+(6, 'FORM', 'JASA');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
