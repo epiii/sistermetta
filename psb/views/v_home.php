@@ -74,17 +74,6 @@
 <div class="tile-group triple">
     <div class="tile-group-title">Referensi</div>
 
-    <!-- kriteria calon siswa -->
-    <a href="kriteria-calon-siswa" class="tile bg-lightBlue" data-click="transform">
-        <div class="tile-content icon">
-            <span class="icon-copy"></span>
-        </div>
-        <div class="brand">
-            <div class="label">Kriteria Calon Siswa</div>
-        </div>
-    </a>
-    <!--end of  kriteria calon siswa -->
-
     <!-- golongan calon siswa -->
     <a href="golongan-calon-siswa" class="tile bg-yellow" data-click="transform">
         <div class="tile-content icon">

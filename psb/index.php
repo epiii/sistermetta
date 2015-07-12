@@ -95,7 +95,6 @@
             <div class="element">
                 <a class="dropdown-toggle" href="#">Referensi</a>
                 <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="kriteria-calon-siswa">Kriteria Calon Siswa</a></li>
                     <li><a href="golongan-calon-siswa">Golongan Calon Siswa</a></li>
                     <li><a href="set-biaya-calon-siswa">Set Biaya Calon Siswa</a></li>
                     <li><a href="set-angsuran">Set Angsuran </a></li>
@@ -136,9 +135,6 @@
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
-                    case 'vkriteriaCalonSiswa':
-                        require $d.'v_kriteriaCalonSiswa.php';
-                    break;
                     case 'vgolonganCalonSiswa':
                         require $d.'v_golonganCalonSiswa.php';
                     break;
