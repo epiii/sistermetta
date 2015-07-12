@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2015 at 04:58 PM
+-- Generation Time: Jul 12, 2015 at 05:01 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -85,29 +85,6 @@ CREATE TABLE IF NOT EXISTS `pos_biayabulanan` (
 
 INSERT INTO `pos_biayabulanan` (`id`, `tgl`, `nama`, `subtotal`) VALUES
 (1, '2015-07-01', 'LISTRIK', '500000');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `pos_customer`
---
-
-DROP TABLE IF EXISTS `pos_customer`;
-CREATE TABLE IF NOT EXISTS `pos_customer` (
-  `id` int(5) NOT NULL AUTO_INCREMENT,
-  `nis` varchar(50) NOT NULL,
-  `nama` varchar(255) NOT NULL,
-  `kelas` varchar(50) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
-
---
--- Dumping data for table `pos_customer`
---
-
-INSERT INTO `pos_customer` (`id`, `nis`, `nama`, `kelas`) VALUES
-(1, '123', 'BRYANT', '1'),
-(2, '234', 'ALEXANDER', '1');
 
 -- --------------------------------------------------------
 
