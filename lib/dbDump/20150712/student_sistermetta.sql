@@ -3,11 +3,10 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 12, 2015 at 05:22 PM
+-- Generation Time: Jul 12, 2015 at 05:29 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
-SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 
 
@@ -35,7 +34,7 @@ CREATE TABLE `pos_alur_stok` (
   `kodebarang` varchar(50) NOT NULL,
   `jumlah` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=22 ;
+) TYPE=InnoDB  AUTO_INCREMENT=22 ;
 
 --
 -- Dumping data for table `pos_alur_stok`
@@ -77,7 +76,7 @@ CREATE TABLE `pos_biayabulanan` (
   `nama` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) TYPE=InnoDB  AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `pos_biayabulanan`
@@ -99,7 +98,7 @@ CREATE TABLE `pos_customer` (
   `nama` varchar(255) NOT NULL,
   `kelas` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 
@@ -113,7 +112,7 @@ CREATE TABLE `pos_jenisproduk` (
   `nama` varchar(255) NOT NULL,
   `jenis` enum('BARANG','JASA') NOT NULL DEFAULT 'BARANG',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
+) TYPE=InnoDB  AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `pos_jenisproduk`
@@ -135,7 +134,7 @@ CREATE TABLE `pos_jenjang` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `nama` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) TYPE=InnoDB  AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `pos_jenjang`
@@ -159,7 +158,7 @@ CREATE TABLE `pos_kelas` (
   `nama` varchar(50) NOT NULL,
   `jenjang` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `pos_kelas`
@@ -192,7 +191,7 @@ CREATE TABLE `pos_pembelian` (
   `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) TYPE=InnoDB  AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `pos_pembelian`
@@ -218,7 +217,7 @@ CREATE TABLE `pos_pembeliandetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) TYPE=InnoDB  AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `pos_pembeliandetail`
@@ -244,7 +243,7 @@ CREATE TABLE `pos_pembelianretur` (
   `total` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) TYPE=InnoDB  AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `pos_pembelianretur`
@@ -272,7 +271,7 @@ CREATE TABLE `pos_pembelianreturdetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) TYPE=InnoDB  AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `pos_pembelianreturdetail`
@@ -306,7 +305,7 @@ CREATE TABLE `pos_penjualan` (
   `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) TYPE=InnoDB  AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `pos_penjualan`
@@ -337,7 +336,7 @@ CREATE TABLE `pos_penjualanbiaya` (
   `bayar` varchar(50) NOT NULL DEFAULT '0',
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) TYPE=InnoDB  AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `pos_penjualanbiaya`
@@ -364,7 +363,7 @@ CREATE TABLE `pos_penjualanbiayadetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=2 ;
+) TYPE=InnoDB  AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `pos_penjualanbiayadetail`
@@ -392,7 +391,7 @@ CREATE TABLE `pos_penjualandetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=8 ;
+) TYPE=InnoDB  AUTO_INCREMENT=8 ;
 
 --
 -- Dumping data for table `pos_penjualandetail`
@@ -429,7 +428,7 @@ CREATE TABLE `pos_penjualanjasa` (
   `tgltermin` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `pos_penjualanjasa`
@@ -457,7 +456,7 @@ CREATE TABLE `pos_penjualanjasadetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) TYPE=InnoDB  AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `pos_penjualanjasadetail`
@@ -485,7 +484,7 @@ CREATE TABLE `pos_penjualanretur` (
   `total` varchar(50) NOT NULL,
   `user` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `pos_penjualanretur`
@@ -512,7 +511,7 @@ CREATE TABLE `pos_penjualanreturdetail` (
   `subdiscount` varchar(50) NOT NULL,
   `subtotal` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+) TYPE=InnoDB  AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `pos_penjualanreturdetail`
@@ -540,7 +539,7 @@ CREATE TABLE `pos_produk` (
   `hargabeli` varchar(50) NOT NULL,
   `hargajual` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) TYPE=InnoDB  AUTO_INCREMENT=27 ;
 
 --
 -- Dumping data for table `pos_produk`
@@ -577,7 +576,7 @@ CREATE TABLE `pos_produkbiaya` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `kode` (`kode`),
   UNIQUE KEY `kode_2` (`kode`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `pos_produkbiaya`
@@ -602,7 +601,7 @@ CREATE TABLE `pos_produkjasa` (
   `nama` varchar(255) NOT NULL,
   `hargajual` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
+) TYPE=InnoDB  AUTO_INCREMENT=3 ;
 
 --
 -- Dumping data for table `pos_produkjasa`
@@ -621,27 +620,27 @@ INSERT INTO `pos_produkjasa` (`id`, `jenis`, `jenjang`, `kode`, `nama`, `hargaju
 DROP TABLE IF EXISTS `pos_situs`;
 CREATE TABLE `pos_situs` (
   `id` int(2) NOT NULL AUTO_INCREMENT,
-  `email_master` varchar(50) COLLATE latin1_general_ci NOT NULL,
-  `judul_situs` varchar(50) COLLATE latin1_general_ci NOT NULL,
-  `url_situs` varchar(50) COLLATE latin1_general_ci NOT NULL,
-  `slogan` varchar(50) COLLATE latin1_general_ci NOT NULL,
-  `description` text COLLATE latin1_general_ci NOT NULL,
-  `keywords` text COLLATE latin1_general_ci NOT NULL,
+  `email_master` varchar(50) NOT NULL,
+  `judul_situs` varchar(50) NOT NULL,
+  `url_situs` varchar(50) NOT NULL,
+  `slogan` varchar(50) NOT NULL,
+  `description` text NOT NULL,
+  `keywords` text NOT NULL,
   `maxkonten` int(2) NOT NULL DEFAULT '5',
   `maxadmindata` int(2) NOT NULL DEFAULT '5',
   `maxdata` int(2) NOT NULL DEFAULT '5',
   `maxgalleri` int(2) NOT NULL DEFAULT '4',
   `widgetshare` int(2) NOT NULL DEFAULT '0',
-  `theme` varchar(50) COLLATE latin1_general_ci NOT NULL DEFAULT 'tcms',
-  `author` text COLLATE latin1_general_ci NOT NULL,
-  `alamatkantor` text COLLATE latin1_general_ci NOT NULL,
+  `theme` varchar(50) NOT NULL DEFAULT 'tcms',
+  `author` text NOT NULL,
+  `alamatkantor` text NOT NULL,
   `publishwebsite` int(1) NOT NULL DEFAULT '1',
   `publishnews` int(2) NOT NULL,
   `maxgalleridata` int(11) NOT NULL,
   `widgetkomentar` int(2) NOT NULL DEFAULT '1',
   `widgetpenulis` int(2) NOT NULL DEFAULT '2',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci AUTO_INCREMENT=2 ;
+) TYPE=MyISAM  AUTO_INCREMENT=2 ;
 
 --
 -- Dumping data for table `pos_situs`
@@ -666,7 +665,7 @@ CREATE TABLE `pos_supplier` (
   `carabayar` varchar(50) NOT NULL,
   `termin` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) TYPE=InnoDB  AUTO_INCREMENT=5 ;
 
 --
 -- Dumping data for table `pos_supplier`
@@ -699,7 +698,7 @@ CREATE TABLE `pos_useraura` (
   `exp` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `biodata` text NOT NULL,
   PRIMARY KEY (`UserId`)
-) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=29 ;
+) TYPE=MyISAM  AUTO_INCREMENT=29 ;
 
 --
 -- Dumping data for table `pos_useraura`
