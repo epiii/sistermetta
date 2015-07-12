@@ -45,9 +45,7 @@ echo "</head><body>";
 echo'
 <table align="center"><tr><td>';
 echo'<table width="100%">
-<tr><td><img src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr></table>';
+<tr><td><img src="images/logo.png" height="70px"></td></tr></table>';
 echo'</td></tr><tr><td>';
 $no=1;
 $query 		= mysql_query ("SELECT * FROM `pos_pembelianretur` WHERE `noretur` like '$kode'");
@@ -57,6 +55,7 @@ $noretur  			= $data['noretur'];
 $tgl  			= $data['tgl'];
 $kodesupplier  			= $data['kodesupplier'];
 $total  			= $data['total'];
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok"target="new">'.$data['noinvoice'].'</a>';
 	$error 	= '';
 		if (!$noretur) $error .= "Error: Kode Retur tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -73,7 +72,7 @@ echo '
 	<tr>
 		<td>Nomor Invoice</td>
 		<td>:</td>
-		<td>'.$noinvoice.'</td>
+		<td>'.$lihatslip.'</td>
 	</tr>';
 echo '
 	<tr>
@@ -128,7 +127,7 @@ echo '</table>';
 /****************************/
 echo "</body</html>";
 
-if (!isset($_GET['detail'])){
+if (!isset($_GET['lihat'])){
 echo "<script language=javascript>
 window.print();
 </script>";

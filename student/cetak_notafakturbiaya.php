@@ -45,9 +45,7 @@ echo "</head><body>";
 echo'
 <table align="center"><tr><td>';
 echo'<table  width="100%">
-<tr><td><img src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr></table>';
+<tr><td><img src="images/logo.png" height="70px"></td></tr></table>';
 echo'</td></tr><tr><td>';
 $no=1;
 $query 		= mysql_query ("SELECT * FROM `pos_penjualanbiaya` WHERE `nofaktur` like '$kode'");

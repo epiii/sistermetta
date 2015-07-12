@@ -4,13 +4,13 @@ include 'includes/config.php';
 include 'includes/mysql.php';
 include 'includes/configsitus.php';
 global $koneksi_db,$url_situs;
-$bulan 		= $_GET['bulan'];
-$tahun 		= $_GET['tahun'];
+$tglmulai 		= $_GET['tglmulai'];
+$tglakhir 		= $_GET['tglakhir'];
 
 echo "<html><head><title>Laporan Laba/Rugi </title>";
 echo '<style type="text/css">
    table { page-break-inside:auto; 
-    font-size: 0.8em; /* 14px/16=0.875em */
+    font-size: 0.9em; /* 14px/16=0.875em */
 font-family: "Times New Roman", Times, serif;
    }
 
@@ -29,96 +29,133 @@ font-family: "Times New Roman", Times, serif;
 echo "</head><body>";
 echo'
 <table align="center" class="border">
-<tr><td colspan="7"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"><br>
-<b>Elyon Christian School</b><br>
-Raya Sukomanunggal Jaya 33A, Surabaya 60187</td></tr>';
+<tr><td colspan="8"><img style="margin-right:5px; margin-top:5px; padding:1px; background:#ffffff; float:left;" src="images/logo.png" height="70px"></td></tr>';
 
-echo'<tr><td colspan="8"><h4>Laporan Rugi Laba, Bulan '.getbulan($bulan).', Tahun '.($tahun).'</h4></td></tr>';
+echo'<tr><td colspan="8"><h4><b>Laporan Rugi Laba</b> , Dari '.tanggalindo($tglmulai).', Sampai '.tanggalindo($tglakhir).'</h4></td></tr>';
 echo'<tr><td colspan="8">';
 /****************************/
-echo'<div class="panel-heading"><b>Pendapatan Barang dan Jasa</b></div>';
 echo '
 <table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk" );
-while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$idjenis=$data['id'];
-$namajenis=$data['nama'];
-//$s2 = mysql_query ("SELECT sum(subtotal) as subtotal,jenis as kodejenis FROM `pos_penjualandetail` where jenis = '$idjenis'");	
-$s2 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualan p,pos_penjualandetail pd where month(p.tgl)='$bulan' and year(p.tgl)='$tahun' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");
-$datas2 = mysql_fetch_array($s2);
-$subtotal = $datas2['subtotal'];
-$kodejenis = $datas2['kodejenis'];
-$subtotalbayar += $datas2['subtotal'];
-//$s3 = mysql_query ("SELECT sum(subtotal) as subtotal,jenis as kodejenis FROM `pos_penjualanjasadetail` where jenis = '$idjenis'");	
-$s3 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualanjasa p,pos_penjualanjasadetail pd where month(p.tgl)='$bulan' and year(p.tgl)='$tahun' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");
-$datas3 = mysql_fetch_array($s3);
-$subtotal = $datas3['subtotal'];
-$kodejenis = $datas3['kodejenis'];
-$subtotalbayar += $datas3['subtotal'];
-echo'<tr>
-		<td width="200px">Pendapatan '.$namajenis.' :</td>
-		<td>'.rupiah_format($subtotalbayar).'</td>
-	</tr>';
-$grandsubtotalbayar +=$subtotalbayar;
-$subtotalbayar='0';
-}
-echo'<tr>
-		<td width="200px"><b>Total :</td>
-		<td>'.rupiah_format($grandsubtotalbayar).'</b></td>
-	</tr>';
-echo '</table>';
-/////////////////////////////////
-echo'<div class="panel-heading"><b>Biaya - Biaya</b></div>';
-echo '
-<table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk" );
-while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-$idjenis=$data['id'];
-$namajenis=$data['nama'];
-//$s4 = mysql_query ("SELECT sum(subtotal) as subtotal,jenis as kodejenis FROM `pos_penjualanbiayadetail` where jenis = '$idjenis'");
-$s4 = mysql_query ("SELECT sum(pd.subtotal) as subtotal,pd.jenis as kodejenis FROM pos_penjualanbiaya p,pos_penjualanbiayadetail pd where month(p.tgl)='$bulan' and year(p.tgl)='$tahun' and p.nofaktur=pd.nofaktur and pd.jenis = '$idjenis'");	
-$datas4 = mysql_fetch_array($s4);
-$subtotal = $datas4['subtotal'];
-$kodejenis = $datas4['kodejenis'];
-$subtotalbiaya += $datas4['subtotal'];
-echo'<tr>
-		<td width="200px">Biaya '.$namajenis.' :</td>
-		<td>'.rupiah_format($subtotalbiaya).'</td>
-	</tr>';
-$grandsubtotalbiaya +=$subtotalbiaya;
-	$subtotalbiaya='0';
-}
-echo'<tr>
-		<td width="200px"><b>Total :</td>
-		<td>'.rupiah_format($grandsubtotalbiaya).'</b></td>
-	</tr>';
-echo'</table>';
-echo'<div class="panel-heading"><b>Biaya Bulanan</b></div>';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='BARANG'" );
 echo'
-<table class="table table-striped table-hover">';
-$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_biayabulanan where bulan='$bulan' and tahun ='$tahun'" );
+<tr>
+		<td colspan="4" class="warning"><b>LABA BERSIH/KOTOR BARANG</b></td>
+		</tr>
+<tr>
+		<td width="300px"><b>Jenis</b></td>
+		<td><b>Pendapatan</b></td>
+		<td><b>Biaya</b></td>
+		<td><b>Laba/Rugi</b></td>
+		</tr>
+		';
+while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$idjenis=$data['id'];
+$namajenis=$data['nama'];
+$subtotalhargajual=getsubtotalhargajual($tglmulai,$tglakhir,$idjenis);
+$subtotalhargabeli=getsubtotalhargabeli($tglmulai,$tglakhir,$idjenis);
+$subtotalbiaya=getsubtotalbiaya($tglmulai,$tglakhir,$idjenis);
+$subtotalbayar = $subtotalhargajual - $subtotalhargabeli;
+echo'<tr>
+		<td>'.$namajenis.'</td>
+		<td>'.rupiah_format($subtotalbayar).'</td>
+		<td>'.rupiah_format($subtotalbiaya).'</td>		
+		<td>'.rupiah_format($subtotalbayar-$subtotalbiaya).'</td>		
+		';
+$grandsubtotalbayar +=	$subtotalbayar;
+$grandtotalbiaya +=	$subtotalbiaya;
+$grandlabarugi += $subtotalbayar-$subtotalbiaya;
+$subtotalbayar='0';
+$subtotalbiaya='0';
+echo'</tr>';
+}
+echo'<tr>
+		<td><b>Total</b></td>
+		<td><b>'.rupiah_format($grandsubtotalbayar).'</b></td>
+		<td><b>'.rupiah_format($grandtotalbiaya).'</b></td>
+		<td><b>'.rupiah_format($grandlabarugi).'</b></td>
+		</tr>
+		';
+/******************  JASA ********/
+$hasilj = $koneksi_db->sql_query( "SELECT * FROM pos_jenisproduk where jenis='JASA'" );
+echo'
+<tr>
+		<td colspan="4" class="primary"><b>PENJUALAN</b></td>
+		</tr>
+<tr>
+		<td width="300px"><b>Jenis</b></td>
+		<td><b>Penjualan</b></td>
+		<td><b>Biaya</b></td>
+		<td><b>Laba/Rugi</b></td>
+		</tr>
+		';
+while ($dataj = $koneksi_db->sql_fetchrow($hasilj)) { 
+$idjenisj=$dataj['id'];
+$namajenisj=$dataj['nama'];
+$subtotalbayarj=getsubtotalhargajualjasa($tglmulai,$tglakhir,$idjenisj);
+$subtotalbiayaj=getsubtotalbiaya($tglmulai,$tglakhir,$idjenisj);
+echo'<tr>
+		<td>'.$namajenisj.'</td>
+		<td>'.rupiah_format($subtotalbayarj).'</td>
+		<td>'.rupiah_format($subtotalbiayaj).'</td>		
+		<td>'.rupiah_format($subtotalbayarj-$subtotalbiayaj).'</td>		
+		';
+$grandsubtotalbayarj +=	$subtotalbayarj;
+$grandtotalbiayaj +=	$subtotalbiayaj;
+$grandlabarugij += $subtotalbayarj-$subtotalbiayaj;
+$subtotalbayarj='0';
+$subtotalbiayaj='0';
+echo'</tr>';
+}
+echo'<tr>
+		<td><b>Total</b></td>
+		<td><b>'.rupiah_format($grandsubtotalbayarj).'</b></td>
+		<td><b>'.rupiah_format($grandtotalbiayaj).'</b></td>
+		<td><b>'.rupiah_format($grandlabarugij).'</b></td>
+		</tr>
+		';		
+			/************** TOTAL BARANG + JASA ***************/	
+$totallabarugi = $grandlabarugi+$grandlabarugij;
+$admin .='<tr>
+		<td><b>Total</b></td>
+		<td></b></td>
+		<td></b></td>
+		<td><b>'.rupiah_format($totallabarugi).'</b></td>
+		</tr>
+		';		
+		/************** BIAYA BULANAN ***************/
+echo'<tr >
+		<td colspan="4"class="danger"><b>Biaya Bulanan</b></td>';
+echo '';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_biayabulanan where  tgl  BETWEEN '$tglmulai' AND '$tglakhir' " );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
 $namabb=$data['nama'];
 $subtotalbb=$data['subtotal'];
 $grandtotalbb+=$data['subtotal'];
 echo'<tr>
-		<td width="200px">'.$namabb.'</td>
+		<td width="300px">'.$namabb.'</td>
+		<td></td>
 		<td>'.rupiah_format($subtotalbb).'</td>
+				<td></td>
 	</tr>';
 }
 echo'<tr>
-		<td width="200px"><b>Total :</td>
-		<td>'.rupiah_format($grandtotalbb).'</b></td>
+		<td><b>Total :</b></td>
+		<td></td>
+		<td><b>'.rupiah_format($grandtotalbb).'</b></td>
+				<td></td>
 	</tr>';
-echo '</table>';
-$labarugi = $grandsubtotalbayar - $grandsubtotalbiaya - $grandtotalbb;
-echo'<div class="panel-heading"><b>Laba / Rugi :  '.rupiah_format($labarugi).'</b></div>';
-/******************************/
-echo '</td></tr>';
+	$labarugi = $totallabarugi - $grandtotalbb;
+echo'<tr class="alert-info">
+		<td><b>Laba / Rugi :</b></td>
+				<td></td>
+		<td></td>
+		<td><b>'.rupiah_format($labarugi).'</b></td>
+				<td></td>
+	</tr>';	
 echo '</table>';
 echo "</body</html>";
 
-if (isset($_GET['bulan'])){
+if (isset($_GET['Cetak'])){
 echo "<script language=javascript>
 window.print();
 </script>";

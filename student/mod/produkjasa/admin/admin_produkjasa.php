@@ -24,9 +24,6 @@ $admin  .= '<div class="border2">
 <td>
 <a href="admin.php?pilih=produkjasa&mod=yes">JASA</a>&nbsp;&nbsp;
 </td>
-<td>
-<a href="admin.php?pilih=produkjasa&mod=yes&aksi=import">IMPORT JASA</a>&nbsp;&nbsp;
-</td>
 </tr></table>
 </div>';
 
@@ -68,6 +65,8 @@ $query 		= mysql_query ("SELECT * FROM `pos_produkjasa` WHERE `id`='$id'");
 $data 		= mysql_fetch_array($query);
 $jenis  			= $data['jenis'];
 $jenjang  			= $data['jenjang'];
+$kode = $data['kode'];
+$generatekode=generatekodeedit('KPJ','kode','pos_produkjasa',$id);
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Jasa</h3></div>';
 $admin .= '
@@ -77,7 +76,7 @@ $admin .= '
 	<td>Jenis</td>
 		<td>:</td>
 	<td><select name="jenis" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='JASA'  ORDER BY nama asc");
 $admin .= '<option value="">== Jenis ==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $pilihan = ($datas['id']==$jenis)?"selected":'';
@@ -100,7 +99,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Jasa</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" value="'.$data['kode'].'" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'" required></td>
 	</tr>
 	<tr>
 		<td>Nama Jasa</td>
@@ -141,12 +140,17 @@ $hargajual 		= int_filter($_POST['hargajual']);
 		}else{
 			$admin .= '<div class="error"><b> Gagal di Buat.</b></div>';
 		}
-		unset($nama);
+		unset($jenjang);
+		unset($kode);
+			unset($nama);
+		unset($jenis);
+		unset($hargajual);
 	}
 
 }
+$generatekode=generatekode('KPR','kode','pos_produk');
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
-$kode     		= !isset($kode) ? '' : $kode;
+$kode     		= !isset($kode) ? $generatekode : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
 $jenis     		= !isset($jenis) ? '' : $jenis;
 $hargajual     		= !isset($hargajual) ? '0' : $hargajual;
@@ -161,7 +165,7 @@ $admin .= '
 	<td>Jenis</td>
 		<td>:</td>
 	<td><select name="jenis" class="form-control" required>';
-$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk ORDER BY nama asc");
+$hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk  where jenis='JASA' ORDER BY nama asc");
 $admin .= '<option value="">== Jenis Jasa==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
 $admin .= '<option value="'.$datas['id'].'">'.$datas['nama'].'</option>';
@@ -182,7 +186,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Kode Jasa</td>
 		<td>:</td>
-		<td><input type="text" name="kode" size="25"class="form-control" required></td>
+		<td><input type="text" name="kode" size="25"class="form-control" value="'.$kode.'"required></td>
 	</tr>
 	<tr>
 		<td>Nama Jasa</td>

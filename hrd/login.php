@@ -34,11 +34,7 @@ if (!cek_login ()){
 <input name="username" type="text" class="inputbox" size="25" placeholder="Username"/>
 <input name="password" type="password" class="inputbox" size="25" placeholder="Password"/>
 <input type="hidden" value="1" name="loguser" />
-<input type="submit" name="submit_login" class="button" value="Login" /><br>
-</form>
-<form action="../" method="post" name="login" id="loginForm">
-<div  class="loginbutton"><br>
-<input type="submit" name="submit_login" class="button" value="MENU UTAMA" /></div>
+<input type="submit" name="submit_login" class="button" value="Login" />
 </form>
 </div>
 </div>
