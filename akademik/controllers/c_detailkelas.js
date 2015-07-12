@@ -47,7 +47,7 @@ var contentFR = '';
                         +'<label>Wali Kelas (NIP/Nama Guru)</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" name="waliH" id="waliH">'
-                            +'<input onblur="validSelect(\'karyawan\');" onchange="validSelect(\'karyawan\');" required placeholder="NIP / Nama" name="waliTB" id="waliTB">'
+                            +'<input  onblur="validSelect(\'karyawan\');" onkeyup="validSelect(\'karyawan\');" onchange="validSelect(\'karyawan\');" xrequired placeholder="NIP / Nama" name="waliTB" id="waliTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -409,7 +409,13 @@ function notif(cont,clr) {
         });
     }
     function validSelect (e) {
-        if($('#'+e+'H').val()==''){
+        if($('#'+e+'H').val()=='' || $('#'+e+'TB').val()==''){
             $('#'+e+'TB').val('');
+            $('#'+e+'H').val('');
+        }
+    }
+    function validSelect2 (e) {
+        if($('#'+e+'TB').val()==''){
+            $('#'+e+'H').val('');
         }
     }
