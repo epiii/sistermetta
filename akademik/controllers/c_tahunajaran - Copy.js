@@ -53,7 +53,7 @@ var contentFR = '';
                     +'</form>';
 
         // combo departemen
-        viewTB();
+        cmbdepartemen();
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -140,6 +140,17 @@ var contentFR = '';
                 var titlex;
                 if(id==''){  //add mode
                     titlex='<span class="icon-plus-2"></span> Tambah ';
+                    $.ajax({
+                        url:dir2,
+                        data:'aksi=cmbdepartemen&replid='+$('#departemenS').val(),
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#departemenH').val($('#departemenS').val());
+                            $('#departemenTB').val(dt.departemen[0].nama);
+                        }
+                    });
+
                 }else{ // edit mode
                     titlex='<span class="icon-pencil"></span> Ubah';
                     $.ajax({
@@ -149,6 +160,7 @@ var contentFR = '';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
+                            $('#departemenH').val(dt.id_departemen);
                             $('#tahunajaranTB').val(dt.tahunajaran);
                             $('#keteranganTB').val(dt.keterangan);
                         }
@@ -242,6 +254,25 @@ var contentFR = '';
         $('#keteranganTB').val('');
     }
 //end of reset form ---
+
+// combo departemen ---
+    function cmbdepartemen(){
+        var u = dir2;
+        var d ='aksi=cmbdepartemen';
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.departemen, function(id,item){
+                    out+='<option value="'+item.replid+'">'+item.nama+'</option>';
+                });
+                $('#departemenS').html(out);
+                viewTB();
+            }
+        });
+    }
+//end of combo departemen ---
 
 //aktifkan process ---
     function aktifkan(id){

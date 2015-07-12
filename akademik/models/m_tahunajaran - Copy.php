@@ -15,11 +15,13 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$keterangan  = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
 				$sql = 'SELECT *
 						FROM '.$tb.'
 						WHERE 
+							departemen = '.$departemen.' and 
 							tahunajaran like "%'.$tahunajaran.'%" and
 							keterangan like "%'.$keterangan.'%" 
 						ORDER 
@@ -40,17 +42,32 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td align="center">
+						if($res['aktif']==1){
+							$dis  = 'disabled';
+							$ico  = 'checkmark';
+							$hint = 'telah Aktif';
+							$func = '';
+						}else{
+							$dis  = '';
+							$ico  = 'blocked';
+							$hint = 'Aktifkan';
+							$func = 'onclick="aktifkan('.$res['replid'].');"';
+						}
+						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button  data-hint="hapus" onclick="del('.$res['replid'].');">
+									<button '.$dis.' data-hint="hapus" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 									</button>
+									<button '.$func.' '.$dis.' data-hint="'.$hint.'">
+										<i class="icon-'.$ico.'"></i>
+									</button>
 								 </td>';
-						$out.= '<tr>
+						$out.= '<tr class="'.($res['aktif']==1?'bg-lightGreen':'').'">
 									<td align="center">'.$res['tahunajaran'].'</td>
 									<td>'.$res['keterangan'].'</td>
+									<td>'.($res['aktif']==1?'Aktif':'Tidak Aktif').'</td>
 									'.$btn.'
 								</tr>';
 					}
@@ -67,14 +84,21 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
+				$s = $tb.' set 	departemen 	= "'.filter($_POST['departemenH']).'",
+								tahunajaran = "'.filter($_POST['tahunajaranTB']).'",
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
+								// tglmulai    = "'.filter($_POST['tglmulaiTB']).'",
+								// tglakhir    = "'.filter($_POST['tglakhirTB']).'",
+				
 				if(!isset($_POST['replid'])){ //add
-					$s2 = 'INSERT INTO '.$s;
+					if(mysql_num_rows(mysql_query('SELECT * from '.$tb))>0){
+						$s1 ='UPDATE '.$tb.' set aktif="0" where departemen='.$_POST['departemenH'];
+						$e1 = mysql_query($s1);
+					}$s2 = 'INSERT INTO '.$s.' ,aktif = "1"';
 				}else{ //edit
 					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
 				}
-				// pr($s2);
+
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';
@@ -97,16 +121,24 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
-							WHERE replid='.$_POST['replid'];
+				$s 		= ' SELECT 
+								t.tahunajaran,
+								t.keterangan,
+								d.replid as id_departemen,
+								d.nama as departemen
+							from '.$tb.' t, departemen d 
+							WHERE 
+								t.departemen= d.replid and
+								t.replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'status'      =>$stat,
-							'tahunajaran' =>$r['tahunajaran'],
-							'keterangan'  =>$r['keterangan'],
+							'status'        =>$stat,
+							'tahunajaran'   =>$r['tahunajaran'],
+							'keterangan'    =>$r['keterangan'],
+							'id_departemen' =>$r['id_departemen'],
+							'departemen'    =>$r['departemen']
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------

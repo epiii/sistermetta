@@ -13,16 +13,22 @@
     </ul>
 </nav>
 
+<div style="display:none;" class="input-control select span3">
+    <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
+</div>
+
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Tahun Ajaran </th>
             <th class="text-center">Keterangan</th>
+            <th class="text-center">Status</th>
             <th class="text-center">Aksi</th>
         </tr>
         <tr xstyle="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="tahunajaranS" name="tahunajaranS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="keteranganS" name="keteranganS"></div></th>
+            <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>
     </thead>
