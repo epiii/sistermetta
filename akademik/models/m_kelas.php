@@ -155,10 +155,9 @@
 			case 'simpan':
 				$s = $tb.' set 	kelas       = "'.filter($_POST['kelasTB']).'",
 								subtingkat  = "'.$_POST['subtingkatTB'].'",
+								departemen  = "'.$_POST['departemenH'].'",
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
-
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';
@@ -184,7 +183,8 @@
 							k.kelas, 
 							k.keterangan, 
 							k.subtingkat,
-							s.tingkat
+							s.tingkat,
+							k.departemen 
 						FROM  
 							aka_kelas k 
 							LEFT JOIN aka_subtingkat s on s.replid = k.subtingkat
@@ -201,7 +201,8 @@
 								'tingkat'    =>$r['tingkat'],
 								'subtingkat' =>$r['subtingkat'],
 								'kelas'      =>$r['kelas'],
-								'keterangan' =>$r['keterangan']
+								'keterangan' =>$r['keterangan'],
+								'departemen' =>$r['departemen']
 						)));
 			break;
 			// ambiledit -----------------------------------------------------------------

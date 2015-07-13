@@ -13,6 +13,10 @@
     </ul>
 </nav>
  
+<div class="input-control select size3">
+    <select data-hint="departemen" id="departemenS"name="departemenS"></select> 
+</div> 
+    
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">
