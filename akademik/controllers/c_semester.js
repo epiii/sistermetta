@@ -8,16 +8,12 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
+        cmbtahunajaran('filter','');
+
         contentFR += '<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
-                        +'<label>Departemen</label>'
-                        +'<div class="input-control text">'
-                            +'<input type="hidden" name="departemenH" id="departemenH">'
-                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
-                            +'<button class="btn-clear"></button>'
-                        +'</div>'
-                        
+                        // Tahun Ajaran
                         +'<label>Tahun Ajaran</label>'
                         +'<div class="input-control text">'
                             +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
@@ -25,6 +21,7 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        // Semester
                         +'<label>Semester</label>'
                         +'<div>'
                             +'<div class="input-control radio margin3" >'
@@ -41,6 +38,7 @@ var contentFR = '';
                             +'</div>'
                         +'</div>'
 
+                        // tanggal mulai 
                         +'<label>Tanggal Mulai</label>'
                         +'<div class="input-control text" data-role="datepicker"'
                             +'data-format="dd mmmm yyyy"'
@@ -49,6 +47,7 @@ var contentFR = '';
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
+                        // tanggal selesai 
                         +'<label>Tanggal Selesai</label>'
                         +'<div class="input-control text" data-role="datepicker"'
                             +'data-format="dd mmmm yyyy"'
@@ -57,16 +56,13 @@ var contentFR = '';
                             +'<button class="btn-date"></button>'
                         +'</div>'
 
-                        
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
 
-        // combo departemen
-        cmbdepartemen('filter','');
-        // cmbdepartemen(false,'');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -95,52 +91,25 @@ var contentFR = '';
     }); 
 // end of save process ---
 
-// combo departemen ---
-    function cmbdepartemen(typ,dep){
-        u=dir2;
-        d='aksi=cmbdepartemen'+(dep!=''?'&replid='+dep:'');
-        ajax(u,d).done(function(dt){
-            var out='';
-            if(dt.status!='sukses'){
-                out+='<option value="">'+dt.status+'</option>';
-            }else{
-                $.each(dt.departemen, function(id,item){
-                    out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                });
-            }
-
-            if(typ=='filter'){ // filter
-                $('#departemenS').html(out);
-                cmbtahunajaran('filter',dt.departemen[0].replid,'');
-            }else{ // form
-                $('#departemenTB').val(dt.departemen[0].nama);
-            }
-        });
-    }
-
 // combo tahunajaran ---
-    function cmbtahunajaran(typ,dep,thn){
+    function cmbtahunajaran(typ,thn){
         u=dir3;
-        d='aksi=cmbtahunajaran&departemen='+dep+(thn!=''?'&replid='+thn:'');
+        d='aksi=cmbtahunajaran'+(thn!=''?'&replid='+thn:'');
         ajax(u,d).done(function(dt){
             var out='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
                 $.each(dt.tahunajaran, function(id,item){
-                    if(item.aktif=='1'){
-                        out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
-                    }else{
-                        out+='<option value="'+item.replid+'">'+item.tahunajaran+'</option>';
-                    }
+                    out+='<option '+(item.repld==thn?'selected':'')+' value="'+item.replid+'">'+item.tahunajaran+'</option>';
                 });
             }
             if(typ=='filter'){ // filter
                 $('#tahunajaranS').html(out);
-                // cmbtahunajaran(dt.departemen[0].replid);
                 viewTB();
             }else{ // form
                 $('#tahunajaranTB').val(dt.tahunajaran[0].tahunajaran);
+                $('#tahunajaranH').val(dt.tahunajaran[0].replid);
             }
         });
     }
@@ -222,18 +191,14 @@ var contentFR = '';
                         $('#tahunajaranTB').val(dt.tahunajaran);
                         $('#tglMulaiTB').val(dt.tglMulai);
                         $('#tglSelesaiTB').val(dt.tglSelesai);
-                        $('#departemenTB').val(dt.departemen);
                         $.each($('input[name="semesterTB"]'),function(){
                             if(dt.semester==$(this).val())
                                 $(this).attr('checked',true);
                         })
                     });
                 }else{ // add
-                    setTimeout(function() {
-                        $('#tahunajaranH').val($('#tahunajaranS').val());
-                    },300);
-                    cmbdepartemen('form',$('#departemenS').val());
-                    cmbtahunajaran('form',$('#departemenS').val(),$('#tahunajaranS').val());
+                    $('#tahunajaranH').val($('#tahunajaranS').val());
+                    cmbtahunajaran('form',$('#tahunajaranS').val());
                 }
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);

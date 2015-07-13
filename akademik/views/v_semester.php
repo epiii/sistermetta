@@ -14,9 +14,6 @@
     </ul>
 </nav>
 
-<div style="display:none;" class="input-control select span3">
-    <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
-</div>
 <div class="input-control select span3">
     <select class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>

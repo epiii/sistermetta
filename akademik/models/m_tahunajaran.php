@@ -143,9 +143,8 @@
 				
 				$s	= ' SELECT *
 						from '.$tb.'
-						'.$w.'		
-						ORDER  BY aktif asc';
-				// var_dump($s);exit();
+						'.$w;
+						// pr($s);
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
 				$ar=$dt=array();

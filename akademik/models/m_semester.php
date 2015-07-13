@@ -105,12 +105,10 @@
 						s.semester,
 						s.tglMulai,
 						s.tglSelesai,
-						d.nama departemen,
 						t.tahunajaran
 					FROM
 						aka_semester s
 						LEFT JOIN aka_tahunajaran t ON t.replid = s.tahunajaran
-						LEFT JOIN departemen d ON d.replid = t.departemen
 					WHERE
 						s.replid='.$_POST['replid'];
 					// var_dump($s);exit();
@@ -119,7 +117,6 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'      =>$stat,
-							'departemen'  =>$r['departemen'],
 							'tahunajaran' =>$r['tahunajaran'],
 							'semester'    =>$r['semester'],
 							'tglMulai'    =>tgl_indo5($r['tglMulai']),
