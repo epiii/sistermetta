@@ -1,9 +1,9 @@
 <?php
 /* Database */
-define('DBNAME','sistermeta');
+define('DBNAME','sistermetta');
 
 /* Links */
-define('RLNK',ROOTLNK.'akademik/');
+define('RLNK',ROOTLNK.'akademik_siadu/');
 define('IMGR',ROOTLNK.'shared/images/');
 
 /* System Directory */
