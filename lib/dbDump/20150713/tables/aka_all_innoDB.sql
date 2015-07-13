@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-07-13 13:07:32
+Date: 2015-07-13 13:28:57
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -26,7 +26,7 @@ CREATE TABLE `aka_absen` (
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `keterangan` varchar(100) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_absen
@@ -43,7 +43,7 @@ CREATE TABLE `aka_absen_guru` (
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `keterangan` varchar(100) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_absen_guru
@@ -59,7 +59,7 @@ CREATE TABLE `aka_alumni` (
   `siswa` int(10) unsigned NOT NULL,
   `keterangan` varchar(300) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_alumni
@@ -115,7 +115,7 @@ CREATE TABLE `aka_daftarnilai` (
   `nilai` float NOT NULL DEFAULT '0',
   `keterangan` varchar(100) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_daftarnilai
@@ -168,23 +168,6 @@ CREATE TABLE `aka_grading` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for aka_grup
--- ----------------------------
-DROP TABLE IF EXISTS `aka_grup`;
-CREATE TABLE `aka_grup` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `keterangan` varchar(250) NOT NULL,
-  `urut` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_grup
--- ----------------------------
-
--- ----------------------------
 -- Table structure for aka_guru
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_guru`;
@@ -206,43 +189,6 @@ CREATE TABLE `aka_guru` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for aka_jadwal
--- ----------------------------
-DROP TABLE IF EXISTS `aka_jadwal`;
-CREATE TABLE `aka_jadwal` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `semester` int(10) unsigned NOT NULL DEFAULT '0',
-  `kelas` int(10) unsigned NOT NULL,
-  `hari` smallint(5) unsigned NOT NULL,
-  `jam` mediumint(8) unsigned NOT NULL,
-  `sks` int(10) unsigned NOT NULL,
-  `ruang` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_jadwal
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_jadwal_set
--- ----------------------------
-DROP TABLE IF EXISTS `aka_jadwal_set`;
-CREATE TABLE `aka_jadwal_set` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `hari` int(10) unsigned NOT NULL,
-  `jam` int(10) unsigned NOT NULL DEFAULT '0',
-  `aktif` smallint(6) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_jadwal_set
--- ----------------------------
-
--- ----------------------------
 -- Table structure for aka_jenismutasi
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_jenismutasi`;
@@ -250,28 +196,10 @@ CREATE TABLE `aka_jenismutasi` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nama` varchar(50) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_jenismutasi
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_jurnal
--- ----------------------------
-DROP TABLE IF EXISTS `aka_jurnal`;
-CREATE TABLE `aka_jurnal` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `guru` int(10) unsigned NOT NULL,
-  `pelajaran` int(10) unsigned NOT NULL,
-  `kelas` int(10) unsigned NOT NULL,
-  `tanggal` date NOT NULL DEFAULT '0000-00-00',
-  `keterangan` text NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_jurnal
 -- ----------------------------
 
 -- ----------------------------
@@ -286,7 +214,7 @@ CREATE TABLE `aka_kegiatan` (
   `efektif` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_kegiatan
@@ -313,38 +241,6 @@ CREATE TABLE `aka_kelas` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for aka_komennilai
--- ----------------------------
-DROP TABLE IF EXISTS `aka_komennilai`;
-CREATE TABLE `aka_komennilai` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
-  `pelajaran` int(10) unsigned NOT NULL,
-  `komen` varchar(300) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_komennilai
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_komenrapor
--- ----------------------------
-DROP TABLE IF EXISTS `aka_komenrapor`;
-CREATE TABLE `aka_komenrapor` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `siswa` int(10) unsigned NOT NULL,
-  `komen` varchar(300) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_komenrapor
--- ----------------------------
-
--- ----------------------------
 -- Table structure for aka_mutasi
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_mutasi`;
@@ -356,7 +252,7 @@ CREATE TABLE `aka_mutasi` (
   `tanggal` date NOT NULL DEFAULT '0000-00-00',
   `keterangan` varchar(500) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_mutasi
@@ -420,23 +316,6 @@ CREATE TABLE `aka_rpp` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for aka_ruang
--- ----------------------------
-DROP TABLE IF EXISTS `aka_ruang`;
-CREATE TABLE `aka_ruang` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `departemen` int(10) unsigned NOT NULL,
-  `kode` varchar(20) NOT NULL,
-  `nama` varchar(100) NOT NULL,
-  `keterangan` varchar(200) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_ruang
--- ----------------------------
-
--- ----------------------------
 -- Table structure for aka_semester
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_semester`;
@@ -455,99 +334,6 @@ CREATE TABLE `aka_semester` (
 
 -- ----------------------------
 -- Records of aka_semester
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_setting
--- ----------------------------
-DROP TABLE IF EXISTS `aka_setting`;
-CREATE TABLE `aka_setting` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `kunci` char(6) NOT NULL,
-  `nilai` varchar(200) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_setting
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_siswa_grup
--- ----------------------------
-DROP TABLE IF EXISTS `aka_siswa_grup`;
-CREATE TABLE `aka_siswa_grup` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
-  `grup` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_siswa_grup
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_siswa_guru
--- ----------------------------
-DROP TABLE IF EXISTS `aka_siswa_guru`;
-CREATE TABLE `aka_siswa_guru` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
-  `guru` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_siswa_guru
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_siswa_kelas
--- ----------------------------
-DROP TABLE IF EXISTS `aka_siswa_kelas`;
-CREATE TABLE `aka_siswa_kelas` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
-  `kelas` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_siswa_kelas
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_siswa_tes
--- ----------------------------
-DROP TABLE IF EXISTS `aka_siswa_tes`;
-CREATE TABLE `aka_siswa_tes` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `siswa` int(10) unsigned NOT NULL,
-  `tes` int(10) unsigned NOT NULL,
-  `nilai` int(10) unsigned NOT NULL DEFAULT '0',
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_siswa_tes
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_sks
--- ----------------------------
-DROP TABLE IF EXISTS `aka_sks`;
-CREATE TABLE `aka_sks` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `kelas` int(10) unsigned NOT NULL,
-  `pelajaran` int(10) unsigned NOT NULL,
-  `guru` int(10) unsigned NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_sks
 -- ----------------------------
 
 -- ----------------------------
@@ -611,42 +397,10 @@ CREATE TABLE `aka_tahunlulus` (
   `departemen` int(10) unsigned NOT NULL,
   `nama` varchar(10) NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_tahunlulus
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_tes
--- ----------------------------
-DROP TABLE IF EXISTS `aka_tes`;
-CREATE TABLE `aka_tes` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  `keterangan` varchar(200) NOT NULL,
-  `urut` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_tes
--- ----------------------------
-
--- ----------------------------
--- Table structure for aka_tesakademis
--- ----------------------------
-DROP TABLE IF EXISTS `aka_tesakademis`;
-CREATE TABLE `aka_tesakademis` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `nama` varchar(50) NOT NULL,
-  PRIMARY KEY (`replid`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-
--- ----------------------------
--- Records of aka_tesakademis
 -- ----------------------------
 
 -- ----------------------------
