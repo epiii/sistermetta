@@ -4,7 +4,7 @@ error_reporting(0);
 
 date_default_timezone_set('Asia/Jakarta');
 define('ROOTLNK','../');
-define('ROOTDIR','F:/xampp/htdocs/sistermeta/');
+define('ROOTDIR','D:/localweb/sistermetta/');
 define('SHAREDDIR',ROOTDIR.'shared/');
 define('SHAREDLIB',ROOTDIR.'shared/libraries/');
 define('SHAREDSTYLE',ROOTDIR.'shared/style/');
@@ -18,7 +18,7 @@ define('SHAREDOBJ',SHAREDLIB.'obj/');
 // define('DB_PUS_SO','`vita`.`hrd_pegawai`');
 
 define('DBHOST','localhost');
-define('DBNAME','sistermeta');
+define('DBNAME','sistermetta');
 define('DBUSER','root');
 define('DBPSWD','');
 ?>

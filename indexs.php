@@ -49,17 +49,14 @@
         </script>
 
         <!-- <title>Metro UI CSS : Metro Bootstrap CSS Library</title> -->
-        <title>SISTER METTA</title>
+        <title>SISTER</title>
     </head>
     
     <body class="metro">
         <!--menu utama / module-->
         <div class="tile-area tile-area-dark" id="tile-module">
         <div class="container">
-            <h1 class="tile-area-title fg-white">
-            <img src="images/sistermeta2.png" width="250" height="200">
-            </h1>
-            <!-- <img src="images/meta.png" style="float:left; line-height:3px; margin-top:0px; padding:2px 5px 0px 20px;" width="85" height="71"> -->
+            <h1 class="tile-area-title fg-white">SISTER</h1>
             <div class="user-id">
                 <div class="user-id-image">
                     <span class="icon-user no-display1"></span>
@@ -72,8 +69,6 @@
                 <button class="button inverse" onclick="logout();">logout</button>
             </div>
             
-                                    <!-- <div class="email-data-text">Keterangan :</div> -->
-                                    <!-- <div class="email-data-text">'.$vv['keterangan'].'</div> -->
             <?php 
                 $out='';
                 // looping grup modul
@@ -81,13 +76,17 @@
                     $out.='<div class="tile-group '.$v['size'].'">';
                     // looping modul
                     foreach ($v['modul'] as $ii => $vv) {
-                        $out.='<a id="mod-'.$vv['link'].'" href="'.$vv['link'].'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
+                        $link = $vv['link']=='akademik'?'akademik_siadu':$vv['link'];
+                        // $out.='<a id="mod-'.$vv['link'].'" href="'.$vv['link'].'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
+                        $out.='<a id="mod-'.$vv['link'].'" href="'.$link.'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
                                 <div style="align:center;" class="tile-content icon">
                                     <center>
                                         <span class="icon-'.$vv['icon'].'"></span>
                                     </center>
                                 </div>
                                 <div class="tile-content email">
+                                    <div class="email-data-text">Keterangan :</div>
+                                    <div class="email-data-text">'.$vv['keterangan'].'</div>
                                 </div>
                                 <div class="brand">
                                     <div class="label">
