@@ -13,6 +13,7 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
+        cmbtahunajaran('filter','');
         contentFR += '<div style="overflow:scroll;height:550px;"  class="">'
                         +'<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
@@ -57,8 +58,6 @@ var contentFR = '';
                         +'</div>'
                     +'</form>';
                     +'</div>'
-        cmbdepartemen('filter','');
-        // cmbtahunajaran('filter','');
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
@@ -384,9 +383,9 @@ function notif(cont,clr) {
         });
     }
 // combo tahun ajaran  ---
-    function cmbtahunajaran(typ,dep,thn){
+    function cmbtahunajaran(typ,thn){
         var u=dir2;
-        var d='aksi=cmb'+mnu2+(dep!=''?'&departemen='+dep:'');
+        var d='aksi=cmb'+mnu2+(thn!=''?'&replid='+thn:'');
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){

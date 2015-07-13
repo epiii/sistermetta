@@ -36,7 +36,7 @@
 						)
 						';
 			}
-			// pr($ss);
+			pr($ss);
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -181,8 +181,7 @@
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s 	= ' SELECT 
-							ta.departemen
-							,ta.tahunajaran
+							ta.tahunajaran
 							,t.tingkat   
 							,s.subtingkat
 							,k.kelas 
@@ -208,7 +207,6 @@
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-								'departemen'  =>$r['departemen'],
 								'tahunajaran' =>$r['tahunajaran'],
 								'tingkat'     =>$r['tingkat'],
 								'subtingkat'  =>$r['subtingkat'],
