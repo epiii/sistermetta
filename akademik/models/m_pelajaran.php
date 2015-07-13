@@ -26,6 +26,7 @@
 							keterangan like "%'.$keterangan.'%"
 						ORDER 
 							BY nama asc';
+				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{

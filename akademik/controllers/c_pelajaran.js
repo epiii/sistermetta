@@ -8,6 +8,7 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
+        viewTB();
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
@@ -33,10 +34,6 @@ var contentFR = '';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-
-        // combo departemen
-        cmbdepartemen('');
-        // cmbdepartemen(false,'');
 
         //add form
         $("#tambahBC").on('click', function(){
