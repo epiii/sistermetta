@@ -17,7 +17,7 @@ var contentFR = '';
                         +'<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
-                        +'<input id="departemenH" name="departemenH" type="text">' 
+                        +'<input id="departemenH" name="departemenH" type="hidden">' 
                         // tingkat
                         +'<label>Tingkat</label>'
                         +'<div class="input-control select">'
