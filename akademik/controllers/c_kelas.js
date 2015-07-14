@@ -1,18 +1,23 @@
-var mnu       = 'kelas';
-var mnu4      = 'tingkat';
-var mnu5      = 'subtingkat';
+var mnu  = 'kelas';
+var mnu4 = 'tingkat';
+var mnu5 = 'subtingkat';
+var mnu6 = 'departemen';
 
-var dir       = 'models/m_'+mnu+'.php';
-var dir4      = 'models/m_'+mnu4+'.php';
-var dir5      = 'models/m_'+mnu5+'.php';
+var dir  = 'models/m_'+mnu+'.php';
+var dir4 = 'models/m_'+mnu4+'.php';
+var dir5 = 'models/m_'+mnu5+'.php';
+var dir6 = 'models/m_'+mnu6+'.php';
+
 var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
+        cmbdepartemen('filter','');
         contentFR += '<div style="overflow:scroll;height:550px;"  class="">'
                         +'<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
+                        +'<input id="departemenH" name="departemenH" type="hidden">' 
                         // tingkat
                         +'<label>Tingkat</label>'
                         +'<div class="input-control select">'
@@ -45,9 +50,6 @@ var contentFR = '';
                     +'</form>';
                     +'</div>'
 
-        // combo departemen
-        cmbtingkat('filter','');
-        //add form
         $("#tambahBC").on('click', function(){
             viewFR('');
         });
@@ -76,6 +78,29 @@ var contentFR = '';
         });
     }); 
 // end of save process ---
+
+// combo departemen ---
+    function cmbdepartemen(typ,dep){
+        var u = dir6;
+        var d ='aksi=cmb'+mnu6+(dep!=''?'&replid='+dep:'');
+        ajax(u,d).done(function (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.departemen, function(id,item){
+                    out+='<option '+(dep!='' && dep==item.replid?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+                });
+            }
+            if(typ=='filter'){
+                $('#departemenS').html(out);
+                cmbtingkat('filter','');
+            }else{
+                $('#departemenH').val(dt.departemen[0].replid);
+            }
+        });
+    }
+//end of combo tingkat ---
 
 // combo tingkat ---
     function cmbtingkat(typ,ting){
@@ -199,7 +224,6 @@ var contentFR = '';
 
 // form ---
     function viewFR(id){
-        var thn = $('#tahunajaranS').val();
         $.Dialog({
             shadow:true,
             overlay:true,
@@ -218,8 +242,10 @@ var contentFR = '';
                         $('#keteranganTB').val(dt.datax.keterangan);
                         cmbtingkat('form',dt.datax.tingkat);
                         cmbsubtingkat('form',dt.datax.tingkat,dt.datax.subtingkat);
+                        cmbdepartemen('form',dt.datax.departemen);
                     });
-                }else{
+                }else{ // add
+                    cmbdepartemen('form',$('#departemenS').val());
                     cmbtingkat('form','');
                 }
                 $.Dialog.title(titlex+' '+mnu);
