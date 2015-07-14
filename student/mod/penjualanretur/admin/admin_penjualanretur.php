@@ -112,19 +112,20 @@ $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
 $nofaktur=$_SESSION['kodefaktur'];
-$ceksisareturjual=$jumlah-ceksisareturjual($nofaktur,$kode);
-$subtotal=$ceksisareturjual*$harga;
+//$ceksisareturjual=$jumlah-ceksisareturjual($nofaktur,$kode);
+//$subtotal=$ceksisareturjual*$harga;
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
 $jenjang=$data2['jenjang'];
 $getstokminusreturjual = getstokminusreturjual($_SESSION['kodefaktur'],$kode);
+$subtotal=$getstokminusreturjual*$harga;
 $PRODUCTID = array ();
 foreach ($_SESSION['product_id'] as $k=>$v){
 $PRODUCTID[] = $_SESSION['product_id'][$k]['kode'];
 }
 if (!in_array ($kode, $PRODUCTID)){
-$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode, 'jumlah' => $getstokminusreturjual, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal, 'jumlahjualasli' => $ceksisareturjual);
+$_SESSION['product_id'][] = array ('id' => $id,'kode' => $kode, 'jumlah' => $getstokminusreturjual, 'harga' => $harga, 'jenjang' => $jenjang, 'subdiscount' => $subdiscount, 'subtotal' => $subtotal, 'jumlahjualasli' => $getstokminusreturjual);
 }else{
 foreach ($_SESSION['product_id'] as $k=>$v){
 if($kode == $_SESSION['product_id'][$k]['kode'])
@@ -153,14 +154,15 @@ $customer = '
 	
 }
 
-if(isset($_POST['hapusbarang'])){
-$kode 		= $_POST['kode'];
+if(isset($_GET['hapusbarang'])){
+$kode 		= $_GET['kode'];
 foreach ($_SESSION['product_id'] as $k=>$v){
     if($kode == $_SESSION['product_id'][$k]['kode'])
 	{
 unset($_SESSION['product_id'][$k]);
     }
 }
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=penjualanretur&mod=yes" />';
 }
 
 if(isset($_POST['simpandetail'])){
@@ -344,9 +346,11 @@ $admin .= '
 		<th><b>Harga</b></</th>
 <th><b>Discount</b></</th>
 <th><b>SubDiscount</b></</th>
-<th><b>Subtotal</b></</th>
-		<th><b>Aksi</b></</th>
-	</tr>';
+<th><b>Subtotal</b></</th>';
+if (!$_SESSION['kodefaktur']){
+$admin .= '<th><b>Aksi</b></th>';
+}
+$admin .= '</tr>';
 foreach ($_SESSION['product_id'] as $k=>$v){
 $subdiscount = $_SESSION['product_id'][$k]['subdiscount'];
 $jumlah = $_SESSION['product_id'][$k]['jumlah'];
@@ -366,9 +370,12 @@ $admin .= '
 		<td><input align="right" type="text" name="subdiscount['.$k.']" value="'.$subdiscount.'"class="form-control"></td>
 	<td>'.$nilaidiscount.'</td>
 		<td>'.$subtotal.'</td>
-		<td>
-		<input align="right" type="hidden" name="jumlahbeliasli['.$k.']" value="'.$jumlahbeliasli.'"class="form-control">
-		<a href="./admin.php?pilih=penjualanretur&mod=yes&hapusbarang=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>
+		<input align="right" type="hidden" name="jumlahjualasli['.$k.']" value="'.$jumlahjualasli.'"class="form-control"></td>';
+		if (!$_SESSION['kodefaktur']){
+$admin .= '<td>
+		<a href="./admin.php?pilih=penjualanretur&mod=yes&hapusbarang=ok&kode='.$kode.'" class="btn btn-danger">HAPUS</a></td>';
+		}
+$admin .= '
 	</tr>';
 	$total +=$subtotal;
 	$no++;
@@ -390,7 +397,6 @@ $admin .= '
 
 $admin .= '<tr><td colspan="7"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
-		<input type="submit" value="Batal" name="bataljualretur"class="btn btn-danger" >
 		<input type="submit" value="Simpan" name="submitpenjualanretur"class="btn btn-success" >
 		</td>
 		<td></td></tr>';
