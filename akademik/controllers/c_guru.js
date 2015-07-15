@@ -12,7 +12,8 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-       contentFR+='<div style="overflow:scroll;height:500px;" >'
+        viewTB();
+        contentFR+='<div style="overflow:scroll;height:500px;" >'
                     +'<form onsubmit="simpan();return false;" autocomplete="off">'
                         +'<input id="idformH" type="hidden">' 
 
@@ -41,13 +42,8 @@ var contentFR = '';
                             +'<button class="button primary">simpan</button>&nbsp;'
                             // +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
-
                     +'</form>'
                 +'</div>';
-
-        // combo departemen
-        cmbdepartemen();
-        // cmbdepartemen(false,'');
 
         //add form
         $("#tambahBC").on('click', function(){

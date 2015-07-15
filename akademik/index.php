@@ -95,7 +95,7 @@
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
-                    // referensi
+                    // master
                     case 'vdepartemen':
                         require $d.'v_departemen.php';
                     break;
@@ -119,6 +119,9 @@
                     break;
                     case 'vtahunlulus':
                         require $d.'v_tahunlulus.php';
+                    break;
+                    case 'vdetailpelajaran':
+                        require $d.'v_detailpelajaran.php';
                     break;
 
                     // guru dan pelajaran

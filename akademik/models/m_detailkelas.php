@@ -36,7 +36,7 @@
 						)
 						';
 			}
-			pr($ss);
+			// pr($ss);
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
