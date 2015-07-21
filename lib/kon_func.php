@@ -65,7 +65,9 @@
 	            }
 	        }
 	    }
-	    if($out==0 OR $_SESSION['loginS']==''){
+	    // pr($_SESSION['grupmodulS'][0]);
+	    // if($out==0 OR $_SESSION['loginS']==''){
+	    if($_SESSION['loginS']==''){
 	        header('location:../');
 	    }
 	}

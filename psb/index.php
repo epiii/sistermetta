@@ -1,10 +1,10 @@
 <?php
     session_start();
-    // var_dump($_SESSION);
-    if(!isset($_SESSION['loginS'])){
-        header('location:../');
-    }else{
-        // echo 'ada';
+    require_once '../lib/func.php';
+    $modul = basename(dirname(__FILE__));
+    $m=isModul($modul);
+    // vdump($m);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -69,40 +69,25 @@
 
 <body class="metro">
 <!-- <div class="container"> -->
-    <nav class="navigation-bar fixed-top">
+        <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
-                <span class="icon-home"></span>  
-                Start Menu
+                <span class="icon-grid-view"></span>  
+                Menu Utama
             </a>
+            
+            <!-- nama modul-->
+            <span class="element-divider"></span>
             <a class="element brand" href="./">
-                Pendaftaran Siswa Baru
+                <span class="icon-home"></span>  
+                <?php echo $modul;?>
             </a>
-            <span class="element-divider"></span>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Menu Utama</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="proses">Periode Penerimaan</a></li>
-                    <li><a href="kelompok">Kelompok Pendaftaran</a></li>
-                    <li><a href="pendataan">Pendataan Calon Siswa</a></li>
-                    <li><a href="penerimaan">Penerimaan Siswa Baru</a></li>
-                    <!-- <li><a href="#">Cari Calon Siswa Baru</a></li> -->
-                    <!-- <li><a href="#">Statistik Penerimaan</a></li> -->
-                    <!-- <li class="divider"></li> -->
-                </ul>
-            </div>
-            <span class="element-divider"></span>
-            <div class="element">
-                <a class="dropdown-toggle" href="#">Referensi</a>
-                <ul class="dropdown-menu" data-role="dropdown">
-                    <li><a href="golongan-calon-siswa">Golongan Calon Siswa</a></li>
-                    <li><a href="set-biaya-calon-siswa">Set Biaya Calon Siswa</a></li>
-                    <li><a href="set-angsuran">Set Angsuran </a></li>
-                    <li><a href="set-diskon">Set Diskon </a></li>
 
-                </ul>
-            </div>
-             
+            <!-- list menu -->
+            <span class="element-divider"></span>
+            <?php
+                topMenu($modul);
+            ?>
             <span class="element-divider place-right"></span>
             <div class="element place-right">
                 <a class="dropdown-toggle" href="#">
@@ -166,13 +151,6 @@
             }
         ?>
     </div>
-<!-- </div> -->
-    <!--
-    <script src="js/hitua.js"></script>
-    -->
-     <script src="../js/main.js"></script>
-
+    <script src="../js/main.js"></script>
 </body>
 </html>
-
-<?php } ?>
