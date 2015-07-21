@@ -148,7 +148,7 @@ var contentFR ='';
             }
             if(typ=='filter'){ // filter
                 $('#departemenS').html(out);
-                cmbtahunajaran(dt.departemen[0].replid);
+                cmbtahunajaran('filter','');
             }else{ // form
                 $('#departemenTB').html(dt.departemen[0].nama);
                 cmbangkatan(dt.departemen[0].replid);
@@ -180,7 +180,7 @@ var contentFR ='';
 // combo tahunajaran ---
     function cmbtahunajaran(dep){
         var u = dir3;
-        var d ='aksi=cmb'+mnu3+'&departemen='+dep;
+        var d ='aksi=cmb'+mnu3;
         ajax(u,d).done(function  (dt) {
             var out='';
             if(dt.status!='sukses'){
