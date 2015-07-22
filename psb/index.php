@@ -2,9 +2,9 @@
     session_start();
     require_once '../lib/func.php';
     $modul = basename(dirname(__FILE__));
-    $m=isModul($modul);
-    // vdump($m);
-
+    isModul($modul);
+    // $x= isModul($modul);
+    // vd($x);
 ?>
 <!DOCTYPE html>
 <html>
@@ -12,11 +12,10 @@
     <meta charset="utf-8">
     <meta name="product" content="Metro UI CSS Framework">
     <meta name="description" content="Simple responsive css framework">
-    <meta name="author" content="Sergey S. Pimenov, Ukraine, Kiev">
+    <meta name="author" content="sister">
 
-     
     <link href="../css/metro-bootstrap.css" rel="stylesheet">
-    <!-- <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet"> -->
+    <link href="../css/metro-bootstrap-responsive.css" rel="stylesheet">
     <link href="../css/iconFont.css" rel="stylesheet">
     <link href="../css/docs.css" rel="stylesheet">
     <link href="../prettify/prettify.css" rel="stylesheet">
@@ -24,52 +23,33 @@
     <!-- Load JavaScript Libraries -->
     <script src="../js/jquery/jquery.min.js"></script>
     <script src="../js/jquery/jquery.widget.min.js"></script>
-    <script src="../js/jquery/jquery.mousewheel.js"></script>
-    <script src="../js/prettify/prettify.js"></script>
+    <script src="../js/jquery/jquery.mousewheel.js"></script>   
+<!--    <script src="../js/prettify/prettify.js"></script>-->
 
     <!-- Metro UI CSS JavaScript plugins -->
     <script src="../js/load-metro.js"></script>
-     <script src="../js/metro.min.js"></script>
-     <!-- // <script src="../js/metro-scroll.js"></script> -->
-
+    <script src="js/metro.min.js"></script>
+    <script>
+          // function showDialog(id){
+          //       var dialog = $("#"+id).data('dialog');
+          //       if (!dialog.element.data('opened')) {
+          //           dialog.open();
+          //       } else {
+          //           dialog.close();
+          //       }
+          //   }
+    </script>
     <!-- Local JavaScript -->
     <script src="../js/docs.js"></script>
-    <script src="js/github.info.js"></script>
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
-    <!-- // <script type="../js/metro/metro-scroll.js"></script> -->
-  <!-- combo grid -->
-    <script src="../js/combogrid/jquery-ui-1.10.1.custom.min.js"></script>
-    <script src="../js/combogrid/jquery.ui.combogrid-1.6.3.js"></script>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery-ui-1.10.1.custom.css"/>
-    <link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
-    <!--end of combo grid -->
 
-
-    <script>
-        $(function(){
-            $(".form").scrollbar({
-                // height: 355,
-                axis: 'y'
-            });
-            $("#scrollbox2").scrollbar({
-                axis: 'x',
-                // height: 355
-            });
-            // $("#panel2").scrollbar({
-                // height: 355
-                // height: 768
-            // });
-        });
-    </script>
-
-
-    <title>.:SISTER PSB:.</title>
+    <title>.:SISTER METTA:.</title>
 </head>
 
 <body class="metro">
-<!-- <div class="container"> -->
-        <nav class="navigation-bar fixed-top">
+    <!-- <nav class="navigation-bar light fixed-top"> -->
+    <nav class="navigation-bar fixed-top">
         <nav class="navigation-bar-content">
             <a class="element brand" href="../">
                 <span class="icon-grid-view"></span>  
@@ -113,13 +93,13 @@
     </nav>
 
     <div class="tile-area tile-area-dark">
-
         <?php
             $d='views/';
             if(!isset($_GET['page'])){
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
+                    // master
                     case 'vgolonganCalonSiswa':
                         require $d.'v_golonganCalonSiswa.php';
                     break;
@@ -132,6 +112,8 @@
                     case 'vsetDiskon':
                         require $d.'v_setDiskon.php';
                     break;
+
+                    // transaksi
                     case 'vproses':
                         require $d.'v_proses.php';
                     break;
@@ -151,6 +133,8 @@
             }
         ?>
     </div>
+    <!-- // <script src="js/hitua.js"></script> -->
     <script src="../js/main.js"></script>
+
 </body>
 </html>

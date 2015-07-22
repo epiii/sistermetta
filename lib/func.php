@@ -22,7 +22,7 @@
 		$r = mysql_fetch_assoc($e);
 		return $r[$f];
 	}
-	function vdump($x){
+	function vd($x){
 		echo '<pre>';
 			var_dump($x);
 		echo'</pre>';

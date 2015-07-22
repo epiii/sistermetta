@@ -3,25 +3,30 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu= 'grupmodul';
-	$tb = 'kon_'.$mnu;
+	$mnu= $tb = 'departemen';
+	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
+		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$grupmodul = isset($_POST['grupmodulS'])?filter($_POST['grupmodulS']):'';
-				$size      = isset($_POST['sizeS'])?filter($_POST['sizeS']):'';
+				$menu  = isset($_POST['menuS'])?filter($_POST['menuS']):'';
+				$link  = isset($_POST['linkS'])?filter($_POST['linkS']):'';
+				$warna = isset($_POST['warnaS'])?filter($_POST['warnaS']):'';
 				$sql = 'SELECT *
-						FROM '.$tb.'
+						FROM '.$tb.' m 
+							LEFT JOIN kon_warna w on w.id_warna = m.warna
+							LEFT JOIN kon_icon i on i.id_icon = m.icon
 						WHERE 
-							grupmodul like "%'.$grupmodul.'%" and 
-							size like "%'.$size.'%"
+							m.menu like "%'.$menu.'%" and 
+							m.link like "%'.$link.'%" and 
+							m.warna like "%'.$warna.'%"
 						ORDER BY	
-							grupmodul ASC'; 
-				// pr($sql);
+							m.menu ASC'; 
+				// print_r($sql);exit();
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -32,24 +37,49 @@
 				$aksi    ='tampil';
 				$subaksi ='';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-				$result  =$obj->result;
 
+				// $obj 	= new pagination_class($sql,$starting,$recpage);
+				$result =$obj->result;
+
+				#ada data
 				$jum	= mysql_num_rows($result);
 				$out ='';
 				if($jum!=0){	
+					// $nox 	= $starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['id_grupmodul'].');">
+						$nox = '<select replid1="'.$res['replid'].'" urutan1="'.$res['urut'].'" onchange="urutFC(this);" >';
+						for($i=1; $i<=$jum; $i++){
+							if($i==$res['urut'])
+								$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
+							else
+								$nox.='<option value="'.$i.'">'.$i.'</option>';
+						}$nox.='</select>';
+						// end of urutan
+
+						// action button
+						$btn ='<td>
+									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['id_grupmodul'].');">
+									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
 								 </td>';
+						//end of  action button
+
+						// table row
+						// <td><div class="input-control select">'.$nox.'</div></td>
 						$out.= '<tr>
 									<td>'.$res['grupmodul'].'</td>
-									<td>'.$res['size'].'</td>
+									<td>'.$res['modul'].'</td>
+									<td>'.$res['grupmenu'].'</td>
+									<td>'.$res['menu'].'</td>
+									<td>'.$res['link'].'</td>
+									<td>'.$res['ukuran'].'</td>
+									<td>'.$res['warna'].'</td>
 									'.$btn.'
 								</tr>';
+						// end of table row
+						$nox++;
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -64,23 +94,30 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	grupmodul 	= "'.filter($_POST['grupmodulTB']).'",
-										size 	= "'.filter($_POST['sizeTB']).'"';
-				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE id_grupmodul='.$_POST['replid']:'INSERT INTO '.$s;
-				// pr($s2);
-				$e    = mysql_query($s2);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat));
+				$s 		= $tb.' set 	nama 	= "'.filter($_POST['namaTB']).'",
+										alamat 	= "'.filter($_POST['alamatTB']).'",
+										telepon	= "'.filter($_POST['teleponTB']).'"';
+				if(isset($_POST['replid'])){
+					$s2 = 'UPDATE '.$s.' WHERE replid='.$_POST['replid'];
+				}else{
+					$n  = mysql_num_rows(mysql_query('SELECT * from '.$tb));
+					$s2 = 'INSERT INTO '.$s.', urut='.($n+1);
+
+				}
+				// $s2 	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				$e 		= mysql_query($s2);
+				$stat 	= ($e)?'sukses':'gagal';
+				$out 	= json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where id_grupmodul='.$_POST['replid']));
-				$s    = 'DELETE from '.$tb.' WHERE id_grupmodul='.$_POST['replid'];
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
+				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['grupmodul']));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
 
@@ -88,14 +125,17 @@
 			case 'ambiledit':
 				$s 		= ' SELECT *
 							from '.$tb.'  
-							WHERE id_grupmodul='.$_POST['replid'];
+							WHERE 
+								replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
+				// var_dump($s);
 				$out 	= json_encode(array(
-							'status'    =>$stat,
-							'grupmodul' =>$r['grupmodul'],
-							'size'      =>$r['size'],
+							'status'  =>$stat,
+							'nama'    =>$r['nama'],
+							'alamat'  =>$r['alamat'],
+							'telepon' =>$r['telepon']
 						));
 			break;
 			// ambiledit ------			

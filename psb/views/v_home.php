@@ -22,7 +22,7 @@
     // pr($_SESSION['grupmodulS']);
     foreach ($_SESSION['grupmodulS']as $i => $v) {
         foreach ($v['modul'] as $i2 => $v2) {
-            if($v2['modul']==$modul and $v2['statmod']==1) {
+            if($v2['link']==$modul and $v2['statmod']==1) {
                 foreach ($v2['grupmenu'] as $i3 => $v3) {
                     $out.='<div class="tile-group '.$v3['size'].'">
                             <div class="tile-group-title">'.$v3['grupmenu'].'</div>';

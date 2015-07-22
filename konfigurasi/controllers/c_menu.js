@@ -1,30 +1,43 @@
-var mnu ='grupmodul';
-var dir ='models/m_'+mnu+'.php';
+var mnu  ='menu';
+var mnu2 ='grupmodul';
+var mnu3 ='modul';
+var mnu4 ='warna';
+var mnu5 ='icon';
+
+var dir  ='models/m_'+mnu+'.php';
+var dir2 ='models/m_'+mnu2+'.php';
+var dir3 ='models/m_'+mnu3+'.php';
+var dir4 ='models/m_'+mnu4+'.php';
+var dir5 ='models/m_'+mnu5+'.php';
 var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        viewTB();
+        cmbgrupmodul('filter','');
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
 
-                        +'<input id="idformH" type="hidden">' 
-                        
-                        // grupm Modul
-                        +'<label>Grup Modul</label>'
+                        +'<input id="idformH" type="text">' 
+                        +'<label>Departemen</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="grup modul" required type="text" name="grupmodulTB" id="grupmodulTB">'
+                            +'<input required type="text" name="namaTB" id="namaTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
-                        // size
-                        +'<label>Size</label>'
+                        +'<label>Alamat</label>'
                         +'<div class="input-control text">'
-                            +'<input required type="text"  placeholder="size" name="sizeTB" id="sizeTB">'
+                            +'<input required type="text" name="alamatTB" id="alamatTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        +'<label>Telepon</label>'
+                        +'<div class="input-control text">'
+                            +'<input required type="text" name="teleponTB" id="teleponTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
 
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
 
@@ -34,15 +47,29 @@ var contentFR ='';
         });
 
         //search action
-        $('#grupmodulS,#sizeS').keydown(function (e){
-            if(e.keyCode == 13) viewTB();
+        $('#namaS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#alamatS').keydown(function (e){
+            if(e.keyCode == 13)
+                viewTB();
+        });$('#teleponS').keydown(function (e){
+            viewTB();
         })
+
+        // search button
+        $('#cariBC').on('click',function(){
+            $('#cariTR').toggle('slow');
+            $('#namaS').val('');
+            $('#keteranganS').val('');
+        });
     }); 
 // end of main function ---
 
 //save process ---
     function simpan(){
         var urlx ='&aksi=simpan';
+        // edit mode
         if($('#idformH').val()!=''){
             urlx += '&replid='+$('#idformH').val();
         }
@@ -125,8 +152,9 @@ var contentFR ='';
                         dataType:'json',
                         success:function(dt){
                             $('#idformH').val(id);
-                            $('#grupmodulTB').val(dt.grupmodul);
-                            $('#sizeTB').val(dt.size);
+                            $('#namaTB').val(dt.nama);
+                            $('#alamatTB').val(dt.alamat);
+                            $('#teleponTB').val(dt.telepon);
                         }
                     });
                 }$.Dialog.title(titlex+' '+mnu);

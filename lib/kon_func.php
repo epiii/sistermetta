@@ -9,11 +9,14 @@
 		return $x;
 	}
 	function topMenu($modul){
+        // pr($modul);
         $out='';
         // looping grup menu
         foreach ($_SESSION['grupmodulS']as $i => $v) {
+            // vd($_SESSION['grupmodulS']);
             foreach ($v['modul'] as $i2 => $v2) {
-                if($v2['modul']==$modul and $v2['statmod']==1) {
+                if($v2['link']==$modul and $v2['statmod']==1) {
+                    // $out.= $v2['modul'];
                     foreach ($v2['grupmenu'] as $i3 => $v3) {
                         $out.='<div class="element">                
                                 <a class="dropdown-toggle" href="#">'.$v3['grupmenu'].'</a>
@@ -51,23 +54,23 @@
 	}function isDisabled($mn,$ak){
 		return (isAksi($mn,$ak)==false?'disabled':'');
 	}function isModul($mod){
-	    // $w = array_pop(explode("/", $x));;
-	    // $x = __FILE__;
-		// $x=preg_replace('/\.php$/', '', __FILE__);
-		// $x=pathinfo(__FILE__, PATHINFO_FILENAME);
-        // $x = pathinfo(__FILE__, PATHINFO_FILENAME);
-		// session_start();
-	    $out=0; 
+	    $out=0; $o='';
 	    foreach ($_SESSION['grupmodulS'] as $i => $v) {
 	        foreach ($v['modul'] as $i2 => $v2) {
-	            if($v2['modul']==$mod and $v2['statmod']==1) {
+	        	$o.=$v2['link'].'<br>';
+	            if($v2['link']==$mod and $v2['statmod']==1) {
+	              	// $x=$mod.$v2['link'];
+	              	// vd($x);
 	                $out+=1;
 	            }
 	        }
 	    }
+	    // return $out;
+	    // vd($out);
+	    // vd($v2['link']);
 	    // pr($_SESSION['grupmodulS'][0]);
-	    // if($out==0 OR $_SESSION['loginS']==''){
-	    if($_SESSION['loginS']==''){
+	    // if($_SESSION['loginS']==''){
+	    if($out==0 OR $_SESSION['loginS']==''){
 	        header('location:../');
 	    }
 	}
