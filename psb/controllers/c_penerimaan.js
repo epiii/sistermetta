@@ -5,10 +5,10 @@ var mnu4 = 'kelompok';
 var mnu5 = 'angkatan';
 
 var dir  = 'models/m_'+mnu+'.php';
-var dir2 = '../akademik_sister/models/m_'+mnu2+'.php';
+var dir2 = '../akademik/models/m_'+mnu2+'.php';
 var dir3 = 'models/m_'+mnu3+'.php';
 var dir4 = 'models/m_'+mnu4+'.php';
-var dir5 = '../akademik_sister/models/m_'+mnu5+'.php';
+var dir5 = '../akademik/models/m_'+mnu5+'.php';
 
 // var contentFR_terima = contentFR_siswa = '';
 var content_stat = content_det = '';

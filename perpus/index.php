@@ -60,7 +60,7 @@
         });
     </script>
 
-    <title>.:SISTER Perpustakaan:.</title>
+    <title>.:SISTERMETTA Perpustakaan:.</title>
 </head>
 
 <body class="metro">

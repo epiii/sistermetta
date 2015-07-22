@@ -42,7 +42,7 @@
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
 
-    <title>.:SISTER METTA:.</title>
+    <title>.:SISTERMETTA:.</title>
 </head>
 
 <body class="metro">

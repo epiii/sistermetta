@@ -1,3 +1,11 @@
+// <<<<<<< HEAD
+// var mnu       = 'kelompok';
+// var mnu2      = 'departemen';
+// var mnu3      = 'proses';
+// var dir       = 'models/m_'+mnu+'.php';
+// var dir2      = '../akademik/models/m_'+mnu2+'.php';
+// var dir3      = 'models/m_'+mnu3+'.php';
+// =======
 var mnu  = 'kelompok';
 var mnu6 = 'departemen';
 var mnu7 = 'tahunajaran';
@@ -6,6 +14,7 @@ var dir  = 'models/m_'+mnu+'.php';
 var dir6 = '../akademik/models/m_'+mnu6+'.php';
 var dir7 = '../akademik/models/m_'+mnu7+'.php';
 
+// >>>>>>> 16b10b67bc3832dcc38dadb0a4a395994316b3a9
 var contentFR = '';
 
 // main function ---

@@ -44,7 +44,11 @@
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
 
+<<<<<<< HEAD
     <title>.:SISTER METTA:.</title>
+=======
+    <title>.:SISTERMETTA PSB:.</title>
+>>>>>>> 2bf8f63e02267590706ca0ddccc2a79ca67120a0
 </head>
 
 <body class="metro">
