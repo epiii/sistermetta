@@ -30,12 +30,12 @@
 			// loop modul
 			$s3 = 'SELECT
 						md.id_modul,
-						md.keterangan,
 						md.link,
 						md.modul,
 						md.size,
 						i.icon,
 						w.warna,
+						md.keterangan,
 						CASE
 							WHEN tbmd.id_modul >0 THEN
 								1

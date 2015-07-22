@@ -4,7 +4,7 @@ var contentFR ='';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
+        contentFR += '<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Jenis Mutasi</label>'
