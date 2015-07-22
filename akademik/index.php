@@ -39,7 +39,7 @@
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
 
-    <title>.: SISTER Akademik :.</title>
+    <title>.: SISTERMETTA Akademik :.</title>
 </head>
 
 <body class="metro">
