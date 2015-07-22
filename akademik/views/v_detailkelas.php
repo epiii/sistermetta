@@ -12,7 +12,7 @@
 <nav class="breadcrumbs">
     <ul>
         &nbsp;
-        <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button> 
+        <!-- <button class="place-left" data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>  -->
         <li><a href="tingkat">Tingkat</a></li>
         <li><a href="subtingkat">Sub Tingkat</a></li>
         <li><a href="kelas">Kelas</a></li>

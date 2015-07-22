@@ -212,7 +212,7 @@ $admin .= '
 	<tr>
 		<td>Nomor Faktur</td>
 		<td>:</td>
-		<td><input type="text" name="nofaktur" value="'.$nofaktur.'" class="form-control"></td>
+		<td><input type="text" name="nofaktur" value="'.$nofaktur.'" class="form-control">&nbsp;<input type="submit" value="Batal" name="bataljual"class="btn btn-danger" ></td>
 '.$customer.'
 	</tr>';
 $admin .= '
@@ -234,7 +234,6 @@ $pilihanj = ($datasj['replid']==$kodecustomer)?"selected":'';
 $admin .= '<option value="'.$datasj['replid'].'"'.$pilihanj.'>'.$datasj['nama'].'</option>';
 }
 $admin .='</select>
-					&nbsp;<input type="submit" value="Batal" name="deletecustomer"class="btn btn-danger" >
 		<td>Cara Pembayaran</td>
 		<td>:</td>
 		<td>'.$sel2.'</td>
@@ -335,7 +334,6 @@ $admin .= '<td align="right"><b>Bayar</b></td>
 	';
 $admin .= '<tr><td colspan="8"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
-		<input type="submit" value="Batal" name="bataljual"class="btn btn-danger" >
 		<input type="submit" value="Simpan" name="submitpenjualan"class="btn btn-success" >
 		</td>
 		<td></td></tr>';

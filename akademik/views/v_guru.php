@@ -14,16 +14,6 @@
 <button data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <button data-hint="Pencarian" onclick="cariTR();"><span class="icon-search"></span> </button>
 
-<!-- <div style="display:none;" class="input-control select span3">
-    <select data-hint="Departemen" name="departemenS" id="departemenS"></select>
-</div>
-<div class="input-control select span3">
-    <select onchange="cmbpelajaran($(this).val(),'filter','')" class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
-</div>
-<div class="input-control select span3">
-    <select class="cari" data-hint="Pelajaran" name="pelajaranS" id="pelajaranS"></select>
-</div>
- -->
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">

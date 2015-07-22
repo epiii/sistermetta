@@ -6,7 +6,7 @@ RewriteEngine On
 #ErrorDocument 404 /404.html
 ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 
-	#refrensi
+	#master
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^departemen/?$   								index.php?page=vdepartemen
 	RewriteRule   ^angkatan/?$   								index.php?page=vangkatan
@@ -17,6 +17,7 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^jenis-mutasi/?$								index.php?page=vjenismutasi
 	RewriteRule   ^tahun-lulus/?$								index.php?page=vtahunlulus
 	RewriteRule   ^subtingkat/?$								index.php?page=vsubtingkat
+	RewriteRule   ^detail-pelajaran/?$							index.php?page=vdetailpelajaran
 
 	#guru dan pelajaran
 	RewriteRule   ^guru/?$   									index.php?page=vguru

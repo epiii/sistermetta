@@ -76,7 +76,9 @@
                     $out.='<div class="tile-group '.$v['size'].'">';
                     // looping modul
                     foreach ($v['modul'] as $ii => $vv) {
-                        $link = $vv['link']=='akademik'?'akademik_siadu':$vv['link'];
+                        $link = $vv['link'];
+                        // =='akademik'?'akademik_siadu':$vv['link'];
+                        // $link = $vv['link']=='akademik'?'akademik_siadu':$vv['link'];
                         // $out.='<a id="mod-'.$vv['link'].'" href="'.$vv['link'].'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
                         $out.='<a id="mod-'.$vv['link'].'" href="'.$link.'" class="tile '.$vv['size'].' bg-'.$vv['warna'].' live" data-role="live-tile" '.($vv['statmod']!=0?'data-effect="slideUp"':'').' data-click="transform">
                                 <div style="align:center;" class="tile-content icon">

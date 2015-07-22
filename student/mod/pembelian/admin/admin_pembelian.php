@@ -333,7 +333,7 @@ $admin .= '
 		}	
 $admin .= '	
 	<tr>
-		<td colspan="9" >*Jika melakukan perubahan jumlah atau harga pada detail transaksi klik EDIT DETAIL terlebih dahulu sebelum melakukan SIMPAN </td>
+		<td colspan="8" >*Jika melakukan perubahan jumlah atau harga pada detail transaksi klik EDIT DETAIL terlebih dahulu sebelum melakukan SIMPAN </td>
 		<td ><input type="submit" value="EDIT DETAIL" name="simpandetail"class="btn btn-warning" ></td>
 	</tr>';	
 $_SESSION['totalbeli']=$total;
@@ -355,7 +355,6 @@ $admin .= '<td align="right"><b>Bayar</b></td>
 	';
 $admin .= '<tr><td colspan="7"></td><td align="right"></td>
 		<td><input type="hidden" name="user" value="'.$user.'">
-		<input type="submit" value="Batal" name="batalbeli"class="btn btn-danger" >
 		<input type="submit" value="Simpan" name="submitpembelian"class="btn btn-success" >
 		</td>
 		<td></td></tr>';

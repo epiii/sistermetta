@@ -5,6 +5,9 @@ var dir2      = 'models/m_'+mnu2+'.php';
 var contentFR = '';
 
 // main function ---
+function tahunFC (argument) {
+    $('#tahunajaran2TB').val(parseInt($('#tahunajaranTB').val())+1);
+}
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
@@ -17,11 +20,13 @@ var contentFR = '';
                         // +'</div>'
                         
                         +'<label>Tahun Ajaran</label>'
-                        +'<div class="span3">'
-                            +'<div class="input-control text" >'
-                                +'<input required maxlength="9" placeholder="ex : 2011-2012 " name="tahunajaranTB" id="tahunajaranTB" type="text">'
-                            +'</div>'
-                        +'</div>'
+                        // +'<div class="span3">'
+                            // +'<div class="input-control xtext" >'
+                                +'<input onkeyup="tahunFC();" size="4" required min="1990" max="9999" maxlength="4" placeholder="ex : 2011" name="tahunajaranTB" id="tahunajaranTB" type="number">'
+                                +' - '
+                                +'<input disabled  id="tahunajaran2TB">'
+                            // +'</div>'
+                        // +'</div>'
 
                         // +'<label>Tanggal Mulai</label>'
                         // +'<div class="input-control text" data-role="datepicker"'
@@ -150,6 +155,7 @@ var contentFR = '';
                         success:function(dt){
                             $('#idformH').val(id);
                             $('#tahunajaranTB').val(dt.tahunajaran);
+                            $('#tahunajaran2TB').val(parseInt(dt.tahunajaran)+1);
                             $('#keteranganTB').val(dt.keterangan);
                         }
                     });

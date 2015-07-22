@@ -141,7 +141,7 @@
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
-					$w='where t.replid ='.$_POST['replid'];
+					$w='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];

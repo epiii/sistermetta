@@ -4,39 +4,108 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	$mnu = 'pelajaran';
+	$mnu = 'detailpelajaran';
 	$tb  = 'aka_'.$mnu;
-	// $out=array();
+
 
 	if(!isset($_POST['aksi'])){
-		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
+		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
+			$page       = $_GET['page']; // get the requested page
+			$limit      = $_GET['rows']; // get how many rows we want to have into the grid
+			$sidx       = $_GET['sidx']; // get index row - i.e. user click to sort
+			$sord       = $_GET['sord']; // get the direction
+			$searchTerm = $_GET['searchTerm'];
+
+			if(!$sidx) 
+				$sidx =1;
+			$ss='';
+			if(isset($_GET['subaksi']) && $_GET['subaksi']=='pelajaran'){
+				$ss.='SELECT *
+					 FROM (
+							SELECT
+								p.replid,
+								p.nama,
+								p.kode
+							FROM
+								aka_pelajaran p
+							WHERE
+								'.(isset($_GET['pelajaran']) && $_GET['pelajaran']!=''?'p.replid='.$_GET['pelajaran'].' OR ':'').'
+								p.replid NOT IN (
+									SELECT d.pelajaran 
+									FROM aka_detailpelajaran d 
+									WHERE d.subtingkat = '.$_GET['subtingkat'].'
+								)	
+						) tb
+					 WHERE
+			 			tb.nama LIKE "%'.$searchTerm.'%" OR 
+		 				tb.kode LIKE "%'.$searchTerm.'%"
+		 			';
+			}
+			// pr($ss);
+			$result = mysql_query($ss);
+			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
+			$count  = mysql_num_rows($result);
+
+			if( $count >0 ) {
+				$total_pages = ceil($count/$limit);
+			} else {
+				$total_pages = 0;
+			}
+			if ($page > $total_pages) $page=$total_pages;
+			$start 	= $limit*$page - $limit; // do not put $limit*($page - 1)
+			if($total_pages!=0) {
+				$ss.='ORDER BY '.$sidx.' '.$sord.' LIMIT '.$start.','.$limit;
+			}else {
+				$ss.='ORDER BY '.$sidx.' '.$sord;
+			}
+			// print_r($ss);exit();
+			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
+			$rows 	= array();
+			while($row = mysql_fetch_assoc($result)) {
+				if(isset($_GET['subaksi']) && $_GET['subaksi']=='pelajaran'){
+					$rows[]= array(
+						'replid' =>$row['replid'],
+						'kode'   =>$row['kode'],
+						'nama'   =>$row['nama']
+					);
+				}
+			}$response=array(
+				'page'    =>$page,
+				'total'   =>$total_pages,
+				'records' =>$count,
+				'rows'    =>$rows,
+			);$out=json_encode($response);
+		}else{
+			$out=json_encode(array('status'=>'invalid_no_post'));	
+		}
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
-				$pelajaran   = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
-				$singkatan   = isset($_POST['singkatanS'])?filter(trim($_POST['singkatanS'])):'';
-				$skm         = isset($_POST['skmS'])?filter(trim($_POST['skmS'])):'';
-				$keterangan  = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
-				$sql = 'SELECT *
-						FROM '.$tb.' 
+				$subtingkat = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
+				$pelajaran  = isset($_POST['pelajaranS'])?filter($_POST['pelajaranS']):'';
+				$status     = isset($_POST['statusS']) && $_POST['statusS']!=''?' and d.status='.filter($_POST['statusS']):'';
+				$sql = 'SELECT 
+							d.replid,
+							d.status,
+							concat(p.nama," (",p.kode,")")pelajaran
+						FROM '.$tb.' d 
+							LEFT JOIN aka_pelajaran p on p.replid = d.pelajaran
 						WHERE 
-							tahunajaran like "%'.$tahunajaran.'%" and
-							nama like "%'.$pelajaran.'%" and
-							kode like "%'.$singkatan.'%" and
-							skm like "%'.$skm.'%" and
-							keterangan like "%'.$keterangan.'%"
+							d.subtingkat ='.$subtingkat.' and (
+								p.nama like "%'.$pelajaran.'%" OR
+								p.kode like "%'.$pelajaran.'%" 
+							) '.$status.'
 						ORDER 
 							BY nama asc';
+				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 
-				$recpage= 5;//jumlah data per halaman
+				$recpage= 10;//jumlah data per halaman
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
@@ -45,8 +114,8 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_array($result)){	
-						$btn ='<td>
+					while($res = mysql_fetch_assoc($result)){	
+						$btn ='<td align="center">
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
@@ -54,12 +123,18 @@
 										<i class="icon-remove on-left"></i>
 									</button>
 								 </td>';
+						if($res['status']=='1'){
+							$clr  = 'green';
+							$hint = 'Non Aktifkan';
+							$stat = 'Aktif';
+						}else{
+							$clr  ='red';
+							$hint = 'Aktifkan';
+							$stat = 'Tidak Aktif';
+						}
 						$out.= '<tr>
-									<td>'.$nox.'</td>
-									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
-									<td>'.$res['kode'].'</td>
-									<td>'.$res['skm'].'</td>
-									<td>'.$res['keterangan'].'</td>
+									<td>'.$res['pelajaran'].'</td>
+									<td align="center"><button onclick="statusFC('.$res['replid'].','.$res['status'].')" data-hint="'.$hint.'" class="fg-white bg-'.$clr.'">'.$stat.'</button></td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -77,19 +152,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
-								nama = "'.filter($_POST['pelajaranTB']).'",
-								kode = "'.filter($_POST['singkatanTB']).'",
-								skm  = "'.filter($_POST['skmTB']).'",
-								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
-				// var_dump($s2);exit();
-				$e2 = mysql_query($s2);
-				if(!$e2){
-					$stat = 'gagal menyimpan';
-				}else{
-					$stat = 'sukses';
-				}$out  = json_encode(array('status'=>$stat));
+				$s = $tb.' set 	pelajaran = "'.filter($_POST['pelajaranH']).'",
+								subtingkat = "'.filter($_POST['subtingkatH']).'"';
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// pr($s2);
+				$e2   = mysql_query($s2);
+				$stat =!$e2?'gagal menyimpan':'sukses';
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// add / edit -----------------------------------------------------------------
 			
@@ -98,44 +167,43 @@
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
+				$stat = ($e)?'sukses':errMsg(mysql_errno(),$d['pelajaran']);
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['replid']));
 			break;
 			// delete -----------------------------------------------------------------
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 		= ' SELECT *
-							from '.$tb.'
+				$s 		= ' SELECT 
+								d.pelajaran idpelajaran,
+								concat(p.nama," (",p.kode,")")pelajaran,
+								s.tingkat,
+								d.subtingkat
+							from '.$tb.' d 
+								LEFT JOIN aka_pelajaran p on p.replid = d.pelajaran
+								LEFT JOIN aka_subtingkat s on s.replid = d.subtingkat 
+								LEFT JOIN aka_tingkat t on t.replid = s.tingkat 
 							WHERE 
-								replid='.$_POST['replid'];
+								d.replid='.$_POST['replid'];
+								// pr($s);
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'kode'    =>$r['kode'],
-							'nama'    =>$r['nama'],
-							'skm'    =>$r['skm'],
-							'keterangan' =>$r['keterangan'],
+							'tingkat'     =>$r['tingkat'],
+							'subtingkat'  =>$r['subtingkat'],
+							'pelajaran'   =>$r['pelajaran'],
+							'idpelajaran' =>$r['idpelajaran'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
 			// aktifkan -----------------------------------------------------------------
 			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0" where departemen = '.$_POST['departemen']);
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where replid = '.$_POST['replid'];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
-				}$out  = json_encode(array('status'=>$stat));
-				//var_dump($stat);exit();
+				$s    = 'UPDATE  '.$tb.' set status='.($_POST['status']==1?0:1).' WHERE replid = '.$_POST['replid'];
+				$e    = mysql_query($s);
+				$stat = !$e?'gagal':'sukses';
+				$out  = json_encode(array('status'=>$stat));
 			break;
 			// aktifkan -----------------------------------------------------------------
 
