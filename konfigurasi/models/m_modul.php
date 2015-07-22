@@ -90,7 +90,7 @@
 									id_warna  = "'.filter($_POST['warnaTB']).'",
 									id_icon   = "'.filter($_POST['iconTB']).'",
 									size      = "'.filter($_POST['sizeTB']).'"';
-				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE id_'.$mnu.'='.$_POST['id_'.$mnu]:'INSERT INTO '.$s;
+				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE id_'.$mnu.'='.$_POST['replid']:'INSERT INTO '.$s;
 				// pr($s2);
 				$e    = mysql_query($s2);
 				$stat = ($e)?'sukses':'gagal';

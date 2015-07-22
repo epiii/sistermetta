@@ -23,6 +23,7 @@
             <th class="text-center">Link</th>
             <th class="text-center">Warna</th>
             <th class="text-center">Icon</th>
+            <th class="text-center">Ukuran</th>
             <th class="text-center">Keterangan</th>
             <th class="text-center">Aksi</th>
         </tr>
@@ -54,6 +55,7 @@
                     <select onchange="viewTB();" data-hint="icon" id="iconS" class="cari"></select>
                 </div>
             </th>            
+            <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
         </tr>

@@ -68,10 +68,9 @@ var contentFR ='';
                         //size
                         +'<label>size</label>'
                         +'<div class="input-control select">'
-                            +'<select required id="sizeTB" name="sizeTB">'
-                                +'<option value="">-Pilih Ukuran-</option>'
-                                +'<option value="double">kecil</option>'
-                                +'<option value="double double-vertical">Besar</option>'
+                            +'<select id="sizeTB" name="sizeTB">'
+                                +'<option value="">kecil</option>'
+                                +'<option value="double">Besar</option>'
                             +'</select>'
                         +'</div>'
 
@@ -164,7 +163,7 @@ var contentFR ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr>');
+                $(el2).html('<tr><td align="center" colspan="10"><img src="img/w8loader.gif"></td></tr>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();

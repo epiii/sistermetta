@@ -30,6 +30,7 @@
 							mn.link,
 							mn.keterangan,
 							w.warna,
+							if(mn.size="","kecil","Besar")size,
 							i.icon
 						FROM
 							kon_menu mn
@@ -80,18 +81,19 @@
 									<td>'.$res['link'].'</td>
 									<td><button class="bg-'.$res['warna'].'"></button> '.$res['warna'].'</td>
 									<td><i class="icon-'.$res['icon'].'"></i> '.$res['icon'].'</td>
+									<td>'.$res['size'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
-							<td  colspan="9" ><span style="color:red;text-align:center;">
+							<td  colspan="10" ><span style="color:red;text-align:center;">
 							... data tidak ditemukan...</span></td></tr>';
 				}
 				#link paging
-				$out.= '<tr class="info"><td colspan="9">'.$obj->anchors.'</td></tr>';
-				$out.='<tr class="info"><td colspan="9">'.$obj->total.'</td></tr>';
+				$out.= '<tr class="info"><td colspan="10">'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan="10">'.$obj->total.'</td></tr>';
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -124,21 +126,22 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s = '	SELECT 
+				$s = '	SELECT
 							mn.menu,
 							mn.link,
 							mn.size,
 							mn.keterangan,
-							gmd.id_grupmodul,
-							md.id_modul,
-							gm.id_grupmenu,
 							mn.id_warna,
-							mn.id_icon
-					  	FROM '.$tb.' mn
-					  		LEFT JOIN kon_grupmenu gm on gm.id_modul = gm.id_modul
-					  		LEFT JOIN kon_modul md on md.id_modul = gm.id_modul
-					  		LEFT JOIN kon_grupmodul gmd on gmd.id_grupmodul = md.id_grupmodul
-					 	WHERE mn.id_'.$mnu.'='.$_POST['replid'];
+							mn.id_icon,
+							mn.id_grupmenu,
+							md.id_modul,
+							md.id_grupmodul
+						FROM
+							kon_menu mn
+							JOIN kon_grupmenu gmn on gmn.id_grupmenu = mn.id_grupmenu 
+							JOIN kon_modul md on md.id_modul = gmn.id_modul
+						WHERE 
+							mn.id_'.$mnu.'='.$_POST['replid'];
 					 	// pr($s);
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
