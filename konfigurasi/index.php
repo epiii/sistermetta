@@ -1,6 +1,7 @@
 <?php
     session_start();
     require_once '../lib/func.php';
+    require_once '../lib/tglindo.php';
     $modul = basename(dirname(__FILE__));
     isModul($modul);
 ?>
@@ -86,6 +87,10 @@
                         </a>
                     </li>
                 </ul>
+            </div>
+            <div class="element place-right">
+                <?php echo 'Last Login : '.tgl_indo2($_SESSION['lastloginS']).' ( '.$_SESSION['counterlogS'].'x )';?>
+                <i class="icon-clock"></i>
             </div>
         </nav>
     </nav>

@@ -17,8 +17,8 @@
         </tr>
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-center"></th>
-            <th class="text-center"><input placeholder="level" id="levelS" name="levelS"></th>
-            <th class="text-center"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="level" id="levelS" name="levelS"></div></th>
+            <th class="text-center"><div class="input-control text"><input placeholder="keterangan" id="keteranganS" name="keteranganS"></div></th>
             <th class="text-center"></th>
         </tr>
     </thead>
