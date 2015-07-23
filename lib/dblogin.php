@@ -8,19 +8,26 @@
 	// authentication login 
 	$s1   = 'SELECT 
 				lg.*,
-				lv.keterangan as level 
+				lv.keterangan as level,
+				max(lh.date) lastlogin,
+				count(*) counterlog 
 			FROM 
-				kon_login lg,
-				kon_level lv
+				kon_login lg
+				JOIN kon_level lv ON lg.id_level = lv.id_level 
+				LEFT JOIN kon_loginhistory lh ON lh.id_login = lg.id_login
 			where
-				lg.id_level = lv.id_level 
-				and lg.username = "'.$user.'" 
-				and lg.password ="'.$pass.'"';
+				lg.username = "'.$user.'" 
+				and lg.password ="'.$pass.'" 
+			';
 	$e1   = mysql_query($s1) or die(mysql_error());
 	$n    = mysql_num_rows($e1);
-
 	if($n!=0){
 		$r1 = mysql_fetch_assoc($e1);
+		// ------------------
+		// insert log history
+		$sh = 'INSERT INTO kon_loginhistory SET id_login ='.$r1['id_login'].',date=NOW()';
+		$eh = mysql_query($sh);
+		
 		// loop grup modul
 		$s2 = 'SELECT * from kon_grupmodul';
 		$e2 = mysql_query($s2);
@@ -212,7 +219,6 @@
 		// 		'aksi'           => $aksiArr
 		// 	);
 		// } 
-
 		session_start();
 		$_SESSION = array(
 			// collect user's informations
@@ -221,6 +227,8 @@
 			'namaS'        => $r1['nama'],
 			'usernameS'    => $r1['username'],
 			'levelS'       => $r1['level'],
+			'lastloginS'   => $r1['lastlogin'],
+			'counterlogS'  => $r1['counterlog'],
 			// 'katgrupmenuS' => $katgrupmenuArr, // collect kategori menu
 			'departemenS'  => $departemenArr, // collect departemens
 			'grupmodulS'   => $grupmodulArr // collect grup moduls
