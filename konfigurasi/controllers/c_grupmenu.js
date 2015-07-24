@@ -47,9 +47,9 @@ var contentFR ='';
                         //size
                         +'<label>size</label>'
                         +'<div class="input-control select">'
-                            +'<select required id="sizeTB" name="sizeTB">'
-                                +'<option value="double">kecil</option>'
-                                +'<option value="double double-vertical">Besar</option>'
+                            +'<select id="sizeTB" name="sizeTB">'
+                                +'<option value="">kecil</option>'
+                                +'<option value="four">Besar</option>'
                             +'</select>'
                         +'</div>'
 

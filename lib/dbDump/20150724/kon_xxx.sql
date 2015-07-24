@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-07-24 06:39:56
+Date: 2015-07-24 07:12:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,15 +52,15 @@ CREATE TABLE `kon_grupmenu` (
 -- ----------------------------
 -- Records of kon_grupmenu
 -- ----------------------------
-INSERT INTO `kon_grupmenu` VALUES ('1', '2', '1', 'Menu Kesiswaan', 'double');
-INSERT INTO `kon_grupmenu` VALUES ('2', '2', '1', 'Menu Belajar - Mengajar', 'double');
-INSERT INTO `kon_grupmenu` VALUES ('3', '1', '1', 'Menu Master', 'double');
-INSERT INTO `kon_grupmenu` VALUES ('4', '1', '2', 'Menu Transaksi', 'double');
+INSERT INTO `kon_grupmenu` VALUES ('1', '2', '1', 'Menu Kesiswaan', 'four');
+INSERT INTO `kon_grupmenu` VALUES ('2', '2', '1', 'Menu Belajar - Mengajar', 'four');
+INSERT INTO `kon_grupmenu` VALUES ('3', '1', '1', 'Menu Master', 'four');
+INSERT INTO `kon_grupmenu` VALUES ('4', '1', '2', 'Menu Transaksi', 'four');
 INSERT INTO `kon_grupmenu` VALUES ('5', '2', '6', 'Menu Transaksi ', 'double');
 INSERT INTO `kon_grupmenu` VALUES ('6', '1', '6', 'Menu Master', 'double');
 INSERT INTO `kon_grupmenu` VALUES ('7', '1', '9', 'Menu Sistem', 'double');
 INSERT INTO `kon_grupmenu` VALUES ('8', '2', '9', 'Menu User', 'double');
-INSERT INTO `kon_grupmenu` VALUES ('9', '1', '2', 'Menu Master', 'double');
+INSERT INTO `kon_grupmenu` VALUES ('9', '1', '2', 'Menu Master', 'four');
 INSERT INTO `kon_grupmenu` VALUES ('14', '1', '3', 'Menu Master ', 'double double-vertic');
 INSERT INTO `kon_grupmenu` VALUES ('15', '2', '3', 'Menu Transaksi', 'double double-vertic');
 
@@ -285,15 +285,22 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
 -- ----------------------------
-INSERT INTO `kon_loginhistory` VALUES ('1', '1', '2015-07-24 06:24:32');
-INSERT INTO `kon_loginhistory` VALUES ('2', '1', '2015-07-24 06:24:32');
-INSERT INTO `kon_loginhistory` VALUES ('3', '1', '2015-07-24 06:27:24');
-INSERT INTO `kon_loginhistory` VALUES ('4', '1', '2015-07-24 06:27:24');
+INSERT INTO `kon_loginhistory` VALUES ('17', '1', '2015-07-24 06:56:50');
+INSERT INTO `kon_loginhistory` VALUES ('19', '1', '2015-07-24 06:59:47');
+INSERT INTO `kon_loginhistory` VALUES ('20', '1', '2015-07-24 06:59:47');
+INSERT INTO `kon_loginhistory` VALUES ('21', '1', '2015-07-24 07:00:35');
+INSERT INTO `kon_loginhistory` VALUES ('22', '1', '2015-07-24 07:00:35');
+INSERT INTO `kon_loginhistory` VALUES ('23', '1', '2015-07-24 07:02:03');
+INSERT INTO `kon_loginhistory` VALUES ('24', '1', '2015-07-24 07:02:03');
+INSERT INTO `kon_loginhistory` VALUES ('25', '1', '2015-07-24 07:03:31');
+INSERT INTO `kon_loginhistory` VALUES ('26', '1', '2015-07-24 07:03:31');
+INSERT INTO `kon_loginhistory` VALUES ('27', '1', '2015-07-24 07:05:11');
+INSERT INTO `kon_loginhistory` VALUES ('28', '1', '2015-07-24 07:05:11');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -314,8 +321,8 @@ CREATE TABLE `kon_menu` (
 -- ----------------------------
 -- Records of kon_menu
 -- ----------------------------
-INSERT INTO `kon_menu` VALUES ('1', '4', 'Pendataan Siswa', 'pendataan-siswa', 'double', '1', '9', '');
-INSERT INTO `kon_menu` VALUES ('2', '1', 'Presensi Siswa', 'presensi-siswa', 'double', '2', '10', '');
+INSERT INTO `kon_menu` VALUES ('1', '4', 'Pendataan Siswa', 'pendataan-siswa', 'double', '17', '9', '');
+INSERT INTO `kon_menu` VALUES ('2', '1', 'Presensi Siswa', 'presensi-siswa', 'double', '44', '10', '');
 INSERT INTO `kon_menu` VALUES ('3', '1', 'Rapor Siswa', 'rapor-siswa', 'double', '3', '11', '');
 INSERT INTO `kon_menu` VALUES ('4', '1', 'Pendataan Alumni', 'pendataan-alumni', 'double', '4', '12', '');
 INSERT INTO `kon_menu` VALUES ('8', '5', 'Transaksi', 'transaksi', 'double', '8', '16', '');
@@ -349,16 +356,16 @@ INSERT INTO `kon_menu` VALUES ('37', '2', 'Kegiatan Akademik', 'kegiatan-akademi
 INSERT INTO `kon_menu` VALUES ('38', '1', 'Mutasi', 'mutasi', 'double', '6', '13', '');
 INSERT INTO `kon_menu` VALUES ('39', '3', 'Detail Pelajaran', 'detail-pelajaran', '', '13', '15', '');
 INSERT INTO `kon_menu` VALUES ('40', '1', 'Pendataan Siswa', 'pendataan-siswa', 'double', '13', '15', '');
-INSERT INTO `kon_menu` VALUES ('41', '9', 'Set Biaya', 'set-biaya', '', '14', '15', '');
+INSERT INTO `kon_menu` VALUES ('41', '9', 'Set Biaya Calon Siswa', 'set-biaya-calon-siswa', '', '14', '15', '');
 INSERT INTO `kon_menu` VALUES ('42', '9', 'set Diskon', 'set-diskon', '', '14', '15', '');
 INSERT INTO `kon_menu` VALUES ('43', '9', 'set Angsuran', 'set-angsuran', '', '17', '13', '');
-INSERT INTO `kon_menu` VALUES ('44', '9', 'golongan', 'golongan', '', '13', '16', '');
+INSERT INTO `kon_menu` VALUES ('44', '9', 'golongan Calon Siswa', 'golongan-calon-siswa', '', '13', '16', '');
 INSERT INTO `kon_menu` VALUES ('45', '7', 'menu', 'menu', '', '14', '16', '');
 INSERT INTO `kon_menu` VALUES ('46', '7', 'Grup Modul', 'grup-modul', '', '13', '12', '');
 INSERT INTO `kon_menu` VALUES ('47', '7', 'Modul', 'modul', '', '12', '11', '');
 INSERT INTO `kon_menu` VALUES ('48', '7', 'Grup Menu', 'grup-menu', '', '16', '13', '');
 INSERT INTO `kon_menu` VALUES ('52', '4', 'Kelompok Pendaftaran', 'kelompok', 'double', '16', '10', 'kelompok pendaftaran  (gelombang)');
-INSERT INTO `kon_menu` VALUES ('53', '4', 'Penerimaan Siswa Baru', 'penerimaan', 'double', '1', '10', 'penerimaan siswa (pendaftaran NIS dan NISN)');
+INSERT INTO `kon_menu` VALUES ('53', '4', 'Penerimaan Siswa Baru', 'penerimaan', 'double', '34', '10', 'penerimaan siswa (pendaftaran NIS dan NISN)');
 INSERT INTO `kon_menu` VALUES ('54', '14', 'Perangkat', 'perangkat', '', '16', '10', 'ok');
 INSERT INTO `kon_menu` VALUES ('55', '14', 'Lokasi', 'lokasi', '', '16', '10', '');
 INSERT INTO `kon_menu` VALUES ('56', '14', 'Jenis Koleksi', 'jenis-koleksi', '', '16', '10', '');

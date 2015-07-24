@@ -6,10 +6,10 @@
 	$pass = base64_encode($_POST['pass2TB']);
 	
 	// authentication login 
+				// max(lh.date) lastlogin,
 	$s1   = 'SELECT 
-				lg.*,
+				lg.*,lh.date lastlogin,
 				lv.keterangan as level,
-				max(lh.date) lastlogin,
 				count(*) counterlog 
 			FROM 
 				kon_login lg
@@ -18,6 +18,10 @@
 			where
 				lg.username = "'.$user.'" 
 				and lg.password ="'.$pass.'" 
+			GROUP BY 
+				lg.id_login 
+			HAVING 
+				max(lh.id_loginhistory)
 			';
 	$e1   = mysql_query($s1) or die(mysql_error());
 	$n    = mysql_num_rows($e1);
