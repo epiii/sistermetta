@@ -22,7 +22,7 @@ var contentFR = '';
         $('#departemenS').on('change',function(){
             cmbtahunajaranS($(this).val());
         });$('#tahunajaranS').on('change',function (){
-            cmbkelompokS($(this).val());
+            cmbkelompok($(this).val());
         });$('#kelompokS').on('change',function (){
             viewTB();
         });
@@ -105,15 +105,17 @@ var contentFR = '';
     }
 
 // combobox filtering : kelompok pendaftaran
-    function cmbkelompokS(thn){
-        kellist(thn).done(function(res){
+    function cmbkelompok(thn){
+        var u = dir4;
+        var d = 'aksi=cmb'+mnu4+'&tahunajaran='+thn;
+        ajax(u,d).done(function(res){
             var opt='';
             if(res.status!='sukses'){
                 notif(res.status,'red');
             }else{
                 $.each(res.kelompok, function(id,item){
                     opt+='<option value="'+item.replid+'">'+item.kelompok+'</option>';
-                });$('#kelompokS').html(opt);
+                }); $('$kelompokS').html(opt);
                 viewTB();
             }
         });

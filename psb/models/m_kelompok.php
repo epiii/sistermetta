@@ -158,25 +158,24 @@
 				}else{
 					if(isset($_POST[$mnu])){
 						$w='where'.$mnu.'='.$_POST[$mnu];
-					}elseif (isset($_POST['kelompok'])) {
-						$w='where kelompok='.$_POST['kelompok'];
+					}elseif (isset($_POST['tahunajaran'])) {
+						$w='where tahunajaran='.$_POST['tahunajaran'];
 					}elseif(isset($_POST['kelompok'])){
 						$w='where kelompok='.$_POST['kelompok'];
 					}
 				}
 				
+				// $s	= ' SELECT *
+				// 		FROM 
+				// 			psb_kelompok k,
+				// 			aka_tahunajaran t
+				// 		WHERE
+				// 		t.replid = k.tahunajaran';
+						// AND t.replid = '.$_POST['tahunajaran'] ;
+
 				$s	= ' SELECT *
 						FROM 
-							psb_kelompok k,
-							aka_tahunajaran t
-						WHERE
-						t.replid = p.tahunajaran
-						AND t.replid = '.$_POST['tahunajaran'] ;
-
-				// $s	= ' SELECT *
-				// 		FROM '.$tb.' '.$w.'
-				// 		ORDER BY
-				// 			kelompok ASC';
+							psb_kelompok '.$w ;
 				// 			// psb_kelompok k,
 				// 			// psb_proses p,
 				// 			// aka_tahunajaran t
