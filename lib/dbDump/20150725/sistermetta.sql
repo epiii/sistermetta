@@ -505,20 +505,45 @@ CREATE TABLE `aka_mutasi` (
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_pelajaran`;
 CREATE TABLE `aka_pelajaran` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
   `kode` varchar(20) NOT NULL,
   `nama` varchar(50) NOT NULL,
-  `keterangan` varchar(255) DEFAULT NULL,
+  `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_pelajaran
 -- ----------------------------
-INSERT INTO `aka_pelajaran` VALUES ('1', 'BI', 'Bahasa Indonesia', '');
 INSERT INTO `aka_pelajaran` VALUES ('2', 'BING', 'Bahasa Inggris', '');
 INSERT INTO `aka_pelajaran` VALUES ('3', 'MAT', 'Matematika', '');
-
+INSERT INTO `aka_pelajaran` VALUES ('18', 'mtk', 'Matematika', '');
+INSERT INTO `aka_pelajaran` VALUES ('19', 'bio', 'Biologi', '');
+INSERT INTO `aka_pelajaran` VALUES ('20', 'fis', 'Fisika', '');
+INSERT INTO `aka_pelajaran` VALUES ('21', 'kim', 'Kimia', '');
+INSERT INTO `aka_pelajaran` VALUES ('22', 'eko', 'Ekonomi', '');
+INSERT INTO `aka_pelajaran` VALUES ('23', 'ppkn', 'PPKn', '');
+INSERT INTO `aka_pelajaran` VALUES ('24', 'BI', 'Bahasa Indonesia', '');
+INSERT INTO `aka_pelajaran` VALUES ('25', 'Bing', 'Bahasa Inggris', '');
+INSERT INTO `aka_pelajaran` VALUES ('26', 'TIK', 'Teknologi Informasi dan Komputer', '');
+INSERT INTO `aka_pelajaran` VALUES ('27', 'ag', 'Agama', '');
+INSERT INTO `aka_pelajaran` VALUES ('28', 'Kertakes', 'Kerajinan Tangan dan Kesenian', '');
+INSERT INTO `aka_pelajaran` VALUES ('29', 'penjaskes', 'Pendidikan Jasmani dan Kesehatan ', '');
+INSERT INTO `aka_pelajaran` VALUES ('30', 'sej', 'Sejarah', '');
+INSERT INTO `aka_pelajaran` VALUES ('31', 'geo', 'Geografi', '');
+INSERT INTO `aka_pelajaran` VALUES ('32', 'sos', 'Sosiologi', '');
+INSERT INTO `aka_pelajaran` VALUES ('33', 'BK', 'Bimbingan Konseling', '');
+INSERT INTO `aka_pelajaran` VALUES ('34', 'elk', 'Elektro', '');
+INSERT INTO `aka_pelajaran` VALUES ('35', 'htg', 'Berhitung', '');
+INSERT INTO `aka_pelajaran` VALUES ('36', 'nyanyi', 'Bernyanyi', '');
+INSERT INTO `aka_pelajaran` VALUES ('37', 'gbr', 'Menggambar', '');
+INSERT INTO `aka_pelajaran` VALUES ('38', 'tls', 'Menulis', '');
+INSERT INTO `aka_pelajaran` VALUES ('39', 'baca', 'Membaca', '');
+INSERT INTO `aka_pelajaran` VALUES ('40', 'wrna', 'Mewarnai', '');
+INSERT INTO `aka_pelajaran` VALUES ('41', 'bcr', 'Berbicara', '');
+INSERT INTO `aka_pelajaran` VALUES ('42', 'bdri', 'berdiri', '');
+INSERT INTO `aka_pelajaran` VALUES ('43', 'jln', 'Berjalan', '');
+INSERT INTO `aka_pelajaran` VALUES ('44', 'bader', 'Bahasa Daerah', '');
 -- ----------------------------
 -- Table structure for aka_penilaian
 -- ----------------------------
@@ -6743,3 +6768,55 @@ CREATE TABLE `useronlinemonth` (
 -- ----------------------------
 -- Records of useronlinemonth
 -- ----------------------------
+
+-- ----------------------------
+-- Table structure for aka_detailpelajaran
+-- ----------------------------
+DROP TABLE IF EXISTS `aka_detailpelajaran`;
+CREATE TABLE `aka_detailpelajaran` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `pelajaran` int(11) NOT NULL,
+  `subtingkat` int(11) NOT NULL,
+  `status` int(1) NOT NULL DEFAULT '1',
+  PRIMARY KEY (`replid`),
+  KEY `subtingkat` (`subtingkat`),
+  KEY `pelajaran` (`pelajaran`),
+  CONSTRAINT `aka_detailpelajaran_ibfk_1` FOREIGN KEY (`pelajaran`) REFERENCES `aka_pelajaran` (`replid`),
+  CONSTRAINT `aka_detailpelajaran_ibfk_2` FOREIGN KEY (`subtingkat`) REFERENCES `aka_subtingkat` (`replid`)
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of aka_detailpelajaran
+-- ----------------------------
+INSERT INTO `aka_detailpelajaran` VALUES ('16', '38', '3', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('18', '37', '3', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('19', '39', '3', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('20', '40', '3', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('26', '36', '2', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('27', '41', '1', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('28', '42', '1', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('29', '43', '1', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('30', '35', '2', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('31', '39', '4', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('32', '37', '4', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('33', '40', '4', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('34', '38', '4', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('35', '35', '4', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('36', '36', '4', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('37', '18', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('38', '24', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('39', '23', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('40', '28', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('41', '25', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('42', '27', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('43', '26', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('44', '44', '5', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('45', '27', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('46', '23', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('47', '18', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('48', '24', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('49', '28', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('50', '29', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('51', '25', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('52', '26', '6', '1');
+INSERT INTO `aka_detailpelajaran` VALUES ('53', '44', '6', '1');
