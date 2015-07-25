@@ -29,11 +29,11 @@
 		return array('full'=>$awal.$akhir,'awal'=>$awal,'akhir'=>$akhir);
 	}	
 	// set biaya checking 
-	function getSetBiaya($kel,$krit,$gol){
+	function getSetBiaya($kel,$ting,$gol){
 		$s = '	SELECT replid,registration, material,tuition 
 				FROM psb_setbiaya 
 				WHERE 	kel  ='.$kel.' AND 
-						krit ='.$krit.' AND 
+						ting ='.$ting.' AND 
 						gol  ='.$gol;
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
@@ -41,7 +41,13 @@
 	}
 	function getNumRows($tb){
 		$s='SELECT * FROM psb_'.$tb;
-		$e = mysql_query($s);
+		$e = mysql_query($s) or die(mysql_error());
+		$n = mysql_num_rows($e);
+		return intval($n);
+	}
+	function getNumRows2($tb){
+		$s='SELECT * FROM aka_'.$tb;
+		$e = mysql_query($s) or die(mysql_error());
 		$n = mysql_num_rows($e);
 		return intval($n);
 	}
@@ -52,7 +58,7 @@
 		if($n<=0) addSetBiaya($kel);
 	}
 	function addSetBiaya($kel){
-		$sk = 'SELECT replid FROM psb_kriteria';
+		$sk = 'SELECT replid FROM aka_tingkat';
 		$ek = mysql_query($sk);
 		while ($rk=mysql_fetch_assoc($ek)) {
 			$sg = 'SELECT replid FROM psb_golongan';
@@ -61,7 +67,7 @@
 				$ss='INSERT INTO psb_setbiaya SET 
 						kel  ='.$kel.',
 						gol  ='.$rg['replid'].',
-						krit ='.$rk['replid'];
+						ting ='.$rk['replid'];
 				$es=mysql_query($ss);
 			}
 		}
@@ -90,7 +96,7 @@
 		return $r[$f];
 	}function getProses($typ,$id){
 		$s = 'SELECT '.$typ.'
-			  FROM psb_proses
+			  FROM aka_tahunajaran
 			  WHERE replid ='.$id;
 			  // print_r($s);exit();
 		$e = mysql_query($s);

@@ -6,13 +6,13 @@
     <select xclass="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select xclass="cari"  data-hint="Proses" name="prosesS" id="prosesS"></select>
+    <select xclass="cari"  data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
     <select  class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
 </div>
 
-<div  style="overflow:scroll;height:600px;" >
+<div  style="overflow:scroll;height:530px;" >
     <form autocomplete="off" onsubmit="simpan();return false;"> 
         <button data-hint="Simpan" id="simpanBC"><span class="icon-floppy"></span> </button>
         <table class="table hovered bordered striped">
