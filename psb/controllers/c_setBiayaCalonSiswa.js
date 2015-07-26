@@ -98,8 +98,9 @@ var contentFR = '';
                         }
                     });
                 }$('#tahunajaranS').html(out);
+                cmbkelompok(dt.tahunajaran[0].replid);
                 // }$('#tahunajaranS').html('<option="">--Semua--</option>'+out);
-                viewTB();
+                // viewTB();
             }
         });
     }
@@ -115,7 +116,7 @@ var contentFR = '';
             }else{
                 $.each(res.kelompok, function(id,item){
                     opt+='<option value="'+item.replid+'">'+item.kelompok+'</option>';
-                }); $('$kelompokS').html(opt);
+                }); $('#kelompokS').html(opt);
                 viewTB();
             }
         });

@@ -6,19 +6,19 @@
 	function getNoPendaftaran($siswa,$kel){
 		if(isset($siswa) && is_numeric($siswa)) {// view
 			$s      = 'SELECT nopendaftaran no FROM psb_calonsiswa WHERE replid='.$siswa;
-			$proses = getField('proses','psb_kelompok','replid',$kel);
+			// $proses = getField('proses','psb_kelompok','replid',$kel);
 			// var_dump($proses);exit();
-			$awal   = getField('kodeawalan','psb_proses','replid',$proses);
+			// $awal   = getField('kodeawalan','psb_proses','replid',$proses);
 		}else {// create new 
-			$proses = getField('proses','psb_kelompok','replid',$kel);
+			// $proses = getField('proses','psb_kelompok','replid',$kel);
 			$s='SELECT
 					LPAD((max(nopendaftaran)+1),6,0) no
 				FROM
 					psb_calonsiswa c
-					LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
-				WHERE
-					k.proses ='.$proses;
-			$awal = getField('kodeawalan','psb_proses','replid',$proses);
+					LEFT JOIN psb_kelompok k ON k.replid = c.kelompok';
+				// WHERE
+				// 	k.proses ='.$proses;
+			// $awal = getField('kodeawalan','psb_proses','replid',$proses);
 		}
 		// var_dump($awal);exit();
 		$e = mysql_query($s);
@@ -26,7 +26,8 @@
 		if($r['no']==NULL) $akhir = '000001'; // kosong
 		else  $akhir =$r['no']; // ada
 
-		return array('full'=>$awal.$akhir,'awal'=>$awal,'akhir'=>$akhir);
+		// return array('full'=>$awal.$akhir,'awal'=>$awal,'akhir'=>$akhir);
+		return array('akhir'=>$akhir);
 	}	
 	// set biaya checking 
 	function getSetBiaya($kel,$ting,$gol){
