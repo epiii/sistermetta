@@ -15,17 +15,20 @@
 			case 'tampil':
 				$kelompok = isset($_POST['kelompokS'])?$_POST['kelompokS']:'';
 				$nGol     = getNumRows('golongan');
-				$nKrit    = getNumRows('kriteria');
+				$nTing    = getNumRows2('tingkat');
 				
 				checkSetBiaya($kelompok);
-				$sql ='SELECT 
-							k.kriteria,
-							k.replid,(
-								SELECT count(*)
-								FROM psb_golongan
+				$sql ='SELECT
+							k.tingkat,
+							k.replid,
+							(
+								SELECT
+									count(*)
+								FROM
+									psb_golongan
 							) jumgol
-						FROM 
-							psb_kriteria k';
+						FROM
+							aka_tingkat k';
 				// print_r($sql);exit();
 				if(isset($_POST['starting'])){
 					$starting=$_POST['starting'];
@@ -33,7 +36,7 @@
 					$starting=0;
 				}
 
-				$recpage = ($nGol*$nKrit);//jumlah data per halaman
+				$recpage = ($nGol*$nTing);//jumlah data per halaman
 				$aksi    = 'tampil';
 				$subaksi = '';
 				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
@@ -47,7 +50,7 @@
 					while($r1 = mysql_fetch_assoc($result)){	
 						$out.= '<tr>
 									<td valign="middle" rowspan="'.($r1['jumgol']+1).'">
-										'.$nox.'. '.$r1['kriteria'].'
+										'.$nox.'. '.$r1['tingkat'].'
 									</td>';
 									// g.replid,
 						$s2 ='	SELECT
@@ -63,7 +66,7 @@
 										SELECT * 
 										FROM  psb_setbiaya s 
 										WHERE 
-											krit ='.$r1['replid'].' AND 
+											ting ='.$r1['replid'].' AND 
 											kel = '.$kelompok.'
 									)s ON s.gol = g.replid
 									';

@@ -47,8 +47,9 @@
 				// 	'.$table.'
 			$ss='SELECT *
 					FROM (SELECT pc.replid, pc.nama siswa, d.nama sekolah FROM psb_calonsiswa pc
-								LEFT JOIN psb_proses ps ON ps.replid = pc.proses 
-								LEFT JOIN departemen d ON d.replid = ps.departemen 
+								LEFT JOIN psb_kelompok k ON k.replid = pc.kelompok
+								LEFT JOIN aka_tahunajaran t ON t.replid = k.tahunajaran
+								LEFT JOIN departemen d ON d.replid = t.departemen 
 						)tb
 				WHERE
 						tb.siswa LIKE "%'.$searchTerm.'%"
@@ -94,27 +95,51 @@
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$departemen    = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
-				$proses        = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
+				// $proses        = isset($_POST['prosesS'])?filter($_POST['prosesS']):'';
 				$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 				$nama          = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
+				// $sql = 'SELECT
+				// 			c.replid,
+				// 			c.nopendaftaran,
+				// 			c.nama,
+				// 			c.setbiaya,
+				// 			a.cicilan,
+				// 			c.kelompok
+				// 		FROM
+				// 			psb_calonsiswa c
+				// 			LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+				// 			LEFT JOIN departemen d ON d.replid = p.departemen
+				// 			LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
+				// 		WHERE
+				// 			c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+				// 			AND c.nama LIKE "%'.$nama.'%"
+				// 			AND c.kelompok = '.$kelompok.'
+				// 		ORDER BY
+				// 			c.nopendaftaran ASC,
+				// 			c.nama ASC
+				// 			';
 				$sql = 'SELECT
 							c.replid,
 							c.nopendaftaran,
 							c.nama,
 							c.setbiaya,
 							a.cicilan,
-							c.kelompok
+							c.kelompok,
+						  	akt.tingkat
 						FROM
 							psb_calonsiswa c
-							LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
-							LEFT JOIN psb_proses p ON p.replid = k.proses
-							LEFT JOIN departemen d ON d.replid = p.departemen
-							LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
+						LEFT JOIN psb_kelompok k ON k.replid = c.kelompok
+						LEFT JOIN aka_tingkat akt ON akt.replid = c.tingkat
+						LEFT JOIN aka_tahunajaran t ON t.replid = akt.tahunajaran
+						LEFT JOIN departemen d ON d.replid = t.departemen
+						LEFT JOIN psb_angsuran a ON a.replid = c.angsuran
 						WHERE
 							c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-							AND c.nama LIKE "%'.$nama.'%"
-							AND c.kelompok = '.$kelompok.'
+						AND c.nama LIKE "%'.$nama.'%"
+						AND c.kelompok = '.$kelompok.'
+						AND akt.tingkat LIKE "%'.$tingkat.'%"
 						ORDER BY
 							c.nopendaftaran ASC,
 							c.nama ASC
@@ -149,13 +174,13 @@
 										<i class="icon-remove"></i>
 									</button>
 								 </td>';
-						$no=getNoPendaftaran($r['replid'],$r['kelompok']);
+						$no=getNoPendaftaran($r['replid'],$r['kelompok']) ;
 						// var_dump($no);exit();
 						$out.= '<tr>
-									<td>'.$no['full'].'</td>
+									<td>'.$no['akhir'].'</td>
 									<td>'.$r['nama'].'</td>
+									<td>'.$r['tingkat'].'</td>
 									<td align="right">'.setuang(getBiaya('registration',$r['replid'])).'</td>
-									<td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discsaudara',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('disctunai',$r['replid'])).'</td>
 									<td align="right">'.setuang(getDisc('discangsuran',$r['replid'])).'</td>
@@ -163,6 +188,7 @@
 									<td align="center">'.($r['cicilan']==1?'Cash':'Angsur '.$r['cicilan'].' x').'</td>
 									'.$btn.'
 								</tr>';
+									// <td align="right">'.setuang(getDisc('discsubsidi',$r['replid'])).'</td>
 									// <td align="center">'.($r['angsuran']==1?'<i class="fg-green icon-checkmark"></i>':'<i class="fg-red icon-minus"></i>').'</td>
 						$nox++;
 					}
@@ -178,10 +204,10 @@
 			// view -----------------------------------------------------------------
 
 			case 'getBiaya':
-				if(!isset($_POST['kelompok']) || !isset($_POST['kriteria']) || !isset($_POST['golongan'])){
+				if(!isset($_POST['kelompok']) || !isset($_POST['tingkat']) || !isset($_POST['golongan'])){
 					$o = array('status' =>'invalid_no_post' );
 				}else{
-					$biaya = getSetBiaya($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
+					$biaya = getSetBiaya($_POST['kelompok'],$_POST['tingkat'],$_POST['golongan']);
 					$o     = array(
 								'status'       =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
 								'replid'       =>$biaya['replid'],
@@ -196,17 +222,17 @@
 				$no = getNoPendaftaran('',$_POST['kelompok']);
 				$o  = array(
 						'status'         =>(($no!=null || $no!='')?'sukses':'gagal'),
-						'nopendaftaran'  =>$no['full'],
+						'nopendaftaran'  =>$no['akhir'],
 						'nopendaftaranH' =>$no['akhir'],
 					);
 				$out = json_encode($o);
 			break;
 
 			case 'getSetBiaya':
-				if(!isset($_POST['kelompok']) || !isset($_POST['kriteria']) || !isset($_POST['golongan'])){
+				if(!isset($_POST['kelompok']) || !isset($_POST['tingkat']) || !isset($_POST['golongan'])){
 					$o = array('status' =>'invalid_no_post' );
 				}else{
-					$biaya = getSetBiaya($_POST['kelompok'],$_POST['kriteria'],$_POST['golongan']);
+					$biaya = getSetBiaya($_POST['kelompok'],$_POST['tingkat'],$_POST['golongan']);
 					$o     = array(
 								'status'   =>(($biaya!=null || $biaya!='')?'sukses':'gagal'),
 								'setbiaya' =>$biaya['replid'],
@@ -241,7 +267,7 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$siswa = $tb.' set 	kriteria 	  = "'.filter($_POST['kriteriaTB']).'",
+				$siswa = $tb.' set 	tingkat 	  = "'.filter($_POST['tingkatTB']).'",
 									golongan      = "'.filter($_POST['golonganTB']).'",
 									kelompok      = "'.filter($_POST['kelompokTB']).'",
 									discsubsidi   = "'.getuang(filter($_POST['discsubsidiTB'])).'",
@@ -389,7 +415,7 @@
 							/* Data  Siswa*/
 							c.*,
 							c.nama namaSiswa,
-							
+							-- t.tingkat,
 							/* pembayaran*/
 							b.material,
 							b.tuition,
@@ -427,6 +453,7 @@
 							LEFT JOIN psb_calonsiswa_kontakdarurat d ON d.calonsiswa = c.replid
 							LEFT JOIN psb_calonsiswa_keluarga k ON k.calonsiswa = c.replid
 							LEFT JOIN psb_setbiaya b ON b.replid = c.setbiaya
+							-- LEFT JOIN aka_tingkat t ON t.replid = c.tingkat
 					 WHERE 
 						c.replid='.$_POST['replid'];
 				$e 		= mysql_query($s) or die(mysql_error());
@@ -435,11 +462,12 @@
 				$stat          = ($e)?'sukses':'gagal';
 				$regNum        = setuang(getBiaya('registration',$_POST['replid']));
 				$regNumNet     = setuang(getBiayaNet('registration',$_POST['replid']));
-				$nopendaftaran = getNoPendaftaran($_POST['replid'],$r['kelompok'])['full'];
-				$proses        = getField('proses','psb_kelompok','replid',$r['kelompok']);
+				$nopendaftaran = getNoPendaftaran($_POST['replid'],$r['kelompok'])['akhir'];
+				// $tingkat   	   = getField('tingkat','psb_calonsiswa','replid',$r['tingkat']);
+				$tahunajaran   = getField('tahunajaran','psb_kelompok','replid',$r['kelompok']);
 				$discangsuran  = setuang(getDiscAngsuran($regNum, $r['angsuran']));
 				$disctunai 	   = setuang(getDisc('disctunai',$_POST['replid']));
-				// var_dump($discangsuran);exit();
+				// var_dump($tingkat);exit();
 				$out    = json_encode(array(
 							'status'          =>$stat,
 						// pembayaran
@@ -460,9 +488,9 @@
 							'nopendaftaranH'  =>$r['nopendaftaran'],
 							'nopendaftaran'  =>$nopendaftaran,
 							'namaSiswa'      =>$r['namaSiswa'],
-							'proses'         =>$proses,
+							'tahunajaran'    =>$tahunajaran,
 							'kelompok'       =>$r['kelompok'],
-							'kriteria'       =>$r['kriteria'],
+							'tingkat'        =>$r['tingkat'],
 							'golongan'       =>$r['golongan'],
 							'kelamin'        =>$r['kelamin'],
 							'tmplahir'       =>$r['tmplahir'],
@@ -509,7 +537,7 @@
 				$s = ' SELECT 
 								t.replid,
 								d.nama departemen,
-								p.proses proses,
+								akt.tahunajaran tahunajaran,
 								k.kelompok kelompok,
 								t.nopendaftaran nopendaftaran,
 								t.status statusx,
@@ -562,8 +590,8 @@
 								LEFT JOIN '.$tb_keluarga.' tkel ON tkel.calonsiswa = t.replid
 								LEFT JOIN '.$tb_saudara.' ts ON tkel.calonsiswa = t.replid
 								LEFT JOIN psb_kelompok k ON k.replid = t.kelompok
-								LEFT JOIN psb_proses p ON p.replid = k.proses
-								LEFT JOIN departemen d ON d.replid = p.departemen
+								LEFT JOIN aka_tahunajaran akt ON akt.replid = k.tahunajaran
+								LEFT JOIN departemen d ON d.replid = akt.departemen
 							WHERE 
 								t.replid='.$_POST['replid'];
 						// print_r($s);exit();
@@ -575,7 +603,7 @@
 							'data'   =>array( // tambahi node array ('data')
 							// data siswa 
 								'departemen'    =>$r['departemen'],
-								'proses'        =>$r['proses'],
+								'tahunajaran'   =>$r['tahunajaran'],
 								'kelompok'      =>$r['kelompok'],
 								'nopendaftaran' =>$r['nopendaftaran'],
 								'statusx'       =>($r['statusx']=='1'?'<span style="color:#00A000"><b>Diterima</b></span>':'Belum Diterima'),
@@ -590,7 +618,7 @@
 								'penyakit'      =>$r['penyakit'],
 								'alergi'        =>$r['alergi'],
 								'photo'        =>$r['photo'],
-								// 'kriteria'        =>$r['kriteria'],
+								// 'tingkat'        =>$r['tingkat'],
 								// 'golongan'        =>$r['golongan'],
 								// 'sumpokok'        =>$r['sumpokok'],
 								// 'sumnet'          =>$r['sumnet'],

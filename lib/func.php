@@ -17,8 +17,8 @@
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
-		// var_dump($s);exit();
-		$e = mysql_query($s);
+		// print_r($s);exit();
+		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
 		return $r[$f];
 	}

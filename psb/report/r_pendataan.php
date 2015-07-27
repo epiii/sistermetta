@@ -90,9 +90,9 @@
             $r=mysql_fetch_assoc($e);
             $out.='<table xclass="isi" width="100%">';
             
-            $proses   = getProses('proses',$r['kelompok']);
+            $proses   = getProses('tahunajaran',$r['kelompok']);
             $kelompok = getKelompok ('kelompok',$r['kelompok']);
-            $kriteria = getField('kriteria','psb_kriteria','replid',$r['kriteria']);
+            $kriteria = getField('tingkat','aka_tingkat','replid',$r['tingkat']);
             $golongan = getField('golongan','psb_golongan','replid',$r['golongan']);
             // var_dump($proses);exit();
             // bioadata siswa
@@ -132,7 +132,7 @@
                     <td colspan="3">Biodata Siswa</td>
                   </tr><tr>
                     <td width="20%">No. Pendaftaran</td>
-                    <td>: '.getNoPendaftaran($replid,$r['kelompok'])['full'].'</td>
+                    <td>: '.getNoPendaftaran($replid,$r['kelompok'])['akhir'].'</td>
                     <td align="right" rowspan="5"><img height="120" src="../img/upload/'.$r['photo'].'" alt="" /></td>
                   </tr><tr>
                     <td width="20%">Nama Lengkap</td>

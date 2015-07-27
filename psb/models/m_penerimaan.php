@@ -77,7 +77,7 @@
 									 </td>';						
 						}
 						$out.= '<tr>
-									<td>'.getNoPendaftaran($r['replid'],$r['kelompok'])['full'].'</td>
+									<td>'.getNoPendaftaran($r['replid'],$r['kelompok'])['akhir'].'</td>
 									<td>'.$r['nama'].'</td>
 									<td>'.($r['nis']=='' || $r['nis']==0?'-':$r['nis']).'</td>
 									<td>'.($r['nisn']==''|| $r['nisn']==0?'-':$r['nisn']).'</td>
@@ -134,14 +134,14 @@
 						$e          = mysql_query($s);
 						$r          = mysql_fetch_assoc($e);
 						$stat       = ($e)?'sukses':'gagal';
-						$idproses   = getField('proses','psb_kelompok','replid',$r['kelompok']);
+						$idproses   = getField('tahunajaran','psb_kelompok','replid',$r['kelompok']);
 						$idangkatan = getField('angkatan','psb_proses','replid',$idproses);
 						$angkatan   = getField('angkatan','aka_angkatan','replid',$idangkatan);
 						$out      = json_encode(array(
 										'status' =>$stat,
 										'data'   =>array(
 											'nama'          =>$r['nama'],
-											'nopendaftaran' =>getNoPendaftaran($r['replid'],$r['kelompok'])['full'],
+											'nopendaftaran' =>getNoPendaftaran($r['replid'],$r['kelompok'])['akhir'],
 											'angkatan'      =>$angkatan
 									)));
 					break;

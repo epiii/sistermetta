@@ -11,7 +11,7 @@
     <select class="cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
 <div class="input-control select span3">
-    <select  onchange="cmbkelompok('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="prosesS" id="prosesS"></select>
+    <select  onchange="cmbkelompok('filter',$(this).val(),'');"  class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 <div class="input-control select span3">
     <select onchange="viewTB();" class="cari" data-hint="Kelompok" name="kelompokS" id="kelompokS"></select>
@@ -21,16 +21,17 @@
 <table id="pendataanTBL" class="table hovered bordered striped panelx" >
     <thead>
         <tr style="color:white;" class="info">
-            <th class="text-center" rowspan="2">Nomor Pendaftaran</th>
+            <th class="text-center" rowspan="2">No Pendaftaran</th>
             <th class="text-center" rowspan="2">Nama</th>
+            <th class="text-center" rowspan="2">Tingkat</th>
             <th class="text-center" rowspan="2">Registration Fee</th>
-            <th class="text-center" colspan="4">Discount</th>
+            <th class="text-center" colspan="3">Discount</th>
             <th class="text-center" rowspan="2">Registration Fee(Net)</th>
             <th class="text-center" rowspan="2">Bayar</th>
             <th class="text-center" rowspan="2">Aksi</th>
         </tr>
         <tr style="color:white;" class="info">
-            <th class="text-center">Subsidi</th>
+            <!-- <th class="text-center">Subsidi</th> -->
             <th class="text-center">Saudara</th>
             <th class="text-center">Tunai</th>
             <th class="text-center">Angsuran</th>
@@ -38,6 +39,7 @@
         <tr style="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="nopendaftaranS" name="nopendaftaranS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ...." id="namaS" name="namaS"></div></th>
+            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ...." id="tingkatS" name="tingkatS"></div></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
             <th class="text-center"></th>
@@ -53,7 +55,7 @@
 
 <!-- panel 2 : form (edit || add ) -->
 <div class=" panelx" id="pendataanFR" style="display:none;" >
-  <div style="background-color:#dddddd;overflow:scroll;height:600px;" >
+  <div style="background-color:#dddddd;overflow:scroll;height:550px;" >
     <form autocomplete="off" enctype="multipart/form-data" onsubmit="siswaSV();return false;" id="siswa_form"> 
       <input id="idformH" type="hidden"> 
         <!-- Panel -->
@@ -77,9 +79,9 @@
                         <select onchange="getNoPendaftaran(this);" required id="kelompokTB" name="kelompokTB"></select>
                         <!-- <select onchange="getBiaya();" required id="kelompokTB" name="kelompokTB"></select> -->
                       </div>
-                      <label>Kriteria :</label>
+                      <label>Tingkat :</label>
                       <div class="input-control select size3">
-                        <select onchange="getBiaya();" required id="kriteriaTB" name="kriteriaTB"></select>
+                        <select onchange="getBiaya();" required id="tingkatTB" name="tingkatTB"></select>
                       </div>
 
                       <label>Golongan :</label>
