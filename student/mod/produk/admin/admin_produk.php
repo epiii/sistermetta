@@ -80,7 +80,7 @@ $data 		= mysql_fetch_array($query);
 $jenis  			= $data['jenis'];
 $jenjang  			= $data['jenjang'];
 $kode = $data['kode'];
-$generatekode=generatekode('KPR','kode','pos_produk',$id);
+$generatekode=generatekodeedit('KPR','kode','pos_produk',$id);
 if(!$kode){$kode = $generatekode;}
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Edit Produk</h3></div>';
