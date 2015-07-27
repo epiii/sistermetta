@@ -38,7 +38,7 @@ echo '<table>
 <th>Lama Kerja</th>
 </tr></thead><tbody>';
 $no =1;
-$s = mysql_query ("SELECT * FROM hrd_karyawan  where tipe='1' ORDER BY nama");	
+$s = mysql_query ("SELECT * FROM hrd_karyawan  where tipe='1' ORDER BY nip asc");	
 while($data = mysql_fetch_array($s)){
 $date2 = $data['tglditerima'];
 $date3 = date("Y-m-d");
