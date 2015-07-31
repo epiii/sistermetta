@@ -4,6 +4,12 @@ include 'includes/config.php';
 include 'includes/mysql.php';
 
 global $koneksi_db,$url_situs;
+$nip 		= $_GET['nip'];
+if($nip=='ok'){
+$wherenip ="order by nip asc";	
+}else{
+$wherenip ="order by nama asc";		
+}
 echo "<html><head><title>REKAP DATA KARYAWAN</title>";
 echo '<style type="text/css">
    table { page-break-inside:auto }
@@ -38,7 +44,7 @@ echo '<table>
 <th>Lama Kerja</th>
 </tr></thead><tbody>';
 $no =1;
-$s = mysql_query ("SELECT * FROM hrd_karyawan  where tipe='1' ORDER BY nama");	
+$s = mysql_query ("SELECT * FROM hrd_karyawan  where tipe='1' $wherenip ");	
 while($data = mysql_fetch_array($s)){
 $date2 = $data['tglditerima'];
 $date3 = date("Y-m-d");
