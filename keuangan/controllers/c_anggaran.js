@@ -1,3 +1,4 @@
+
 var mnu       ='anggaran'; 
 var mnu2      ='tahunbuku'; 
 var mnu3      ='departemen'; 
@@ -6,9 +7,9 @@ var mnu5      ='tingkat';
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
-var dir3      ='../akademik_sister/models/m_'+mnu3+'.php';
-var dir4      ='../akademik_sister/models/m_'+mnu4+'.php';
-var dir5      ='../akademik_sister/models/m_'+mnu5+'.php';
+var dir3      ='../akademik/models/m_'+mnu3+'.php';
+var dir4      ='../akademik/models/m_'+mnu4+'.php';
+var dir5      ='../akademik/models/m_'+mnu5+'.php';
 
 var a_contentFR = d_contentFR = b_contentFR ='';
     

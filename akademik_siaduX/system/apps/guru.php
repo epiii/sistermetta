@@ -12,7 +12,7 @@ if($opt=='a'||$opt=='u'||$opt=='d'){ $q=false;
 		$q=dbInsert($dbtable,$inp);
 		$y=mysql_query("SELECT * FROM admin WHERE pegawai='".$inp['pegawai']."'");
 		if(mysql_num_rows($y)==0){
-			$y=mysql_query("SELECT hrd_pegawai.nip,hrd_pegawai.nama FROM hrd_pegawai WHERE hrd_pegawai.replid='".$inp['pegawai']."'");
+			$y=mysql_query("SELECT hrd_karyawan.nip,hrd_karyawan.nama FROM hrd_karyawan WHERE hrd_karyawan.id='".$inp['pegawai']."'");
 			$u=mysql_fetch_array($y);
 			$q=mysql_query("INSERT INTO admin SET app='gur', nama='".$u['nama']."', uname='".$u['nip']."', passwd='".md5('admin')."', pegawai='".$inp['pegawai']."', level='2'");
 		}
@@ -31,7 +31,7 @@ if($opt=='a'||$opt=='u'||$opt=='d'){ $q=false;
 	if($opt=='uf'||$opt=='df'){ // Prepocessing form
 		$r=dbSFA("*",$dbtable,"W/replid='$cid'");
 		$r['departemen']=gpost('departemen');
-		$q=mysql_query("SELECT * FROM hrd_pegawai WHERE replid='".$r['pegawai']."' LIMIT 0,1");
+		$q=mysql_query("SELECT * FROM hrd_karyawan WHERE id='".$r['pegawai']."' LIMIT 0,1");
 		if(mysql_num_rows($q)>0){
 			$h=mysql_fetch_array($q);
 			$r['nama']=$h['nama'];

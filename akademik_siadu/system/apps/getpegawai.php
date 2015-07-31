@@ -5,7 +5,7 @@ $c=gpost('c');
 if($opt=='find'){
 	$keyw=gpost('nama');
 	$c=gpost('c');
-	$sql="SELECT * FROM hrd_karyawan WHERE nip='$keyw' OR nama LIKE '%$keyw%' ORDER BY nama";
+	$sql="SELECT * FROM ".DB_HRD." WHERE nip='$keyw' OR nama LIKE '%$keyw%' ORDER BY nama";
 	//echo $sql;
 	$t=mysql_query($sql);
 	$ndata=mysql_num_rows($t);
@@ -33,7 +33,7 @@ if($opt=='find'){
 	<div class="infobox" style="float:left">Tidak ditemukan guru dengan nip atau nama <b><?=$keyw?></b></div>
 	<?php }
 } else {
-$sql="SELECT * FROM hrd_karyawan ORDER BY nama";
+$sql="SELECT * FROM ".DB_HRD." ORDER BY nama";
 //echo $sql;
 $t=mysql_query($sql);
 $ndata=mysql_num_rows($t);
