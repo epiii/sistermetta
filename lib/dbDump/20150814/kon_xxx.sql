@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-14 03:49:55
+Date: 2015-08-14 04:03:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -285,7 +285,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -303,6 +303,18 @@ INSERT INTO `kon_loginhistory` VALUES ('27', '1', '2015-07-24 07:05:11');
 INSERT INTO `kon_loginhistory` VALUES ('28', '1', '2015-07-24 07:05:11');
 INSERT INTO `kon_loginhistory` VALUES ('29', '1', '2015-08-14 03:47:40');
 INSERT INTO `kon_loginhistory` VALUES ('30', '1', '2015-08-14 03:47:40');
+INSERT INTO `kon_loginhistory` VALUES ('31', '1', '2015-08-14 03:57:55');
+INSERT INTO `kon_loginhistory` VALUES ('32', '1', '2015-08-14 03:57:55');
+INSERT INTO `kon_loginhistory` VALUES ('33', '1', '2015-08-14 03:58:38');
+INSERT INTO `kon_loginhistory` VALUES ('34', '1', '2015-08-14 03:58:38');
+INSERT INTO `kon_loginhistory` VALUES ('35', '1', '2015-08-14 03:59:03');
+INSERT INTO `kon_loginhistory` VALUES ('36', '1', '2015-08-14 03:59:03');
+INSERT INTO `kon_loginhistory` VALUES ('37', '1', '2015-08-14 04:01:39');
+INSERT INTO `kon_loginhistory` VALUES ('38', '1', '2015-08-14 04:01:39');
+INSERT INTO `kon_loginhistory` VALUES ('39', '1', '2015-08-14 04:02:34');
+INSERT INTO `kon_loginhistory` VALUES ('40', '1', '2015-08-14 04:02:34');
+INSERT INTO `kon_loginhistory` VALUES ('41', '1', '2015-08-14 04:02:51');
+INSERT INTO `kon_loginhistory` VALUES ('42', '1', '2015-08-14 04:02:51');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -396,7 +408,7 @@ CREATE TABLE `kon_modul` (
   `size` enum('','double','double double-vertical') NOT NULL DEFAULT '',
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_modul`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_modul
@@ -408,7 +420,9 @@ INSERT INTO `kon_modul` VALUES ('4', '1', 'sarpras', 'sarana dan prasarana', '4'
 INSERT INTO `kon_modul` VALUES ('5', '2', 'hrd', 'kepegawaian', '5', '13', 'double double-vertical', '');
 INSERT INTO `kon_modul` VALUES ('6', '2', 'keuangan', 'keuangan', '6', '14', 'double double-vertical', '');
 INSERT INTO `kon_modul` VALUES ('7', '2', 'student', 'student services', '7', '15', 'double', '');
-INSERT INTO `kon_modul` VALUES ('9', '2', 'konfigurasi', 'konfigurasi', '13', '14', 'double', '');
+INSERT INTO `kon_modul` VALUES ('9', '3', 'konfigurasi', 'konfigurasi', '13', '14', 'double', '');
+INSERT INTO `kon_modul` VALUES ('13', '2', 'purchaseorder', 'purchase order', '32', '20', 'double', '');
+INSERT INTO `kon_modul` VALUES ('14', '3', 'marketingpsb', 'marketing', '16', '12', 'double', '');
 
 -- ----------------------------
 -- Table structure for kon_privillege
