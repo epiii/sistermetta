@@ -77,7 +77,7 @@
 									level like "%'.$level.'%" and
 									keterangan like "%'.$keterangan.'%" 
 								ORDER 
-									BY '.$mnu.' asc';
+									BY urutan asc';
 						// print_r($sql);exit();
 						if(isset($_POST['starting'])){ //nilai awal halaman
 							$starting=$_POST['starting'];
@@ -93,8 +93,15 @@
 						$jum = mysql_num_rows($result);
 						$out ='';
 						if($jum!=0){	
-							$nox 	= $starting+1;
 							while($res = mysql_fetch_assoc($result)){	
+								$nox = '<span class="input-control select"><select class="text-center" replid1="'.$res['id_level'].'" urutan1="'.$res['urutan'].'" onchange="urutFC(this);" >';
+								for($i=1; $i<=$jum; $i++){
+									if($i==$res['urutan'])
+										$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
+									else
+										$nox.='<option value="'.$i.'">'.$i.'</option>';
+								}$nox.='</select></span>';
+
 								// <button data-hint="detail"  onclick="viewFR(\'aksi\','.$res['id_'.$mnu].');">
 								$btn ='<td align="center">
 											<button data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
@@ -288,6 +295,37 @@
 				}$out=json_encode($ar);
 			break;
 			// cmbtahunajaran -----------------------------------------------------------------
+
+			// urutan -----------------------------------------------------------------
+			case 'urutan':
+				// 1 = asal
+				// 2 = tujuan
+				$_1 = mysql_fetch_assoc(mysql_query('SELECT urutan from '.$tb.' WHERE id_level='.$_POST['replid1']));
+				$_2 = mysql_fetch_assoc(mysql_query('SELECT id_level from '.$tb.' WHERE urutan='.$_POST['urutan2']));
+				$s1		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_POST['urutan2'].'  
+							WHERE 
+								id_level='.$_POST['replid1'];
+				$s2		= ' UPDATE '.$tb.' 
+							SET urutan = '.$_1['urutan'].'  
+							WHERE 
+								id_level='.$_2['id_level'];
+				// var_dump($s1);exit();
+				$e1 	= mysql_query($s1);
+				if(!$e1){
+					$stat='gagal ubah urutan semula ';
+				}else{
+					$e2 = mysql_query($s2);
+					if(!$e2)
+						$stat = 'gagal ubah urutan kedua';
+					else
+						$stat= 'sukses';
+				}
+				$out 	= json_encode(array(
+							'status'  =>$stat,
+						));
+			break;
+			// urutan ------			
 
 		}
 	}echo $out;

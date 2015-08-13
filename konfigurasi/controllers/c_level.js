@@ -332,3 +332,19 @@ var aksiFR = levelFR = contentFR = '';
             type:'post',
         });
     }
+    // urutan tabel
+    function urutFC (e) {
+        var u = dir;
+        var d ='aksi=urutan&replid1='+$(e).attr('replid1')+'&urutan2='+$(e).val();
+        ajax(u,d).done(function(dt){
+            var cont,clr;
+            if(dt.status!='sukses'){
+                cont = '..Gagal Merubah urutan ';
+                clr  ='red';
+            }else{
+                viewTB();
+                cont = '..Berhasil Merubah Urutan ';
+                clr  ='green';
+            }notif(cont,clr);
+        });
+    }
