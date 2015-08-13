@@ -3,7 +3,7 @@
 	require_once '../../lib/dbcon.php';
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
-	$mnu = 'level';
+	$mnu = 'login';
 	$tb  = 'kon_'.$mnu;
 
 	if(!isset($_POST['aksi'])){
@@ -12,126 +12,83 @@
 		switch ($_POST['aksi']) {
 			// view -----------------------------------------------------------------
 			case 'tampil':
-				switch ($_POST['subaksi']) {
-					case 'levelaksi':
-						$l = getField('level','kon_level','id_level',$_POST['id_level']);
-						$k = getField('keterangan','kon_level','id_level',$_POST['id_level']);
-						$level = $k.' ('.$l.')';
-
-						$s2 = '	SELECT lk.*,kg.keterangan 
-								FROM kon_levelkatgrupmenu lk 
-									JOIN kon_katgrupmenu kg on kg.id_katgrupmenu = lk.id_katgrupmenu  
-								WHERE lk.id_level ='.$_POST['id_level'];
-								// pr($s2);
-						$e2 = mysql_query($s2);
-						$stat=!$e2?'gagal':'sukses';
-						$katgrupmenuArr=array();
-						while ($r2=mysql_fetch_assoc($e2)) {
-							$s3 = 'SELECT
-										a.*,
-										if((
-											SELECT id_levelaksi 
-											FROM kon_levelaksi 
-											WHERE 
-												id_aksi = a.id_aksi and 
-												id_levelkatgrupmenu='.$r2['id_levelkatgrupmenu'].'
-											) IS null ,0,1)stataksi
-									FROM
-										kon_aksi a';
-										// LEFT JOIN kon_levelaksi la ON la.id_aksi = a.id_aksi';
-							// pr($s3);
-							$e3      = mysql_query($s3);
-							$stat    = $e3?'sukses':'gagal';
-							$aksiArr = array();
-							while($r3 = mysql_fetch_assoc($e3)){
-								$aksiArr[] = array(
-									'id_aksi'             =>$r3['id_aksi'],
-									'aksi'                =>$r3['aksi'],
-									'keterangan'          =>$r3['keterangan'],
-									'stataksi'            =>$r3['stataksi'],
-									'id_levelkatgrupmenu' =>$r2['id_levelkatgrupmenu'],
-									'id_katgrupmenu'      =>$r2['id_katgrupmenu'],
-								);		
-							}
-							$katgrupmenuArr[]=array(
-								'keterangan' =>$r2['keterangan'],
-								'aksiArr'    =>$aksiArr
-							);
-						}
-						$out = json_encode(array(
-							'status' =>$stat,
-							'data'   =>array(
-								'level'          =>$level,
-								'katgrupmenuArr' =>$katgrupmenuArr
-							)
-						));
-					break; 
-
-					case 'level':
-						$level      = (isset($_POST['levelS']) and trim($_POST['levelS'])!='')?filter($_POST['levelS']):'';
-						$keterangan = (isset($_POST['keteranganS']) and trim($_POST['keteranganS'])!='')?filter($_POST['keteranganS']):'';
-						$sql  = 'SELECT *
-								FROM '.$tb.'
-								WHERE 
-									'.$mnu.' like "%'.$level.'%" and
-									level like "%'.$level.'%" and
-									keterangan like "%'.$keterangan.'%" 
-								ORDER 
-									BY urutan asc';
-						// print_r($sql);exit();
-						if(isset($_POST['starting'])){ //nilai awal halaman
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-						$recpage = 10;
-						$aksi    ='tampil';
-						$subaksi ='';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
-						$result  = $obj->result;
-
-						$jum = mysql_num_rows($result);
-						$out ='';
-						if($jum!=0){	
-							while($res = mysql_fetch_assoc($result)){	
-								$nox = '<span class="input-control select"><select class="text-center" replid1="'.$res['id_level'].'" urutan1="'.$res['urutan'].'" onchange="urutFC(this);" >';
-								for($i=1; $i<=$jum; $i++){
-									if($i==$res['urutan'])
-										$nox.='<option selected="selected" value="'.$i.'">'.$i.'</option>';
-									else
-										$nox.='<option value="'.$i.'">'.$i.'</option>';
-								}$nox.='</select></span>';
-
-								// <button data-hint="detail"  onclick="viewFR(\'aksi\','.$res['id_'.$mnu].');">
-								$btn ='<td align="center">
-											<button data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
-												<i class="icon-zoom-in"></i>
-											</button>
-											<button '.isDisabled($mnu,'u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
-												<i class="icon-pencil"></i>
-											</button>
-											<button '.isDisabled($mnu,'d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
-												<i class="icon-remove"></i>
-											</button>
-										 </td>';
-								$out.= '<tr>
-											<td align="center">'.$nox.'</td>
-											<td align="center">'.$res['level'].'</td>
-											<td align="center">'.$res['keterangan'].'</td>
-											'.$btn.'
-										</tr>';
-								$nox++;
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break; 
+				$username = isset($_POST['usernameS'])?filter($_POST['usernameS']):'';
+				$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$level    = isset($_POST['levelS']) && $_POST['levelS']!=''?' and lg.id_level ='.filter($_POST['levelS']):'';
+				$aktif    = isset($_POST['aktifS']) && $_POST['aktifS']!=''?' and lg.aktif ='.filter($_POST['aktifS']):'';
+				$sql  = 'SELECT 
+							lg.id_login,
+							lg.nama,
+							lg.username,
+							concat(lv.keterangan," (",lv.level,")")level,
+							lg.aktif
+						FROM '.$tb.' lg 
+							JOIN kon_level lv on lv.id_level = lg.id_level 
+						WHERE 
+							lg.username like "%'.$username.'%" and
+							lg.nama like "%'.$nama.'%"
+							'.$level.'
+							'.$aktif.'
+						ORDER BY 
+							lg.nama asc,
+							lg.username asc
+							';
+				// print_r($sql);exit();
+				if(isset($_POST['starting'])){ //nilai awal halaman
+					$starting=$_POST['starting'];
+				}else{
+					$starting=0;
 				}
+				$recpage = 10;
+				$aksi    ='tampil';
+				$subaksi ='';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi, $subaksi);
+				$result  = $obj->result;
+
+				$jum = mysql_num_rows($result);
+				$out ='';
+				if($jum!=0){	
+					while($res = mysql_fetch_assoc($result)){	
+						$btn ='<td align="center">
+									<button data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
+										<i class="icon-zoom-in"></i>
+									</button>
+									<button '.isDisabled($mnu,'u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
+										<i class="icon-pencil"></i>
+									</button>
+									<button '.isDisabled($mnu,'d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
+										<i class="icon-remove"></i>
+									</button>
+								 </td>';
+						if($res['aktif']==1){ // aktif
+							$clr = 'green';
+							$hint= 'aktif';
+							$icon= 'checkmark';
+						}else{ //tidak aktif
+							$clr = '';
+							$hint= 'tidak aktif';
+							$icon= 'disabled';
+						}
+
+						$out.= '<tr>
+									<td align="center">'.$res['nama'].'</td>
+									<td align="center">'.$res['username'].'</td>
+									<td align="center">'.$res['level'].'</td>
+									<td align="center">
+										<button class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
+									</td>
+									'.$btn.'
+								</tr>';
+						// $nox++;
+					}
+				}else{ #kosong
+					$out.= '<tr align="center">
+							<td  colspan=9 ><span style="color:red;text-align:center;">
+							... data tidak ditemukan...</span></td></tr>';
+				}
+				#link paging
+				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 			break;
 			// view -----------------------------------------------------------------
 
@@ -258,7 +215,7 @@
 			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['id_'.$mnu])){
-					$w.='where id_'.$mnu.'='.$_POST['id_'.$mnu];
+					$w.='where id_ .$mnu='.$_POST['id_'.$mnu];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
@@ -270,7 +227,9 @@
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY urutan ASC';
+						ORDER  BY 
+							aktif desc,
+							nama desc';
 				// var_dump($s);exit();
 				$e 	= mysql_query($s);
 				$n 	= mysql_num_rows($e);
