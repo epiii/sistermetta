@@ -10,7 +10,7 @@
 <table class="table hovered bordered striped">
     <?php
 $xx= isDisabled('user','c');
-pr($_SESSION);
+// pr($_SESSION);
 ?>
 
     <thead>

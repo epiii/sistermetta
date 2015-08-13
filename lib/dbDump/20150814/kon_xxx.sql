@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-14 04:03:26
+Date: 2015-08-14 04:25:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -139,6 +139,7 @@ DROP TABLE IF EXISTS `kon_level`;
 CREATE TABLE `kon_level` (
   `id_level` int(11) NOT NULL AUTO_INCREMENT,
   `level` varchar(20) NOT NULL,
+  `urutan` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_level`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
@@ -146,10 +147,10 @@ CREATE TABLE `kon_level` (
 -- ----------------------------
 -- Records of kon_level
 -- ----------------------------
-INSERT INTO `kon_level` VALUES ('1', 'A', 'Admin');
-INSERT INTO `kon_level` VALUES ('2', 'G', 'Guest');
-INSERT INTO `kon_level` VALUES ('3', 'O', 'Operator');
-INSERT INTO `kon_level` VALUES ('4', 'SA', 'Super Admin');
+INSERT INTO `kon_level` VALUES ('1', 'A', '2', 'Admin');
+INSERT INTO `kon_level` VALUES ('2', 'G', '4', 'Guest');
+INSERT INTO `kon_level` VALUES ('3', 'O', '3', 'Operator');
+INSERT INTO `kon_level` VALUES ('4', 'SA', '1', 'Super Admin');
 
 -- ----------------------------
 -- Table structure for kon_levelaksi
@@ -285,7 +286,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -315,6 +316,8 @@ INSERT INTO `kon_loginhistory` VALUES ('39', '1', '2015-08-14 04:02:34');
 INSERT INTO `kon_loginhistory` VALUES ('40', '1', '2015-08-14 04:02:34');
 INSERT INTO `kon_loginhistory` VALUES ('41', '1', '2015-08-14 04:02:51');
 INSERT INTO `kon_loginhistory` VALUES ('42', '1', '2015-08-14 04:02:51');
+INSERT INTO `kon_loginhistory` VALUES ('43', '1', '2015-08-14 04:19:48');
+INSERT INTO `kon_loginhistory` VALUES ('44', '1', '2015-08-14 04:19:48');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -422,7 +425,6 @@ INSERT INTO `kon_modul` VALUES ('6', '2', 'keuangan', 'keuangan', '6', '14', 'do
 INSERT INTO `kon_modul` VALUES ('7', '2', 'student', 'student services', '7', '15', 'double', '');
 INSERT INTO `kon_modul` VALUES ('9', '3', 'konfigurasi', 'konfigurasi', '13', '14', 'double', '');
 INSERT INTO `kon_modul` VALUES ('13', '2', 'purchaseorder', 'purchase order', '32', '20', 'double', '');
-INSERT INTO `kon_modul` VALUES ('14', '3', 'marketingpsb', 'marketing', '16', '12', 'double', '');
 
 -- ----------------------------
 -- Table structure for kon_privillege
