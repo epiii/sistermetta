@@ -1,6 +1,7 @@
 <?php
 	// sleep(1);
 	require_once 'dbcon.php';
+	require_once 'func.php';
 	// $out  = array();
 	$user = $_POST['userTB'];
 	$pass = base64_encode($_POST['pass2TB']);
@@ -9,7 +10,7 @@
 				// max(lh.date) lastlogin,
 	$s1   = 'SELECT 
 				lg.*,lh.date lastlogin,
-				lv.keterangan as level,
+			lv.keterangan as level,
 				count(*) counterlog 
 			FROM 
 				kon_login lg
@@ -23,6 +24,7 @@
 			HAVING 
 				max(lh.id_loginhistory)
 			';
+	// pr($s1);
 	$e1   = mysql_query($s1) or die(mysql_error());
 	$n    = mysql_num_rows($e1);
 	if($n!=0){
@@ -195,34 +197,6 @@
 			$departemenArr[]=$r6;
 		} 
 
-		// // AKSI per grup menu
-		// $s6 = 'SELECT * FROM kon_katgrupmenu';
-		// $e6 = mysql_query($s6);
-		// $katgrupmenuArr = array();
-		// while ($r6 = mysql_fetch_assoc($e6)) {
-		// 	$s7 = 'SELECT
-		// 				a.aksi
-		// 			FROM
-		// 				kon_levelaksi la
-		// 				LEFT JOIN kon_aksi a ON a.id_aksi = la.id_aksi
-		// 				LEFT JOIN kon_levelkatgrupmenu lkg ON lkg.id_levelkatgrupmenu = la.id_levelkatgrupmenu
-		// 				LEFT JOIN kon_katgrupmenu kg ON kg.id_katgrupmenu= lkg.id_katgrupmenu
-		// 				LEFT JOIN kon_level l on l.id_level = lkg.id_level
-		// 				LEFT JOIN kon_login lg on lg.id_level = l.id_level
-		// 			WHERE	
-		// 				lg.id_login = '.$r1['id_login'].' and 
-		// 				kg.id_katgrupmenu ='.$r6['id_katgrupmenu'];
-		// 	$e7      = mysql_query($s7);
-		// 	$aksiArr = array();
-		// 	while ($r7 = mysql_fetch_assoc($e7)) {
-		// 		$aksiArr[]=$r7;
-		// 	}
-		// 	$katgrupmenuArr[] = array(
-		// 		'id_katgrupmenu' => $r6['id_katgrupmenu'],
-		// 		'katgrupmenu'    => $r6['katgrupmenu'],
-		// 		'aksi'           => $aksiArr
-		// 	);
-		// } 
 		session_start();
 		$_SESSION = array(
 			// collect user's informations

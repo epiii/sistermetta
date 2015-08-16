@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-16 14:13:51
+Date: 2015-08-16 23:41:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -142,16 +142,16 @@ CREATE TABLE `kon_level` (
   `urutan` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_level`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_level
 -- ----------------------------
-INSERT INTO `kon_level` VALUES ('1', 'A', '3', 'Admin');
-INSERT INTO `kon_level` VALUES ('2', 'G', '5', 'Guest');
-INSERT INTO `kon_level` VALUES ('3', 'O', '4', 'Operator');
-INSERT INTO `kon_level` VALUES ('4', 'SA', '1', 'Super Admin');
-INSERT INTO `kon_level` VALUES ('9', 'A+', '2', 'Admin Plus');
+INSERT INTO `kon_level` VALUES ('12', 'SA', '1', 'Super Admin');
+INSERT INTO `kon_level` VALUES ('13', 'A+', '2', 'Admin Plus');
+INSERT INTO `kon_level` VALUES ('14', 'A', '3', 'Admin');
+INSERT INTO `kon_level` VALUES ('15', 'O', '4', 'Operator');
+INSERT INTO `kon_level` VALUES ('16', 'G', '5', 'Guest');
 
 -- ----------------------------
 -- Table structure for kon_levelaksi
@@ -164,55 +164,76 @@ CREATE TABLE `kon_levelaksi` (
   PRIMARY KEY (`id_levelaksi`),
   KEY `id_levelkatgrupmenu` (`id_levelkatgrupmenu`),
   KEY `id_aksi` (`id_aksi`),
-  CONSTRAINT `kon_levelaksi_ibfk_1` FOREIGN KEY (`id_levelkatgrupmenu`) REFERENCES `kon_levelkatgrupmenu` (`id_levelkatgrupmenu`),
-  CONSTRAINT `kon_levelaksi_ibfk_2` FOREIGN KEY (`id_aksi`) REFERENCES `kon_aksi` (`id_aksi`)
-) ENGINE=InnoDB AUTO_INCREMENT=574 DEFAULT CHARSET=latin1;
+  CONSTRAINT `kon_levelaksi_ibfk_1` FOREIGN KEY (`id_levelkatgrupmenu`) REFERENCES `kon_levelkatgrupmenu` (`id_levelkatgrupmenu`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `kon_levelaksi_ibfk_2` FOREIGN KEY (`id_aksi`) REFERENCES `kon_aksi` (`id_aksi`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1574 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_levelaksi
 -- ----------------------------
-INSERT INTO `kon_levelaksi` VALUES ('191', '7', '1');
-INSERT INTO `kon_levelaksi` VALUES ('192', '7', '2');
-INSERT INTO `kon_levelaksi` VALUES ('193', '7', '3');
-INSERT INTO `kon_levelaksi` VALUES ('194', '7', '4');
-INSERT INTO `kon_levelaksi` VALUES ('195', '7', '5');
-INSERT INTO `kon_levelaksi` VALUES ('196', '7', '6');
-INSERT INTO `kon_levelaksi` VALUES ('197', '8', '1');
-INSERT INTO `kon_levelaksi` VALUES ('198', '8', '2');
-INSERT INTO `kon_levelaksi` VALUES ('199', '8', '3');
-INSERT INTO `kon_levelaksi` VALUES ('200', '8', '4');
-INSERT INTO `kon_levelaksi` VALUES ('201', '8', '5');
-INSERT INTO `kon_levelaksi` VALUES ('202', '8', '6');
-INSERT INTO `kon_levelaksi` VALUES ('425', '6', '1');
-INSERT INTO `kon_levelaksi` VALUES ('426', '6', '2');
-INSERT INTO `kon_levelaksi` VALUES ('427', '6', '3');
-INSERT INTO `kon_levelaksi` VALUES ('428', '6', '4');
-INSERT INTO `kon_levelaksi` VALUES ('429', '6', '5');
-INSERT INTO `kon_levelaksi` VALUES ('430', '6', '6');
-INSERT INTO `kon_levelaksi` VALUES ('440', '4', '1');
-INSERT INTO `kon_levelaksi` VALUES ('441', '4', '5');
-INSERT INTO `kon_levelaksi` VALUES ('442', '4', '6');
-INSERT INTO `kon_levelaksi` VALUES ('454', '1', '1');
-INSERT INTO `kon_levelaksi` VALUES ('455', '1', '2');
-INSERT INTO `kon_levelaksi` VALUES ('456', '1', '3');
-INSERT INTO `kon_levelaksi` VALUES ('457', '1', '4');
-INSERT INTO `kon_levelaksi` VALUES ('458', '1', '5');
-INSERT INTO `kon_levelaksi` VALUES ('459', '1', '6');
-INSERT INTO `kon_levelaksi` VALUES ('460', '2', '1');
-INSERT INTO `kon_levelaksi` VALUES ('461', '2', '2');
-INSERT INTO `kon_levelaksi` VALUES ('462', '2', '3');
-INSERT INTO `kon_levelaksi` VALUES ('463', '2', '4');
-INSERT INTO `kon_levelaksi` VALUES ('464', '2', '5');
-INSERT INTO `kon_levelaksi` VALUES ('465', '2', '6');
-INSERT INTO `kon_levelaksi` VALUES ('565', '13', '1');
-INSERT INTO `kon_levelaksi` VALUES ('566', '13', '5');
-INSERT INTO `kon_levelaksi` VALUES ('567', '13', '6');
-INSERT INTO `kon_levelaksi` VALUES ('568', '14', '1');
-INSERT INTO `kon_levelaksi` VALUES ('569', '14', '2');
-INSERT INTO `kon_levelaksi` VALUES ('570', '14', '3');
-INSERT INTO `kon_levelaksi` VALUES ('571', '14', '4');
-INSERT INTO `kon_levelaksi` VALUES ('572', '14', '5');
-INSERT INTO `kon_levelaksi` VALUES ('573', '14', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1246', '33', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1247', '34', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1248', '33', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1249', '34', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1250', '33', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1251', '34', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1252', '33', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1253', '34', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1254', '33', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1255', '34', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1256', '33', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1257', '34', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1258', '35', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1259', '36', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1260', '35', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1261', '36', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1262', '35', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1263', '36', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1264', '35', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1265', '36', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1266', '35', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1267', '36', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1268', '35', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1269', '36', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1423', '37', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1424', '38', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1425', '37', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1426', '37', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1427', '37', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1428', '37', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1429', '38', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1430', '37', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1431', '38', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1432', '39', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1433', '40', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1434', '39', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1435', '39', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1436', '39', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1437', '39', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1438', '40', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1439', '39', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1440', '40', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1507', '41', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1508', '41', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1509', '41', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1510', '41', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1511', '41', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1512', '41', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1513', '43', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1514', '43', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1515', '43', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1516', '43', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1517', '43', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1518', '43', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1535', '47', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1536', '47', '2');
+INSERT INTO `kon_levelaksi` VALUES ('1537', '47', '3');
+INSERT INTO `kon_levelaksi` VALUES ('1538', '47', '4');
+INSERT INTO `kon_levelaksi` VALUES ('1539', '47', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1540', '47', '6');
+INSERT INTO `kon_levelaksi` VALUES ('1571', '51', '1');
+INSERT INTO `kon_levelaksi` VALUES ('1572', '51', '5');
+INSERT INTO `kon_levelaksi` VALUES ('1573', '51', '6');
 
 -- ----------------------------
 -- Table structure for kon_levelkatgrupmenu
@@ -222,26 +243,37 @@ CREATE TABLE `kon_levelkatgrupmenu` (
   `id_levelkatgrupmenu` int(11) NOT NULL AUTO_INCREMENT,
   `id_level` int(11) NOT NULL,
   `id_katgrupmenu` int(11) NOT NULL,
+  `isDefault` int(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id_levelkatgrupmenu`),
   KEY `id_level` (`id_level`),
   KEY `id_katgrupmenu` (`id_katgrupmenu`),
   CONSTRAINT `kon_levelkatgrupmenu_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `kon_level` (`id_level`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `kon_levelkatgrupmenu_ibfk_2` FOREIGN KEY (`id_katgrupmenu`) REFERENCES `kon_katgrupmenu` (`id_katgrupmenu`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+  CONSTRAINT `kon_levelkatgrupmenu_ibfk_2` FOREIGN KEY (`id_katgrupmenu`) REFERENCES `kon_katgrupmenu` (`id_katgrupmenu`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=53 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_levelkatgrupmenu
 -- ----------------------------
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('1', '1', '1');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('2', '1', '2');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('3', '2', '1');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('4', '2', '2');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('5', '3', '1');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('6', '3', '2');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('7', '4', '1');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('8', '4', '2');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('13', '9', '1');
-INSERT INTO `kon_levelkatgrupmenu` VALUES ('14', '9', '2');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('33', '12', '1', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('34', '12', '1', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('35', '12', '2', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('36', '12', '2', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('37', '13', '1', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('38', '13', '1', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('39', '13', '2', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('40', '13', '2', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('41', '14', '1', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('42', '14', '1', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('43', '14', '2', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('44', '14', '2', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('45', '15', '1', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('46', '15', '1', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('47', '15', '2', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('48', '15', '2', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('49', '16', '1', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('50', '16', '1', '0');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('51', '16', '2', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('52', '16', '2', '0');
 
 -- ----------------------------
 -- Table structure for kon_login
@@ -260,12 +292,12 @@ CREATE TABLE `kon_login` (
   PRIMARY KEY (`id_login`),
   KEY `id_level` (`id_level`),
   CONSTRAINT `kon_login_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `kon_level` (`id_level`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_login
 -- ----------------------------
-INSERT INTO `kon_login` VALUES ('1', 'Mr. ABC', 'admin', 'MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzM=', '4', '0', '1', '', '2015-07-24 05:27:18');
+INSERT INTO `kon_login` VALUES ('2', 'Mr. ABC', 'admin', 'MjEyMzJmMjk3YTU3YTVhNzQzODk0YTBlNGE4MDFmYzM=', '12', '0', '1', '', '0000-00-00 00:00:00');
 
 -- ----------------------------
 -- Table structure for kon_logindepartemen
@@ -296,44 +328,18 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
 -- ----------------------------
-INSERT INTO `kon_loginhistory` VALUES ('17', '1', '2015-07-24 06:56:50');
-INSERT INTO `kon_loginhistory` VALUES ('19', '1', '2015-07-24 06:59:47');
-INSERT INTO `kon_loginhistory` VALUES ('20', '1', '2015-07-24 06:59:47');
-INSERT INTO `kon_loginhistory` VALUES ('21', '1', '2015-07-24 07:00:35');
-INSERT INTO `kon_loginhistory` VALUES ('22', '1', '2015-07-24 07:00:35');
-INSERT INTO `kon_loginhistory` VALUES ('23', '1', '2015-07-24 07:02:03');
-INSERT INTO `kon_loginhistory` VALUES ('24', '1', '2015-07-24 07:02:03');
-INSERT INTO `kon_loginhistory` VALUES ('25', '1', '2015-07-24 07:03:31');
-INSERT INTO `kon_loginhistory` VALUES ('26', '1', '2015-07-24 07:03:31');
-INSERT INTO `kon_loginhistory` VALUES ('27', '1', '2015-07-24 07:05:11');
-INSERT INTO `kon_loginhistory` VALUES ('28', '1', '2015-07-24 07:05:11');
-INSERT INTO `kon_loginhistory` VALUES ('29', '1', '2015-08-14 03:47:40');
-INSERT INTO `kon_loginhistory` VALUES ('30', '1', '2015-08-14 03:47:40');
-INSERT INTO `kon_loginhistory` VALUES ('31', '1', '2015-08-14 03:57:55');
-INSERT INTO `kon_loginhistory` VALUES ('32', '1', '2015-08-14 03:57:55');
-INSERT INTO `kon_loginhistory` VALUES ('33', '1', '2015-08-14 03:58:38');
-INSERT INTO `kon_loginhistory` VALUES ('34', '1', '2015-08-14 03:58:38');
-INSERT INTO `kon_loginhistory` VALUES ('35', '1', '2015-08-14 03:59:03');
-INSERT INTO `kon_loginhistory` VALUES ('36', '1', '2015-08-14 03:59:03');
-INSERT INTO `kon_loginhistory` VALUES ('37', '1', '2015-08-14 04:01:39');
-INSERT INTO `kon_loginhistory` VALUES ('38', '1', '2015-08-14 04:01:39');
-INSERT INTO `kon_loginhistory` VALUES ('39', '1', '2015-08-14 04:02:34');
-INSERT INTO `kon_loginhistory` VALUES ('40', '1', '2015-08-14 04:02:34');
-INSERT INTO `kon_loginhistory` VALUES ('41', '1', '2015-08-14 04:02:51');
-INSERT INTO `kon_loginhistory` VALUES ('42', '1', '2015-08-14 04:02:51');
-INSERT INTO `kon_loginhistory` VALUES ('43', '1', '2015-08-14 04:19:48');
-INSERT INTO `kon_loginhistory` VALUES ('44', '1', '2015-08-14 04:19:48');
-INSERT INTO `kon_loginhistory` VALUES ('45', '1', '2015-08-15 00:10:01');
-INSERT INTO `kon_loginhistory` VALUES ('46', '1', '2015-08-15 00:10:01');
-INSERT INTO `kon_loginhistory` VALUES ('47', '1', '2015-08-15 12:14:04');
-INSERT INTO `kon_loginhistory` VALUES ('48', '1', '2015-08-15 12:14:04');
-INSERT INTO `kon_loginhistory` VALUES ('49', '1', '2015-08-16 14:12:34');
-INSERT INTO `kon_loginhistory` VALUES ('50', '1', '2015-08-16 14:12:34');
+INSERT INTO `kon_loginhistory` VALUES ('51', '2', '2015-08-16 23:27:51');
+INSERT INTO `kon_loginhistory` VALUES ('52', '2', '2015-08-16 23:28:15');
+INSERT INTO `kon_loginhistory` VALUES ('53', '2', '2015-08-16 23:28:15');
+INSERT INTO `kon_loginhistory` VALUES ('54', '2', '2015-08-16 23:29:18');
+INSERT INTO `kon_loginhistory` VALUES ('55', '2', '2015-08-16 23:29:18');
+INSERT INTO `kon_loginhistory` VALUES ('56', '2', '2015-08-16 23:29:51');
+INSERT INTO `kon_loginhistory` VALUES ('57', '2', '2015-08-16 23:29:51');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -456,53 +462,53 @@ CREATE TABLE `kon_privillege` (
 -- ----------------------------
 -- Records of kon_privillege
 -- ----------------------------
-INSERT INTO `kon_privillege` VALUES ('1', '1', '12');
-INSERT INTO `kon_privillege` VALUES ('2', '1', '13');
-INSERT INTO `kon_privillege` VALUES ('4', '1', '15');
-INSERT INTO `kon_privillege` VALUES ('5', '1', '16');
+INSERT INTO `kon_privillege` VALUES ('1', '2', '12');
+INSERT INTO `kon_privillege` VALUES ('2', '2', '13');
+INSERT INTO `kon_privillege` VALUES ('4', '2', '15');
+INSERT INTO `kon_privillege` VALUES ('5', '2', '16');
 INSERT INTO `kon_privillege` VALUES ('7', '2', '18');
-INSERT INTO `kon_privillege` VALUES ('8', '1', '8');
-INSERT INTO `kon_privillege` VALUES ('9', '1', '9');
-INSERT INTO `kon_privillege` VALUES ('10', '1', '10');
+INSERT INTO `kon_privillege` VALUES ('8', '2', '8');
+INSERT INTO `kon_privillege` VALUES ('9', '2', '9');
+INSERT INTO `kon_privillege` VALUES ('10', '2', '10');
 INSERT INTO `kon_privillege` VALUES ('11', '2', '11');
-INSERT INTO `kon_privillege` VALUES ('12', '1', '20');
-INSERT INTO `kon_privillege` VALUES ('13', '1', '21');
-INSERT INTO `kon_privillege` VALUES ('14', '1', '19');
-INSERT INTO `kon_privillege` VALUES ('15', '1', '22');
-INSERT INTO `kon_privillege` VALUES ('17', '1', '11');
-INSERT INTO `kon_privillege` VALUES ('18', '1', '18');
-INSERT INTO `kon_privillege` VALUES ('19', '1', '23');
-INSERT INTO `kon_privillege` VALUES ('20', '1', '24');
-INSERT INTO `kon_privillege` VALUES ('22', '1', '25');
-INSERT INTO `kon_privillege` VALUES ('23', '1', '26');
-INSERT INTO `kon_privillege` VALUES ('24', '1', '27');
-INSERT INTO `kon_privillege` VALUES ('25', '1', '28');
-INSERT INTO `kon_privillege` VALUES ('26', '1', '29');
-INSERT INTO `kon_privillege` VALUES ('27', '1', '30');
-INSERT INTO `kon_privillege` VALUES ('28', '1', '31');
-INSERT INTO `kon_privillege` VALUES ('29', '1', '32');
-INSERT INTO `kon_privillege` VALUES ('30', '1', '33');
-INSERT INTO `kon_privillege` VALUES ('31', '1', '34');
-INSERT INTO `kon_privillege` VALUES ('32', '1', '35');
-INSERT INTO `kon_privillege` VALUES ('33', '1', '36');
-INSERT INTO `kon_privillege` VALUES ('34', '1', '37');
-INSERT INTO `kon_privillege` VALUES ('35', '1', '1');
-INSERT INTO `kon_privillege` VALUES ('36', '1', '2');
-INSERT INTO `kon_privillege` VALUES ('37', '1', '3');
-INSERT INTO `kon_privillege` VALUES ('38', '1', '4');
-INSERT INTO `kon_privillege` VALUES ('39', '1', '38');
-INSERT INTO `kon_privillege` VALUES ('40', '1', '39');
-INSERT INTO `kon_privillege` VALUES ('41', '1', '40');
-INSERT INTO `kon_privillege` VALUES ('42', '1', '41');
-INSERT INTO `kon_privillege` VALUES ('43', '1', '42');
-INSERT INTO `kon_privillege` VALUES ('44', '1', '43');
-INSERT INTO `kon_privillege` VALUES ('45', '1', '44');
-INSERT INTO `kon_privillege` VALUES ('46', '1', '45');
-INSERT INTO `kon_privillege` VALUES ('47', '1', '46');
-INSERT INTO `kon_privillege` VALUES ('48', '1', '47');
-INSERT INTO `kon_privillege` VALUES ('49', '1', '48');
-INSERT INTO `kon_privillege` VALUES ('50', '1', '52');
-INSERT INTO `kon_privillege` VALUES ('51', '1', '53');
+INSERT INTO `kon_privillege` VALUES ('12', '2', '20');
+INSERT INTO `kon_privillege` VALUES ('13', '2', '21');
+INSERT INTO `kon_privillege` VALUES ('14', '2', '19');
+INSERT INTO `kon_privillege` VALUES ('15', '2', '22');
+INSERT INTO `kon_privillege` VALUES ('17', '2', '11');
+INSERT INTO `kon_privillege` VALUES ('18', '2', '18');
+INSERT INTO `kon_privillege` VALUES ('19', '2', '23');
+INSERT INTO `kon_privillege` VALUES ('20', '2', '24');
+INSERT INTO `kon_privillege` VALUES ('22', '2', '25');
+INSERT INTO `kon_privillege` VALUES ('23', '2', '26');
+INSERT INTO `kon_privillege` VALUES ('24', '2', '27');
+INSERT INTO `kon_privillege` VALUES ('25', '2', '28');
+INSERT INTO `kon_privillege` VALUES ('26', '2', '29');
+INSERT INTO `kon_privillege` VALUES ('27', '2', '30');
+INSERT INTO `kon_privillege` VALUES ('28', '2', '31');
+INSERT INTO `kon_privillege` VALUES ('29', '2', '32');
+INSERT INTO `kon_privillege` VALUES ('30', '2', '33');
+INSERT INTO `kon_privillege` VALUES ('31', '2', '34');
+INSERT INTO `kon_privillege` VALUES ('32', '2', '35');
+INSERT INTO `kon_privillege` VALUES ('33', '2', '36');
+INSERT INTO `kon_privillege` VALUES ('34', '2', '37');
+INSERT INTO `kon_privillege` VALUES ('35', '2', '1');
+INSERT INTO `kon_privillege` VALUES ('36', '2', '2');
+INSERT INTO `kon_privillege` VALUES ('37', '2', '3');
+INSERT INTO `kon_privillege` VALUES ('38', '2', '4');
+INSERT INTO `kon_privillege` VALUES ('39', '2', '38');
+INSERT INTO `kon_privillege` VALUES ('40', '2', '39');
+INSERT INTO `kon_privillege` VALUES ('41', '2', '40');
+INSERT INTO `kon_privillege` VALUES ('42', '2', '41');
+INSERT INTO `kon_privillege` VALUES ('43', '2', '42');
+INSERT INTO `kon_privillege` VALUES ('44', '2', '43');
+INSERT INTO `kon_privillege` VALUES ('45', '2', '44');
+INSERT INTO `kon_privillege` VALUES ('46', '2', '45');
+INSERT INTO `kon_privillege` VALUES ('47', '2', '46');
+INSERT INTO `kon_privillege` VALUES ('48', '2', '47');
+INSERT INTO `kon_privillege` VALUES ('49', '2', '48');
+INSERT INTO `kon_privillege` VALUES ('50', '2', '52');
+INSERT INTO `kon_privillege` VALUES ('51', '2', '53');
 
 -- ----------------------------
 -- Table structure for kon_warna
