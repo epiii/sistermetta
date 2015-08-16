@@ -1,15 +1,24 @@
 var mnu  = 'user';
 var mnu2 = 'level';
+var mnu3 = 'departemen';
+var mnu4 = 'modul';
+var mnu5 = 'grupmenu';
+var mnu6 = 'menu';
 
 var dir  = 'models/m_'+mnu+'.php';
 var dir2 = 'models/m_'+mnu2+'.php';
+var dir3 = '../akademik/models/m_'+mnu3+'.php';
+var dir4 = 'models/m_'+mnu4+'.php';
+var dir5 = 'models/m_'+mnu5+'.php';
+var dir6 = 'models/m_'+mnu6+'.php';
 
 var aksiFR = levelFR = contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" >' 
+        contentFR += '<form style="overflow:scroll;height:560px;"  autocomplete="off" onsubmit="simpan();return false;" >' 
                         +'<input name="idformlevelH" id="idformlevelH" type="hidden">' 
+                        
                         // nama
                         +'<label>Nama</label>'
                         +'<div class="input-control text">'
@@ -28,29 +37,34 @@ var aksiFR = levelFR = contentFR = '';
                             +'<input type="password" required placeholder="password" name="passwordTB" id="passwordTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
-                        // Level
-                        +'<label>Level</label>'
-                        +'<div id="levelDV"></div>'
 
-                        // departemen
-                        +'<label>Departemen</label>'
-                        +'<div>'
-                            +'<div class="input-control radio margin3" >'
-                                +'<label>'
-                                    +'<input value="0" required type="radio" name="b_sumberTB" />'
-                                    +'<span class="check"></span>'
-                                    +'Beli'
-                                +'</label>'
-                            +'</div><br />'
-                            +'<div class="input-control radio margin3" >'
-                                +'<label>'
-                                    +'<input value="0" required type="radio" name="b_sumberTB" />'
-                                    +'<span class="check"></span>'
-                                    +'Beli'
-                                +'</label>'
+                        // accordion
+                        +'<div class="accordion with-marker xspan3 xplace-left margin10" data-role="accordion" data-closeany="true">'
+                            +'<div class="accordion-frame active">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Level</a>'
+                                +'<div style="display: block;" class="content">'
+                                     // Level
+                                    +'<div id="levelDV"></div>'
+                                +'</div>'
+                            +'</div>'
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Departemen</a>'
+                                +'<div style="display: block;" class="content">'
+                                    // departemen
+                                    +'<div id="departemenDV"></div>'
+                                +'</div>'
+                            +'</div>'
+                            +'<div class="accordion-frame">'
+                                +'<a class="heading bg-lightBlue fg-white" href="#">Modul</a>'
+                                +'<div style="display: block;" class="content">'
+                                    // modul
+                                    +'<div id="modulDV"></div>'
+                                +'</div>'
                             +'</div>'
                         +'</div>'
 
+                       
+                        // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
@@ -187,6 +201,7 @@ var aksiFR = levelFR = contentFR = '';
             }
         });
     }
+
 // level
     function levelFC(lv){
         var u = dir2;
@@ -199,11 +214,12 @@ var aksiFR = levelFR = contentFR = '';
                 if(dt.level.length==0) out+='level masih kosong (hubungi admin konfigurasi)';
                 else{
                     $.each(dt.level,function(id,item){
-                        out+='<div class="input-control radio margin3" >'
-                                +'<label>'
-                                    +'<input '+(typeof lv!=undefined && item.id_level==lv?'checked':'')+' value="'+item.id_level+'" required type="radio" name="b_sumberTB" />'
+                        out+='<div data-hint="info| okokokok" data-role="input-control" class="input-control radio default-style" >'
+                                +'<label >'
+                                    +'<input  onclick="departemenFC('+item.urutan+',\'\');modulFC('+item.urutan+',\'\');" '+(typeof lv!=undefined && item.id_level==lv?'checked':'')+' value="'+item.id_level+'" required type="radio" name="levelTB" />'
                                     +'<span class="check"></span>'
                                     +item.keterangan
+                                    +' <i class="fg-'+(item.urutan==1?'yellow':'black')+' icon-'+(item.urutan==1||item.urutan==2?'star-4':'')+'"></i>'
                                 +'</label>'
                             +'</div><br />';
                     });
@@ -211,6 +227,127 @@ var aksiFR = levelFR = contentFR = '';
             }
         });
     }     
+
+// departemen
+    function departemenFC(lv,dp) {
+        var u   = dir3;
+        var d   = 'aksi=cmb'+mnu3;
+        ajax(u,d).done(function  (dt) {
+            var out ='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                if(dt.departemen.length==0) out+='<b class="bg-red fg-white">'+mnu3+'masih kosong (hubungi admin akademik)</b>';
+                else{
+                    $.each(dt.departemen,function(id,item){
+                        out+='<div data-role="input-control" class="input-control '+(lv==1?'checkbox':'radio default-style')+' margin3" >'
+                                +'<label class="inline-block">'
+                                    +'<input '+(typeof dp!=undefined && item.replid==dp?'checked':'')+' value="'+item.replid+'" required type="'+(lv==1?'checkbox':'radio')+'" name="departemenTB" />'
+                                    +'<span class="check"></span>'
+                                    +item.nama
+                                +'</label>'
+                            +'</div><br />';
+                    });
+                }$('#departemenDV').html(out);
+            }
+        });
+    }
+
+// modul
+    function modulFC(lv,md){
+        var u = dir4;
+        var d = 'aksi=cmb'+mnu4;
+        ajax(u,d).done(function  (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                if(dt.modul.length==0) out+=mnu4+' masih kosong (hubungi admin '+mnu4+')';
+                else{
+                    $.each(dt.modul,function(id,item){
+                        out+='<div data-role="input-control" class="input-control radio default-style"><input type="radio" /></div>'
+                        // out+=lv==2?'<div data-role="input-control" class="input-control radio"><input type="radio" /></div>':'';
+                        +'<div data-role="input-control" class="input-control '+(lv==1||lv==2?'checkbox':'radio default-style')+'" >'
+                                +'<label>'
+                                    +'<input '+(lv==1?'disabled':'')+' onclick="grupMenuFC('+item.id_modul+',\'\')" '+(lv==1||(typeof md!=undefined && item.id_modul)==md?'checked':'')+' value="'+item.id_modul+'" required type="'+(lv==1||lv==2?'checkbox':'radio')+'" name="modulTB" />'
+                                    +'<span class="check"></span>'
+                                    +item.modul
+                                +'</label>'
+                            +'</div>'
+                            +'<ul style="margin-left:22px;" class="grupmenuDV" id="grupmenu'+item.id_modul+'DV" class="treeview" data-role="treeview">'
+                            +'</ul>';
+                    });
+                }$('#modulDV').html(out);
+            }
+        });
+    }     
+
+// grupmenu
+    function grupMenuFC(md,gm){
+        var u = dir5;
+        var d = 'aksi=cmb'+mnu5+'&id_modul='+md+'&id_level='+$('input[name=levelTB]:checked').val();
+        ajax(u,d).done(function  (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                if($('[name="modulTB"]').attr('type')=='radio') $('.grupmenuDV').html('');
+                if(dt.grupmenu.length==0) {
+                    out+='<div class="notice marker-on-top bg-amber">'
+                            +'<div class="fg-white"><i class="icon-warning"></i> '+mnu5+' masih kosong (hubungi admin '+mnu5+')</div>'
+                        +'</div>';
+                }else{
+                    $.each(dt.grupmenu,function(id,item){
+                        // out+='<li class="node">'
+                        //         +'<a href="#"><span class="node-toggle"></span>'+item.grupmenu+'</a>'
+                        //         // +'<ul>'
+                        //         // +'</ul>'
+                        //     +'</li>';
+
+                        out+='<div data-role="input-control" class="input-control checkbox">'
+                                +'<label>'
+                                    +'<input '+(item.aktif==0?'disabled':'')+' onclick="menuFC(\''+item.id_grupmenu+'\',\'\')" '+(typeof gm!=undefined && item.id_grupmenu==gm?'checked':'')+' value="'+item.id_grupmenu+'" required type="checkbox" name="grupmenuTB" />'
+                                    +'<span class="check"></span>'
+                                    +item.grupmenu
+                                    +'<sub class="fg-gray"> ('+item.keterangan+')</sub>'
+                                +'</label>'
+                            +'</div>'
+                            +'<ul style="margin-left:22px;" class="menuDV" id="menu'+item.id_grupmenu+'DV" class="treeview" data-role="treeview">'
+                            +'</ul>';
+                    });
+                }$('#grupmenu'+md+'DV').html(out);
+            }
+        });
+    }
+// menu
+    function menuFC(gm,mn){
+        var u = dir6;
+        var d = 'aksi=cmb'+mnu6+'&id_grupmenu='+gm;
+        ajax(u,d).done(function  (dt) {
+            var out='';
+            if(dt.status!='sukses'){
+                notif(dt.status,'red');
+            }else{
+                // if($('[name="modulTB"]').attr('type')=='radio') $('.grupmenuDV').html('');
+                if(dt.menu.length==0) {
+                    out+='<div class="notice marker-on-top bg-amber">'
+                            +'<div class="fg-white"><i class="icon-warning"></i>'+mnu6+' masih kosong (hubungi admin '+mnu6+')</div>'
+                        +'</div>';
+                }else{
+                    $.each(dt.menu,function(id,item){
+                        out+='<div style="margin-left:15px;" data-role="input-control" class="input-control checkbox">'
+                                +'<label>'
+                                    +'<input '+(typeof mn!=undefined && item.id_grupmenu==mn?'checked':'')+' value="'+item.id_menu+'" required type="checkbox" name="menuTB" />'
+                                    +'<span class="check"></span>'
+                                    +item.menu
+                                +'</label>'
+                            +'</div>';
+                    });
+                }$('#menu'+gm+'DV').html(out);
+            }
+        });
+    }
+
 // form ---
     function viewFR(menu,idlevel){
         $.Dialog({
@@ -231,10 +368,13 @@ var aksiFR = levelFR = contentFR = '';
                             $('#levelTB').val(dt.level);
                             $('#keteranganTB').val(dt.keterangan);
                             levelFC(dt.id_level);
+                            departemenFC(dt.id_level,dt.departemen);
                         }
                     });
                 }else{
                     levelFC();
+                    departemenFC();
+                    modulFC();
                 }
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);

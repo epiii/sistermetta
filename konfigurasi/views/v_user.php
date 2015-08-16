@@ -8,11 +8,6 @@
 <button <?php isDisabled('level','c');?> data-hint="Tambah Data" xclass="large" id="tambahBC"><span class="icon-plus-2"></span> </button>
 <!--<button <?php isDisabled('level','s');?>  data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>-->
 <table class="table hovered bordered striped">
-    <?php
-$xx= isDisabled('user','c');
-// pr($_SESSION);
-?>
-
     <thead>
         <tr style="color:white;"class="info">
             <th class="text-center">Nama</th>

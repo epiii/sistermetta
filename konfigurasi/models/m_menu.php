@@ -162,21 +162,21 @@
 			// ambiledit ------			
 
 			// cmbdepartemen -----------------------------------------------------------------
-			case 'cmbdepartemen':
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
+					if(isset($_POST['id_grupmenu'])){
+						$w='where id_grupmenu='.$_POST['id_grupmenu'];
 					}
 				}
 				
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY urut asc';
-
+						ORDER  BY menu asc';
+// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
@@ -194,7 +194,7 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-						$ar = array('status'=>'sukses','departemen'=>$dt);
+						$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

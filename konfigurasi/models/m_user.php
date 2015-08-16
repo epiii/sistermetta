@@ -50,13 +50,13 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
+									<button '.isDisabled('user','u').'  data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
 										<i class="icon-zoom-in"></i>
 									</button>
-									<button '.isDisabled($mnu,'u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
+									<button '.isDisabled('user','u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
 										<i class="icon-pencil"></i>
 									</button>
-									<button '.isDisabled($mnu,'d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
+									<button '.isDisabled('user','d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
 										<i class="icon-remove"></i>
 									</button>
 								 </td>';

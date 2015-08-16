@@ -126,16 +126,44 @@
 
 			// cmbdepartemen -----------------------------------------------------------------
 			case 'cmb'.$mnu:
-				$w='';
-				if(isset($_POST['id_modul'])){
-					$w='where id_modul ='.$_POST['id_modul'];
+				$s=$j=$w='';
+				if(isset($_POST['id_level']) && isset($_POST['id_modul'])){
+					$s=',t1.aktif';
+					$j=' LEFT JOIN (
+							SELECT 
+								kg.id_katgrupmenu,
+								lk.id_level,
+								kg.keterangan,
+								IF(la.id_levelaksi IS NULL,0,1)aktif
+							from kon_levelkatgrupmenu lk
+								LEFT JOIN kon_levelaksi la on la.id_levelkatgrupmenu = lk.id_levelkatgrupmenu
+								LEFT JOIN kon_katgrupmenu kg on kg.id_katgrupmenu = lk.id_katgrupmenu
+							where lk.id_level = '.$_POST['id_level'].'
+							GROUP BY kg.id_katgrupmenu 
+						)t1 on t1.id_katgrupmenu = kg.id_katgrupmenu
+					';
+					$w=' WHERE gm.id_modul = '.$_POST['id_modul'].' AND lk.id_level ='.$_POST['id_level'];
+				} elseif(isset($_POST['id_modul'])){
+					$w=' where id_modul ='.$_POST['id_modul'];
 				}
 
-				$s	= ' SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY grupmenu asc';
-// pr($s);
+				$s	= ' SELECT
+							gm.id_grupmenu,
+							gm.grupmenu,
+							gm.id_modul,
+							kg.keterangan,
+							lk.id_level
+							'.$s.'
+						FROM
+							kon_grupmenu gm
+							LEFT JOIN kon_katgrupmenu kg ON kg.id_katgrupmenu = gm.id_katgrupmenu
+							LEFT JOIN kon_levelkatgrupmenu lk ON lk.id_katgrupmenu = kg.id_katgrupmenu
+						'.$j.$w.'
+						ORDER BY  
+							kg.katgrupmenu ASC,
+							gm.grupmenu ASC
+							';
+				// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();

@@ -184,9 +184,9 @@
 								$stat2 = false;
 							}
 						}else{
-							$s2 ='INSERT INTO '.$s;
+							$s2 ='INSERT INTO '.$s.', urutan=(SELECT (COUNT(*)+1) FROM kon_level l)';
 							$e  = mysql_query($s2);
-							$id =mysql_insert_id();
+							$id = mysql_insert_id();
 
 							if(!$e){
 								$stat2=false;

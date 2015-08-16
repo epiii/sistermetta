@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-14 04:25:40
+Date: 2015-08-16 14:13:51
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -124,7 +124,7 @@ CREATE TABLE `kon_katgrupmenu` (
   `katgrupmenu` char(1) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_katgrupmenu`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_katgrupmenu
@@ -142,15 +142,16 @@ CREATE TABLE `kon_level` (
   `urutan` int(11) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_level`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_level
 -- ----------------------------
-INSERT INTO `kon_level` VALUES ('1', 'A', '2', 'Admin');
-INSERT INTO `kon_level` VALUES ('2', 'G', '4', 'Guest');
-INSERT INTO `kon_level` VALUES ('3', 'O', '3', 'Operator');
+INSERT INTO `kon_level` VALUES ('1', 'A', '3', 'Admin');
+INSERT INTO `kon_level` VALUES ('2', 'G', '5', 'Guest');
+INSERT INTO `kon_level` VALUES ('3', 'O', '4', 'Operator');
 INSERT INTO `kon_level` VALUES ('4', 'SA', '1', 'Super Admin');
+INSERT INTO `kon_level` VALUES ('9', 'A+', '2', 'Admin Plus');
 
 -- ----------------------------
 -- Table structure for kon_levelaksi
@@ -165,7 +166,7 @@ CREATE TABLE `kon_levelaksi` (
   KEY `id_aksi` (`id_aksi`),
   CONSTRAINT `kon_levelaksi_ibfk_1` FOREIGN KEY (`id_levelkatgrupmenu`) REFERENCES `kon_levelkatgrupmenu` (`id_levelkatgrupmenu`),
   CONSTRAINT `kon_levelaksi_ibfk_2` FOREIGN KEY (`id_aksi`) REFERENCES `kon_aksi` (`id_aksi`)
-) ENGINE=InnoDB AUTO_INCREMENT=405 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=574 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_levelaksi
@@ -182,29 +183,36 @@ INSERT INTO `kon_levelaksi` VALUES ('199', '8', '3');
 INSERT INTO `kon_levelaksi` VALUES ('200', '8', '4');
 INSERT INTO `kon_levelaksi` VALUES ('201', '8', '5');
 INSERT INTO `kon_levelaksi` VALUES ('202', '8', '6');
-INSERT INTO `kon_levelaksi` VALUES ('316', '6', '1');
-INSERT INTO `kon_levelaksi` VALUES ('317', '6', '2');
-INSERT INTO `kon_levelaksi` VALUES ('318', '6', '3');
-INSERT INTO `kon_levelaksi` VALUES ('319', '6', '4');
-INSERT INTO `kon_levelaksi` VALUES ('320', '6', '5');
-INSERT INTO `kon_levelaksi` VALUES ('321', '6', '6');
-INSERT INTO `kon_levelaksi` VALUES ('382', '1', '1');
-INSERT INTO `kon_levelaksi` VALUES ('383', '1', '2');
-INSERT INTO `kon_levelaksi` VALUES ('384', '1', '3');
-INSERT INTO `kon_levelaksi` VALUES ('385', '1', '4');
-INSERT INTO `kon_levelaksi` VALUES ('386', '1', '5');
-INSERT INTO `kon_levelaksi` VALUES ('387', '1', '6');
-INSERT INTO `kon_levelaksi` VALUES ('388', '2', '1');
-INSERT INTO `kon_levelaksi` VALUES ('389', '2', '2');
-INSERT INTO `kon_levelaksi` VALUES ('390', '2', '3');
-INSERT INTO `kon_levelaksi` VALUES ('391', '2', '4');
-INSERT INTO `kon_levelaksi` VALUES ('392', '2', '5');
-INSERT INTO `kon_levelaksi` VALUES ('393', '2', '6');
-INSERT INTO `kon_levelaksi` VALUES ('400', '3', '5');
-INSERT INTO `kon_levelaksi` VALUES ('401', '3', '6');
-INSERT INTO `kon_levelaksi` VALUES ('402', '4', '2');
-INSERT INTO `kon_levelaksi` VALUES ('403', '4', '5');
-INSERT INTO `kon_levelaksi` VALUES ('404', '4', '6');
+INSERT INTO `kon_levelaksi` VALUES ('425', '6', '1');
+INSERT INTO `kon_levelaksi` VALUES ('426', '6', '2');
+INSERT INTO `kon_levelaksi` VALUES ('427', '6', '3');
+INSERT INTO `kon_levelaksi` VALUES ('428', '6', '4');
+INSERT INTO `kon_levelaksi` VALUES ('429', '6', '5');
+INSERT INTO `kon_levelaksi` VALUES ('430', '6', '6');
+INSERT INTO `kon_levelaksi` VALUES ('440', '4', '1');
+INSERT INTO `kon_levelaksi` VALUES ('441', '4', '5');
+INSERT INTO `kon_levelaksi` VALUES ('442', '4', '6');
+INSERT INTO `kon_levelaksi` VALUES ('454', '1', '1');
+INSERT INTO `kon_levelaksi` VALUES ('455', '1', '2');
+INSERT INTO `kon_levelaksi` VALUES ('456', '1', '3');
+INSERT INTO `kon_levelaksi` VALUES ('457', '1', '4');
+INSERT INTO `kon_levelaksi` VALUES ('458', '1', '5');
+INSERT INTO `kon_levelaksi` VALUES ('459', '1', '6');
+INSERT INTO `kon_levelaksi` VALUES ('460', '2', '1');
+INSERT INTO `kon_levelaksi` VALUES ('461', '2', '2');
+INSERT INTO `kon_levelaksi` VALUES ('462', '2', '3');
+INSERT INTO `kon_levelaksi` VALUES ('463', '2', '4');
+INSERT INTO `kon_levelaksi` VALUES ('464', '2', '5');
+INSERT INTO `kon_levelaksi` VALUES ('465', '2', '6');
+INSERT INTO `kon_levelaksi` VALUES ('565', '13', '1');
+INSERT INTO `kon_levelaksi` VALUES ('566', '13', '5');
+INSERT INTO `kon_levelaksi` VALUES ('567', '13', '6');
+INSERT INTO `kon_levelaksi` VALUES ('568', '14', '1');
+INSERT INTO `kon_levelaksi` VALUES ('569', '14', '2');
+INSERT INTO `kon_levelaksi` VALUES ('570', '14', '3');
+INSERT INTO `kon_levelaksi` VALUES ('571', '14', '4');
+INSERT INTO `kon_levelaksi` VALUES ('572', '14', '5');
+INSERT INTO `kon_levelaksi` VALUES ('573', '14', '6');
 
 -- ----------------------------
 -- Table structure for kon_levelkatgrupmenu
@@ -217,9 +225,9 @@ CREATE TABLE `kon_levelkatgrupmenu` (
   PRIMARY KEY (`id_levelkatgrupmenu`),
   KEY `id_level` (`id_level`),
   KEY `id_katgrupmenu` (`id_katgrupmenu`),
-  CONSTRAINT `kon_levelkatgrupmenu_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `kon_level` (`id_level`),
+  CONSTRAINT `kon_levelkatgrupmenu_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `kon_level` (`id_level`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `kon_levelkatgrupmenu_ibfk_2` FOREIGN KEY (`id_katgrupmenu`) REFERENCES `kon_katgrupmenu` (`id_katgrupmenu`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_levelkatgrupmenu
@@ -232,6 +240,8 @@ INSERT INTO `kon_levelkatgrupmenu` VALUES ('5', '3', '1');
 INSERT INTO `kon_levelkatgrupmenu` VALUES ('6', '3', '2');
 INSERT INTO `kon_levelkatgrupmenu` VALUES ('7', '4', '1');
 INSERT INTO `kon_levelkatgrupmenu` VALUES ('8', '4', '2');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('13', '9', '1');
+INSERT INTO `kon_levelkatgrupmenu` VALUES ('14', '9', '2');
 
 -- ----------------------------
 -- Table structure for kon_login
@@ -286,7 +296,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=51 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -318,6 +328,12 @@ INSERT INTO `kon_loginhistory` VALUES ('41', '1', '2015-08-14 04:02:51');
 INSERT INTO `kon_loginhistory` VALUES ('42', '1', '2015-08-14 04:02:51');
 INSERT INTO `kon_loginhistory` VALUES ('43', '1', '2015-08-14 04:19:48');
 INSERT INTO `kon_loginhistory` VALUES ('44', '1', '2015-08-14 04:19:48');
+INSERT INTO `kon_loginhistory` VALUES ('45', '1', '2015-08-15 00:10:01');
+INSERT INTO `kon_loginhistory` VALUES ('46', '1', '2015-08-15 00:10:01');
+INSERT INTO `kon_loginhistory` VALUES ('47', '1', '2015-08-15 12:14:04');
+INSERT INTO `kon_loginhistory` VALUES ('48', '1', '2015-08-15 12:14:04');
+INSERT INTO `kon_loginhistory` VALUES ('49', '1', '2015-08-16 14:12:34');
+INSERT INTO `kon_loginhistory` VALUES ('50', '1', '2015-08-16 14:12:34');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -411,7 +427,7 @@ CREATE TABLE `kon_modul` (
   `size` enum('','double','double double-vertical') NOT NULL DEFAULT '',
   `keterangan` text NOT NULL,
   PRIMARY KEY (`id_modul`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_modul
