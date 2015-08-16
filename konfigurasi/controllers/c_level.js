@@ -34,10 +34,37 @@ var aksiFR = levelFR = contentFR = '';
                         +'</table>'
                         //detail Aksi per kategori menu 
                         +'<legend></legend>'
-                        +'<div style="overflow:scroll;height:400px;">'
-                           +'<ul id="katgrupmenuDV" class="treeview" data-role="treeview">'
-                           +'</ul>'
-                        +'</div>'               
+                        // +'<div xstyle="overflow:scroll;height:400px;">'
+                            // +'<div class="grid-fluid">'
+                            //     +'<div id="katgrupmenuDV" class="row">'
+
+                            //     +'</div>'
+                            // +'</div>'
+                            +'<div style="overflow:scroll;height:400px;" class="grid fluid">'
+                                +'<div id="katgrupmenuDV" class="row">'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-top bg-amber">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-right bg-pink">'
+                                    //         +'<div class="fg-white">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                    // +'<div class="span3">'
+                                    //     +'<div class="notice marker-on-bottom bg-darkRed fg-white">'
+                                    //         +'<div class="">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>'
+                                    //     +'</div>'
+                                    // +'</div>'
+                                +'</div>'
+                            +'</div>'
+                        // +'</div>'               
 
                     +'</form>';
         viewTB();
@@ -159,7 +186,7 @@ var aksiFR = levelFR = contentFR = '';
             shadow: true,
             overlay: true,
             draggable: true,
-            width: '50%',
+            width: '40%',
             padding: 10,
             onShow: function(){
                 var titlex=contentFR='';
@@ -191,21 +218,27 @@ var aksiFR = levelFR = contentFR = '';
                             $('#levelTD').html(dt.data.level);
                             var out='';
                             $.each(dt.data.katgrupmenuArr,function(id,item){
-                                out+='<li class="node">'
-                                        +'<a href="#"><span class="node-toggle"></span>'+item.keterangan+'</a>'
-                                            +'<ul>'
-                                    $.each(item.aksiArr, function (id,item) {
-                                        out+='<li style="padding-left:20px;">'
-                                                +'<label>'
-                                                    +'<input onclick="simpan(\'levelaksi\')" name="aksiTB['+item.id_katgrupmenu+']['+item.id_aksi+']" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
-                                                    // +'<input onclick="simpan(\'levelaksi\')" id="aksi'+item.id_levelaksi+'_TB" name="aksiTB['+item.id_katgrupmenu+']['+item.id_aksi+']" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
-                                                        +item.keterangan+''
-                                                +'</label>'
-                                            +'</li>';
-                                    }); 
-                                    out+='</ul>'
-                                    +'</li>';
-                            });$('#katgrupmenuDV').html(out);
+                                out+='<div class="bg-grey span5">'
+                                        +'<ul class="treeview" data-role="treeview">'
+                                            +'<li class="node">'
+                                                +'<a href="#"><span class="node-toggle"></span>'+item.keterangan+' (Modul '+(item.isDefault==1?'Default':'Tambahan')+')</a>'
+                                                +'<ul>';
+                                                var isDefault = item.isDefault;
+                                                $.each(item.aksiArr, function (id,item) {
+                                                    out+='<li style="padding-left:20px;">'
+                                                            +'<label>'
+                                                                +'<input onclick="simpan(\'levelaksi\')" name="aksiTB['+item.id_katgrupmenu+']['+item.id_aksi+']['+isDefault+']" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
+                                                                // +'<input onclick="simpan(\'levelaksi\')" name="aksiTB['+item.id_katgrupmenu+']['+item.id_aksi+']" '+(item.stataksi==1?'checked':'')+' type="checkbox"  /> '
+                                                                +item.keterangan+''
+                                                            +'</label>'
+                                                        +'</li>';
+                                                }); 
+                                            out+='</ul>'
+                                            +'</li>'
+                                        +'</ul>'
+                                    +'</div>';
+                            });
+                            $('#katgrupmenuDV').html(out);
                         }
                     });contentFR += aksiFR;
                 }

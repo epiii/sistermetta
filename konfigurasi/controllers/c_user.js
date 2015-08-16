@@ -253,6 +253,16 @@ var aksiFR = levelFR = contentFR = '';
         });
     }
 
+    function modulDefaultFC(md){
+        if($('#modul'+md+'TB').is(':checked')) {
+            $('#default'+md+'TB').removeAttr('disabled');
+            $('#default'+md+'TB').attr('checked',true);
+        } else {
+            $('#default'+md+'TB').attr('disabled',true);
+            $('#default'+md+'TB').removeAttr('checked');
+        }
+    } 
+
 // modul
     function modulFC(lv,md){
         var u = dir4;
@@ -262,14 +272,16 @@ var aksiFR = levelFR = contentFR = '';
             if(dt.status!='sukses'){
                 notif(dt.status,'red');
             }else{
-                if(dt.modul.length==0) out+=mnu4+' masih kosong (hubungi admin '+mnu4+')';
+                if(dt.modul.length==0) 
+                    out+=mnu4+' masih kosong (hubungi admin '+mnu4+')';
                 else{
                     $.each(dt.modul,function(id,item){
-                        out+='<div data-role="input-control" class="input-control radio default-style"><input type="radio" /></div>'
+                        out+=lv==2?'<input required disabled data-hint="default" type="radio" name="defaultTB" id="default'+item.id_modul+'TB" value="'+item.id_modul+'" />':'';
+                        // out+='<div data-role="input-control" class="input-control radio default-style"><input type="radio" /></div>'
                         // out+=lv==2?'<div data-role="input-control" class="input-control radio"><input type="radio" /></div>':'';
-                        +'<div data-role="input-control" class="input-control '+(lv==1||lv==2?'checkbox':'radio default-style')+'" >'
+                        out+=' <div data-role="input-control" id="modulsub'+item.id_modul+'DV" class="input-control '+(lv==1||lv==2?'checkbox':'radio default-style')+'" >'
                                 +'<label>'
-                                    +'<input '+(lv==1?'disabled':'')+' onclick="grupMenuFC('+item.id_modul+',\'\')" '+(lv==1||(typeof md!=undefined && item.id_modul)==md?'checked':'')+' value="'+item.id_modul+'" required type="'+(lv==1||lv==2?'checkbox':'radio')+'" name="modulTB" />'
+                                    +'<input id="modul'+item.id_modul+'TB" name="modulTB" '+(lv==1?'disabled':'')+'  onclick="'+(lv==2?'modulDefaultFC('+item.id_modul+');':'')+' grupMenuFC('+item.id_modul+',\'\')" '+(lv==1||(typeof md!=undefined && item.id_modul)==md?'checked':'')+' value="'+item.id_modul+'" required type="'+(lv==1||lv==2?'checkbox':'radio')+'"  />'
                                     +'<span class="check"></span>'
                                     +item.modul
                                 +'</label>'
@@ -293,29 +305,27 @@ var aksiFR = levelFR = contentFR = '';
             }else{
                 if($('[name="modulTB"]').attr('type')=='radio') $('.grupmenuDV').html('');
                 if(dt.grupmenu.length==0) {
-                    out+='<div class="notice marker-on-top bg-amber">'
-                            +'<div class="fg-white"><i class="icon-warning"></i> '+mnu5+' masih kosong (hubungi admin '+mnu5+')</div>'
-                        +'</div>';
+                    if($('#modul'+md+'TB').is(':checked')) 
+                        out+='<div class="notice marker-on-top bg-amber">'
+                                +'<div class="fg-white"><i class="icon-warning"></i> '+mnu5+' masih kosong (hubungi admin '+mnu5+')</div>'
+                            +'</div>';
                 }else{
-                    $.each(dt.grupmenu,function(id,item){
-                        // out+='<li class="node">'
-                        //         +'<a href="#"><span class="node-toggle"></span>'+item.grupmenu+'</a>'
-                        //         // +'<ul>'
-                        //         // +'</ul>'
-                        //     +'</li>';
-
-                        out+='<div data-role="input-control" class="input-control checkbox">'
-                                +'<label>'
-                                    +'<input '+(item.aktif==0?'disabled':'')+' onclick="menuFC(\''+item.id_grupmenu+'\',\'\')" '+(typeof gm!=undefined && item.id_grupmenu==gm?'checked':'')+' value="'+item.id_grupmenu+'" required type="checkbox" name="grupmenuTB" />'
-                                    +'<span class="check"></span>'
-                                    +item.grupmenu
-                                    +'<sub class="fg-gray"> ('+item.keterangan+')</sub>'
-                                +'</label>'
-                            +'</div>'
-                            +'<ul style="margin-left:22px;" class="menuDV" id="menu'+item.id_grupmenu+'DV" class="treeview" data-role="treeview">'
-                            +'</ul>';
-                    });
-                }$('#grupmenu'+md+'DV').html(out);
+                    if($('#modul'+md+'TB').is(':checked')) {
+                        $.each(dt.grupmenu,function(id,item){
+                            out+='<div data-role="input-control" class="input-control checkbox">'
+                                    +'<label>'
+                                        +'<input '+(item.aktif==0?'disabled':'')+' onclick="menuFC(\''+item.id_grupmenu+'\',\'\')" '+(typeof gm!=undefined && item.id_grupmenu==gm?'checked':'')+' value="'+item.id_grupmenu+'" required type="checkbox" name="grupmenuTB" />'
+                                        +'<span class="check"></span>'
+                                        +item.grupmenu
+                                        +'<sub class="fg-gray"> ('+item.keterangan+')</sub>'
+                                    +'</label>'
+                                +'</div>'
+                                +'<ul style="margin-left:22px;" class="menuDV" id="menu'+item.id_grupmenu+'DV" class="treeview" data-role="treeview">'
+                                +'</ul>';
+                        });
+                    }
+                }
+                $('#grupmenu'+md+'DV').html(out);
             }
         });
     }

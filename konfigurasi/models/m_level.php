@@ -21,7 +21,8 @@
 						$s2 = '	SELECT lk.*,kg.keterangan 
 								FROM kon_levelkatgrupmenu lk 
 									JOIN kon_katgrupmenu kg on kg.id_katgrupmenu = lk.id_katgrupmenu  
-								WHERE lk.id_level ='.$_POST['id_level'];
+								WHERE lk.id_level ='.$_POST['id_level'].'
+								ORDER BY lk.isDefault DESC';
 								// pr($s2);
 						$e2 = mysql_query($s2);
 						$stat=!$e2?'gagal':'sukses';
@@ -55,6 +56,7 @@
 							}
 							$katgrupmenuArr[]=array(
 								'keterangan' =>$r2['keterangan'],
+								'isDefault'  =>$r2['isDefault'],
 								'aksiArr'    =>$aksiArr
 							);
 						}
@@ -152,19 +154,23 @@
 							$stat2=false;
 						}else{
 							if(isset($_POST['aksiTB'])){
-								foreach ($_POST['aksiTB'] as $i => $v) {
-									foreach ($_POST['aksiTB'][$i] as $ii => $vv) {
-										$sl = ' SELECT id_levelkatgrupmenu from kon_levelkatgrupmenu 
-												where 
-													id_level       ='.$_POST['id_level'].' AND
-													id_katgrupmenu ='.$i;
-										$el=mysql_query($sl);
-										$rl=mysql_fetch_assoc($el);
+								foreach ($_POST['aksiTB'] as $i => $v) { // katgrupmenu 2 :(M,T)
+									foreach ($_POST['aksiTB'][$i] as $ii => $vv) { // aksi 6 :(c,r,u,d,s,p)
+										foreach ($_POST['aksiTB'][$i][$ii] as $iii => $vvv) { // kelmpok modul 2:(default, tambahan)
+											$sl = ' SELECT id_levelkatgrupmenu from kon_levelkatgrupmenu 
+													where 
+														id_level       ='.$_POST['id_level'].' AND
+														id_katgrupmenu ='.$i.' AND
+														isDefault      ='.$iii;
+											// vd($sl);
+											$el=mysql_query($sl);
+											$rl=mysql_fetch_assoc($el);
 
-										$s2= 'INSERT INTO kon_levelaksi SET id_levelkatgrupmenu ='.$rl['id_levelkatgrupmenu'].',
-																			 id_aksi             ='.$ii;
-										$e2= mysql_query($s2);
-										$stat2=!$e2?false:true;
+											$s2= 'INSERT INTO kon_levelaksi SET id_levelkatgrupmenu ='.$rl['id_levelkatgrupmenu'].',
+																				id_aksi            ='.$ii;
+											$e2= mysql_query($s2);
+											$stat2=!$e2?false:true;
+										}
 									}
 								}
 							}
@@ -194,10 +200,13 @@
 								$s1 = 'SELECT * from kon_katgrupmenu ';
 								$e1 = mysql_query($s1);
 								while ($r1=mysql_fetch_assoc($e1)) {
-									$s2 = 'INSERT INTO kon_levelkatgrupmenu set id_level 		= '.$id.',
-																				id_katgrupmenu  = '.$r1['id_katgrupmenu'];
-									$e2 = mysql_query($s2);
-									$stat2=!$e2?false:true;
+									for ($i=0; $i<=1 ; $i++) { 
+										$s2 = 'INSERT INTO kon_levelkatgrupmenu set id_level 		= '.$id.',
+																					id_katgrupmenu  = '.$r1['id_katgrupmenu'].
+																					($i==1?',isDefault=0':'');
+										$e2 = mysql_query($s2);
+										$stat2=!$e2?false:true;
+									}
 								}
 							}
 						}
