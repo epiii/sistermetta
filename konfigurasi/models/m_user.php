@@ -77,7 +77,7 @@
 									<td align="center">'.$res['username'].'</td>
 									<td align="center">'.$res['level'].'</td>
 									<td align="center">
-										<button class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
+										<button onclick="aktifkan('.$res['id_login'].');" class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
 									</td>
 									'.$btn.'
 								</tr>';
@@ -179,17 +179,12 @@
 
 			// aktifkan -----------------------------------------------------------------
 			case 'aktifkan':
-				$e1   = mysql_query('UPDATE  '.$tb.' set aktif="0"');
-				if(!$e1){
-					$stat='gagal menonaktifkan';
-				}else{
-					$s2 = 'UPDATE  '.$tb.' set aktif="1" where id_ .$mnu= '.$_POST['id_'.$mnu];
-					$e2 = mysql_query($s2);
-					if(!$e2){
-						$stat='gagal mengaktifkan';
-					}else{
-						$stat='sukses';
-					}
+				if(!isset($_POST['id_'.$mnu])) $stat='no_id_'.$mnu.'_to_post';
+				else{
+					$akt = getField('aktif',$tb,'id_login',$_POST['id_'.$mnu]);
+					$s   = 'UPDATE  '.$tb.' set aktif='.($akt==1?0:1).' where id_'.$mnu.'='.$_POST['id_'.$mnu];
+					$e   = mysql_query($s);
+					$stat=!$e?'gagal mengaktifkan':'sukses';
 				}$out  = json_encode(array('status'=>$stat));
 			break;
 			// aktifkan -----------------------------------------------------------------

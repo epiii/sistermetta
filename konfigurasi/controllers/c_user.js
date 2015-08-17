@@ -475,27 +475,22 @@ var aksiFR = levelFR = contentFR = '';
 
 //aktifkan process ---
     function aktifkan(id){
-    	var th  = $('#'+mnu+'TD_'+id).html();
-        if(confirm(' mengaktifkan "'+th+'"" ?'))
-        $.ajax({
-            url:dir,
-            type:'post',
-            data:'aksi=aktifkan&id_'+mnu+'='+id,
-            dataType:'json',
-            success:function(dt){
+        if(confirm(' mengaktifkan  user ?')){
+            var u = dir;
+            var d ='aksi=aktifkan&id_login='+id;
+            // alert(d);return false;
+            ajax(u,d).done(function (dt){
                 var cont,clr;
                 if(dt.status!='sukses'){
-                    cont = '..Gagal Mengaktifkan '+th+' ..';
+                    cont = '..Gagal Mengaktifkan user.';
                     clr  ='red';
                 }else{
-                    // viewTB($('#departemenS').val());
-                    cont = '..Berhasil Mengaktifkan '+th+' ..';
+                    cont = '..Berhasil Mengaktifkan user.';
                     clr  ='green';
                     viewTB();
-                }
-                notif(cont,clr);
-            }
-        });
+                }notif(cont,clr);
+            });
+        }
     }
 //end of aktifkan process ---
 

@@ -220,5 +220,6 @@
         $stat = false;
         $msg  = 'username / password salah / belum terdaftar';
 	}
+    // pr($_SESSION);
     echo json_encode(array('stat'=>$stat,'msg'=>$msg));
 ?>
