@@ -152,11 +152,11 @@
 
 			// delete -----------------------------------------------------------------
 			case 'hapus':
-				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where id_'.$mnu.'='.$_POST['id_'.$mnu]));
-				$s    = 'DELETE from '.$tb.' WHERE id_'.$mnu.'='.$_POST['id_'.$mnu];
+				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where id_'.$mnu.'='.$_POST['id_user']));
+				$s    = 'DELETE from '.$tb.' WHERE id_'.$mnu.'='.$_POST['id_user'];
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';
-				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
+				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['username']));
 			break;
 			// delete -----------------------------------------------------------------
 
