@@ -356,7 +356,7 @@ var aksiFR = levelFR = contentFR = '';
     }
 
 // form ---
-    function viewFR(menu,idlevel){
+    function viewFR(iduser){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -364,16 +364,16 @@ var aksiFR = levelFR = contentFR = '';
             width: '50%',
             padding: 10,
             onShow: function(){
-                if(idlevel!=''){
+                if(iduser!=''){
                     var u = dir;
-                    var d ='aksi=ambiledit&id_level='+idlevel;
+                    var d ='aksi=ambiledit&id_user='+iduser;
                     ajax(u,d).done(function  (dt) {
                         if(dt.status!='sukses'){
                             notif(dt.status,'red');
                         }else{
-                            $('#idformlevelH').val(idlevel);
-                            $('#levelTB').val(dt.level);
-                            $('#keteranganTB').val(dt.keterangan);
+                            $('#idformH').val(iduser);
+                            $('#namaTB').val(dt.nama);
+                            $('#usernameTB').val(dt.username);
                             levelFC(dt.id_level);
                             departemenFC(dt.id_level,dt.departemen);
                         }

@@ -106,7 +106,7 @@
 
 								// <button data-hint="detail"  onclick="viewFR(\'aksi\','.$res['id_'.$mnu].');">
 								$btn ='<td align="center">
-											<button data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
+											<button '.isDisabled($mnu,'u').' data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
 												<i class="icon-zoom-in"></i>
 											</button>
 											<button '.isDisabled($mnu,'u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">

@@ -52,10 +52,7 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button '.isDisabled('user','u').'  data-hint="detail"  onclick="viewFR(\'levelaksi\','.$res['id_'.$mnu].');">
-										<i class="icon-zoom-in"></i>
-									</button>
-									<button '.isDisabled('user','u').' data-hint="ubah"  onclick="viewFR(\'level\','.$res['id_'.$mnu].');">
+									<button '.isDisabled('user','u').' data-hint="ubah"  onclick="viewFR('.$res['id_'.$mnu].');">
 										<i class="icon-pencil"></i>
 									</button>
 									<button '.isDisabled('user','d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
@@ -72,12 +69,13 @@
 							$icon= 'blocked';
 						}
 
+									// <td align="center">'.getFieldArr('id_departemen','kon_logindepartemen','id_login',$res['id_login']).'</td>
 						$out.= '<tr>
 									<td align="center">'.$res['nama'].'</td>
 									<td align="center">'.$res['username'].'</td>
 									<td align="center">'.$res['level'].'</td>
 									<td align="center">
-										<button onclick="aktifkan('.$res['id_login'].');" class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
+										<button '.isDisabled('user','u').' onclick="aktifkan('.$res['id_login'].');" class="fg-white bg-'.$clr.'" data-hint="'.$hint.'"><i class="icon-'.$icon.'"></i></button>
 									</td>
 									'.$btn.'
 								</tr>';
@@ -124,7 +122,7 @@
 							else{
 								// data privillege
 								$urutan=getField('urutan','kon_level','id_level',$_POST['levelTB']);
-								if($urutan==1){
+								if($urutan==1){ // SA 
 									$s4 = 'SELECT * FROM kon_menu';
 									$e4 = mysql_query($s4);
 									while ($r4=mysql_fetch_assoc($e4)) {
@@ -133,15 +131,31 @@
 										$e5    = mysql_query($s5);
 										$stat5 = !$e5?false:true;
 									}
-								}else{
+								}else{ // A+ , A, O, G
+									// get default menu 
+									$dm='';
+									if(isset($_POST['defaultTB'])){
+										$sd='SELECT m.id_menu
+											FROM kon_menu m
+												 JOIN kon_grupmenu gm ON gm.id_grupmenu = m.id_grupmenu
+											WHERE gm.id_modul ='.$_POST['defaultTB'];
+										$ed =mysql_query($sd);
+										$defMenu=array();
+										while ($rd=mysql_fetch_assoc($ed)) {
+											$defMenu[]=$rd['id_menu'];
+										}
+										if(isset($_POST['defaultTB'])) 
+											$dm = ',isDefault ='.(in_array($v, $defMenu)?1:0);
+									}
+									
+									// save to privillege
 									foreach ($_POST['menuTB'] as $i => $v) {
-										$s3 = 'INSERT INTO kon_privillege SET 	id_login='.$idx.',
-																				id_menu ='.$v;
+										$s3 = 'INSERT INTO kon_privillege SET 	id_login	='.$idx.',
+																				id_menu  	='.$v.$dm;
 										$e3    = mysql_query($s3);
 										$stat3 = !$e3?false:true;
 									}
-								}
-								$stat =!$stat5 || !$stat3?'gagal_insert_menu':'sukses';
+								}$stat =!$stat5 || !$stat3?'gagal_insert_menu':'sukses';
 							}
 						}
 					}

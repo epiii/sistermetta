@@ -111,7 +111,9 @@
     									mn.size,
     									w.warna,
     									i.icon,
-    									IF(tbmnu.id_menu is NOT NULL,1,0)statmenu
+    									IF(tbmnu.id_menu is NOT NULL,1,0)statmenu,
+                                        tbmnu.isDefault,
+                                        gm.id_katgrupmenu
     								FROM
     									kon_menu mn 
     									LEFT JOIN kon_icon i ON i.id_icon = mn.id_icon
@@ -119,7 +121,7 @@
     									LEFT JOIN kon_grupmenu gm ON gm.id_grupmenu= mn.id_grupmenu
     									LEFT JOIN (
     										SELECT
-    											id_menu
+    											id_menu,isDefault
     										FROM
     											kon_privillege
     										WHERE
@@ -128,24 +130,23 @@
     								WHERE
     									mn.id_grupmenu = '.$r4['id_grupmenu'];
     					
-    					// var_dump($s5);exit();
+    					// pr($s5);
     					$e5      = mysql_query($s5);
     					$menuArr = array();
     					while ($r5=mysql_fetch_assoc($e5)) {
-    						$s6='SELECT
-    								a.aksi
-    							FROM
-    								kon_levelaksi la
-    								LEFT JOIN kon_levelkatgrupmenu lk ON lk.id_levelkatgrupmenu = la.id_levelkatgrupmenu
-    								LEFT JOIN kon_aksi a ON a.id_aksi = la.id_aksi
-    								LEFT JOIN kon_katgrupmenu kg ON kg.id_katgrupmenu = lk.id_katgrupmenu
-    								LEFT JOIN kon_grupmenu gm ON gm.id_katgrupmenu = kg.id_katgrupmenu
-    								LEFT JOIN kon_menu m ON m.id_grupmenu = gm.id_grupmenu
-    								LEFT JOIN kon_privillege p ON p.id_menu = m.id_menu
-    							WHERE
-    								lk.id_level = '.$r1['id_level'].'
-    								AND p.id_login = '.$r1['id_login'].'
-    								AND m.id_menu = '.$r5['id_menu'];
+                            // loop action (c,r,u,d,s,p)
+    						$s6='SELECT a.aksi
+                                FROM
+                                    kon_levelaksi la
+                                    JOIN kon_aksi a on a.id_aksi = la.id_aksi
+                                    JOIN kon_levelkatgrupmenu lkg ON lkg.id_levelkatgrupmenu = la.id_levelkatgrupmenu
+                                WHERE
+                                    lkg.id_level = '.$r1['id_level'].'
+                                    AND lkg.isDefault = '.$r5['isDefault'].' 
+                                    AND lkg.id_katgrupmenu = '.$r5['id_katgrupmenu'].'
+                                ORDER BY
+                                    la.id_aksi ASC';
+                            // pr($s6);
     						$e6 = mysql_query($s6);
     						$aksiArr=array();
     						while ($r6=mysql_fetch_assoc($e6)) {
