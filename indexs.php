@@ -66,7 +66,7 @@
                     <span class="first-name"><?php echo $_SESSION['namaS'];?></span>
                     <span class="last-name"><?php echo $_SESSION['levelS'];?></span>
                 </div>
-                <button class="button inverse" onclick="logout();">logout</button>
+                <button class="button inverse" onclick="logout(1);">logout</button>
             </div>
             
             <?php 
