@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-16 23:41:18
+Date: 2015-08-17 12:23:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -292,7 +292,7 @@ CREATE TABLE `kon_login` (
   PRIMARY KEY (`id_login`),
   KEY `id_level` (`id_level`),
   CONSTRAINT `kon_login_ibfk_1` FOREIGN KEY (`id_level`) REFERENCES `kon_level` (`id_level`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_login
@@ -328,7 +328,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=58 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -340,6 +340,8 @@ INSERT INTO `kon_loginhistory` VALUES ('54', '2', '2015-08-16 23:29:18');
 INSERT INTO `kon_loginhistory` VALUES ('55', '2', '2015-08-16 23:29:18');
 INSERT INTO `kon_loginhistory` VALUES ('56', '2', '2015-08-16 23:29:51');
 INSERT INTO `kon_loginhistory` VALUES ('57', '2', '2015-08-16 23:29:51');
+INSERT INTO `kon_loginhistory` VALUES ('58', '2', '2015-08-17 00:11:34');
+INSERT INTO `kon_loginhistory` VALUES ('59', '2', '2015-08-17 00:11:34');
 
 -- ----------------------------
 -- Table structure for kon_menu

@@ -162,7 +162,7 @@
 														id_level       ='.$_POST['id_level'].' AND
 														id_katgrupmenu ='.$i.' AND
 														isDefault      ='.$iii;
-											// vd($sl);
+											// vd($sl);e
 											$el=mysql_query($sl);
 											$rl=mysql_fetch_assoc($el);
 

@@ -124,7 +124,7 @@
 			break;
 			// ambiledit ------			
 
-			// cmbdepartemen -----------------------------------------------------------------
+			// cmb grup menu -----------------------------------------------------------------
 			case 'cmb'.$mnu:
 				$s=$j=$w='';
 				if(isset($_POST['id_level']) && isset($_POST['id_modul'])){
@@ -159,6 +159,9 @@
 							LEFT JOIN kon_katgrupmenu kg ON kg.id_katgrupmenu = gm.id_katgrupmenu
 							LEFT JOIN kon_levelkatgrupmenu lk ON lk.id_katgrupmenu = kg.id_katgrupmenu
 						'.$j.$w.'
+						
+						GROUP BY 
+							gm.id_grupmenu
 						ORDER BY  
 							kg.katgrupmenu ASC,
 							gm.grupmenu ASC

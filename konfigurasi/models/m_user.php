@@ -47,6 +47,8 @@
 
 				$jum = mysql_num_rows($result);
 				$out ='';
+				// pr($_SESSION);
+				// vd(isDisabled('user','u'));
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
@@ -65,9 +67,9 @@
 							$hint= 'aktif';
 							$icon= 'checkmark';
 						}else{ //tidak aktif
-							$clr = '';
+							$clr = 'red';
 							$hint= 'tidak aktif';
-							$icon= 'disabled';
+							$icon= 'blocked';
 						}
 
 						$out.= '<tr>
@@ -94,75 +96,56 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				switch ($_POST['subaksi']) {
-					case 'levelaksi':
-						$stat2=true;
-						$s1 = '	DELETE 
-								from kon_levelaksi 
-								WHERE id_levelkatgrupmenu IN (
-										SELECT id_levelkatgrupmenu 
-										FROM kon_levelkatgrupmenu 
-										WHERE id_level = '.$_POST['id_level'].'
-									)';	
-						$e1 = mysql_query($s1);
-						if(!$e1){
-							$stat2=false;
-						}else{
-							if(isset($_POST['aksiTB'])){
-								foreach ($_POST['aksiTB'] as $i => $v) {
-									foreach ($_POST['aksiTB'][$i] as $ii => $vv) {
-										$sl = ' SELECT id_levelkatgrupmenu from kon_levelkatgrupmenu 
-												where 
-													id_level       ='.$_POST['id_level'].' AND
-													id_katgrupmenu ='.$i;
-										$el=mysql_query($sl);
-										$rl=mysql_fetch_assoc($el);
-
-										$s2= 'INSERT INTO kon_levelaksi SET id_levelkatgrupmenu ='.$rl['id_levelkatgrupmenu'].',
-																			 id_aksi             ='.$ii;
-										$e2= mysql_query($s2);
-										$stat2=!$e2?false:true;
+				if(!isset($_POST['namaTB'])){
+					$stat='nothing_to_save';
+				}else{
+					// data login / user
+					$stat2=$stat3=$stat5=true;
+					$s='INSERT INTO '.$tb.' SET nama     ="'.filter($_POST['namaTB']).'",
+												username ="'.filter($_POST['usernameTB']).'",
+												id_level ="'.filter($_POST['levelTB']).'",
+												password ="'.base64_encode(md5(filter($_POST['passwordTB']))).'"';
+					// pr($s);
+					$e   = mysql_query($s);
+					$idx = mysql_insert_id();
+					if(!$e) $stat='gagal_insert_data_user';
+					else {
+						// data departemen 
+						if(!isset($_POST['departemenTB'])) $stat = 'no_departemen_to_post';
+						else{
+							foreach ($_POST['departemenTB'] as $i => $v) {
+								$s2 = 'INSERT INTO kon_logindepartemen SET 	id_login 		='.$idx.',
+																			id_departemen 	='.$v;
+								$e2    = mysql_query($s2);
+								$stat2 = !$e2?false:true;
+							}
+							//-----
+							if(!$stat2) $stat = 'gagal_insert_departemen';
+							else{
+								// data privillege
+								$urutan=getField('urutan','kon_level','id_level',$_POST['levelTB']);
+								if($urutan==1){
+									$s4 = 'SELECT * FROM kon_menu';
+									$e4 = mysql_query($s4);
+									while ($r4=mysql_fetch_assoc($e4)) {
+										$s5 = 'INSERT INTO kon_privillege SET 	id_login ='.$idx.',
+																				id_menu  ='.$r4['id_menu'];
+										$e5    = mysql_query($s5);
+										$stat5 = !$e5?false:true;
+									}
+								}else{
+									foreach ($_POST['menuTB'] as $i => $v) {
+										$s3 = 'INSERT INTO kon_privillege SET 	id_login='.$idx.',
+																				id_menu ='.$v;
+										$e3    = mysql_query($s3);
+										$stat3 = !$e3?false:true;
 									}
 								}
+								$stat =!$stat5 || !$stat3?'gagal_insert_menu':'sukses';
 							}
 						}
-						$stat=!$stat2?'gagal':'sukses';
-						$out=json_encode(array('status'=>$stat));
-					break;
-
-					case 'level':
-						$stat2 =true;
-						$s = $tb.' set 	'.$mnu.' 	= "'.filter($_POST[''.$mnu.'TB']).'",
-										keterangan 	= "'.filter($_POST['keteranganTB']).'"';
-						if(isset($_POST['id_'.$mnu])){
-							$s = 'UPDATE '.$s.' WHERE id_'.$mnu.'='.$_POST['id_'.$mnu];
-							$e = mysql_query($s);
-							if(!$e){
-								$stat2 = false;
-							}
-						}else{
-							$s2 ='INSERT INTO '.$s;
-							$e  = mysql_query($s2);
-							$id =mysql_insert_id();
-
-							if(!$e){
-								$stat2=false;
-							}else{
-								$s1 = 'SELECT * from kon_katgrupmenu ';
-								$e1 = mysql_query($s1);
-								while ($r1=mysql_fetch_assoc($e1)) {
-									$s2 = 'INSERT INTO kon_levelkatgrupmenu set id_level 		= '.$id.',
-																				id_katgrupmenu  = '.$r1['id_katgrupmenu'];
-									$e2 = mysql_query($s2);
-									$stat2=!$e2?false:true;
-								}
-							}
-						}
-						$stat = ($stat2)?'sukses':'gagal';
-						$out  = json_encode(array('status'=>$stat));
-					break;
-					
-				}
+					}
+				}$out=json_encode(array('status' => $stat ));
 			break;
 			// add / edit -----------------------------------------------------------------
 			

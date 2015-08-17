@@ -17,7 +17,7 @@ var aksiFR = levelFR = contentFR = '';
 // main function ---
     $(document).ready(function(){
         contentFR += '<form style="overflow:scroll;height:560px;"  autocomplete="off" onsubmit="simpan();return false;" >' 
-                        +'<input name="idformlevelH" id="idformlevelH" type="hidden">' 
+                        +'<input name="idformH" id="idformH" type="hidden">' 
                         
                         // nama
                         +'<label>Nama</label>'
@@ -94,29 +94,25 @@ var aksiFR = levelFR = contentFR = '';
 // end of save process ---
 
 //save process ---
-    function simpan(subaksi){
-        var urlx ='&aksi=simpan&subaksi='+subaksi;
-        if($('#idform'+subaksi+'H').val()!='') 
-           urlx += '&id_'+mnu+'='+$('#idform'+subaksi+'H').val();
+    function simpan(){
+        var urlx ='&aksi=simpan';
+        if($('#idformH').val()!='') 
+           urlx += '&id_'+mnu+'='+$('#idformH').val();
 
         $.ajax({
             url:dir,
             cache:false,
             type:'post',
             dataType:'json',
-            data:$('#'+subaksi+'FR').serialize()+urlx,
+            data:$('form').serialize()+urlx,
             success:function(dt){
                 if(dt.status!='sukses'){
                     cont = 'Gagal menyimpan data';
                     clr  = 'red';
                 }else{
-                    kosongkan();
-                    if(subaksi=='level'){ //level 
-                        $.Dialog.close();
-                        viewTB($('#departemenS').val());
-                    }else{ // levelaksi
-                        viewFR('levelaksi',$('#idform2H').val());
-                    }
+                    // kosongkan();
+                    $.Dialog.close();
+                    viewTB();
                     cont = 'Berhasil menyimpan data';
                     clr  = 'green';
                 }notif(cont,clr);
@@ -216,7 +212,7 @@ var aksiFR = levelFR = contentFR = '';
                     $.each(dt.level,function(id,item){
                         out+='<div data-hint="info| okokokok" data-role="input-control" class="input-control radio default-style" >'
                                 +'<label >'
-                                    +'<input  onclick="departemenFC('+item.urutan+',\'\');modulFC('+item.urutan+',\'\');" '+(typeof lv!=undefined && item.id_level==lv?'checked':'')+' value="'+item.id_level+'" required type="radio" name="levelTB" />'
+                                    +'<input name="levelTB" value="'+item.id_level+'" onclick="departemenFC('+item.urutan+',\'\');modulFC('+item.urutan+',\'\');" '+(typeof lv!=undefined && item.id_level==lv?'checked':'')+' value="'+item.id_level+'" required type="radio"  />'
                                     +'<span class="check"></span>'
                                     +item.keterangan
                                     +' <i class="fg-'+(item.urutan==1?'yellow':'black')+' icon-'+(item.urutan==1||item.urutan==2?'star-4':'')+'"></i>'
@@ -242,7 +238,7 @@ var aksiFR = levelFR = contentFR = '';
                     $.each(dt.departemen,function(id,item){
                         out+='<div data-role="input-control" class="input-control '+(lv==1?'checkbox':'radio default-style')+' margin3" >'
                                 +'<label class="inline-block">'
-                                    +'<input '+(typeof dp!=undefined && item.replid==dp?'checked':'')+' value="'+item.replid+'" required type="'+(lv==1?'checkbox':'radio')+'" name="departemenTB" />'
+                                    +'<input name="departemenTB[]" value="'+item.replid+'" '+(typeof dp!=undefined && item.replid==dp?'checked':'')+' required type="'+(lv==1?'checkbox':'radio')+'"  />'
                                     +'<span class="check"></span>'
                                     +item.nama
                                 +'</label>'
@@ -281,7 +277,7 @@ var aksiFR = levelFR = contentFR = '';
                         // out+=lv==2?'<div data-role="input-control" class="input-control radio"><input type="radio" /></div>':'';
                         out+=' <div data-role="input-control" id="modulsub'+item.id_modul+'DV" class="input-control '+(lv==1||lv==2?'checkbox':'radio default-style')+'" >'
                                 +'<label>'
-                                    +'<input id="modul'+item.id_modul+'TB" name="modulTB" '+(lv==1?'disabled':'')+'  onclick="'+(lv==2?'modulDefaultFC('+item.id_modul+');':'')+' grupMenuFC('+item.id_modul+',\'\')" '+(lv==1||(typeof md!=undefined && item.id_modul)==md?'checked':'')+' value="'+item.id_modul+'" required type="'+(lv==1||lv==2?'checkbox':'radio')+'"  />'
+                                    +'<input id="modul'+item.id_modul+'TB" '+(lv==1?'disabled':'')+'  onclick="'+(lv==2?'modulDefaultFC('+item.id_modul+');':'')+' grupMenuFC('+item.id_modul+',\'\')" '+(lv==1||(typeof md!=undefined && item.id_modul)==md?'checked':'')+' value="'+item.id_modul+'" type="'+(lv==1||lv==2?'checkbox':'radio')+'"  />'
                                     +'<span class="check"></span>'
                                     +item.modul
                                 +'</label>'
@@ -314,7 +310,7 @@ var aksiFR = levelFR = contentFR = '';
                         $.each(dt.grupmenu,function(id,item){
                             out+='<div data-role="input-control" class="input-control checkbox">'
                                     +'<label>'
-                                        +'<input '+(item.aktif==0?'disabled':'')+' onclick="menuFC(\''+item.id_grupmenu+'\',\'\')" '+(typeof gm!=undefined && item.id_grupmenu==gm?'checked':'')+' value="'+item.id_grupmenu+'" required type="checkbox" name="grupmenuTB" />'
+                                        +'<input id="grupmenu'+item.id_grupmenu+'TB" '+(item.aktif==0?'disabled':'')+' onclick="menuFC(\''+item.id_grupmenu+'\',\'\')" '+(typeof gm!=undefined && item.id_grupmenu==gm?'checked':'')+' value="'+item.id_grupmenu+'" type="checkbox"  />'
                                         +'<span class="check"></span>'
                                         +item.grupmenu
                                         +'<sub class="fg-gray"> ('+item.keterangan+')</sub>'
@@ -338,21 +334,22 @@ var aksiFR = levelFR = contentFR = '';
             if(dt.status!='sukses'){
                 notif(dt.status,'red');
             }else{
-                // if($('[name="modulTB"]').attr('type')=='radio') $('.grupmenuDV').html('');
                 if(dt.menu.length==0) {
                     out+='<div class="notice marker-on-top bg-amber">'
                             +'<div class="fg-white"><i class="icon-warning"></i>'+mnu6+' masih kosong (hubungi admin '+mnu6+')</div>'
                         +'</div>';
                 }else{
-                    $.each(dt.menu,function(id,item){
-                        out+='<div style="margin-left:15px;" data-role="input-control" class="input-control checkbox">'
-                                +'<label>'
-                                    +'<input '+(typeof mn!=undefined && item.id_grupmenu==mn?'checked':'')+' value="'+item.id_menu+'" required type="checkbox" name="menuTB" />'
-                                    +'<span class="check"></span>'
-                                    +item.menu
-                                +'</label>'
-                            +'</div>';
-                    });
+                    if($('#grupmenu'+gm+'TB').is(':checked')){
+                        $.each(dt.menu,function(id,item){
+                            out+='<div style="margin-left:15px;" data-role="input-control" class="input-control checkbox">'
+                                    +'<label>'
+                                        +'<input name="menuTB[]" value="'+item.id_menu+'" '+(mn=='' || mn==item.id_menu?'checked':'')+' type="checkbox"/>'
+                                        +'<span class="check"></span>'
+                                        +item.menu
+                                    +'</label>'
+                                +'</div>';
+                        });
+                    }
                 }$('#menu'+gm+'DV').html(out);
             }
         });
@@ -389,6 +386,7 @@ var aksiFR = levelFR = contentFR = '';
                 titlex='<span class="icon-plus-2"></span> Tambah ';
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
+                $('#namaTB').focus();
             }
         });
     }
