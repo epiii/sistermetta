@@ -51,10 +51,10 @@
 				// vd(isDisabled('user','u'));
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
+									// <button '.isDisabled('user','u').' data-hint="ubah"  onclick="viewFR('.$res['id_'.$mnu].');">
+									// 	<i class="icon-pencil"></i>
+									// </button>
 						$btn ='<td align="center">
-									<button '.isDisabled('user','u').' data-hint="ubah"  onclick="viewFR('.$res['id_'.$mnu].');">
-										<i class="icon-pencil"></i>
-									</button>
 									<button '.isDisabled('user','d').' data-hint="hapus" onclick="del('.$res['id_'.$mnu].');">
 										<i class="icon-remove"></i>
 									</button>
@@ -176,18 +176,29 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s 	= ' SELECT *
-						from '.$tb.'
-						WHERE id_'.$mnu.'='.$_POST['id_'.$mnu];
-				// var_dump($s);exit();
-				$e 		= mysql_query($s) or die(mysql_error());
-				$r 		= mysql_fetch_assoc($e);
-				$stat 	= ($e)?'sukses':'gagal';
-				$out 	= json_encode(array(
-							'status'     =>$stat,
-							'level'      =>$r[$mnu],
-							'keterangan' =>$r['keterangan']
-						));
+				// history login 
+					$cnt= getField('count(*)','kon_loginhistory','id_login',$_POST['id_user']);
+					$isLogged =$cnt>0?true:false;
+				// data user/login
+					$s 	= ' SELECT *
+							from '.$tb.'
+							WHERE id_login = '.$_POST['id_user'];
+					$e    = mysql_query($s) or die(mysql_error());
+					$stat = ($e)?'sukses':'gagal';
+					$r    = mysql_fetch_assoc($e);
+				// data departemen 
+					$logDep = getFieldArr2('id_departemen','kon_logindepartemen','id_login',$_POST['id_user']);
+				// data modul & menu
+					// $sd = '' 
+				// result
+					$out 	= json_encode(array(
+								'status'     =>$stat,
+								'nama'       =>$r['nama'],
+								'username'   =>$r['username'],
+								'id_level'   =>$r['id_level'],
+								'isLogged'   =>$isLogged,
+								'departemen' =>$logDep,
+							));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
