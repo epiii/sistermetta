@@ -211,7 +211,7 @@ var aksiFR = levelFR = contentFR = '';
                     $.each(dt.level,function(id,item){
                         out+='<div data-hint="info| okokokok" data-role="input-control" class="input-control radio default-style" >'
                                 +'<label >'
-                                    +'<input '+(lv!=''?'disabled':'')+' name="levelTB" value="'+item.id_level+'" onclick="departemenFC('+item.urutan+',\'\');modulFC('+item.urutan+',\'\');" '+(typeof lv!=undefined && item.id_level==lv?'checked':'')+' value="'+item.id_level+'" required type="radio"  />'
+                                    +'<input name="levelTB" value="'+item.id_level+'" onclick="departemenFC('+item.urutan+',\'\');modulFC('+item.urutan+',\'\');" '+(typeof lv!=undefined && item.id_level==lv?'checked':'')+' value="'+item.id_level+'" required type="radio"  />'
                                     +'<span class="check"></span>'
                                     +item.keterangan
                                     +' <i class="fg-'+(item.urutan==1?'yellow':'black')+' icon-'+(item.urutan==1||item.urutan==2?'star-4':'')+'"></i>'
@@ -237,7 +237,7 @@ var aksiFR = levelFR = contentFR = '';
                     $.each(dt.departemen,function(id,item){
                         out+='<div data-role="input-control" class="input-control '+(lv==1?'checkbox':'radio default-style')+' margin3" >'
                                 +'<label class="inline-block">'
-                                    +'<input '+(dp!=''?'disabled':'')+' name="departemenTB[]" value="'+item.replid+'" '+(typeof dp!=undefined && item.replid==dp?'checked':'')+' required type="'+(lv==1?'checkbox':'radio')+'"  />'
+                                    +'<input name="departemenTB[]" value="'+item.replid+'" '+(typeof dp!=undefined && item.replid==dp?'checked':'')+' required type="'+(lv==1?'checkbox':'radio')+'"  />'
                                     +'<span class="check"></span>'
                                     +item.nama
                                 +'</label>'
