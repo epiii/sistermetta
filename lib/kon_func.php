@@ -34,21 +34,32 @@
         } // grup grupmodul looping 
         echo $out;
 	}
-	function isMenuPriv($md,$mn){
+    function  joinWord($w){
+        $w1=strtolower(str_replace(' ', '', $w));
+        $w2=strtolower(str_replace('-', '', $w1));
+        return $w2;
+    }
+    function isMenuPriv($md,$mn){
         $menu=false;
+        $jo='';
         foreach ($_SESSION['grupmodulS']as $i => $v) {
             foreach ($v['modul'] as $i2 => $v2) {
                 foreach ($v2['grupmenu'] as $i3 => $v3) {
                     foreach ($v3['menu'] as $i4 => $v4) {
-                        if($v2['modul']==$md and $v4['menu']==$mn and $v4['statmenu']==1){
+                        $mod  =joinWord($v2['link']);
+                        $mod2 =joinWord($md);
+                        $men  =joinWord($v4['menu']);
+                        $men2 =joinWord($mn);
+                        // $jo.=$mod.'='.$men.'<br>'; 
+                        if($mod==$mod2  and $men==$men2){
                             $menu=true;
+                        // if($v2['modul']==$md and $v4['menu']==$mn and $v4['statmenu']==1){
                         } // end of checking menu
                     }// end of menu looping
                 } // end of grupmenu looping
             } // end of  modul looping
         } // grup grupmodul looping 
-        // return 'asem';
-        // vd($mn);
+        // pr($jo);
         return $menu;
     }
     function isAksi($mn,$ak){
@@ -57,22 +68,34 @@
 	        foreach ($v['modul'] as $i2 => $v2) {
 	            foreach ($v2['grupmenu'] as $i3 => $v3) {
 	                foreach ($v3['menu'] as $i4 => $v4) {
-	                    if($v4['menu']==$mn and $v4['statmenu']==1){
+                        $menu  =strtolower(str_replace(' ', '', $v4['menu']));
+                        $menu2 =strtolower(str_replace(' ', '', $mn));
+                        if($menu==$menu2 and $v4['statmenu']==1){
+	                    // if($v4['menu']==$mn and $v4['statmenu']==1){
 	                        foreach ($v4['aksi'] as $i5 => $v5) {
-	                            if($v5['aksi']==$ak) $aksi=true;
+                                $aks  = strtolower(str_replace(' ', '', $v5['aksi']));
+                                $aks2 = strtolower(str_replace(' ', '', $ak));
+                                if($aks==$aks2) $aksi=true;
+	                            // if($v5['aksi']==$ak) $aksi=true;
 	                        }// end of aksi looping
 	                    } // end of checking menu
 	                }// end of menu looping
 	            } // end of grupmenu looping
 	        } // end of  modul looping
 	    } // grup grupmodul looping 
+        // vd($aksi);
 	    return $aksi;
 	}
-    function isDisabled($mn,$ak){
-        return (isAksi($mn,$ak)==false?'disabled':'');
-    }
+    // function isDisabled($mn,$ak){
+    //     return (isAksi($mn,$ak)==false?'disabled':'');
+    // }
     function isMenu($mod,$menu){
-        if(isMenuPriv($mod,$menu)==false || $_SESSION['loginS']=='') echo '<script>location.href="./"</script>';
+        if(isMenuPriv($mod,$menu)==false || $_SESSION['loginS']=='') 
+            echo '<script>location.href="./"</script>';
+        //     echo 'salah';
+        // else
+        //     echo 'benar';
+
     }
     function isModul($mod){
         $out=0; $o='';
