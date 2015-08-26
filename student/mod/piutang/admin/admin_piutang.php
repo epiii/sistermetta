@@ -115,7 +115,7 @@ $tgltermin='';
 if($piutang>'0'){
 $lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok">'.$data['nofaktur'].'</a>';
 }else{
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok">'.$data['nofaktur'].'</a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok"target="new">'.$data['nofaktur'].'</a>';
 }
 $admin.='<tr>
             <td>'.$lihatslip.'</td>

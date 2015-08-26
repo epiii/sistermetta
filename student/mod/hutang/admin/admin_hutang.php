@@ -115,7 +115,7 @@ $tgltermin='';
 if($hutang>'0'){
 $lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok">'.$data['noinvoice'].'</a>';
 }else{
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok">'.$data['noinvoice'].'</a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target="new">'.$data['noinvoice'].'</a>';
 }
 $lihatslippo = '<a href="cetak_notapo.php?kode='.$data['nopo'].'&lihat=ok">'.$data['nopo'].'</a>';
 $admin.='<tr>
