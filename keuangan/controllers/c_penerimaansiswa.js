@@ -9,14 +9,14 @@ var mnu8 ='subtingkat';
 var mnu9 ='kelas'; 
 
 var dir  ='models/m_'+mnu+'.php';
-var dir2 ='../akademik_sister/models/m_'+mnu2+'.php';
-var dir3 ='../akademik_sister/models/m_'+mnu3+'.php';
+var dir2 ='../akademik/models/m_'+mnu2+'.php';
+var dir3 ='../akademik/models/m_'+mnu3+'.php';
 var dir4 ='../psb/models/m_'+mnu4+'.php';
 var dir5 ='../psb/models/m_'+mnu5+'.php';
-var dir6 ='../akademik_sister/models/m_'+mnu6+'.php';
-var dir7 ='../akademik_sister/models/m_'+mnu7+'.php';
-var dir8 ='../akademik_sister/models/m_'+mnu8+'.php';
-var dir9 ='../akademik_sister/models/m_'+mnu9+'.php';
+var dir6 ='../akademik/models/m_'+mnu6+'.php';
+var dir7 ='../akademik/models/m_'+mnu7+'.php';
+var dir8 ='../akademik/models/m_'+mnu8+'.php';
+var dir9 ='../akademik/models/m_'+mnu9+'.php';
 
 var contentFR ='';
 // main function load first 
@@ -305,7 +305,7 @@ var contentFR ='';
     
     function switchPN (par) {
         if(par=='' || par=='pendaftaran'){ // default : pendaftaran => formulir
-            cmbproses('filter',$('#departemenS').val());
+            cmbtahunajaranmaterial('filter',$('#departemenS').val());
         }else if(par=='spp'){ // spp
             cmbtahunajaran('filter',$('#departemenS').val());
         }else{ // dpp (uang pangkal)
@@ -815,7 +815,38 @@ var contentFR ='';
             }
         });
     }
-//end of combo angkatan---
+//end of combo tahun ajaran---
+
+// combo tahun ajaran Material Fee  ---
+    function cmbtahunajaranmaterial(typ,dep){
+        $.ajax({
+            url:dir6,
+            data:'aksi=cmb'+mnu6+'&departemen='+dep,
+            dataType:'json',
+            type:'post',
+            success:function(dt){
+                var out='';
+                if(dt.status!='sukses'){
+                    out+='<option value="">'+dt.status+'</option>';
+                }else{
+                    $.each(dt.tahunajaran, function(id,item){
+                        if(item.aktif=='1')
+                            out+='<option selected="selected" value="'+item.replid+'">'+item.tahunajaran+' (aktif)</option>';
+                        else
+                            out+='<option value="'+item.replid+'"> '+item.tahunajaran+'</option>';
+                    });
+                    if(typ=='filter'){
+                        $('#prosesS').html(out);
+                        cmbkelompok('filter',dt.tahunajaran[0].replid);
+                    }
+                    // else{
+                    //     $('#tahunajaranTB').html(out);
+                    // }
+                }
+            }
+        });
+    }
+//end of combo tahun ajaran---
 
 // combo angkatan ---
     function cmbangkatan(typ,dep){
@@ -845,33 +876,33 @@ var contentFR ='';
 //end of combo angkatan---
 
 // combo proses ---
-    function cmbproses(typ,dep){
-        $.ajax({
-            url:dir4,
-            data:'aksi=cmb'+mnu4+'&departemen='+dep,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.proses, function(id,item){
-                        if(item.aktif=='1')   
-                            out+='<option selected="selected" value="'+item.replid+'">'+item.proses+' (aktif)</option>';
-                        else
-                            out+='<option value="'+item.replid+'"> '+item.proses+'</option>';
-                    });
-                }
-                if(typ=='filter'){
-                    $('#prosesS').html(out);
-                    cmbkelompok('filter',dt.proses[0].replid);
-                }else{
-                    $('#prosesTB').html(out);
-                }
-            }
-        });
-    }
+    // function cmbproses(typ,dep){
+    //     $.ajax({
+    //         url:dir4,
+    //         data:'aksi=cmb'+mnu4+'&departemen='+dep,
+    //         dataType:'json',
+    //         type:'post',
+    //         success:function(dt){
+    //             var out='';
+    //             if(dt.status!='sukses'){
+    //                 out+='<option value="">'+dt.status+'</option>';
+    //             }else{
+    //                 $.each(dt.proses, function(id,item){
+    //                     if(item.aktif=='1')   
+    //                         out+='<option selected="selected" value="'+item.replid+'">'+item.proses+' (aktif)</option>';
+    //                     else
+    //                         out+='<option value="'+item.replid+'"> '+item.proses+'</option>';
+    //                 });
+    //             }
+    //             if(typ=='filter'){
+    //                 $('#prosesS').html(out);
+    //                 cmbkelompok('filter',dt.proses[0].replid);
+    //             }else{
+    //                 $('#prosesTB').html(out);
+    //             }
+    //         }
+    //     });
+    // }
 //end of combo proses---
 
 // combo kelompok ---

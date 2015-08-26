@@ -55,7 +55,7 @@ $admin .= '
 
 $admin .= '<tr>
 	<td></td>
-	<td><input type="submit" value="Cetak" name="cetak" class="btn btn-success">
+	<td>
 	<input type="submit" value="Lihat" name="lihat" class="btn btn-primary">
 	</td>
 	</tr>
