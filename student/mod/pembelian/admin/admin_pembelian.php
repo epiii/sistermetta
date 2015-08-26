@@ -382,7 +382,7 @@ $admin .= '
 		<td>:</td>
 		<td><select name="kodeinvoice" id="combobox" class="form-inline">';
 $hasilj = $koneksi_db->sql_query("SELECT * FROM pos_pembelian ORDER BY id desc");
-$admin .= '<option value="">== Barang ==</option>';
+
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $pilihanj = ($datasj['noinvoice']==$kodeinvoice)?"selected":'';
 $admin .= '<option value="'.$datasj['noinvoice'].'"'.$pilihanj.'>'.$datasj['noinvoice'].' - '.getnamasupplier($datasj['kodesupplier']).'</option>';

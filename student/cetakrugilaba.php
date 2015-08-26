@@ -154,10 +154,11 @@ echo'<tr class="alert-info">
 	</tr>';	
 echo '</table>';
 echo "</body</html>";
-
+/*
 if (isset($_GET['Cetak'])){
 echo "<script language=javascript>
 window.print();
 </script>";
 }
+*/
 ?>
