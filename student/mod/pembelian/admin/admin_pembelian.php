@@ -743,6 +743,16 @@ $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesuppl
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? 'Hutang' : $carabayar;
 $termin 		= !isset($termin) ?$_POST['termin'] : $termin;
+$sel2 = '<select name="carabayar" class="form-control">';
+$arr2 = array ('Tunai','Debet Card','Hutang');
+foreach ($arr2 as $kk=>$vv){
+	if ($carabayar == $vv){
+	$sel2 .= '<option value="'.$vv.'" selected="selected">'.$vv.'</option>';
+	}else {
+	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
+}
+}
+$sel2 = '</select>';
 $admin .= '
 <div class="panel-heading"><b>Transaksi Pembelian</b></div>';	
 $admin .= '
@@ -762,7 +772,7 @@ $admin .= '
 		<td><input type="text" id="tgl" name="tgl" value="'.$tgl.'" class="form-control">&nbsp;</td>
 <td>Cara Pembayaran</td>
 		<td>:</td>
-		<td>'.$carabayar.'<input type="hidden" name="carabayar" value="'.$carabayar.'" class="form-control"></td>		
+		<td>'.$sel2.'</td>		
 	</tr>';
 $admin .= '
 	<tr>
@@ -779,7 +789,7 @@ while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 				</td>
 		<td>Termin</td>
 		<td>:</td>
-		<td>'.$termin.'<input type="hidden" name="termin" value="'.$termin.'" class="form-control"></td>
+		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"></td>
 		</tr>';
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>
