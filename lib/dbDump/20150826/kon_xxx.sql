@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-08-26 16:32:30
+Date: 2015-08-26 16:38:03
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -349,7 +349,7 @@ CREATE TABLE `kon_loginhistory` (
   PRIMARY KEY (`id_loginhistory`),
   KEY `id_login` (`id_login`) USING BTREE,
   CONSTRAINT `kon_loginhistory_ibfk_1` FOREIGN KEY (`id_login`) REFERENCES `kon_login` (`id_login`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=161 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of kon_loginhistory
@@ -388,6 +388,10 @@ INSERT INTO `kon_loginhistory` VALUES ('153', '58', '2015-08-26 16:31:22');
 INSERT INTO `kon_loginhistory` VALUES ('154', '58', '2015-08-26 16:31:22');
 INSERT INTO `kon_loginhistory` VALUES ('155', '58', '2015-08-26 16:31:50');
 INSERT INTO `kon_loginhistory` VALUES ('156', '58', '2015-08-26 16:31:50');
+INSERT INTO `kon_loginhistory` VALUES ('157', '58', '2015-08-26 16:36:54');
+INSERT INTO `kon_loginhistory` VALUES ('158', '58', '2015-08-26 16:36:54');
+INSERT INTO `kon_loginhistory` VALUES ('159', '58', '2015-08-26 16:37:25');
+INSERT INTO `kon_loginhistory` VALUES ('160', '58', '2015-08-26 16:37:25');
 
 -- ----------------------------
 -- Table structure for kon_menu
@@ -550,7 +554,6 @@ INSERT INTO `kon_menu` VALUES ('150', '39', 'tahap1', 'tahap1', 'double', '16', 
 INSERT INTO `kon_menu` VALUES ('151', '39', 'tahap3', 'tahap3', 'double', '16', '10', '');
 INSERT INTO `kon_menu` VALUES ('152', '4', 'Detail Diskon Tunai', 'detail-diskon-tunai', 'double', '16', '10', '');
 INSERT INTO `kon_menu` VALUES ('153', '4', 'Detail Gelombang', 'detail-gelombang', 'double', '8', '11', '');
-INSERT INTO `kon_menu` VALUES ('154', '9', 'dokumen', 'dokumen', '', '8', '10', '');
 
 -- ----------------------------
 -- Table structure for kon_modul
@@ -579,7 +582,6 @@ INSERT INTO `kon_modul` VALUES ('5', '2', 'hrd', 'kepegawaian', '5', '13', 'doub
 INSERT INTO `kon_modul` VALUES ('6', '2', 'keuangan', 'keuangan', '6', '14', 'double double-vertical', '');
 INSERT INTO `kon_modul` VALUES ('7', '2', 'student', 'student services', '7', '15', 'double', '');
 INSERT INTO `kon_modul` VALUES ('9', '3', 'konfigurasi', 'konfigurasi', '13', '14', 'double', '');
-INSERT INTO `kon_modul` VALUES ('14', '3', 'marketingpsb', 'marketingpsb', '16', '10', 'double', '');
 
 -- ----------------------------
 -- Table structure for kon_privillege
@@ -803,7 +805,6 @@ INSERT INTO `kon_privillege` VALUES ('1547', '58', '150', '1');
 INSERT INTO `kon_privillege` VALUES ('1548', '58', '151', '1');
 INSERT INTO `kon_privillege` VALUES ('1549', '58', '152', '1');
 INSERT INTO `kon_privillege` VALUES ('1550', '58', '153', '1');
-INSERT INTO `kon_privillege` VALUES ('1551', '58', '154', '1');
 
 -- ----------------------------
 -- Table structure for kon_warna
