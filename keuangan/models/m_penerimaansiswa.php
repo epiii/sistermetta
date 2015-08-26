@@ -141,7 +141,7 @@
 													LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
 													LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
 												WHERE
-													k.nama = "joining fee"
+													k.nama = "material fee"
 												GROUP BY	
 													ss.replid
 											) t1 ON t1.replid = cs.replid
@@ -224,8 +224,61 @@
 						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
 						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 						$status   = (isset($_POST[$pre.'statusS']) AND $_POST[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'statusS']).'"':'';
-						$sql = 'SELECT t2.*
-								FROM psb_calonsiswa c
+						// $sql = 'SELECT t2.*
+						// 		FROM psb_calonsiswa c
+						// 		LEFT JOIN (
+						// 			SELECT
+						// 				CASE
+						// 			WHEN t1.cicilan = 0
+						// 			OR t1.cicilan IS NULL THEN
+						// 				"belum"
+						// 			WHEN t1.cicilan = sb.registration - (
+						// 				cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai/ 100, 0)
+						// 			) THEN
+						// 				"lunas"
+						// 			WHEN t1.cicilan < sb.registration - (
+						// 				cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai / 100, 0)
+						// 			) THEN
+						// 				"kurang"
+						// 			END AS statbayar,
+						// 			sb.registration - (
+						// 				cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai/ 100, 0)
+						// 			) biayanet,
+						// 			cs.replid,
+						// 			cs.nama,
+						// 			t1.cicilan,
+						// 			p.angkatan,
+						// 			cs.nis
+						// 		FROM
+						// 			psb_calonsiswa cs
+						// 			LEFT JOIN psb_disctunai dt ON dt.replid = cs.disctunai
+						// 			LEFT JOIN psb_setbiaya sb ON sb.replid = cs.setbiaya
+						// 			LEFT JOIN (
+						// 				SELECT
+						// 					ss.replid,
+						// 					sum(p.cicilan) cicilan
+						// 				FROM
+						// 					psb_calonsiswa ss
+						// 				LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
+						// 				LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+						// 				LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+						// 				LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
+						// 				WHERE
+						// 					k.nama = "dpp"
+						// 				GROUP BY
+						// 					ss.replid
+						// 			) t1 ON t1.replid = cs.replid
+						// 			LEFT JOIN psb_kelompok k ON k.replid = cs.kelompok
+						// 			LEFT JOIN psb_proses p ON p.replid = k.proses
+						// 			) t2 ON t2.replid = c.replid
+						// 		WHERE
+						// 			t2.angkatan = '.$angkatan.' AND
+						// 			t2.nama LIKE "%'.$nama.'%" AND
+						// 			t2.nis LIKE "%'.$nis.'%" '.$status;
+						$sql = 'SELECT
+									t2.*
+								FROM
+									psb_calonsiswa c
 								LEFT JOIN (
 									SELECT
 										CASE
@@ -233,48 +286,62 @@
 									OR t1.cicilan IS NULL THEN
 										"belum"
 									WHEN t1.cicilan = sb.registration - (
-										cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai/ 100, 0)
+										cs.discsaudara + cs.discsubsidi + ifnull(
+											sb.registration * dt.nilai / 100,
+											0
+										)
 									) THEN
 										"lunas"
 									WHEN t1.cicilan < sb.registration - (
-										cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai / 100, 0)
+										cs.discsaudara + cs.discsubsidi + ifnull(
+											sb.registration * dt.nilai / 100,
+											0
+										)
 									) THEN
 										"kurang"
 									END AS statbayar,
 									sb.registration - (
-										cs.discsaudara + cs.discsubsidi+ ifnull(sb.registration * dt.nilai/ 100, 0)
+										cs.discsaudara + cs.discsubsidi + ifnull(
+											sb.registration * dt.nilai / 100,
+											0
+										)
 									) biayanet,
 									cs.replid,
 									cs.nama,
 									t1.cicilan,
-									p.angkatan,
+									angkt.angkatan,
 									cs.nis
 								FROM
 									psb_calonsiswa cs
-									LEFT JOIN psb_disctunai dt ON dt.replid = cs.disctunai
-									LEFT JOIN psb_setbiaya sb ON sb.replid = cs.setbiaya
-									LEFT JOIN (
-										SELECT
-											ss.replid,
-											sum(p.cicilan) cicilan
-										FROM
-											psb_calonsiswa ss
-										LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
-										LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
-										LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-										LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
-										WHERE
-											k.nama = "dpp"
-										GROUP BY
-											ss.replid
-									) t1 ON t1.replid = cs.replid
-									LEFT JOIN psb_kelompok k ON k.replid = cs.kelompok
-									LEFT JOIN psb_proses p ON p.replid = k.proses
-									) t2 ON t2.replid = c.replid
+								LEFT JOIN psb_disctunai dt ON dt.replid = cs.disctunai
+								LEFT JOIN psb_setbiaya sb ON sb.replid = cs.setbiaya
+								LEFT JOIN (
+									SELECT
+										ss.replid,
+										sum(p.cicilan) cicilan
+									FROM
+										psb_calonsiswa ss
+									LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
+									LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
+									LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
+									LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
+									WHERE
+										k.nama = "dpp"
+									GROUP BY
+										ss.replid
+								) t1 ON t1.replid = cs.replid
+								LEFT JOIN psb_kelompok k ON k.replid = cs.kelompok
+								LEFT JOIN aka_tahunajaran t ON t.replid = k.tahunajaran
+								LEFT JOIN departemen d ON d.replid = t.departemen
+								LEFT JOIN aka_angkatan angkt ON d.replid = angkt.angkatan 
+								) t2 ON t2.replid = c.replid
 								WHERE
-									t2.angkatan = '.$angkatan.' AND
-									t2.nama LIKE "%'.$nama.'%" AND
-									t2.nis LIKE "%'.$nis.'%" '.$status;
+									t2.angkatan = '.$angkatan.'
+								AND t2.nama LIKE "%'.$nama.'%" 
+								AND t2.nis LIKE "%'.$nis.'%" '.$status;
+									// t2.angkatan = '.$angkatan.' AND
+									// t2.nama LIKE "%'.$nama.'%" AND
+									// t2.nis LIKE "%'.$nis.'%" '.$status;
 	                  	// var_dump($sql);exit();
 						if(isset($_POST['starting'])){ 
 							$starting=$_POST['starting'];
@@ -658,6 +725,7 @@
 									LEFT JOIN psb_proses p on p.replid = k.proses
 								WHERE
 									c.replid ='.$_POST['replid']; 
+						// var_dump($s2);exit();
 						$e1 = mysql_query($s1);
 						$r1 = mysql_fetch_assoc($e1);
 
