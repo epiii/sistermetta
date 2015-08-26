@@ -14,10 +14,27 @@
 			break;
 		}
 	}
+	function getFieldArr2($f,$tb,$w,$k){
+		$s   = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
+		$e   = mysql_query($s);
+		$arr =array();
+		while ($r=mysql_fetch_assoc($e)) {
+			$arr[]=$r[$f];
+		}return $arr;
+	}
+	function getFieldArr($f,$tb,$w,$k){
+		$s   = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
+		// pr($s);
+		$e   = mysql_query($s);
+		$arr ='';
+		while ($r=mysql_fetch_assoc($e)) {
+			$arr.=','.$r[$f];
+		}return substr($arr,1);
+	}
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = '.$k:'');
-		// print_r($s);exit();
+		// vd($s);
 		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
 		return $r[$f];

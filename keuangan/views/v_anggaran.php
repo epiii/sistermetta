@@ -27,7 +27,7 @@
             <tr style="color:white;"class="info">
                 <th class="text-center">Kategori Anggaran </th>
                 <th class="text-center">Rekening</th>
-                <th class="text-center">Keterangan</th>
+                <th class="text-center">Tujuan</th>
                 <th class="text-center">Jumlah</th>
                 <th class="text-center">Total Nominal</th>
                 <th class="text-center">Aksi</th>
@@ -64,7 +64,7 @@
             <span id="d_kategorianggaranDV"></span>
         </div>
         <div class="row">
-            <span class="span3">Keterangan:</span>
+            <span class="span3">Tujuan:</span>
             <span id="d_keteranganDV"></span>
         </div>
         <div class="row">
@@ -87,7 +87,7 @@
                 <th class="text-center">Anggaran </th>
                 <th class="text-center">Nominal</th>
                 <th class="text-center">Terpakai</th>
-                <th class="text-center">Keterangan</th>
+                <th class="text-center">Tujuan</th>
                 <th class="text-center">Aksi</th>
             </tr>
             <tr style="display:none;" id="k_cariTR" class="info">

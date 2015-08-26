@@ -13,8 +13,9 @@ _________________________  Sistem  ___________________________
 * Icon(C)
 ________________________   User  ____________________________
 
-* level (P)
-	- detail (aksi-level): update/insert 
+* level (C)
+	+ detail (aksi-level): update/insert 
+	- tambah field : urutan [import -> server metta] 
 * user (P)
 	- CRUD
 * grup modul (P)

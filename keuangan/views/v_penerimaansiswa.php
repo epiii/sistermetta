@@ -42,7 +42,7 @@
                         <li class="place-right">
                             <div class="input-control select">
                                 <div class="input-control select span3">
-                                    <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
+                                    <select data-hint="Tahun ajaran" name="prosesS" id="prosesS"></select>
                                 </div>
                                 <div class="input-control select span3">
                                     <select data-hint="Kelompok Pendaftaran" class="cari" name="kelompokS" id="kelompokS"></select>

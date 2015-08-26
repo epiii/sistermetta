@@ -67,11 +67,12 @@
 				if($jum!=0){	
 					while($res = mysql_fetch_assoc($result)){	
 						$btn ='<td align="center">
-									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['id_menu'].');">
+									<button '.(isAksi('menu','u')?'onclick="viewFR('.$res['id_menu'].');"':'disabled').' data-hint="ubah"  class="button" >
 										<i class="icon-pencil on-left"></i>
 									</button>
-									<button data-hint="hapus"  class="button" onclick="del('.$res['id_menu'].');">
+									<button data-hint="hapus"  class="button" '.(isAksi('menu','d')?'onclick="del('.$res['id_menu'].');"':'disabled').' >
 										<i class="icon-remove on-left"></i>
+									</button>
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['grupmodul'].'</td>
@@ -162,21 +163,21 @@
 			// ambiledit ------			
 
 			// cmbdepartemen -----------------------------------------------------------------
-			case 'cmbdepartemen':
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
 				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
+					if(isset($_POST['id_grupmenu'])){
+						$w='where id_grupmenu='.$_POST['id_grupmenu'];
 					}
 				}
 				
 				$s	= ' SELECT *
 						from '.$tb.'
 						'.$w.'		
-						ORDER  BY urut asc';
-
+						ORDER  BY menu asc';
+// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
@@ -194,7 +195,7 @@
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
 						}
-						$ar = array('status'=>'sukses','departemen'=>$dt);
+						$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}$out=json_encode($ar);
 			break;

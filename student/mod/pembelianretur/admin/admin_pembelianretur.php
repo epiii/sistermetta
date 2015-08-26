@@ -126,6 +126,7 @@ $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];
 $jenjang=$data2['jenjang'];
 $getstokminusreturbeli = getstokminusreturbeli($_SESSION['kodeinv'],$kode);
+
 $subtotal=$getstokminusreturbeli*$harga;
 $PRODUCTID = array ();
 foreach ($_SESSION['product_id'] as $k=>$v){
@@ -369,7 +370,7 @@ $harga = $_SESSION['product_id'][$k]['harga'];
 $jenjang = $_SESSION['product_id'][$k]["jenjang"];
 $kode = $_SESSION['product_id'][$k]["kode"];
 $subtotal=$_SESSION['product_id'][$k]["subtotal"];
-$jumlahbeliasli=$_SESSION['product_id'][$k]["jumlahbeliasli"];
+//$jumlahbeliasli=$_SESSION['product_id'][$k]["jumlahbeliasli"];
 $nilaidiscount=cekdiscount($subdiscount,$harga)*$jumlah;
 $admin .= '	
 	<tr>

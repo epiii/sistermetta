@@ -18,6 +18,7 @@ var Backgrounds = new Array ("back1.jpg","back2.jpg","back3.jpg","back4.jpg","ba
 var TimeOut = 10;
 
 function isCorrect(IsCorrect){
+	// alert(IsCorrect);
 	if(IsCorrect == 1){
 		document.location.reload();
 		// window.location.replace("indexs.php");
@@ -38,17 +39,62 @@ function ChangeWallpaper(URLimage){
 	$("#BackgroundUp").css("background-image","url(backgrounds/"+ URLimage +")");
 	$("#txtCurrentBack").val(URLimage);
 }
+
+$(document).ready(function() {
+	$('#passTB').on('keyup load',function(){
+		$('#pass2TB').val($.md5($('#passTB').val()));	
+		// $('#pass2TB').val(encodemd5($('#passTB').val()));	
+	});
+
+  	// $(".LoginBox").show();
+  	$("#frmLogin").submit(function(){     //Name of the summited form.
+		// Save = $("#passTB").val();
+		// $("#HiddenPass").val(Save);
+		if(OnError==1){
+			$("#botTryAgain").click();
+			return false;
+		}
+		// var datax = 'user='+$('#userTB').val()+'&pass='+md5($('#passTB').val());
+		// console.log(datax);
+		$.ajax({
+			type:"POST",             //Keep this value as POST. (is the form type) 
+			url:"lib/dblogin.php",         //URL is the page that use the summited information
+			dataType: "json",             //Keep the dataType to HTML.
+			data:$(this).serialize(),     //Serialize the procedure. 
+			// data:datax,     //Serialize the procedure. 
+			beforeSend:function(){         //This function is triggered before send the information
+
+			},success:function(response){   //This function is triggered after the "sendcomment.php" is processed.
+				var stat = response.stat==true?1:0;
+				if(stat!=1){
+					OnError = 1;
+					// errMsg(response.msg);
+					$('#errmsgDV').html(response.msg);
+					$(".loginFail").addClass("animated fadeIn quick");
+					$(".loginFail").show();
+				}isCorrect(stat);		  // see "loginCheck.php" to get a better idea about response
+			}
+		})
+		return false;                   //This line avoid the form refresh.
+	})
+});
+
 $(".loginMessage").text(UserEnterMessage);
 content = '<div id="BackgroundUp"></div>';
 $("body").append(content);
 content  = '<input type="hidden" id="HiddenPass" name="HiddenPass"/>';
-content += '<div class="squaredTwo"><input type="checkbox" value="None" id="squaredTwo" name="chkRemember"/><label for="squaredTwo" class="color"></label></div><input type="hidden" id="txtRememberMe" name="txtRememberMe" value="0"/><span class="lblRemember">'+ RememberMeLabel +'</span>';
+// content += '<div class="squaredTwo"><input type="checkbox" value="None" id="squaredTwo" name="chkRemember"/><label for="squaredTwo" class="color"></label></div><input type="hidden" id="txtRememberMe" name="txtRememberMe" value="0"/><span class="lblRemember">'+ RememberMeLabel +'</span>';
 content += '<input type="hidden" id="txtCurrentColor" name="txtCurrentColor"/>';
 content += '<input type="hidden" id="txtCurrentBack" name="txtCurrentBack"/>';
 $("#frmLogin").append(content);
-content = '<div class="boxLoading"><img src="img/loading82.gif"><span>'+LoadingMessage+'</span></div>';
-content += '<div class="loginFail"><span class="OrangeSpan">'+ ErrorMessage +'</span><br/><br/><button id="botTryAgain">'+ ErrorBotonLabel +'</button></div>';
-$(".LoginBox").append(content);
+
+// function  errMsg (em) {
+	content = '<div class="boxLoading"><img src="img/loading82.gif"><span>'+LoadingMessage+'</span></div>';
+	content += '<div class="loginFail"><span id="errmsgDV" class="OrangeSpan"></span><br/><br/><button id="botTryAgain">'+ ErrorBotonLabel +'</button></div>';
+	// content += '<div class="loginFail"><span id="errmsgDV" class="OrangeSpan">'+ ErrorMessage +'</span><br/><br/><button id="botTryAgain">'+ ErrorBotonLabel +'</button></div>';
+	$(".LoginBox").append(content);
+// }
+
 
 $("body").css("background",bgColor);
 $("#botLogIn").css("background-color", bgColor);
@@ -253,42 +299,6 @@ $("#botTryAgain").click(function(){
 
 
 
-$(document).ready(function() {
-	$('#passTB').on('keyup load',function(){
-		$('#pass2TB').val($.md5($('#passTB').val()));	
-		// $('#pass2TB').val(encodemd5($('#passTB').val()));	
-	});
-
-  	// $(".LoginBox").show();
-  	$("#frmLogin").submit(function(){     //Name of the summited form.
-		// Save = $("#passTB").val();
-		// $("#HiddenPass").val(Save);
-		if(OnError==1){
-			$("#botTryAgain").click();
-			return false;
-		}
-		// var datax = 'user='+$('#userTB').val()+'&pass='+md5($('#passTB').val());
-		// console.log(datax);
-		$.ajax({
-			type:"POST",             //Keep this value as POST. (is the form type) 
-			url:"lib/dblogin.php",         //URL is the page that use the summited information
-			dataType: "html",             //Keep the dataType to HTML.
-			data:$(this).serialize(),     //Serialize the procedure. 
-			// data:datax,     //Serialize the procedure. 
-			beforeSend:function(){         //This function is triggered before send the information
-
-			},success:function(response){   //This function is triggered after the "sendcomment.php" is processed.
-				// alert(response);
-				if(response !=1){
-					OnError = 1;
-					$(".loginFail").addClass("animated fadeIn quick");
-					$(".loginFail").show();
-				}isCorrect(response);		  // see "loginCheck.php" to get a better idea about response
-			}
-		})
-		return false;                   //This line avoid the form refresh.
-	})
-});
 
 // Style correction for firefox
 	var ua = $.browser;
@@ -298,21 +308,21 @@ $(document).ready(function() {
     	$(".seePass").css("top", "-24");
   	}
 
- $("#squaredTwo").click(function(){
+ // $("#squaredTwo").click(function(){
 
- 	if(Checked==0)
- 	{
- 		$("#txtRememberMe").val("1");
- 		Checked=1;
- 	}
- 	else
- 	{
- 		$("#txtRememberMe").val("0");
- 		Checked=0;
- 	}
+ // 	if(Checked==0)
+ // 	{
+ // 		$("#txtRememberMe").val("1");
+ // 		Checked=1;
+ // 	}
+ // 	else
+ // 	{
+ // 		$("#txtRememberMe").val("0");
+ // 		Checked=0;
+ // 	}
  	
 
- });
+ // });
 
 
 // Function that create the color bar engine
