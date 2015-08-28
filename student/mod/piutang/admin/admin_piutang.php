@@ -113,7 +113,7 @@ if($tgltermin=='01/01/1970'){
 $tgltermin='';
 }
 if($piutang>'0'){
-$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok">'.$data['nofaktur'].'</a>';
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok&bayar=ok"target="new">'.$data['nofaktur'].'</a>';
 }else{
 $lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok"target="new">'.$data['nofaktur'].'</a>';
 }
