@@ -113,6 +113,9 @@ $admin .= '<div class="error"><b>Gagal Menambah PO.</b></div>';
 
 if(isset($_POST['tambahsupplier'])){
 $_SESSION['kodesupplier'] = $_POST['kodesupplier'];
+$kodesupplier= $_POST['kodesupplier'];
+$carabayar = getcarabayar($kodesupplier);
+$termin = gettermin($kodesupplier);
 }
 
 if(isset($_POST['deletesupplier'])){
@@ -198,16 +201,20 @@ porefresh();
 }
 
 $kodesupplier= $_POST['kodesupplier'];	
-$kodebarang= $_POST['kodebarang'];	
+$kodebarang= $_POST['kodebarang'];
+$carabayar= $_POST['carabayar'];
+$termin= $_POST['termin'];	
 $user = $_SESSION['UserName'];
 $tglnow = date("Y-m-d");
 $nopo = generatepo();
+
 $tgl 		= !isset($tgl) ? $tglnow : $tgl;
 $kodesupplier 		= !isset($kodesupplier) ? '' : $kodesupplier;
 $kodebarang 		= !isset($kodebarang) ? '' : $kodebarang;
 $discount 		= !isset($discount) ? '0' : $discount; 
-$carabayar = getcarabayar($kodesupplier);
-$termin = gettermin($kodesupplier);
+$carabayar 		= !isset($carabayar) ? 'Tunai' : $carabayar;
+$termin 		= !isset($termin) ? '0' : $termin;
+
 $sel2 = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Tunai','Debet Card','Hutang');
 foreach ($arr2 as $kk=>$vv){
@@ -219,6 +226,7 @@ foreach ($arr2 as $kk=>$vv){
 }
 
 $sel2 .= '</select>'; 
+
 $admin .= '
 <div class="panel-heading"><b>Transaksi PO Pembelian</b></div>';	
 $admin .= '
@@ -270,9 +278,9 @@ while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 }
 	$admin .= '</select>
 			</td>
-		<td><input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" > Termin</td>
-		<td>:</td>
-		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"></td>
+		<td><input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" > </td>
+		<td></td>
+		<td></td>
 		</tr>';
 $admin .= '	
 	<tr><td colspan="5"><div id="Tbayar"></div></td>

@@ -742,7 +742,7 @@ $kodepo 		= !isset($kodepo) ? $_SESSION['kodepo'] : $kodepo;
 $kodesupplier 		= !isset($kodesupplier) ? $_SESSION['kodesupplier'] : $kodesupplier;
 $discount 		= !isset($discount) ? '0' : $discount;
 $carabayar 		= !isset($carabayar) ? 'Hutang' : $carabayar;
-$termin 		= !isset($termin) ?$_POST['termin'] : $termin;
+$termin 		= !isset($termin) ?'0' : $termin;
 $sel2 = '<select name="carabayar" class="form-control">';
 $arr2 = array ('Tunai','Debet Card','Hutang');
 foreach ($arr2 as $kk=>$vv){
@@ -752,7 +752,8 @@ foreach ($arr2 as $kk=>$vv){
 	$sel2 .= '<option value="'.$vv.'">'.$vv.'</option>';	
 }
 }
-$sel2 = '</select>';
+
+$sel2 .= '</select>'; 
 $admin .= '
 <div class="panel-heading"><b>Transaksi Pembelian</b></div>';	
 $admin .= '

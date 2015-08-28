@@ -39,6 +39,9 @@ if($_GET['aksi']== 'del'){
 
 if($_GET['aksi'] == 'edit'){
 $id = int_filter ($_GET['id']);
+	if(isset($_POST['batal'])){
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produkjasa&mod=yes" />';		
+	}
 if(isset($_POST['submit'])){
 	$jenjang 		= $_POST['jenjang'];
 	$kode 		= $_POST['kode'];
@@ -47,7 +50,7 @@ if(isset($_POST['submit'])){
 	$hargajual 		= $_POST['hargajual'];
 	
 	$error 	= '';
-		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 1) $error .= "Error: jasa sudah terdaftar , silahkan ulangi.<br />";
+		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 1) $error .= "Error: jasa sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$tengah .= '<div class="error">'.$error.'</div>';
 	}else{
@@ -116,13 +119,16 @@ $admin .='</select></td>
 		<td></td>
 		<td></td>
 		<td>
-		<input type="submit" value="Simpan" name="submit"class="btn btn-success"></td>
+		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
 </form></div>';
 }
 
 if($_GET['aksi']==""){
+		if(isset($_POST['batal'])){
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produkjasa&mod=yes" />';		
+	}
 if(isset($_POST['submit'])){
 $jenjang 		= $_POST['jenjang'];
 $kode 		= $_POST['kode'];
@@ -130,7 +136,7 @@ $nama 		= $_POST['nama'];
 $jenis 		= $_POST['jenis'];
 $hargajual 		= int_filter($_POST['hargajual']);
 	$error 	= '';
-	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 0) $error .= "Error: Jasa sudah terdaftar , silahkan ulangi.<br />";
+	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produkjasa WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 0) $error .= "Error: Jasa sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
@@ -142,7 +148,7 @@ $hargajual 		= int_filter($_POST['hargajual']);
 		}
 		unset($jenjang);
 		unset($kode);
-			unset($nama);
+		unset($nama);
 		unset($jenis);
 		unset($hargajual);
 	}
@@ -202,7 +208,7 @@ $admin .='</select></td>
 		<td></td>
 		<td></td>
 		<td>
-		<input type="submit" value="Simpan" name="submit"class="btn btn-success"></td>
+		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
 </form>';

@@ -32,6 +32,9 @@ if($_GET['aksi']== 'del'){
 
 if($_GET['aksi'] == 'edit'){
 $id = int_filter ($_GET['id']);
+	if(isset($_POST['batal'])){
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=supplier&mod=yes" />';		
+	}
 if(isset($_POST['submit'])){
 $kode 		= $_POST['kode'];
 $nama 		= $_POST['nama'];
@@ -53,6 +56,11 @@ if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT kode FROM pos_suppli
 			$admin .= '<div class="error"><b>Gagal di Update.</b></div>';
 		}
 		unset($kode);
+		unset($nama);
+		unset($alamat);
+		unset($telepon);
+		unset($carabayar);
+		unset($termin);
 	}
 
 }
@@ -116,13 +124,16 @@ $admin .= '
 		<td></td>
 		<td></td>
 		<td>
-		<input type="submit" value="Simpan" name="submit"class="btn btn-success"></td>
+		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
 </form></div>';
 }
 
 if($_GET['aksi']==""){
+		if(isset($_POST['batal'])){
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=supplier&mod=yes" />';		
+	}
 if(isset($_POST['submit'])){
 $kode 		= $_POST['kode'];
 $nama 		= $_POST['nama'];
@@ -208,7 +219,7 @@ $admin .= '
 		<td></td>
 		<td></td>
 		<td>
-		<input type="submit" value="Simpan" name="submit"class="btn btn-success"></td>
+		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
 </form>';
