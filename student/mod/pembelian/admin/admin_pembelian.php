@@ -619,7 +619,7 @@ $kode=$data['kodebarang'];
 $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
-$ceksisajumbeli=$jumlah-ceksisajumbeli($nopo,$kode);
+$ceksisajumbeli=getstokpominusbeli($nopo,$kode);
 $subtotal=$ceksisajumbeli*$harga;
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
@@ -782,12 +782,13 @@ $admin .= '
 		<td><select  id="combobox" name="kodepo"  class="form-control">';
 $hasil = $koneksi_db->sql_query( "SELECT * FROM pos_po order by id desc" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
+$pilihan = ($data['nopo']==$kodepo)?"selected":'';
 	$admin .= '
-			<option value="'.$data['nopo'].'">'.getnamasupplier($data['kodesupplier']).' ~ '.$data['nopo'].' ~ '.rupiah_format($data['total']).'</option>';
+			<option value="'.$data['nopo'].'" '.$pilihan.'>'.$data['nopo'].' ~ '.getnamasupplier($data['kodesupplier']).' ~ '.rupiah_format($data['total']).'</option>';
 }
 	$admin .= '</select>&nbsp;
 					<input type="submit" value="Tambah INV" name="tambahpo"class="btn btn-success" >
-				</td>
+				'.$_SESSION['kodepo'].'</td>
 		<td>Termin</td>
 		<td>:</td>
 		<td><input type="text" name="termin" value="'.$termin.'" class="form-control"></td>
