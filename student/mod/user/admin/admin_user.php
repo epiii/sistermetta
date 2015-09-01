@@ -156,6 +156,7 @@ $up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`e
 $up = mysql_query ("UPDATE `pos_useraura` SET `level`='$level',`tipe`='$tipe',`email`='$email' WHERE `UserId`='$id'");			
 	}
 $admin.='<div class="sukses">Data Berhasil Diupdate Dengan ID = '.$id.'</div>';	
+$admin .='<meta http-equiv="refresh" content="1; url=admin.php?pilih=user&amp;mod=yes" />';	
 }
 }
 	
