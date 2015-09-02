@@ -62,14 +62,16 @@ if(isset($_POST['submit'])){
 	$hargajual 		= $_POST['hargajual'];
 	
 	$error 	= '';
-			if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE transaksi like 'stok awal' and kodebarang like'$kode'")) > 0) $error .= "Error: Produk sudah terdapat Stok Awal , silahkan ulangi.<br />";
+	if($jumlah2<>$jumlah){
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE transaksi like 'Stok Awal' and kodebarang like'$kode'")) > 0) $error .= "Error: Produk sudah terdapat Stok Awal , silahkan ulangi.<br />";
+	}
 		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 1) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
 	
 	/*setsaldoawal($kode);*/
-		$hasil  = mysql_query( "UPDATE `pos_produk` SET `kode`='$kode',`jenjang`='$jenjang',`nama`='$nama',`jenis`='$jenis',`jumlah`='$jumlah',`hargabeli`='$hargabeli',`hargajual`='$hargajual' WHERE `id`='$id'" );
+		$hasil  = mysql_query( "UPDATE `pos_produk` SET `kode`='$kode',`jenjang`='$jenjang',`nama`='$nama',`jenis`='$jenis',`jumlah`='$jumlah2',`hargabeli`='$hargabeli',`hargajual`='$hargajual' WHERE `id`='$id'" );
 		if($hasil){
 			$admin .= '<div class="sukses"><b>Berhasil di Update.</b></div>';
 			$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produk&amp;mod=yes" />';	
@@ -79,6 +81,7 @@ if(isset($_POST['submit'])){
 				unset($kode);
 		unset($nama);
 		unset($jumlah);
+		unset($jumlah2);
 		unset($hargabeli);
 		unset($hargajual);
 	}
