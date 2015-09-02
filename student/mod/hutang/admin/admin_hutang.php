@@ -113,7 +113,7 @@ if($tgltermin=='01/01/1970'){
 $tgltermin='';
 }
 if($hutang>'0'){
-$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok">'.$data['noinvoice'].'</a>';
+$lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok&bayar=ok"target="new">'.$data['noinvoice'].'</a>';
 }else{
 $lihatslip = '<a href="cetak_notainvoice.php?kode='.$data['noinvoice'].'&lihat=ok" target="new">'.$data['noinvoice'].'</a>';
 }

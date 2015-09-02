@@ -70,8 +70,9 @@ $tombollunas = 'Piutang';
 }else{
 $tombollunas = 'Lunas';
 }
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok"target="new">'.$data['nofaktur'].'</a>';
 echo'<tr class="border">
-            <td>'.$data['nofaktur'].'</td>
+            <td>'.$lihatslip.'</td>
             <td>'.tanggalindo($data['tgl']).'</td>
             <td>'.getnamacustomer($data['kodecustomer']).'</td>
             <td>'.rupiah_format($data['total']).'</td>

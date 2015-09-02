@@ -49,6 +49,9 @@ if($_GET['aksi']== 'del'){
 
 if($_GET['aksi'] == 'edit'){
 $id = int_filter ($_GET['id']);
+	if(isset($_POST['batal'])){
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produk&mod=yes" />';		
+	}
 if(isset($_POST['submit'])){
 	$jenjang 		= $_POST['jenjang'];
 	$kode 		= $_POST['kode'];
@@ -59,7 +62,7 @@ if(isset($_POST['submit'])){
 	$hargajual 		= $_POST['hargajual'];
 	
 	$error 	= '';
-		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 1) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
+		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 1) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$tengah .= '<div class="error">'.$error.'</div>';
 	}else{
@@ -72,6 +75,11 @@ if(isset($_POST['submit'])){
 		}else{
 			$admin .= '<div class="error"><b>Gagal di Update.</b></div>';
 		}
+				unset($kode);
+		unset($nama);
+		unset($jumlah);
+		unset($hargabeli);
+		unset($hargajual);
 	}
 
 }
@@ -142,13 +150,16 @@ $admin .='</select></td>
 		<td></td>
 		<td>
 		<input type="hidden" name="jumlah" size="25"class="form-control"value="'.$data['jumlah'].'">
-		<input type="submit" value="Simpan" name="submit"class="btn btn-success"></td>
+		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
 </form></div>';
 }
 
 if($_GET['aksi']==""){
+	if(isset($_POST['batal'])){
+$style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=produk&mod=yes" />';		
+	}
 if(isset($_POST['submit'])){
 $jenjang 		= $_POST['jenjang'];
 $kode 		= $_POST['kode'];
@@ -158,7 +169,7 @@ $jumlah 		= $_POST['jumlah'];
 $hargabeli 		= $_POST['hargabeli'];
 $hargajual 		= $_POST['hargajual'];
 	$error 	= '';
-	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and nama='$nama' or kode='$kode'")) > 0) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
+	if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 0) $error .= "Error: Kode Produk sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
 	}else{
@@ -170,7 +181,11 @@ $hargajual 		= $_POST['hargajual'];
 		}else{
 			$admin .= '<div class="error"><b> Gagal di Buat.</b></div>';
 		}
+		unset($kode);
 		unset($nama);
+		unset($jumlah);
+		unset($hargabeli);
+		unset($hargajual);
 	}
 
 }
@@ -196,7 +211,8 @@ $admin .= '
 $hasil = $koneksi_db->sql_query("SELECT * FROM pos_jenisproduk where jenis='BARANG' ORDER BY nama asc");
 $admin .= '<option value="">== Jenis Produk==</option>';
 while ($datas =  $koneksi_db->sql_fetchrow ($hasil)){
-$admin .= '<option value="'.$datas['id'].'">'.$datas['nama'].'</option>';
+	$pilihan = ($datas['id']==$jenis)?"selected":'';
+$admin .= '<option value="'.$datas['id'].'"'.$pilihan.'>'.$datas['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>
@@ -207,7 +223,8 @@ $admin .='</select></td>
 $hasilj = $koneksi_db->sql_query("SELECT * FROM pos_jenjang ORDER BY nama asc");
 $admin .= '<option value="">== Jenjang ==</option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['id'].'">'.$datasj['nama'].'</option>';
+		$pilihan = ($datasj['id']==$jenjang)?"selected":'';
+$admin .= '<option value="'.$datasj['id'].'"'.$pilihan.'>'.$datasj['nama'].'</option>';
 }
 $admin .='</select></td>
 </tr>
@@ -219,28 +236,28 @@ $admin .='</select></td>
 	<tr>
 		<td>Nama Barang</td>
 		<td>:</td>
-		<td><input type="text" name="nama" size="25"class="form-control" required></td>
+		<td><input type="text" name="nama" size="25"class="form-control" required value="'.$nama.'"></td>
 	</tr>
 	<tr>
 		<td>Jumlah</td>
 		<td>:</td>
-		<td><input type="text" name="jumlah" size="25"class="form-control"></td>
+		<td><input type="text" name="jumlah" size="25"class="form-control" value="'.$jumlah.'"></td>
 	</tr>
 		<tr>
 		<td>Harga Beli</td>
 		<td>:</td>
-		<td><input type="text" name="hargabeli" size="25"class="form-control"></td>
+		<td><input type="text" name="hargabeli" size="25"class="form-control" value="'.$hargabeli.'"></td>
 	</tr>
 		<tr>
 		<td>Harga Jual</td>
 		<td>:</td>
-		<td><input type="text" name="hargajual" size="25"class="form-control"></td>
+		<td><input type="text" name="hargajual" size="25"class="form-control" value="'.$hargajual.'"></td>
 	</tr>
 	<tr>
 		<td></td>
 		<td></td>
 		<td>
-		<input type="submit" value="Simpan" name="submit"class="btn btn-success"></td>
+		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
 </form>';
