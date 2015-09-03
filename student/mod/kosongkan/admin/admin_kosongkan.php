@@ -3,7 +3,19 @@ if (!defined('AURACMS_admin')) {
     Header("Location: ../index.php");
     exit;
 }
-
+$JS_SCRIPT= <<<js
+<script language="JavaScript" type="text/javascript">
+/*<![CDATA[*/
+function chunchall(obj){
+var checkB=document.getElementsByName('tabel[]'), i=0, b, c;
+b=obj.firstChild.nodeValue=='Check all'?true:false;
+while(c=checkB[i++]){c.checked=b;}
+obj.firstChild.nodeValue=b?'Uncheck all':'Check all';
+}
+/*]]>*/
+</script>
+js;
+$script_include[] = $JS_SCRIPT;
 if (!cek_login()){
     header("location: index.php");
     exit;
@@ -21,20 +33,26 @@ if (!cek_login()){
 </div>';
 if ($_GET['aksi'] == 'transaksi'){
 if(isset($_POST['submit'])){
-$tabel = cleantext($_POST['tabel']);	
-if ($error){
-        $admin.='<div class="error">'.$error.'</div>';
-}else{
-$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $tabel");	
-$admin .= '<div class="sukses">Berhasil menghapus tabel '.$tabel.'</div>';
+//$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $tabel");
+$admin .= 'Berhasil menghapus tabel : <br>';	
+if(!empty($_POST['tabel'])) {
+    foreach($_POST['tabel'] as $check) {
+            $admin .= $check.'<br>'; 
+//$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $check");			
+			//echoes the value set in the HTML form for each checked checkbox.
+                         //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
+                         //in your case, it would echo whatever $row['Report ID'] is equivalent to.
+    }
 }
+$admin .= '';
+//$admin .= '<div class="sukses">Berhasil menghapus tabel '.$check.'</div>';
 }
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Kosongkan Transaksi</h3></div>';
 $admin.='<div class="border">';
-$admin.='<form method="post" action="#">
+$admin.='<form method="post" action="#" name="test">
 <table width="100%" border="0" cellspacing="0" cellpadding="0">'; 
-  
+/*  
 $sel2 = '<select name="tabel" class="form-control">';
 $arr2 = array ('pos_po','pos_podetail','pos_popenjualan','pos_popenjualandetail','pos_pembelian','pos_pembeliandetail','pos_pembelianretur','pos_pembelianreturdetail','pos_penjualan','pos_penjualanbiaya','pos_penjualanbiayadetail','pos_penjualandetail','pos_penjualanjasa','pos_penjualanjasadetail','pos_penjualanretur','pos_penjualanreturdetail');
 foreach ($arr2 as $kk=>$vv){
@@ -42,18 +60,21 @@ foreach ($arr2 as $kk=>$vv){
 
 }
 $sel2 .= '</select>';    
-  
-  
+  */
+$arr2 = array ('pos_po','pos_podetail','pos_popenjualan','pos_popenjualandetail','pos_pembelian','pos_pembeliandetail','pos_pembelianretur','pos_pembelianreturdetail','pos_penjualan','pos_penjualanbiaya','pos_penjualanbiayadetail','pos_penjualandetail','pos_penjualanjasa','pos_penjualanjasadetail','pos_penjualanretur','pos_penjualanreturdetail');
+foreach ($arr2 as $kk=>$vv){
+$sel3 .='<input type="checkbox" name="tabel[]" value ="'.$vv.'"> '.$vv.'<br />';
+}  
 $admin .='<tr>
-    <td style="padding:5px;">Tabel</td>
+    <td style="padding:5px;">Tabel Transaksi</td>
     <td style="padding:5px;">:</td>
-    <td style="padding:5px;">'.$sel2.'</td>
+    <td style="padding:5px;">'.$sel3.'</td>
   </tr>';
 
 $admin .='<tr>
 	<td style="padding:5px;">&nbsp;</td>
     <td style="padding:5px;">&nbsp;</td>
-    <td style="padding:5px;"><input type="submit" value="Kosongkan" name="submit" class="btn btn-success"></td>
+    <td style="padding:5px;"><input type="submit" value="Kosongkan" name="submit" class="btn btn-success"onclick="return confirm(\'Apakah Anda yakin menghapus Tabel ?\');">&nbsp;<a href="#" onclick="chunchall(this);return false"class="btn btn-warning">Check all</a></td>
   </tr>
 </table></form>';
 $admin .= '</div>';		
@@ -98,7 +119,8 @@ $admin .='<tr>
 $admin .='<tr>
 	<td style="padding:5px;">&nbsp;</td>
     <td style="padding:5px;">&nbsp;</td>
-    <td style="padding:5px;"><input type="submit" value="Kosongkan" name="submit" class="btn btn-success"></td>
+    <td style="padding:5px;"><input type="submit" value="Kosongkan" name="submit" class="btn btn-success" 
+	onclick="return confirm(\'Are you sure you want to continue\')"></td>
   </tr>
 </table></form>';
 $admin .= '</div>';		
