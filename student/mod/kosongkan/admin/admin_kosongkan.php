@@ -64,7 +64,7 @@ foreach ($arr2 as $kk=>$vv){
 $sel3 .='<input type="checkbox" name="tabel[]" value ="'.$vv.'"> '.$vv.'<br />';
 }  
 $admin .='<tr>
-    <td style="padding:5px;">Tabel</td>
+    <td style="padding:5px;">Tabel Transaksi</td>
     <td style="padding:5px;">:</td>
     <td style="padding:5px;">'.$sel3.'</td>
   </tr>';
@@ -72,11 +72,11 @@ $admin .='<tr>
 $admin .='<tr>
 	<td style="padding:5px;">&nbsp;</td>
     <td style="padding:5px;">&nbsp;</td>
-    <td style="padding:5px;"><input type="submit" value="Kosongkan" name="submit" class="btn btn-success"onclick="return confirm(\'Apakah Anda yakin menghapus Tabel ?\');"></td>
+    <td style="padding:5px;"><input type="submit" value="Kosongkan" name="submit" class="btn btn-success"onclick="return confirm(\'Apakah Anda yakin menghapus Tabel ?\');">&nbsp;<a href="#" onclick="chunchall(this);return false"class="btn btn-warning">Check all</a></td>
   </tr>
 </table></form>';
 $admin .= '</div>';		
-$admin .= '<a href="#" onclick="chunchall(this);return false">Check all</a>';
+
 }
 
 if ($_GET['aksi'] == 'stokawal'){
