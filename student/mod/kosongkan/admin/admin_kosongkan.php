@@ -37,7 +37,9 @@ if(isset($_POST['submit'])){
 $admin .= 'Berhasil menghapus tabel : <br>';	
 if(!empty($_POST['tabel'])) {
     foreach($_POST['tabel'] as $check) {
-            $admin .= $check.'<br>'; //echoes the value set in the HTML form for each checked checkbox.
+            $admin .= $check.'<br>'; 
+//$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $check");			
+			//echoes the value set in the HTML form for each checked checkbox.
                          //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
                          //in your case, it would echo whatever $row['Report ID'] is equivalent to.
     }
