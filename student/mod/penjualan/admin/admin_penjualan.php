@@ -367,7 +367,7 @@ $kode = $_SESSION['product_id'][$k]["kode"];
 $subtotal=$_SESSION['product_id'][$k]["subtotal"];
 $nilaidiscount=cekdiscount($subdiscount,$harga)*$jumlah;
 $stok = $_SESSION['product_id'][$k]['stok'];		
-$nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
+//$nilaidiscount=cekdiscount($cart_itm["subdiscount"],$cart_itm["harga"]);
 $admin .= '	
 	<tr>
 			<td>'.$no.'</td>
