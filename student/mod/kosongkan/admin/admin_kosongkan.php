@@ -34,18 +34,18 @@ if (!cek_login()){
 if ($_GET['aksi'] == 'transaksi'){
 if(isset($_POST['submit'])){
 //$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $tabel");
-$admin .= 'Berhasil menghapus tabel : <br>';	
+//$admin .= 'Berhasil menghapus tabel : <br>';	
 if(!empty($_POST['tabel'])) {
     foreach($_POST['tabel'] as $check) {
             $admin .= $check.'<br>'; 
-//$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $check");			
+$query         = $koneksi_db->sql_query ("TRUNCATE TABLE $check");			
 			//echoes the value set in the HTML form for each checked checkbox.
                          //so, if I were to check 1, 3, and 5 it would echo value 1, value 3, value 5.
                          //in your case, it would echo whatever $row['Report ID'] is equivalent to.
     }
 }
 $admin .= '';
-//$admin .= '<div class="sukses">Berhasil menghapus tabel '.$check.'</div>';
+$admin .= '<div class="sukses">Berhasil menghapus tabel '.$check.'</div>';
 }
 $admin .= '<div class="panel panel-info">
 <div class="panel-heading"><h3 class="panel-title">Kosongkan Transaksi</h3></div>';

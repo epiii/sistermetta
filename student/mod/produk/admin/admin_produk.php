@@ -58,6 +58,7 @@ if(isset($_POST['submit'])){
 	$nama 		= $_POST['nama'];
 	$jenis 		= $_POST['jenis'];
 	$jumlah 		= $_POST['jumlah'];
+	$jumlah2 		= $_POST['jumlah2'];
 	$hargabeli 		= $_POST['hargabeli'];
 	$hargajual 		= $_POST['hargajual'];
 	
@@ -136,7 +137,7 @@ $admin .='</select></td>
 	<tr>
 		<td>Jumlah</td>
 		<td>:</td>
-		<td><input type="text" name="jumlah" size="25"class="form-control"value="'.$data['jumlah'].'" ></td>
+		<td><input type="text" name="jumlah2" size="25"class="form-control"value="'.$data['jumlah'].'" ></td>
 	</tr>
 		<tr>
 		<td>Harga Beli</td>
@@ -153,7 +154,7 @@ $admin .='</select></td>
 		<td></td>
 		<td></td>
 		<td>
-
+<input type="hidden" name="jumlah" size="25"class="form-control"value="'.$data['jumlah'].'" >
 		<input type="submit" value="Simpan" name="submit"class="btn btn-success">&nbsp;<input type="submit" value="Batal" name="batal"class="btn btn-danger"></td>
 	</tr>
 </table>
