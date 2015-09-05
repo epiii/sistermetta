@@ -368,6 +368,9 @@ if(isset($_POST['submit'])){
 	$error 	= '';
 if (!$kode)  $error .= "Error: Barang belum dipilih , silahkan ulangi.<br />";
 if (!$selisih and $mutasi=='stok awal' and $jumlah=='0')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
+if ($mutasi=='stok awal'){
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE kodebarang like'$kode'")) > 0) $error .= "Error: Produk sudah terdapat Stok Awal atau telah melakukan Transaksi , Tidak dapat melakukan Stok Awal.<br />";
+}
 if (!$selisih and $mutasi!='stok awal')  $error .= "Error: selisih belum diisi , silahkan ulangi.<br />";
 	if ($error){
 		$admin .= '<div class="error">'.$error.'</div>';
