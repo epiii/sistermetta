@@ -114,7 +114,7 @@ foreach ($arr2 as $kk=>$vv){
 }
 $sel2 .= '</select>';    
   */
-$arr2 = array ('pos_po','pos_podetail','pos_pembelian','pos_pembeliandetail','pos_pembelianretur','pos_pembelianreturdetail','pos_penjualan','pos_penjualanbiaya','pos_penjualanbiayadetail','pos_penjualandetail','pos_penjualanjasa','pos_penjualanjasadetail','pos_penjualanretur','pos_penjualanreturdetail');
+$arr2 = array ('pos_po','pos_podetail','pos_popenjualan','pos_popenjualandetail','pos_pembelian','pos_pembeliandetail','pos_pembelianretur','pos_pembelianreturdetail','pos_penjualan','pos_penjualanbiaya','pos_penjualanbiayadetail','pos_penjualandetail','pos_penjualanjasa','pos_penjualanjasadetail','pos_penjualanretur','pos_penjualanreturdetail');
 foreach ($arr2 as $kk=>$vv){
 $query = "SELECT count(id) as jumlah FROM $vv";
 $hasil = mysql_query($query);
