@@ -64,7 +64,7 @@ if(isset($_POST['submit'])){
 	
 	$error 	= '';
 	if($jumlah2<>$jumlah){
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE transaksi like 'Stok Awal' and kodebarang like'$kode'")) > 0) $error .= "Error: Produk sudah terdapat Stok Awal , silahkan ulangi.<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT id FROM pos_alur_stok WHERE kodebarang like'$kode'")) > 0) $error .= "Error: Produk sudah terdapat Stok Awal atau telah melakukan Transaksi , Tidak dapat melakukan edit jumlah produk.<br />";
 	}
 		if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT jenjang FROM pos_produk WHERE jenjang='$jenjang' and jenis='$jenis' and kode='$kode'")) > 1) $error .= "Error: Produk sudah terdaftar , silahkan ulangi.<br />";
 	if ($error){
