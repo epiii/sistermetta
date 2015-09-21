@@ -620,7 +620,8 @@ $jumlah=$data['jumlah'];
 $harga=$data['harga'];
 $subdiscount=$data['subdiscount'];
 $ceksisajumbeli=getstokpominusbeli($nopo,$kode);
-$subtotal=$ceksisajumbeli*$harga;
+
+$subtotal=$data['subtotal'];
 $hasil2 =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kode'" );
 $data2 = $koneksi_db->sql_fetchrow($hasil2);
 $id=$data2['id'];

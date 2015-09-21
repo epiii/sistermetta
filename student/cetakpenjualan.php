@@ -182,6 +182,7 @@ $harga = $datas2['harga'];
 $hargabeli = $datas2['hargabeli'];
 $subdiscount = $datas2['subdiscount'];
 $subtotal = $datas2['subtotal'];
+$hargabeli = $hargabeli-($hargabeli*($subdiscount/100));
 $subhargabeli = ($hargabeli*$jumlah);
 if($carabayar=='Piutang'){
 $subtotalbayar ='0';	

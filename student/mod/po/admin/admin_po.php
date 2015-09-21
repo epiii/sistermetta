@@ -270,13 +270,14 @@ $pilihan = ($data['kode']==$kodesupplier)?"selected":'';
 		<td>Barang</td>
 		<td>:</td>
 		<td><select name="kodebarang"  class="form-select"id="combobox2">';
-$hasil = $koneksi_db->sql_query( "SELECT pp.nama as namaproduk,pp.kode as kode,pj.nama as jenjang FROM pos_produk pp,pos_jenjang pj WHERE pp.jenjang=pj.id " );
-while ($data = $koneksi_db->sql_fetchrow($hasil)) { 
-
-	$admin .= '
-			<option value="'.$data['kode'].'">'.$data['namaproduk'].'</option>';
+$hasil = $koneksi_db->sql_query( "SELECT * FROM pos_produk ORDER BY nama asc" );
+$hasilj = $koneksi_db->sql_query("SELECT * FROM pos_produk ORDER BY nama asc");
+$admin .= '<option value="">== Barang ==</option>';
+while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
+$pilihanj = ($datasj['kode']==$kodebarang)?"selected":'';
+$admin .= '<option value="'.$datasj['kode'].'"'.$pilihanj.'>'.$datasj['nama'].'</option>';
 }
-	$admin .= '</select>
+$admin .='</select>
 			</td>
 		<td><input type="submit" value="Tambah Barang" name="tambahbarang"class="btn btn-success" > </td>
 		<td></td>

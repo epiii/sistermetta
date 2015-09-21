@@ -195,7 +195,8 @@ $id=$data['id'];
 $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargajual'];
-$hargabeli=$data['hargabeli'];
+//$hargabeli=$data['hargabeli'];
+$hargabeli = gethargabeliterbaru($kode);
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
 $error 	= '';
@@ -351,6 +352,7 @@ $admin .= '
 		<th><b>Kode</b></</th>
 		<th><b>Nama</b></td>
 		<th><b>Stok</b></</td>
+				<th><b>H.Beli</b></</td>
 		<th><b>Jumlah</b></</td>
 		<th><b>Harga</b></</th>
 		<th><b>Discount</b></</th>
@@ -362,6 +364,7 @@ foreach ($_SESSION['product_id'] as $k=>$v){
 $subdiscount = $_SESSION['product_id'][$k]['subdiscount'];
 $jumlah = $_SESSION['product_id'][$k]['jumlah'];
 $harga = $_SESSION['product_id'][$k]['harga'];
+$hargabeli = $_SESSION['product_id'][$k]['hargabeli'];
 $jenjang = $_SESSION['product_id'][$k]["jenjang"];
 $kode = $_SESSION['product_id'][$k]["kode"];
 $subtotal=$_SESSION['product_id'][$k]["subtotal"];
@@ -374,6 +377,7 @@ $admin .= '
 			<td>'.$kode.'</td>
 		<td>'.getnamabarang($kode).'</td>
 		<td>'.$stok.'</td>
+				<td>'.$hargabeli.'</td>
 		<td><input align="right" type="text" name="jumlahjual['.$k.']" value="'.$jumlah.'"class="form-control"></td>
 		<td><input align="right" type="text" name="harga['.$k.']" value="'.$harga.'"class="form-control"></td>
 		<td><input align="right" type="text" name="subdiscount['.$k.']" value="'.$subdiscount.'"class="form-control"></td>
