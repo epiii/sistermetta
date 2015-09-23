@@ -1,0 +1,2 @@
++ update hargabeli di penjualan berdasarkan harga beli minus discount di pembelian
+  update pos_penjualandetail jd set jd.hargabeli = (select (bd.harga-(bd.harga*(bd.subdiscount/100))) from pos_pembeliandetail bd where jd.kodebarang = bd.kodebarang group by bd.kodebarang)
