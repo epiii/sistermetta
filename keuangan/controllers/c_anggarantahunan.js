@@ -5,7 +5,7 @@ var mnu2 ='tahunbuku';
 var dir2 ='models/m_'+mnu2+'.php';
 
 var mnu3 ='departemen'; 
-var dir3 ='../akademik_sister/models/m_'+mnu3+'.php';
+var dir3 ='../akademik/models/m_'+mnu3+'.php';
 
 var mnu4 ='anggaran'; 
 var dir4 ='models/m_'+mnu4+'.php';

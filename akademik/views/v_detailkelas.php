@@ -1,3 +1,5 @@
+<?php isMenu($modul,'detailkelas'); ?>
+
 <script src="controllers/c_detailkelas.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
@@ -21,6 +23,9 @@
 </nav>
 
 <div class="input-control select size3">
+    <select class="cari" data-hint="departemen" name="departemenS" id="departemenS"></select>
+</div>
+<div class="input-control select size3">
     <select class="cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
 
@@ -31,7 +36,7 @@
             <th class="text-center">Sub Tingkat</th>
             <th class="text-center">Nama Kelas </th>
             <th class="text-center">Wali Kelas</th>
-            <th class="text-center">Kapasitas</th>
+            <!-- <th class="text-center">Kapasitas</th> -->
             <th class="text-center">Aksi</th>
         </tr>
         <tr xstyle="display:none;" id="cariTR" class="selected">
@@ -47,7 +52,7 @@
             </th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="kelasS" name="kelasS"></div></th>
             <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="namaS" name="namaS"></div></th>
-            <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="kapasitasS" name="kapasitasS"></div></th>
+            <!-- <th class="text-center"><div class="input-control text"><input class="cari" placeholder="cari ..." id="kapasitasS" name="kapasitasS"></div></th> -->
             <th></th>
         </tr>
     </thead>

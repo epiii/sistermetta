@@ -23,6 +23,12 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
+                        // keterangan
+                        +'<label>Usia</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="keterangan"  name="keteranganTB" id="keteranganTB"></textarea>'
+                        +'</div>'
+                        
                         // button
                         +'<div class="form-actions">' 
                             +'<button class="button primary">simpan</button>&nbsp;'
@@ -46,7 +52,7 @@ var contentFR = '';
         $('#tingkatS').on('change',function (){
             viewTB();
         });
-        $('#subtingkatS').on('keydown',function (e){ // kode grup
+        $('#keteranganS,#subtingkatS').on('keydown',function (e){ // kode grup
             if(e.keyCode == 13) viewTB();
         });
 
@@ -170,6 +176,7 @@ var contentFR = '';
                     ajax(u,d).done(function(r){
                         $('#idformH').val(id);
                         $('#subtingkatTB').val(r.subtingkat);
+                        $('#keteranganTB').val(r.keterangan);
                         cmbtingkat('form',r.tingkat);
                     });
                 }else{ // form mode : add  

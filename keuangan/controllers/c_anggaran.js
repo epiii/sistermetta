@@ -1,178 +1,292 @@
-
 var mnu       ='anggaran'; 
 var mnu2      ='tahunbuku'; 
 var mnu3      ='departemen'; 
-var mnu4      ='tahunajaran'; 
 var mnu5      ='tingkat'; 
 
 var dir       ='models/m_'+mnu+'.php';
 var dir2      ='models/m_'+mnu2+'.php';
 var dir3      ='../akademik/models/m_'+mnu3+'.php';
-var dir4      ='../akademik/models/m_'+mnu4+'.php';
 var dir5      ='../akademik/models/m_'+mnu5+'.php';
 
-var a_contentFR = d_contentFR = b_contentFR ='';
+var a_contentFR = d_contentFR  ='';
     
 // main function ---
     $(document).ready(function(){
-        //form content
-            // anggaran
-            a_contentFR += '<form autocomplete="off" onsubmit="anggaranSV();return false;" id="'+mnu+'FR">' 
-                            // hidden input
-                            +'<input id="a_idformH" type="hidden">' 
-                            +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
-                            
-                            // nama kategori anggaran
-                            +'<label>Kategori Anggaran</label>'
-                            +'<div class="input-control text">'
-                                +'<input  placeholder="Kategori Anggaran"  required type="text" name="a_namaTB" id="a_namaTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
+        // anggaran
+        a_contentFR += '<form style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="anggaranSV();return false;" id="'+mnu+'FR">' 
+                        // hidden input
+                        +'<input id="a_idformH" type="hidden">' 
+                        +'<input type="hidden" name="a_departemenH" id="a_departemenH">'
+                        
+                        // Departemen
+                        +'<label>Departemen</label>'
+                        +'<div class="input-control select">'
+                            +'<select required type="text" id="a_departemenTB" name="a_departemenTB"></select>'
+                        +'</div>'
 
-                            // rekening
-                            +'<label>Rekening</label>'
-                            +'<div class="input-control text">'
-                                +'<input type="hidden" required id="a_rekeningH" name="a_rekeningH" />'
-                                +'<input  placeholder="Rekening" required type="text" name="a_rekeningTB" id="a_rekeningTB">'
-                                +'<button class="btn-clear"></button>'
-                            +'</div>'
+                        // Tingkat 
+                        +'<label>Tingkat</label>'
+                        +'<div class="input-control select">'
+                            +'<select required type="text" name="a_tingkatTB" id="a_tingkatTB"></select>'
+                        +'</div>'
 
-                            // keterangan
-                            +'<label>Tujuan</label>'
-                            +'<div class="input-control textarea">'
-                                +'<textarea placeholder="tujuan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
-                            +'</div>'
-                            
-                            // button simpan
-                            +'<div class="form-actions">' 
-                                +'<button class="button primary">simpan</button>&nbsp;'
-                                +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
-                            +'</div>'
-                        +'</form>';
-            //katalog
-            d_contentFR +=' <div class="grid">'
-                                +'<form autocomplete="off" style="overflow:scroll;height:600px;" onsubmit="detilanggaranSV(); return false;" id="detilanggaranFR">' 
-                            
-                                    // hidden 
-                                    +'<input id="d_idformH" type="hidden">' 
-                                    +'<input type="hidden" id="d_kategorianggaranH2" name="d_kategorianggaranH2"/>'
-	                                +'<input type="hidden" id="d_tingkatH" name="d_tingkatH"/>'
+                        // nama kategori anggaran
+                        +'<label>Kategori Anggaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input  placeholder="Kategori Anggaran" required type="text" name="a_namaTB" id="a_namaTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        // rekening
+                        +'<label>Rekening</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" required id="a_rekeningH" name="a_rekeningH" />'
+                            +'<input onfocus="autoSuggest(\'a_rekening\');" placeholder="Rekening" required type="text" name="a_rekeningTB" id="a_rekeningTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
+                        // keterangan
+                        +'<label>Tujuan</label>'
+                        +'<div class="input-control textarea">'
+                            +'<textarea placeholder="tujuan" name="a_keteranganTB" id="a_keteranganTB"></textarea>'
+                        +'</div>'
+                        
+                        // item anggaran
+                        +'<a onclick="detilanggaranFC();" data-hint="hapus" href="#" class="button bg-blue fg-white"><i class="icon-plus-2"></i></a>'
+                        +'<table class="table bordered striped">'
+                            +'<thead class="bg-blue fg-white text-center">'
+                                +'<tr>'
+                                    +'<th>Item </th>'
+                                    +'<th>Keterangan</th>'
+                                    +'<th><button class="fg-white bg-blue"><i class="icon-cancel-2"></i></button></th>'
+                                +'</tr>'
+                                +'<tr>'
+                                    +'<th><input placeholder="cari..." id="detilanggaranS" data-transform="input-control" type="text" /> </th>'
+                                    +'<th><input placeholder="cari..." id="keteranganS" data-transform="input-control" type="text" /> </th>'
+                                    +'<th></th>'
+                                +'</tr>'
+                            +'</thead>'
+                            +'<tbody id="detilAnggaranTBL">'
+                            +'</tbody>'
+                        +'</table>'
+
+                        // button simpan
+                        +'<div class="form-actions">' 
+                            +'<button class="button primary">simpan</button>&nbsp;'
+                            +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                        +'</div>'
+                    +'</form>';
+        //detail anggaran 
+        d_contentFR +=' <div class="grid">'
+                            +'<form autocomplete="off" style="overflow:scroll;height:600px;" onsubmit="detilanggaranSV(); return false;" id="detilanggaranFR">' 
+                        
+                                // hidden 
+                                +'<input id="d_idformH" type="hidden">' 
+                                +'<input type="hidden" id="d_kategorianggaranH2" name="d_kategorianggaranH2"/>'
+                                // +'<input type="hidden" id="d_tingkatH" name="d_tingkatH"/>'
+                                
+                                // nama anggaran
+                                +'<label>Nama Anggaran</label>'
+	                            +'<div data-hint="nama anggaran" class="input-control text">'
+	                                +'<input placeholder="Anggaran"  required type="text" name="d_namaTB" id="d_namaTB">'
+	                                +'<button class="btn-clear"></button>'
+	                            +'</div>'
+
+                                // tujuan
+                                +'<label>Tujuan</label>'
+                                +'<div class="input-control textarea">'
+                                    +'<textarea placeholder="tujuan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
+                                +'</div>'
+
+                                +'<label>harga satuan :</label>'
+                                +'<div class="input-control text">'
+                                    +'<input required onkeyup="hitungAll();" class="text-right" name="d_hargasatuanTB" id="d_hargasatuanTB" placeholder="harga satuan" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
+                                +'</div>'
+
+                                +'<table class="table hovered bordered striped">'
+                                    // header
+                                    +'<tr class="fg-white bg-blue">'
+                                        +'<th>Bulan</th>'
+                                        +'<th>Jumlah</th>'
+                                        +'<th>Harga Total</th>'
+                                    +'</tr>'
                                     
-                                    // nama anggaran
-                                    +'<legend>Nama Anggaran</legend>'
-		                            +'<div data-hint="nama anggaran" class="input-control text">'
-		                                +'<input placeholder="Anggaran"  required type="text" name="d_namaTB" id="d_namaTB">'
-		                                +'<button class="btn-clear"></button>'
-		                            +'</div>'
-
-                                    // tujuan
-                                    +'<label>Tujuan</label>'
-                                    +'<div class="input-control textarea">'
-                                        +'<textarea placeholder="tujuan" name="d_keteranganTB" id="d_keteranganTB"></textarea>'
-                                    +'</div>'
-    
-                                    // nominal angsuran anggaran
-                                    +'<legend>Nominal (@bulan)</legend>'
-
-                                    +'<label>Januari :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[1]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[1]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                // list 
+                                    // Juli
+                                    +'<tr>'
+                                        +'<td>Juli</td>'
+                                        +'<td>'
+                                            +'<div val="7" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="7" />'
+                                                +'<input class="d_jml text-right" id="d_jml7TB" name="d_jml7TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg7TD">Rp. 0</td>'
+                                    +'</tr>'
                                     
-                                    +'<label>Februari :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[2]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[2]" placeholder="Februari" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // agustus
+                                    +'<tr>'
+                                        +'<td>agustus</td>'
+                                        +'<td>'
+                                            +'<div val="8" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="8" />'
+                                                +'<input class="d_jml text-right" id="d_jml8TB" name="d_jml8TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg8TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Maret :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[3]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[3]" placeholder="Maret" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // September
+                                    +'<tr>'
+                                        +'<td>September</td>'
+                                        +'<td>'
+                                            +'<div val="9" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="9" />'
+                                                +'<input class="d_jml text-right" id="d_jml9TB" name="d_jml9TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg9TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>April :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[4]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[4]" placeholder="April" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Oktober
+                                    +'<tr>'
+                                        +'<td>Oktober</td>'
+                                        +'<td>'
+                                            +'<div val="10" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="10" />'
+                                                +'<input class="d_jml text-right" id="d_jml10TB" name="d_jml10TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg10TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Mei :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[5]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[5]" placeholder="Mei" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // November
+                                    +'<tr>'
+                                        +'<td>November</td>'
+                                        +'<td>'
+                                            +'<div val="11" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="11" />'
+                                                +'<input class="d_jml text-right" id="d_jml11TB" name="d_jml11TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg11TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Juni :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[6]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[6]" placeholder="Juni" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Desember
+                                    +'<tr>'
+                                        +'<td>Desember</td>'
+                                        +'<td>'
+                                            +'<div val="12" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="12" />'
+                                                +'<input class="d_jml text-right" id="d_jml12TB" name="d_jml12TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg12TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Juli :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[7]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[7]" placeholder="Juli" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Januari
+                                    +'<tr>'
+                                        +'<td>Januari</td>'
+                                        +'<td>'
+                                            +'<div val="1" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="1" />'
+                                                +'<input class="d_jml text-right" id="d_jml1TB" name="d_jml1TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg1TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Agustus :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[8]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[8]" placeholder="Agustus" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Februari
+                                    +'<tr>'
+                                        +'<td>Februari</td>'
+                                        +'<td>'
+                                            +'<div val="2" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="2" />'
+                                                +'<input class="d_jml text-right" id="d_jml2TB" name="d_jml2TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg2TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>September :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[9]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[9]" placeholder="September" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Maret
+                                    +'<tr>'
+                                        +'<td>Maret</td>'
+                                        +'<td>'
+                                            +'<div val="3" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="3" />'
+                                                +'<input class="d_jml text-right" id="d_jml3TB" name="d_jml3TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg3TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Oktober :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[10]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[10]" placeholder="Oktober" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // April
+                                    +'<tr>'
+                                        +'<td>April</td>'
+                                        +'<td>'
+                                            +'<div val="4" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="4" />'
+                                                +'<input class="d_jml text-right" id="d_jml4TB" name="d_jml4TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg4TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>November :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[11]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[11]" placeholder="November" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // Mei
+                                    +'<tr>'
+                                        +'<td>Mei</td>'
+                                        +'<td>'
+                                            +'<div val="5" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="5" />'
+                                                +'<input class="d_jml text-right" id="d_jml5TB" name="d_jml5TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg5TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    +'<label>Desember :</label>'
-                                    +'<div class="input-control text size5">'
-                                        +'<input type="hidden" name="d_idnominalTB[12]" />'
-                                        +'<input onkeyup="totAnggaran();" class="d_nominal text-right" name="d_nominalTB[12]" placeholder="Desember" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
-                                    // +'<hr />'
+                                    // Juni
+                                    +'<tr>'
+                                        +'<td>Juni</td>'
+                                        +'<td>'
+                                            +'<div val="6" class="input-control text">'
+                                                +'<input class="d_idnominal" type="hidden" name="d_idnominalH[]" value="6" />'
+                                                +'<input class="d_jml text-right" id="d_jml6TB" name="d_jml6TB" onkeyup="hitungAll();" onfocus="inputangka(this);"  required value="0"  type="text" >'
+                                            +'</div>'
+                                        +'</td>'
+                                        +'<td class="d_jmlHrg" align="right" id="d_jmlHrg6TD">Rp. 0</td>'
+                                    +'</tr>'
 
-                                    // total
-                                    +'<legend>Nominal (@tahun)</legend>'
-                                    +'<div class="bg-red input-control text">'
-                                        +'<input id="d_totNominalTB" onkeyup="perBulanAnggaran();" class="bg-yellow text-right" value="Rp. 0" onfocus="inputuang(this);" onclick="inputuang(this);" type="text" >'
-                                    +'</div>'
+                                    // total 
+                                    +'<tr class="fg-white bg-blue">'
+                                        +'<th>Total</th>'
+                                        +'<th align="right" id="d_totJmlTD">12</th>'
+                                        +'<th align="right" id="d_totJmlHrgTD">Rp. 0</th>'
+                                    +'</tr>'
+                                +'</table>'
 
-                                    // button simpan
-		                            +'<div class="form-actions">' 
-		                                +'<button class="button primary">simpan</button>&nbsp;'
-		                            +'</div>'
-                                +'</form>'
-                        +'</div>';
-            cmbdepartemen('filter','');
-			// viewTB('anggaran');
+                                // button simpan
+	                            +'<div class="form-actions">' 
+	                                +'<button class="button primary">simpan</button>&nbsp;'
+	                            +'</div>'
+                            +'</form>'
+                    +'</div>';
+        cmbdepartemen('filter','');
 
         // button action
             //add---------
-            $("#a_tambahBC").on('click', function(){ // grup form 
-                anggaranFR('');
-            });$("#d_tambahBC").on('click', function(){ // katalog
+            // $("#a_tambahBC").on('click', function(){ // grup form 
+            //     loadFR('anggaran','');
+            //     // anggaranFR('');
+            // });
+            $("#d_tambahBC").on('click', function(){ // katalog
                 detilanggaranFR('');
             });
 
             //print----
             $('#a_cetakBC').on('click',function(){
                 printPDF('anggaran');
+            });$('#a_cetak2BC').on('click',function(){
+                printPDF('anggaran2');
             });$('#k_cetakBC').on('click',function(){
                 printPDF('detilanggaran');
             });
@@ -205,22 +319,14 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 
         //search action 
             /*kategori anggaran*/
-            // filtering : combobox
-            $('#a_departemenS').on('change',function(){
-                viewTB('anggaran');
-            });
-            // filtering : textbox
             $('#a_namaS,#a_keteranganS,#a_rekeningS').on('keydown',function (e){ // kode grup
                 if(e.keyCode == 13) viewTB('anggaran');
             });
 
             // detil anggaran 
             /*combo*/ 
-            $('#d_tahunajaranS').on('change',function(){
-                cmbtingkat('filter',$(this).val());
-            });
-            $('#d_tingkatS').on('change',function(){
-                viewTB('detilanggaran');
+            $('#a_tingkatS').on('change',function(){
+                viewTB('anggaran');
             });
             /*textbox*/
             $('#d_namaS,#d_keteranganS,#d_nominalS').on('keydown',function (e){
@@ -342,59 +448,14 @@ var a_contentFR = d_contentFR = b_contentFR ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="5"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
-                },1000);
+                },500);
             }
         });
     }
-// end of view table
-
-
-    // kategori anggaran ---
-/*        function vwAnggaran(){  
-            var aksi ='aksi=tampil&subaksi=anggaran';
-            var cari ='&a_namaS='+$('#a_namaS').val()
-                    +'&a_keteranganS='+$('#a_keteranganS').val();
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#anggaran_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    setTimeout(function(){
-                        $('#anggaran_tbody').html(dt).fadeIn();
-                    },500);
-                }
-            });
-        }
-*/    // end of kategori anggaran  ---
-
-    // katalog barang
-/*        function vwDetilAnggaran() {
-            var aksi ='aksi=tampil&subaksi=detilanggaran&d_kategorianggaranH='+$('#d_kategorianggaranH').val();
-            var cari ='&d_namaS='+$('#d_namaS').val()
-                        +'&d_departemenS='+$('#d_departemenS').val()
-                        +'&d_keteranganS='+$('#d_keteranganS').val();
-            $.ajax({
-                url : dir,
-                type: 'post',
-                data: aksi+cari,
-                beforeSend:function(){
-                    $('#detilanggaran_tbody').html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
-                },success:function(dt){
-                    // $('#d_kategorianggaranH').val(id);
-                    // switchPN(2);
-                    setTimeout(function(){
-                        $('#detilanggaran_tbody').html(dt).fadeIn();
-                    },500);
-                }
-            });
-        }   
-*/    //end of  katalog barang
 
 /*save (insert & update)*/
     //detil anggaran save ---
@@ -507,79 +568,99 @@ var a_contentFR = d_contentFR = b_contentFR ='';
         }
     //end of kategori anggaran ---
     
-/*form (insert & update)*/
-    // form kategori anggaran ---
-        function anggaranFR(id){
-            gkosongkan();
-            $.Dialog({
-                shadow: true,
-                overlay: true,
-                draggable: true,
-                width: 500,
-                padding: 10,
-                onShow: function(){
-                    var titlex;
-                    setTimeout(function(){
-                        $('#a_departemenH').val($('#a_departemenS').val());
-                    },500);
-                    if(id==''){  //add mode
-                        titlex='<span class="icon-plus-2"></span> Tambah ';
-                    }else{ // edit mode
-                        titlex='<span class="icon-pencil"></span> Ubah';
-                        $.ajax({
-                            url:dir,
-                            data:'aksi=ambiledit&subaksi=anggaran&replid='+id,
-                            type:'post',
-                            dataType:'json',
-                            success:function(dt){
-                                $('#a_idformH').val(id);
-                                $('#a_namaTB').val(dt.nama);
-                                $('#a_rekeningH').val(dt.idrekening);
-                                $('#a_rekeningTB').val(dt.rekening);
-                                $('#a_keteranganTB').val(dt.keterangan);
-                            }
-                        });//end of  data grup--------------------------
-                    }$.Dialog.title(titlex+' '+mnu); // edit by epiii
-                    $.Dialog.content(a_contentFR);
-                }
-            });
-            $("#a_rekeningTB").combogrid({
-                debug:true,
-                width:'600px',
-                colModel: [{
-                        // 'align':'left',
-                        'columnName':'kode',
-                        // 'hide':true,
-                        'width':'15',
-                        'label':'KODE'
-                    },{   
-                        'align':'left',
-                        'columnName':'nama',
-                        'width':'85',
-                        'label':'NAMA'
-                }],
-                url: dir+'?aksi=autocomp',
-                select: function( event, ui ) {
-                    $('#a_rekeningH').val(ui.item.replid);
-                    $(this).val(ui.item.nama);
-                    
-                    // validasi input (tidak sesuai data dr server)
-                        $(this).on('keyup', function(e){
-                            var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
-                            var keyCode = $.ui.keyCode;
-                            if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
-                                if($('#a_rekeningH').val()!=''){
-                                    $('#a_rekeningH').val('');
-                                    $('#a_rekeningTB').val('');
-                                }
-                            }
-                        });
-                    return false;
-                }
-            });
-        }
-    // end of form grup ---
+  // autosuggest
+    function autoSuggest(el){
+        var urlx= '?aksi=autocomp';
+        var col = [{
+                'align':'left',
+                'columnName':'kode',
+                'hide':true,
+                'width':'10',
+                'label':'Kode'
+            },{   
+                'align':'left',
+                'columnName':'nama',
+                'width':'90',
+                'label':'Rekening'
+        }];
 
+        urly = dir+urlx;
+        $('#'+el+'TB').combogrid({
+            debug:true,
+            width:'900px',
+            colModel: col ,
+            url: urly,
+            select: function( event, ui ) { // event setelah data terpilih 
+                $('#'+el+'H').val(ui.item.replid);
+                $('#'+el+'TB').val(ui.item.nama+' ( '+ui.item.kode+' )');
+
+                // validasi input (tidak sesuai data dr server)
+                    $('#'+el+'TB').on('keyup', function(e){
+                        var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+                        var keyCode = $.ui.keyCode;
+                        if(key != keyCode.ENTER && key != keyCode.LEFT && key != keyCode.RIGHT && key != keyCode.UP && key != keyCode.DOWN ) {
+                            if($('#'+el+'H').val()!=''){
+                                $('#'+el+'H').val('');
+                                $('#'+el+'TB').val('');
+                            }
+                        }
+                    });
+
+                    $('#'+el+'TB').on('blur,change',function(){
+                        if($('#'+el+'H').val()=='') {
+                            $('#'+el+'TB').val(''); // :: all 
+                        }
+                    });
+                return false;
+            }
+        });
+    }
+
+    // load form (all)
+    function loadFR(typx,id){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: '60%',
+            padding: 10,
+            onShow: function(){
+                var titl=contenFR='';
+                if(typx=='anggaran') {
+                    contentFR=a_contentFR;
+                    titl+='Anggaran';
+                }else{
+                    contentFR=d_contentFR;
+                    titl+='Detail Anggaran';
+                }
+                $.Dialog.title('<i class="fg-white icon-'+(id!=''?'pencil':'plus-2')+'"></i> '+(id!=''?' Ubah ':' Tambah ')+titl); 
+                $.Dialog.content(contentFR);
+            
+                if(typx=='anggaran') {
+                    if(id==''){ //tambah
+                        cmbdepartemen('form','');
+                        cmbtingkat('form','');
+                    }else{ // edit
+                        var u = dir;
+                        var d = 'aksi=ambiledit&subaksi=anggaran&replid='+id;
+                        ajax(u,d).done(function (dt) {
+                            $('#a_idformH').val(id);
+                            $('#a_namaTB').val(dt.nama);
+                            $('#a_rekeningTB').val(dt.rekening);
+                            $('#a_rekeningH').val(dt.idrekening);
+                            $('#a_keteranganTB').val(dt.keterangan);
+                            cmbdepartemen('form',dt.departemen);
+                        });
+                    }
+                }else{
+
+                } 
+            }
+        });
+    }
+
+
+/*form (insert & update)*/
     // form katalog---
         function detilanggaranFR(id){
 	        $.Dialog({
@@ -598,19 +679,20 @@ var a_contentFR = d_contentFR = b_contentFR ='';
 	                        type:'post',
 	                        dataType:'json',
 	                        success:function(dt){
-                                $('#d_tingkatH').val($('#d_tingkatS').val());
                                 $('#d_kategorianggaranH2').val($('#d_kategorianggaranH').val());
                                 $('#d_idformH').val(id);
                                 $('#d_namaTB').val(dt.data.nama);
-                                $.each(dt.data.nomArr,function(id,item){
-                                    console.log(id);
-                                    var nom = parseInt(item.nominal);
-                                    var idx = parseInt(id)+1;
-                                    $('input[name="d_nominalTB['+idx+']"]').val('Rp. '+nom.setCurr());
-                                    $('input[name="d_idnominalTB['+idx+']"]').val(item.replid);
-                                });
                                 $('#d_keteranganTB').val(dt.data.keterangan);
-                                $('#d_totNominalTB').val('Rp. '+parseInt(dt.data.totNom).setCurr());
+                                $('#d_hargasatuanTB').val('Rp. '+parseInt(dt.data.hargasatuan).setCurr());
+                                $('#d_totJmlTD').html(dt.data.totJml);
+                                $('#d_totJmlHrgTD').html('Rp. '+parseInt(dt.data.totJmlHrg).setCurr());
+                                $.each(dt.data.nomArr,function(id,item){
+                                    var bulan  = item.bulan;
+                                    var jml    = item.jml;
+                                    var jmlHrg = parseInt(item.jmlHrg);
+                                    $('#d_jml'+bulan+'TB').val(jml);
+                                    $('#d_jmlHrg'+bulan+'TD').html('Rp. '+jmlHrg.setCurr());
+                                });
                             }
                         });titlex='<span class="icon-pencil"></span> Ubah ';
                     }else{ //add mode
@@ -628,27 +710,27 @@ var a_contentFR = d_contentFR = b_contentFR ='';
     // end of form katalog---
 
 /*headinfo*/
-    // katalog
+    // detil anggaran
         function vwHeadDetilAnggaran (id) {
-            $.ajax({
-                url:dir,
-                type:'post',
-                dataType:'json',
-                data:'aksi=headinfo&subaksi=detilanggaran&kategorianggaran='+id,
-                success:function (dt) {
-                    if (dt.status!='sukses') {
-                        alert(dt.status+' memuat data header');
-                    }else{
-                        $('#d_kategorianggaranDV').html(dt.nama);
-                        $('#d_keteranganDV').html(dt.keterangan);
-                        $('#d_kategorianggaranH').val(id);
-		        		cmbtahunajaran('filter',$('#a_departemenS').val());
-                        switchPN(2);
-                    }
-                },
+            var u = dir;
+            var d = 'aksi=headinfo&subaksi=detilanggaran&kategorianggaran='+id;
+            ajax(u,d).done(function(dt){
+                if (dt.status!='sukses') {
+                    alert(dt.status+' memuat data header');
+                }else{
+                    $('#d_kategorianggaranH').val(id);
+                    $('#d_kategorianggaranDV').html(dt.nama);
+                    $('#d_keteranganDV').html(dt.keterangan);
+                    $('#d_katanggkuotanumDV').html('Rp. '+parseInt(dt.katAnggKuotaNum).setCurr());
+                    $('#d_departemenDV').val(dt.departemen);
+                    $('#d_tingkatDV').html(dt.tingkat);
+                    $('.tahunBulan1').html(th1);
+                    $('.tahunBulan2').html(th2);
+                    viewTB('detilanggaran');
+                    switchPN(2);
+                }
             });
         }
-    //end of katalog
 
     // unit barang
         function vwHeadBarang (id) {
@@ -724,141 +806,63 @@ var a_contentFR = d_contentFR = b_contentFR ='';
         }
     //end of barang ---
 
+// ajax
+    function ajax(u,d){
+        return $.ajax({
+            url:u,
+            data:d,
+            dataType:'json',
+            type:'post'
+        });
+    }
+// departemen ---
+    function cmbdepartemen(typ,dep){
+        var u = dir3;
+        var d = 'aksi=cmb'+mnu3;
+        ajax(u,d).done(function(dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                $.each(dt.departemen, function(id,item){
+                	out+='<option '+((dep!='' && dep==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.nama+'</option>';
+                });
+            }
+            if(typ=='form'){ //form 
+            	$('#a_departemenTB').html('<option value="">-Pilih Departemen-</option>'+out);
+            }else{ // filter
+                $('#a_departemenS').html(out);
+                cmbtingkat('filter','');
+            }
+        });
+    }
 
-/*combo box*/
-    //tahun buku  ---
-        // function cmbtahunbuku(typ,thn){
-        //     var replid='';
-        //     var tipe = typ;
-        //     if(typ='form' && thn!='')
-        //         replid='&replid='+thn;
-
-        //     $.ajax({
-        //         url:dir2,
-        //         data:'aksi=cmb'+mnu2+replid,
-        //         dataType:'json',
-        //         type:'post',
-        //         success:function(dt){
-        //             var out='';
-        //             if(dt.status!='sukses'){
-        //                 out+='<option value="">'+dt.status+'</option>';
-        //             }else{
-        //                 $.each(dt.tahunbuku, function(id,item){
-        //                     if(item.aktif==1)
-        //                         out+='<option selected="selected" value="'+item.replid+'">'+item.nama+' (aktif)</option>';
-        //                     else
-        //                         out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-        //                 });
-        //                 if(tipe=='form'){
-        //                     $('#a_tahunbukuH').val(dt.tahunbuku[0].replid);
-        //                     $('#a_tahunbukuTB').val(dt.tahunbuku[0].nama);
-        //                 }else{
-        //                     $('#a_tahunbukuS').html(out);
-        //                     cmbdepartemen('filter','');
-        //                 }
-        //             }
-        //         }
-        //     });
-        // }
-    //end of departemen ---
-
-    // departemen ---
-         // cmbdepartemen(id,'filter','');
-        function cmbdepartemen(typ,dep){
-            var replid = '';
-            var tipe   = typ;
-
-            $.ajax({
-                url:dir3,
-                data:'aksi=cmb'+mnu3+(dep!=''?'&replid='+dep:''),
-                dataType:'json',
-                type:'post',
-                success:function(dt){
-                    var out='';
-                    if(dt.status!='sukses'){
-                        out+='<option value="">'+dt.status+'</option>';
-                    }else{
-                        $.each(dt.departemen, function(id,item){
-                        	out+='<option value="'+item.replid+'">'+item.nama+'</option>';
-                        });
-                    }
-                    if(tipe=='form'){
-                        // alert($('#a_kategorianggaranH').val());return false;
-                    	$('#a_departemenTB').html(dt.departemen[0].nama);
-    	                $('#a_kategorianggaranH2').val($('#a_kategorianggaranH').val());
-    	                $('#a_kategorianggaranTB').val($('#a_kategorianggaranDV').html());
-                    }else{
-                        $('#a_departemenS').html(out);
-                        viewTB('anggaran');
-                        // cmbtahunajaran('filter',dt.departemen[0].replid );
-                    }
+// combo tingkat ---
+    function cmbtingkat(typ,ting){
+        u =dir5;
+        d ='aksi=cmb'+mnu5;
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.tingkat.length==0){
+                    out+='<option value="">kosong</option>';
+                }else{
+                    $.each(dt.tingkat, function(id,item){
+                        out+='<option '+((ting!='' && ting==item.replid)?'selected':'')+' value="'+item.replid+'">'+item.tingkat+' </option>';
+                    });
                 }
-            });
-        }
-    //end of departemen ---
-
-    // combo tahunajaran ---
-        function cmbtahunajaran(typ,dep){
-            $.ajax({
-                url:dir4,
-                data:'aksi=cmb'+mnu4+'&departemen='+dep,
-                dataType:'json',
-                type:'post',
-                success:function(dt){
-                    var out='';
-                    if(dt.status!='sukses'){
-                        out+='<option value="">'+dt.status+'</option>';
-                    }else{
-                        if(dt.tahunajaran.length==0){
-                            out+='<option value="">kosong</option>';
-                        }else{
-                            $.each(dt.tahunajaran, function(id,item){
-                                out+='<option value="'+item.replid+'">'+item.tahunajaran+(item.aktif=='1'?' (aktif)':'')+'</option>';
-                            });
-                        }
-                    }
-                    if(typ=='filter') {
-                        $('#d_tahunajaranS').html(out);
-                        cmbtingkat('filter',dt.tahunajaran[0].replid);
-                    }else{
-                        $('#d_tahunajaranTB').html(dt.tahunajaran[0].tahunajaran);
-                    }
-                }
-            });
-        }
-    //end of combo tahunajaran ----
-
-    // combo tingkat ---
-        function cmbtingkat(typ,thn){
-            $.ajax({
-                url:dir5,
-                data:'aksi=cmb'+mnu5+'&tahunajaran='+thn,
-                dataType:'json',
-                type:'post',
-                success:function(dt){
-                    var out='';
-                    if(dt.status!='sukses'){
-                        out+='<option value="">'+dt.status+'</option>';
-                    }else{
-                        if(dt.tingkat.length==0){
-                            out+='<option value="">kosong</option>';
-                        }else{
-                            $.each(dt.tingkat, function(id,item){
-                                out+='<option value="'+item.replid+'">'+item.keterangan+' ('+item.tingkat+') </option>';
-                            });
-                        }
-                    }
-                    if(typ=='filter'){ // filter
-                        $('#d_tingkatS').html(out);
-                        viewTB('detilanggaran');
-                        // vwDetilAnggaran();
-                    }else{ // form 
-                        $('#d_tingkatTB').html(dt.tingkat[0].tingkat);
-                    }
-                }
-            });
-        }
-    //end of combo tingkat ----
+            }
+            if(typ=='filter'){ // filter
+                $('#a_tingkatS').html(out);
+                viewTB('anggaran');
+            }else{ // form 
+                $('#a_tingkatTB').html('<option value="">-Pilih Tingkat-</option>'+out);
+            }
+        });
+    }
+//end of combo tingkat ----
 
 function tempatupdate (e) {
     $('#b_tempatTB').val($(e).val());
@@ -899,9 +903,6 @@ function jumupdate (e) {
             },
         });
     }
-// end of form :: generate barcode & kode ----------------- 
-
-
 
 // input uang --------------------------
     function inputuang(e) {
@@ -914,7 +915,14 @@ function jumupdate (e) {
             affixesStay: true
         });
     }
-// end of input uang --------------------------
+
+// input uang --------------------------
+    function inputangka(e) {
+        $(e).maskMoney({
+            precision:0,
+            // affixesStay: true
+        });
+    }
 
 // get uang --------------------------
     function getuang(e) {
@@ -923,7 +931,6 @@ function jumupdate (e) {
         var y = x.replace(/[r\.]/g, '');
         return y;
     }
-// end of get uang --------------------------
 
 // notifikasi
     function notif(cont,clr) {
@@ -937,12 +944,11 @@ function jumupdate (e) {
             },
         });
     }
-// end of notifikasi
 
 //end of  print to PDF -------
     function printPDF(mn){
         var par='',tok='',p,v;
-        $('.'+mn+'_cari').each(function(){
+        $('.'+(mn=='anggaran' || mn=='anggaran2'?'anggaran':mn)+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
             par+='&'+p+'='+v;
@@ -954,27 +960,47 @@ function jumupdate (e) {
         console.log('token = '+token);
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
-//end of  print to PDF -------
-    
 
-    // get total nominal rekening (ex : Rp. 500.000)
-    function totAnggaran () {
-        var tot1=0;
-        $('.d_nominal').each(function() {
-            tot1+=getCurr($(this).val());
-        });$('#d_totNominalTB').val('Rp. '+tot1.setCurr());
-        console.log(tot1);
+// hitung semua
+    function hitungAll () {
+        jmlHrg();
+        totJml();
+        totJmlHrg();
     }
 
-    function  perBulanAnggaran () {
-        var x = getCurr($('#d_totNominalTB').val())/12;
-        $('.d_nominal').each(function() {
-            $(this).val('Rp. '+x.setCurr());
+// hitung jumlah x harga satuan (@bulan) [horizontal]
+    function jmlHrg() {
+        var hrgSatuan = getCurr($('#d_hargasatuanTB').val());
+        $('.d_idnominal').each(function () {
+            var jml    = getCurr($('#d_jml'+$(this).val()+'TB').val());
+            var jmlHrg = 'Rp. '+(jml * hrgSatuan).setCurr();
+            $('#d_jmlHrg'+$(this).val()+'TD').html(jmlHrg);
         });
     }
-    // currency to number (ex : Rp. 500.000 -> 500000)
+
+// hitung total jumlah [vertikal]
+    function totJml(){
+        var ret=0;
+        $('.d_jml').each(function () {
+            var jml = getCurr($(this).val());
+            ret+=jml;
+        });
+        $('#d_totJmlTD').html(ret);
+    }
+
+// hitung total dr. (jumlah x harga satuan) [vertikal]   
+    function totJmlHrg(){
+        var ret=0;
+        $('.d_jmlHrg').each(function () {
+            var jmlHrg = getCurr($(this).html());
+            ret+=jmlHrg;
+        });
+        $('#d_totJmlHrgTD').html('Rp. '+ret.setCurr());
+    }
+    
+// currency to number (ex : Rp. 500.000 -> 500000)
     function getCurr(n){  
-        var x = Number(n.replace(/[^0-9\,]+/g,""));
+        var x = Number(n.replace(/[^0-9]+/g,""));
         return x;
     }
 
@@ -982,6 +1008,44 @@ function jumupdate (e) {
     Number.prototype.setCurr=function(){
         return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
     }
-    // ---------------------- //
-    // -- created by epiii -- //
-    // ---------------------- // 
+
+
+// detil anggaran  ------------------------------
+    var iDetilAnggaranTR = 1;
+    var iDetilAnggaranDelTR = [];
+    var iDetilAnggaranAddTR = [];
+    function detilAnggaranFC(arr){
+        console.log('masuk anggaran fc');
+        var tr='';
+        var isLoop=true;
+        if(typeof arr=='undefined'){ isLoop=false; n=iDetilAnggaranTR;}
+        else{n=arr.length;}
+
+        for(var i=n; i>=iDetilAnggaranTR; i--){
+            var ke = parseInt(i)-1;
+            var idDetilAnggaran = (typeof arr!='undefined')?arr[ke].replid:'';
+            var detilAnggaran   = (typeof arr!='undefined')?arr[ke].detilAnggaran:'';
+            var keterangan      = (typeof arr!='undefined')?arr[ke].keterangan:'';
+
+            tr+='<tr class="detilAnggaranTR" id="detilAnggaranTR_'+ke+'">'
+                +'<td>'
+                    +'<input type="hidden" value="'+ke+'" id="idDetilAnggaran'+ke+'TR" name="idDetilAnggaranTR[]">' // array acuan
+                    +'<input type="hidden" value="'+idDetilAnggaran+'" name="idDetilAnggaran'+ke+'TB">'
+                    +'<input name="detilAnggaran'+ke+'TB" id="detilAnggaran'+ke+'TB" value="'+detilAnggaran+'" required type="text" data-transform="input-control">'
+                +'</td>'
+                +'<td><input value="'+keterangan+'" name="keterangan'+ke+'TB" id="keterangan'+ke+'TB" type="text" data-transform="input-control"></td>'
+                +'<td><a onclick="'+(idDetilAnggaran!=''?'if(confirm(\'melanjutkan untuk menghapus data?\')) DetilAnggaranDel('+ke+',\''+idDetilAnggaran+'\',\'\');':'DetilAnggaranDel('+ke+',\''+idDetilAnggaran+'\',\'\')')+'" href="#" class="button bg-white fg-red"><i class="icon-cancel-2"></a></i></td>'
+            +'</tr>';
+        }
+        if(isLoop) iDetilAnggaranTR+=n;
+        else iDetilAnggaranTR++;
+        $('#detilAnggaranTBL').prepend(tr);
+    }
+
+// hapus saudara terpilih
+    function detailanggaranDel(ke,iddetailanggaran){
+        if(iddetailanggaran!='') iKontakDDelTR.push(iddetailanggaran); //jika ada hapus DB 
+        $('#detailanggaranTR_'+ke).fadeOut('slow',function(){
+            $('#detailanggaranTR_'+ke).remove();
+        });
+    } 

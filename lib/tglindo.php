@@ -1,6 +1,21 @@
 <?php
+	// bulan
+	// $bulanArr=[
+	// 	'Jan'=>'01',
+	// 	'Feb'=>'02',
+	// 	'Mar'=>'03',
+	// 	'Apr'=>'04',
+	// 	'May'=>'05',
+	// 	'Jun'=>'06',
+	// 	'Jul'=>'07',
+	// 	'Aug'=>'08',
+	// 	'Sep'=>'09',
+	// 	'Oct'=>'10',
+	// 	'Nov'=>'11',
+	// 	'Dec'=>'12'
+	// ];
+
 	function bln_nama($bln,$neg,$typ){ // (1,'id','c')
-		// var_dump($bln);exit();
 		if ($neg=='id') {
 			if($typ=='c') //long
 				$arr=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];

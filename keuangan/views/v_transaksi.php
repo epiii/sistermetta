@@ -23,11 +23,11 @@
     <!-- filter :: tanggal -->
     <div class="place-right">
         <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">
-            <input onchange="viewTB('ju');" type="text" id="tgl1TB" name="tgl1TB">
+            <input type="text" id="tgl1TB" name="tgl1TB">
             <button class="btn-date"></button>
         </div> s/d
         <div class="input-control text span2 cari" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">
-            <input onchange="viewTB('ju');" type="text" id="tgl2TB" name="tgl2TB">
+            <input type="text" id="tgl2TB" name="tgl2TB">
             <button class="btn-date"></button>
         </div> 
         <a href="#" onclick="viewTB('ju');" id="hari_iniBC" name="hari_iniBC" class="button bg-gray fg-white" ><i class="icon-clock"></i> Hari ini</a>
@@ -51,7 +51,7 @@
     </div>
 </form>
 
-<div style="overflow:scroll;height:600px">    
+<div style="overflow:scroll;height:550px">    
 <!-- <div style="overflow:scroll;height:450px">     -->
     <!-- <div class="divider">&nbsp;</div> -->
     <!-- tab -->
@@ -74,6 +74,8 @@
                 <li><a href="#nlTAB">Neraca Lajur</a></li>
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
                 <li><a href="#btTAB">Buku Tambahan</a></li>
+                <li><a href="#liTAB">Penerimaan & Pengeluaran</a></li>
+                <li><a href="#lsTAB">Laporan Sarpras </a></li>
             </ul>
 
             <div style="background-color:#dddddd;"  class="frames">
@@ -82,10 +84,10 @@
                     <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
-<!--                     <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->
+
                     <div class="span3 place-right input-control checkbox" >
                         <label>
                             <input checked="checked" id="ju_detiljurnalCB" type="checkbox" />
@@ -223,8 +225,103 @@
                 <div class="frame" id="btTAB">
                     <div id="bt_tbody"></div>
                 </div>
-                    
 
+                <!-- Laporam Penerimaan-->
+                <div class="frame" id="liTAB">
+                    <!--filtering  -->
+                    <!-- group 2 -->
+                    <a data-hint="opsi rekening" target="_blank" href="jenis-laporan" class="button fg-white bg-orange place-right"><i class="icon-enter"></i></a>
+                    <button id="li_cetakBC" data-hint="cetak" class="fg-white bg-blue place-right"><i class="icon-printer"></i></button>
+                    <div class="input-control select size3">
+                        <select class="li_cari" name="li_departemenS" id="li_departemenS" data-hint="Departemen"></select>
+                    </div>    
+                    <div class="input-control select size3">
+                        <select class="li_cari"  name="li_tahunajaranS" id="li_tahunajaranS" data-hint="Tahun Ajaran"></select>
+                    </div>    
+                    <div class="input-control select size3">
+                        <select class="li_cari"  name="li_tingkatS" id="li_tingkatS" data-hint="Tingkat"></select>
+                    </div>    
+                    <!-- group 2 -->
+                    <div class="input-control select">
+                        <select class="span2 li_cari" name="li_tahunS" id="li_tahunS" data-hint="Tahun"></select>
+                        <select class="span2 li_cari" name="li_bulanS" id="li_bulanS" data-hint="Bulan"></select>
+                    </div>    
+                    <!-- group 3 -->
+                    <div class="input-control select size3">
+                        <select class="li_cari"  name="li_jenisS" id="li_jenisS" data-hint="Jenis Transaksi">
+                            <option value="in">Penerimaan</option>
+                            <option value="out">Pengeluaran</option>
+                        </select>
+                    </div>    
+
+                    <!-- centang -->
+                    <form id="filterFR2">
+                        <ul class="treeview" data-role="treeview">
+                            <li class="node">
+                                <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Operasional</a>
+                                <ul id="operUL"></ul>
+                            </li>
+                            <li class="node">
+                                <a style="padding-left: 0px;" href="#"><span class="node-toggle"></span>Non Operasional</a>
+                                <ul id="nonOperUL"></ul>
+                            </li>
+                        </ul>
+                    </form>
+    
+                    <table  class="table hovered bordered striped">
+                        <thead>
+                            <tr style="color:white;"class="info">
+                                <th class="text-center">Tanggal </th>
+                                <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
+                                <th class="text-center">Uraian</th>
+                                <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="li_tbody"></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+                    
+                <!-- Laporam sarpras  -->
+                <div class="frame" id="lsTAB">    
+                    <!-- <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top"> -->
+                        <!-- <i class="icon-search" ></i> -->
+                    <!-- </button> -->
+                    <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button> -->
+
+                    <table  class="table hovered bordered striped">
+                        <thead>
+                            <tr style="color:white;"class="info">
+                                <th class="text-center">Tanggal </th>
+                                <th class="text-center">No. Jurnal/Jenis Bukti/No.Bukti</th>
+                                <th class="text-center">Uraian</th>
+                                <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
+                            </tr>
+                            <tr style="display:none;" id="lsTR" class="info">
+                                <th class="text-center"></th>
+                                <th class="text-center">
+                                    <div class="input-control text">
+                                        <input class="ls_cari" placeholder="cari ..." id="ls_noS">
+                                    </div>
+                                </th>
+                                <th class="text-center">
+                                    <div class="input-control text">
+                                        <input class="ls_cari" placeholder="cari ..." id="ls_uraianS" >
+                                    </div>
+                                </th>
+                                <th style="display:visible;"class="text-center uraianCOL"></th>
+                                <th class="text-center"></th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="ls_tbody"></tbody>
+                        <tfoot></tfoot>
+                    </table>
+                </div>
+                    
             </div>
     <!-- end of tab -->
 </div>

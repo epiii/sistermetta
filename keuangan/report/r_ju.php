@@ -49,9 +49,9 @@
                   tanggal between "'.tgl_indo6($_GET['tgl1TB']).'" AND "'.tgl_indo6($_GET['tgl2TB']).'" 
                 ORDER BY  
                   replid DESC';
+          // print_r($s1);exit();
           $e1 = mysql_query($s1);
           $n1 = mysql_num_rows($e1);
-          // var_dump($e1);exit();
           $out.='<body>
                     <table width="100%">
                       <tr>

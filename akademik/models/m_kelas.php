@@ -88,12 +88,14 @@
 				$subtingkat = isset($_POST['subtingkatS']) && $_POST['subtingkatS']!=''?' k.subtingkat='.$_POST['subtingkatS'].' AND ':'';
 				$kelas      = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
 				$keterangan = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$departemen = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
 
 				$sql =' SELECT 
 							k.replid,
 							k.kelas,
 							t.tingkat,
 							s.subtingkat,
+							k.kapasitas,
 							k.keterangan
 						FROM aka_kelas k
 							LEFT JOIN aka_subtingkat s on s.replid  = k.subtingkat 
@@ -101,12 +103,13 @@
 						WHERE
 							'.$tingkat.$subtingkat.' 
 							k.kelas LIKE"%'.$kelas.'%" AND
-							k.keterangan LIKE"%'.$keterangan.'%"
+							k.keterangan LIKE"%'.$keterangan.'%" AND
+							k.departemen = '.$departemen.'
 						ORDER BY
 							t.urutan ASC, 
 							s.subtingkat ASC, 
 							k.kelas ASC';
-				// print_r($sql);exit();
+					// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
@@ -133,9 +136,10 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['tingkat'].'</td>
-									<td>'.$res['subtingkat'].'</td>
-									<td>'.$res['kelas'].'</td>
+									<td align="center">'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['kelas'].'</td>
 									<td>'.$res['keterangan'].'</td>
+									<td align="center">'.$res['kapasitas'].' siswa</td>
 									'.$btn.'
 								</tr>';
 						$nox++;
@@ -155,8 +159,10 @@
 			case 'simpan':
 				$s = $tb.' set 	kelas       = "'.filter($_POST['kelasTB']).'",
 								subtingkat  = "'.$_POST['subtingkatTB'].'",
-								departemen  = "'.$_POST['departemenH'].'",
+								departemen  = "'.$_POST['departemenTB'].'",
+								kapasitas   = "'.$_POST['kapasitasTB'].'",
 								keterangan  = "'.filter($_POST['keteranganTB']).'"';
+				// pr($s);
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
 				if(!$e2){
@@ -183,6 +189,7 @@
 							k.kelas, 
 							k.keterangan, 
 							k.subtingkat,
+							k.kapasitas,
 							s.tingkat,
 							k.departemen 
 						FROM  
@@ -200,6 +207,7 @@
 								'kelas'      =>$r['kelas'],
 								'tingkat'    =>$r['tingkat'],
 								'subtingkat' =>$r['subtingkat'],
+								'kapasitas'	 =>$r['kapasitas'],
 								'kelas'      =>$r['kelas'],
 								'keterangan' =>$r['keterangan'],
 								'departemen' =>$r['departemen']
@@ -208,13 +216,15 @@
 			// ambiledit -----------------------------------------------------------------
 
 		// cmbkelas ---------------------------------------------------------
-			case 'cmbkelas':
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
+					}elseif(isset($_POST['subtingkat']) && isset($_POST['departemen']) ){
+						$w.='where subtingkat ='.$_POST['subtingkat'].' AND departemen ='.$_POST['departemen'];
 					}elseif(isset($_POST['subtingkat'])){
 						$w.='where subtingkat ='.$_POST['subtingkat'];
 					}
@@ -224,8 +234,8 @@
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY '.$mnu.' asc';
+				// pr($s);
 				$e  = mysql_query($s);
-				// var_dump($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 

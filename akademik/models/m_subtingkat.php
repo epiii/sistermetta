@@ -5,24 +5,24 @@
 	require_once '../../lib/pagination_class.php';
 	$mnu = 'subtingkat';
 	$tb  = 'aka_'.$mnu;
-	// $out=array();
 
 	if(!isset($_POST['aksi'])){
 		$out=json_encode(array('status'=>'invalid_no_post'));		
-		// $out=['status'=>'invalid_no_post'];		
 	}else{
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
 				$tingkat    = isset($_POST['tingkatS']) && $_POST['tingkatS']!=''?' s.tingkat ='.$_POST['tingkatS'].' AND':'';
 				$subtingkat = isset($_POST['subtingkatS'])?$_POST['subtingkatS']:'';
+				$keterangan = isset($_POST['keteranganS'])?$_POST['keteranganS']:'';
 				$sql = 'SELECT 
-							s.replid,t.tingkat,s.subtingkat
+							s.replid,t.tingkat,s.subtingkat,s.keterangan
 						FROM  aka_subtingkat s
 							LEFT JOIN aka_tingkat t on t.replid = s.tingkat
 						WHERE 
 							'.$tingkat.' 
-							s.subtingkat LIKE "%'.$subtingkat.'%"
+							s.subtingkat LIKE "%'.$subtingkat.'%" AND
+							s.keterangan LIKE "%'.$keterangan.'%"
 						ORDER BY 
 							t.urutan asc,
 							s.subtingkat asc
@@ -57,6 +57,7 @@
 						$out.= '<tr>
 									<td align="center">'.$res['tingkat'].'</td>
 									<td align="center">'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['keterangan'].' tahun</td>
 									'.$btn.'
 								</tr>';
 						// $nox++;
@@ -75,6 +76,7 @@
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
 				$s = $tb.' set 	tingkat 	= "'.filter($_POST['tingkatTB']).'",
+								keterangan 	= "'.filter($_POST['keteranganTB']).'",
 								subtingkat 	= "'.filter($_POST['subtingkatTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2 = mysql_query($s2);
@@ -107,21 +109,18 @@
 				$out 	= json_encode(array(
 							'status'     =>$stat,
 							'tingkat'    =>$r['tingkat'],
+							'keterangan' =>$r['keterangan'],
 							'subtingkat' =>$r['subtingkat'],
 						));
 			break;
 			// ambiledit -----------------------------------------------------------------
 			// cmbsubtingkat -----------------------------------------------------------------
-			case 'cmbsubtingkat':
+			case 'cmb'.$mnu:
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
-				}else{
-					if(isset($_POST[$mnu])){
-						$w='where '.$mnu.'='.$_POST[$mnu];
-					}else{
-						$w='where tingkat='.$_POST['tingkat'];
-					}
+				}elseif(isset($_POST['tingkat'])){
+					$w='where tingkat='.$_POST['tingkat'];
 				}
 				
 				$s	= ' SELECT *
@@ -129,7 +128,7 @@
 						'.$w.'		
 						ORDER  BY subtingkat asc';
 				// print_r($s);exit();
-
+// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();

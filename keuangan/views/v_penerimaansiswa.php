@@ -1,4 +1,5 @@
-<script src="controllers/c_penerimaansiswa.js"></script>
+<?php isMenu($modul,'penerimaansiswa'); ?>
+<script src="controllers/c_penerimaan.js"></script>
 <script src="js/metro/metro-hint.js"></script>
 <script src="../js/base64.js"></script>
 
@@ -9,7 +10,7 @@
 <link rel="stylesheet" type="text/css" media="screen" href="../css/combogrid/jquery.ui.combogrid.css"/>
 <!--end of combo grid -->
 
-<h4 style="color:white;">Penerimaan Siswa</h4>
+<h4 style="color:white;">Penerimaan</h4>
 <div id="loadarea"></div>
 <input type="hidden" id="id_loginS" value="<?php echo $_SESSION['id_loginS'];?>">
 
@@ -22,11 +23,12 @@
     -->
     <div  data-effect="fade" class="tab-control" data-role="tab-control">
         <ul class="tabs level1">
-            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Material Fee </a></li>
-            <li onclick="switchPN('dpp');"><a href="#dppTAB">Registration</a></li>
-            <li onclick="switchPN('spp');"><a href="#sppTAB">Tuition Fee</a></li>
+            <li onclick="switchPN('pendaftaran');" class="active"><a href="#pendaftaranTAB">Pendaftaran </a></li>
+            <li onclick="switchPN('dpp');"><a href="#dppTAB">DPP</a></li>
+            <li onclick="switchPN('spp');"><a href="#sppTAB">SPP</a></li>
+            <li onclick="switchPN('semua');"><a href="#semuaTAB">Semua</a></li>
             <li class="place-right">
-                <div style="display:none;" class="input-control select">
+                <div class="input-control select">
                     <select data-hint="Departemen" class="cari" name="departemenS" id="departemenS"></select>
                 </div>
             </li>
@@ -37,12 +39,12 @@
             <div class="frame" id="pendaftaranTAB">
                 <div  data-effect="fade" class="tab-control" data-role="tab-control">
                     <ul class="tabs level2">
-                        <!-- <li onclick="switchPN('pendaftaran');" class="active"><a href="#formulirTAB">Formulir </a></li> -->
-                        <li style="display:none;" onclick="switchPN('pendaftaran');" class="active"><a href="#joiningfTAB">Material Fee</a></li>
+                        <li onclick="switchPN('pendaftaran');" class="active"><a href="#formulirTAB">Formulir </a></li>
+                        <li onclick="switchPN('pendaftaran');"><a href="#joiningfTAB">Joining Fee</a></li>
                         <li class="place-right">
                             <div class="input-control select">
                                 <div class="input-control select span3">
-                                    <select data-hint="Tahun ajaran" name="prosesS" id="prosesS"></select>
+                                    <select data-hint="Periode Pendaftaran" name="prosesS" id="prosesS"></select>
                                 </div>
                                 <div class="input-control select span3">
                                     <select data-hint="Kelompok Pendaftaran" class="cari" name="kelompokS" id="kelompokS"></select>
@@ -108,7 +110,7 @@
                                     <tr style="color:white;"class="info">
                                         <th class="text-center">No. Pendaftaran</th>
                                         <th class="text-center">Nama</th>
-                                        <th class="text-center">Material Fee</th>
+                                        <th class="text-center">Joining Fee</th>
                                         <th class="text-center">Kurangan</th>
                                         <th class="text-center">Tanggal Pembayaran</th>
                                         <th class="text-center">Status</th>
@@ -237,6 +239,80 @@
                     </thead>
 
                     <tbody id="spp_tbody">
+                    </tbody>
+                    <tfoot>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- semua -->
+            <div class="frame" id="semuaTAB">
+                <button id="semua_cariBC" data-hint="Pencarian" data-hint-position="top">
+                    <i class="icon-search" ></i>
+                </button>
+                <button id="semua_cetakBC"  onclick="printPDF('semua');"  data-hint="Cetak" data-hint-position="top">
+                    <i class="icon-printer" ></i>
+                </button>
+                <div class="input-control select span3">
+                    <select data-hint="Tahun Ajaran" class="semua_cari"  id="semua_tahunajaranS"></select>
+                </div>
+                <div class="input-control select span3">
+                    <select data-hint="Semester" class="semua_cari" id="semua_semesterS"></select>
+                </div>
+
+                <table class="table hovered bordered striped">
+                    <thead>
+                        <tr style="color:white;"class="info">
+                            <th class="text-center">No Pendaftaran </th>
+                            <th class="text-center">Nama</th>
+                            <th class="text-center">Formulir</th>
+                            <th class="text-center">DPP</th>
+                            <th class="text-center">SPP</th>
+                            <th class="text-center">Joining Fee</th>
+                        </tr>
+                        <tr style="display:none;" id="semuaTR" class="info">
+                            <th class="text-center"><div class="input-control text"><input placeholder="no pendaftaran" id="semua_nopendaftaranS" class="semua_cari"></div></th>
+                            <th class="text-center"><div class="input-control text"><input placeholder="nama" id="semua_namaS" class="semua_cari"></div></th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                            <th class="text-center">
+                                <div class="input-control select">
+                                    <select class="semua_cari text-center" id="semua_statusS" name="semua_statusS" >
+                                        <option value="">-Semua-</option>
+                                        <option class="bg-green fg-white" value="lunas">Lunas</option>
+                                        <option class="bg-red fg-white" value="belum">Belum</option>
+                                    </select>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="semua_tbody">
                     </tbody>
                     <tfoot>
                     </tfoot>

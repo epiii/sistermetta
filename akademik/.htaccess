@@ -6,18 +6,18 @@ RewriteEngine On
 #ErrorDocument 404 /404.html
 ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 
-	#master
+	#refrensi
 	RewriteRule   ^home/?$   									index.php?page=vhome
 	RewriteRule   ^departemen/?$   								index.php?page=vdepartemen
 	RewriteRule   ^angkatan/?$   								index.php?page=vangkatan
 	RewriteRule   ^tahun-ajaran/?$   							index.php?page=vtahunajaran
 	RewriteRule   ^tingkat/?$   								index.php?page=vtingkat
 	RewriteRule   ^kelas/?$   									index.php?page=vkelas
+	RewriteRule   ^detail-kelas/?$   							index.php?page=vdetailkelas
 	RewriteRule   ^semester/?$   								index.php?page=vsemester
 	RewriteRule   ^jenis-mutasi/?$								index.php?page=vjenismutasi
 	RewriteRule   ^tahun-lulus/?$								index.php?page=vtahunlulus
 	RewriteRule   ^subtingkat/?$								index.php?page=vsubtingkat
-	RewriteRule   ^detail-pelajaran/?$							index.php?page=vdetailpelajaran
 
 	#guru dan pelajaran
 	RewriteRule   ^guru/?$   									index.php?page=vguru
@@ -25,10 +25,9 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^jadwal-pelajaran/?$							index.php?page=vjadwal
 	RewriteRule   ^presensi-guru/?$								index.php?page=vabsenguru
 	RewriteRule   ^kegiatan-akademik/?$							index.php?page=vkegiatan
-	RewriteRule   ^detail-kelas/?$								index.php?page=vdetailkelas
 	
 	#kesiswaan
-	RewriteRule   ^pendataan-siswa/?$   						index.php?page=vsiswa
+	RewriteRule   ^siswa-kelas/?$   							index.php?page=vsiswakelas
 	RewriteRule   ^rapor-siswa/?$								index.php?page=vrapor
 	RewriteRule   ^pendataan-alumni/?$							index.php?page=valumni
 	RewriteRule   ^ni/?$										index.php?page=vni

@@ -24,7 +24,7 @@
 						k.nip
 					FROM
 						aka_guru g
-						JOIN hrd_karyawan k on k.id = g.karyawan
+						JOIN hrd_karyawan k on k.id = g.pegawai
 					WHERE
 						'.(isset($_GET['guru']) && $_GET['guru']!=''?'g.replid='.$_GET['guru'].' OR ':'').' (
 							k.nama LIKE "%'.$searchTerm.'%" OR 
@@ -75,14 +75,15 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
+				$departemen  = isset($_POST['departemenS'])?filter($_POST['departemenS']):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 				$tingkat     = isset($_POST['tingkatS']) && $_POST['tingkatS']!=''?' s.tingkat='.$_POST['tingkatS'].' AND ':'';
 				$subtingkat  = isset($_POST['subtingkatS']) && $_POST['subtingkatS']!=''?' k.subtingkat='.$_POST['subtingkatS'].' AND ':'';
 				$kelas       = isset($_POST['kelasS'])?filter($_POST['kelasS']):'';
 				$nama        = isset($_POST['namaS']) && $_POST['namaS']!=''?' h.nama LIKE"%'.$_POST['namaS'].'%" AND':'';
 				$kapasitas   = isset($_POST['kapasitasS']) && $_POST['kapasitasS']!=''?' d.kapasitas LIKE"%'.$_POST['kapasitasS'].'%" AND':'';
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
 
-				checkDetailKelas($tahunajaran);
+				// checkDetailKelas($tahunajaran);
 				$sql =' SELECT 
 							d.replid,
 							t.tingkat,
@@ -92,22 +93,23 @@
 								when 0 then "-"
 								when null then "-"
 								else concat(h.nip," / ",h.nama) 
-							end as wali,
-							case d.kapasitas
+							end as wali
+							/*,case d.kapasitas
 								when 0 then "-"
 								when null then "-"
 								else d.kapasitas 
-							end as kapasitas
+							end as kapasitas*/
 						FROM aka_kelas k
 							LEFT JOIN aka_subtingkat s on s.replid  = k.subtingkat 
 							LEFT JOIN aka_tingkat t on t.replid  = s.tingkat 
 							LEFT JOIN aka_detailkelas d on d.kelas  = k.replid 
 							LEFT JOIN aka_guru g on g.replid  = d.wali 
-							LEFT JOIN hrd_karyawan h on h.id  = g.karyawan 
+							LEFT JOIN hrd_karyawan h on h.id  = g.pegawai 
 						WHERE
 							'.$tingkat.$subtingkat.$kapasitas.'   
 							k.kelas LIKE"%'.$kelas.'%" AND
-							'.$nama.'
+							'.$nama.' 
+							k.departemen = '.$departemen.' AND
 							d.tahunajaran = '.$tahunajaran.' 
 						ORDER BY
 							t.urutan ASC, 
@@ -138,12 +140,12 @@
 								 </td>';
 						$out.= '<tr>
 									<td>'.$res['tingkat'].'</td>
-									<td>'.$res['subtingkat'].'</td>
-									<td>'.$res['kelas'].'</td>
+									<td align="center">'.$res['subtingkat'].'</td>
+									<td align="center">'.$res['kelas'].'</td>
 									<td>'.$res['wali'].'</td>
-									<td>'.$res['kapasitas'].'</td>
 									'.$btn.'
 								</tr>';
+									// <td>'.$res['karyawanpasitas'].'</td>
 						$nox++;
 					}
 				}else{ #kosong
@@ -159,8 +161,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	kapasitas = "'.filter($_POST['kapasitasTB']).'",
-								wali      = "'.filter($_POST['waliH']).'"';
+				// kapasitas = "'.filter($_POST['kapasitasTB']).'",
+				$s = $tb.' set 	wali   = "'.filter($_POST['waliH']).'"';
 				$s2   = isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
 				$e2   = mysql_query($s2);
 				$stat = !$e2?'gagal_'.errMsg(mysql_errno()):'sukses';
@@ -180,13 +182,13 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
+				// -- ,if(d.kapasitas=0,"",d.kapasitas)kapasitas 
 				$s 	= ' SELECT 
 							ta.tahunajaran
 							,t.tingkat   
 							,s.subtingkat
 							,k.kelas 
-							    
-							,if(d.kapasitas=0,"",d.kapasitas)kapasitas 
+							,k.departemen    
 							,if(d.wali=0,"",d.wali)idwali 
 							,h.nip
 							,h.nama
@@ -194,49 +196,58 @@
 							aka_detailkelas d 
 							LEFT JOIN aka_kelas k on k.replid = d.kelas
 							LEFT JOIN aka_guru g on g.replid = d.wali
-							LEFT JOIN hrd_karyawan h on h.id = g.karyawan
+							LEFT JOIN hrd_karyawan h on h.id = g.pegawai
 							LEFT JOIN aka_subtingkat s on s.replid = k.subtingkat 
 							LEFT JOIN aka_tingkat t on t.replid = s.tingkat
 							LEFT JOIN aka_tahunajaran ta on ta.replid = d.tahunajaran
 						WHERE
 							d.replid ='.$_POST['replid'];
-				// print_r($s);exit();
+				// pr($s);
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
 				$stat = ($e)?'sukses':'gagal';
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-								'tahunajaran' =>$r['tahunajaran'],
-								'tingkat'     =>$r['tingkat'],
-								'subtingkat'  =>$r['subtingkat'],
-								'kelas'       =>$r['kelas'],
-								'kapasitas'   =>$r['kapasitas'],
-								'wali'        =>($r['idwali']==0 || $r['idwali']==null?'':$r['nip'].' / '.$r['nama']),
-								'idwali'      =>$r['idwali']
+								'departemen'   =>$r['departemen'],
+								'tahunajaran'  =>$r['tahunajaran'],
+								'tingkat'      =>$r['tingkat'],
+								'subtingkat'   =>$r['subtingkat'],
+								'kelas'        =>$r['kelas'],
+								// 'kapasitas' =>$r['kapasitas'],
+								'wali'         =>($r['idwali']==0 || $r['idwali']==null?'':$r['nip'].' / '.$r['nama']),
+								'idwali'       =>$r['idwali']
 						)));
 			break;
 			// ambiledit -----------------------------------------------------------------
 
 		// cmbkelas ---------------------------------------------------------
-			case 'cmbkelas':
-				$w='';
+			case 'cmb'.$mnu:
+				$f=$j=$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['subtingkat'])){
-						$w.='where subtingkat ='.$_POST['subtingkat'];
+					}elseif(isset($_POST['subtingkat']) && isset($_POST['tahunajaran']) && isset($_POST['departemen']) ){
+						$f.='dk.replid,
+							k.kelas,
+							k.subtingkat,
+							dk.tahunajaran,
+							k.departemen';
+						$j.='join aka_kelas k on k.replid = dk.kelas';
+						$w.=' where 
+								k.subtingkat ='.$_POST['subtingkat'].' AND 
+								dk.tahunajaran = '.$_POST['tahunajaran'].' and 
+								k.departemen = '.$_POST['departemen'];
 					}
 				}
-
-				$s	= 'SELECT *
-						from '.$tb.'
-						'.$w.'		
-						ORDER  BY '.$mnu.' asc';
+				$s	= 'SELECT '.$f.'
+						from '.$tb.' dk
+						'.$j.$w.'		
+						ORDER  BY k.kelas  asc';
 				$e  = mysql_query($s);
-				// var_dump($s);
+				// pr($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 
@@ -252,7 +263,7 @@
 							}
 						}else{
 							$dt[]=mysql_fetch_assoc($e);
-						}$ar = array('status'=>'sukses','kelas'=>$dt);
+						}$ar = array('status'=>'sukses',$mnu=>$dt);
 					}
 				}
 				$out=json_encode($ar);

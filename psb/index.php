@@ -44,11 +44,7 @@
     <script src="../js/start-screen.js"></script>
     <script src="../js/maskedinput/jquery.maskMoney.js" type="text/javascript"></script>
 
-<<<<<<< HEAD
-    <title>.:SISTER METTA:.</title>
-=======
-    <title>.:SISTERMETTA PSB:.</title>
->>>>>>> 2bf8f63e02267590706ca0ddccc2a79ca67120a0
+    <title>.:SISTER PSB:.</title>
 </head>
 
 <body class="metro">
@@ -104,28 +100,43 @@
             }else{
                 switch ($_GET['page']) {
                     // master
-                    case 'vgolonganCalonSiswa':
-                        require $d.'v_golonganCalonSiswa.php';
+                    case 'vdokumen':
+                        require $d.'v_dokumen.php';
                     break;
-                    case 'vsetAngsuran':
-                        require $d.'v_setAngsuran.php';
+                    case 'vgolongan':
+                        require $d.'v_golongan.php';
                     break;
-                     case 'vsetBiayaCalonSiswa':
-                        require $d.'v_setBiayaCalonSiswa.php';
+                    case 'vangsuran':
+                        require $d.'v_angsuran.php';
                     break;
-                    case 'vsetDiskon':
-                        require $d.'v_setDiskon.php';
+                    case 'vbiaya':
+                        require $d.'v_biaya.php';
+                    break;
+                    case 'vdetailbiaya':
+                        require $d.'v_detailbiaya.php';
+                    break;
+                    case 'vdiskon':
+                        require $d.'v_diskon.php';
+                    break;
+                    case 'vdetaildiskon':
+                        require $d.'v_detaildiskon.php';
                     break;
 
                     // transaksi
-                    case 'vproses':
-                        require $d.'v_proses.php';
+                    case 'vrekapitulasisiswa':
+                        require $d.'v_rekapitulasisiswa.php';
                     break;
-                    case 'vkelompok':
-                        require $d.'v_kelompok.php';
+                    case 'vreminderultah':
+                        require $d.'v_reminderultah.php';
                     break;
-                    case 'vpendataan':
-                        require $d.'v_pendataan.php';
+                    case 'vgelombang':
+                        require $d.'v_gelombang.php';
+                    break;
+                    case 'vdetailgelombang':
+                        require $d.'v_detailgelombang.php';
+                    break;
+                    case 'vsiswa':
+                        require $d.'v_siswa.php';
                     break;
                     case 'vpenerimaan':
                         require $d.'v_penerimaan.php';

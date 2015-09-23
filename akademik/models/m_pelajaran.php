@@ -15,25 +15,28 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$pelajaran  = isset($_POST['pelajaranS'])?filter($_POST['pelajaranS']):'';
-				$singkatan  = isset($_POST['singkatanS'])?filter($_POST['singkatanS']):'';
-				$keterangan = isset($_POST['keteranganS'])?filter($_POST['keteranganS']):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
+				$pelajaran   = isset($_POST['pelajaranS'])?filter(trim($_POST['pelajaranS'])):'';
+				$singkatan   = isset($_POST['singkatanS'])?filter(trim($_POST['singkatanS'])):'';
+				$skm         = isset($_POST['skmS'])?filter(trim($_POST['skmS'])):'';
+				$keterangan  = isset($_POST['keteranganS'])?filter(trim($_POST['keteranganS'])):'';
 				$sql = 'SELECT *
 						FROM '.$tb.' 
 						WHERE 
+							tahunajaran like "%'.$tahunajaran.'%" and
 							nama like "%'.$pelajaran.'%" and
 							kode like "%'.$singkatan.'%" and
+							skm like "%'.$skm.'%" and
 							keterangan like "%'.$keterangan.'%"
 						ORDER 
 							BY nama asc';
-				// pr($sql);
 				if(isset($_POST['starting'])){ //nilai awal halaman
 					$starting=$_POST['starting'];
 				}else{
 					$starting=0;
 				}
 
-				$recpage= 10;//jumlah data per halaman
+				$recpage= 5;//jumlah data per halaman
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
@@ -43,7 +46,7 @@
 				if($jum!=0){	
 					$nox 	= $starting+1;
 					while($res = mysql_fetch_array($result)){	
-						$btn ='<td align="center">
+						$btn ='<td>
 									<button data-hint="ubah"  onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
@@ -52,8 +55,10 @@
 									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$res['nama'].'</td>
+									<td>'.$nox.'</td>
+									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
 									<td>'.$res['kode'].'</td>
+									<td>'.$res['skm'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -72,10 +77,13 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s = $tb.' set 	nama = "'.filter($_POST['namaTB']).'",
-								kode = "'.filter($_POST['kodeTB']).'",
+				$s = $tb.' set 	tahunajaran = "'.filter($_POST['tahunajaranH']).'",
+								nama = "'.filter($_POST['pelajaranTB']).'",
+								kode = "'.filter($_POST['singkatanTB']).'",
+								skm  = "'.filter($_POST['skmTB']).'",
 								keterangan 	= "'.filter($_POST['keteranganTB']).'"';
 				$s2	= isset($_POST['replid'])?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// var_dump($s2);exit();
 				$e2 = mysql_query($s2);
 				if(!$e2){
 					$stat = 'gagal menyimpan';
@@ -90,7 +98,7 @@
 				$d    = mysql_fetch_assoc(mysql_query('SELECT * from '.$tb.' where replid='.$_POST['replid']));
 				$s    = 'DELETE from '.$tb.' WHERE replid='.$_POST['replid'];
 				$e    = mysql_query($s);
-				$stat = ($e)?'sukses':errMsg(mysql_errno(),$d['nama']);
+				$stat = ($e)?'sukses':'gagal';
 				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d['nama']));
 			break;
 			// delete -----------------------------------------------------------------
@@ -99,13 +107,15 @@
 			case 'ambiledit':
 				$s 		= ' SELECT *
 							from '.$tb.'
-							WHERE  replid='.$_POST['replid'];
+							WHERE 
+								replid='.$_POST['replid'];
 				$e 		= mysql_query($s);
 				$r 		= mysql_fetch_assoc($e);
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
-							'kode'       =>$r['kode'],
-							'nama'       =>$r['nama'],
+							'kode'    =>$r['kode'],
+							'nama'    =>$r['nama'],
+							'skm'    =>$r['skm'],
 							'keterangan' =>$r['keterangan'],
 						));
 			break;

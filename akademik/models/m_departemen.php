@@ -67,7 +67,7 @@
 
 						// table row
 						$out.= '<tr id="TR_'.$res['replid'].'">
-									<td><div class="input-control select">'.$nox.'</div></td>
+									<td>'.$nox.'</td>
 									<td id="'.$mnu.'TD_'.$res['replid'].'">'.$res['nama'].'</td>
 									<td>'.$res['alamat'].'</td>
 									<td>'.$res['telepon'].'</td>

@@ -5,14 +5,7 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
 
-  $mnu = 'Formulir';
-  $pre = 'formulir_';
-
-  $x     = $_SESSION['id_loginS'].$_GET[$pre.'nopendaftaranS'].$_GET[$pre.'namaS'].$_GET[$pre.'statusS'].$_GET['kelompokS'];
-  $token = base64_encode($x);
-
-
-  $x     = $_SESSION['id_loginS'].$_GET['a_departemenS'].$_GET['a_tahunbukuS'].$_GET['a_namaS'].$_GET['a_nominalS'].$_GET['a_keteranganS'];
+  $x     = $_SESSION['id_loginS'].$_GET['a_departemenS'].$_GET['a_tahunajaranS'].$_GET['a_tingkatS'].$_GET['a_namaS'].$_GET['a_rekeningS'].$_GET['a_keteranganS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  
@@ -21,92 +14,165 @@
     if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
       echo 'Token URL tidak sesuai';
     }else{ //token benar
+      sleep(1);
+      ob_start(); // digunakan untuk convert php ke html
       $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
             <html xmlns="http://www.w3.org/1999/xhtml">
               <head>
                 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-                <title>SISTER::Keu - Anggaran</title>
+                <title>SISTER::Keu - Rencana Anggaran</title>
               </head>';
-                $a_departemen = isset($_GET['a_departemenS'])?filter($_GET['a_departemenS']):'';
-                $a_nama       = isset($_GET['a_namaS'])?filter($_GET['a_namaS']):'';
-                $a_rekening   = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
-                $a_keterangan = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
+                $departemen  = (isset($_GET['a_departemenS']) && $_GET['a_departemenS']!='')?' ta.departemen='.$_GET['a_departemenS'].' AND ':'';
+                $tahunajaran = (isset($_GET['a_tahunajaranS']) && $_GET['a_tahunajaranS']!='')?' t.tahunajaran='.$_GET['a_tahunajaranS'].' AND ':'';
+                $tingkat     = (isset($_GET['a_tingkatS']) && $_GET['a_tingkatS']!='')?' k.tingkat='.$_GET['a_tingkatS'].' AND ':'';
+                $nama        = isset($_GET['a_namaS'])?filter($_GET['a_namaS']):'';
+                $rekening    = isset($_GET['a_rekeningS'])?filter($_GET['a_rekeningS']):'';
+                $keterangan  = isset($_GET['a_keteranganS'])?filter($_GET['a_keteranganS']):'';
 
-                $s = 'SELECT
-                      a.replid,
-                      a.nama,
-                      a.keterangan,
-                      a.rekening
+                // SUM(n.nominal)nominal,
+                $s ='SELECT
+                      ta.departemen,
+                      t.tahunajaran,
+                      k.tingkat,
+                      k.replid,
+                      k.nama,
+                      k.keterangan,
+                      r.kode,
+                      round((IF (count(*) = 1, 0, count(*) / 12)),0) jmlItem
                     FROM
-                      keu_kategorianggaran a
-                      LEFT JOIN keu_detilrekening d ON d.replid = a.rekening
+                      keu_kategorianggaran k
+                      LEFT JOIN aka_tingkat t ON t.replid = k.tingkat
+                      LEFT JOIN aka_tahunajaran ta ON ta.replid = t.tahunajaran
+                      LEFT JOIN keu_detilrekening r ON r.replid = k.rekening
+                      LEFT JOIN keu_detilanggaran d ON d.kategorianggaran = k.replid
+                      LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
                     WHERE
-                      a.departemen = '.$a_departemen.'
-                      AND a.nama LIKE "%'.$a_nama.'%"
+                      '.$departemen.$tahunajaran.$tingkat.'
+                      k.nama LIKE "%'.$nama.'%"
                       AND (
-                        d.nama LIKE "%'.$a_rekening.'%"
-                        OR d.kode LIKE "%'.$a_rekening.'%"
-                      )AND a.keterangan LIKE "%'.$a_keterangan.'%"
+                        r.nama LIKE "%'.$rekening.'%"
+                        OR r.kode LIKE "%'.$rekening.'%"
+                      )AND k.keterangan LIKE "%'.$keterangan.'%"
+                    GROUP BY
+                      k.replid
                     ORDER BY
-                      a.replid ASC';                
+                      k.replid ASC';
+                // print_r($s);exit();
                 $e = mysql_query($s) or die(mysql_error());
                 $n = mysql_num_rows($e);
-
-              $out.='<body>
+                
+                $out.='<body>
                     <table width="100%">
                       <tr>
                         <td width="41%">
                           <img width="100" src="../../images/logo.png" alt="" />
                         </td>
                         <td>
-                          <b>Kategori Anggaran</b>
+                          <b>Rencana Anggaran</b>
                         </td>
                       </tr>
-                    </table><br />
+                </table><br />
+
                 <table width="100%">
                   <tr>
-                    <td width="10%">Tahun Buku </td>
-                    <td>: '.getTahunBuku('nama').'</td>
+                    <td width="15%">Departemen</td>
+                    <td>: '.($departemen!=''?getDepartemen('nama',$_GET['a_departemenS']):'Semua').'</td>
                     <td></td>
                   </tr>
                   <tr>
-                    <td>Departemen</td>
-                    <td>: '.getDepartemen('nama',$a_departemen).'</td>
-                    <td align="right"> Total :'.$n.' Data</td>
+                    <td width="15%">Tahun Ajaran </td>
+                    <td>: '.($tahunajaran!=''?getTahunAjaran('tahunajaran',$_GET['a_tahunajaranS']):'Semua').'</td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td width="15%">Tingkat </td>
+                    <td>: '.($tingkat!=''?getTingkat('tingkat',$_GET['a_tingkatS']):'Semua').'</td>
+                    <td align="right"> Total : '.$n.' Kategori Anggaran</td>
                   </tr>
                 </table>';
 
-                $out.='<table class="isi" width="100%">
-                    <tr class="head">
-                      <td align="center">Nama Kategori</td>
-                      <td align="center">Rekening</td>
-                      <td align="center">Keterangan</td>
-                    </tr>';
-                    $nox = 1;
-                    if($n==0){
-                      $out.='<tr>
-                        <td>-</td>
-                        <td>-</td>
-                        <td>-</td>
-                      </tr>';
-                    }else{
-                      while ($r=mysql_fetch_assoc($e)) {
-                        $out.='<tr>
-                                  <td>'.$r['nama'].'</td>
-                                  <td>'.getRekening($r['rekening']).'</td>
-                                  <td>'.$r['keterangan'].'</td>
-                            </tr>';
-                        $nox++;
-                      }
+                $out.='<table class="isi" width="100%">';
+                $out.='<tr class="head">
+                  <td align="center">Kode</td>
+                  <td align="center">Pengeluaran</td>
+                  <td align="center">Jul</td>
+                  <td align="center">Aug</td>
+                  <td align="center">Sep</td>
+                  <td align="center">Oct</td>
+                  <td align="center">Nov</td>
+                  <td align="center">Dec</td>
+                  <td align="center">Jan</td>
+                  <td align="center">Feb</td>
+                  <td align="center">Mar</td>
+                  <td align="center">Apr</td>
+                  <td align="center">May</td>
+                  <td align="center">Jun</td>
+                </tr>';
+                if($n==0){
+                  $out.='<tr>
+                    <td colspan="14" align="center">... Kategori Anggaran Kosong ....</td>
+                  </tr>';
+                }else{
+                  $curKat = '';
+                  $nox = 1;
+                  while ($r=mysql_fetch_array($e)) {
+                    $out.='<tr style="background-color:white;"><td rowspan="'.($r['jmlItem']+1).'">'.$r['kode'].'</td>';
+                    if($curKat!=$r['replid']){
+                      $out.='<td style="background-color:rgb(205,205,205);">'.$r['nama'];
+                        $out.=($departemen==''?'<br />- '.getDepartemen('nama',$r['departemen']):'');
+                        $out.=($tahunajaran==''?'<br />- '.getTahunAjaran('tahunajaran',$r['tahunajaran']):'');
+                        $out.=($tingkat==''?'<br />- '.getTingkat('tingkat',$r['tingkat']):'');
+                      $out.='</td>';
+                      $out.='<td colspan="13"></td>';
                     }
+
+                    $s2= 'SELECT 
+                          d.replid,
+                          d.nama,
+                          d.keterangan,
+                          d.hargasatuan,
+                          k.nama kategorianggaran
+                        FROM keu_detilanggaran d
+                          LEFT JOIN keu_kategorianggaran k on k.replid = d.kategorianggaran
+                        WHERE 
+                          d.kategorianggaran = '.$r['replid'].'
+                        GROUP BY  
+                          d.replid
+                        ORDER BY  
+                          d.nama ASC';
+                          // print_r($s2);exit();
+                    $e2=mysql_query($s2);
+                    // if($nox==($r['jmlItem'])){
+                    // if($nox==2){
+                    //   $out.='<tr><td colspan="13">masuk</td></tr>';
+                    // }else{
+                      while ($r2=mysql_fetch_assoc($e2)) {
+                        $out.='<tr style="background-color:white;">
+                                <td>'.$r2['nama'].'</td>';
+                        $s3 = 'SELECT * from keu_nominalanggaran WHERE detilanggaran ='.$r2['replid'];
+                        $e3 = mysql_query($s3);
+                          while ($r3=mysql_fetch_assoc($e3)) {
+                            $out.='<td align="right">Rp. '.number_format($r2['hargasatuan']*$r3['jml']).'</td>';
+                        }
+                        $out.='</tr>';
+                      }
+                    // }
+
+                    // var_dump($r['jmlItem']);exit();
+                    // var_dump($nox);exit();
+                    $nox++;
+                    $out.='</tr>';
+                    // var_dump($nox);exit();
+                    $curKat=$r['replid'];
+                  }
+                }
             $out.='</table>';
-            // $out.='<p>Total : '.$n.'</p>';
           echo $out;
   
         #generate html -> PDF ------------
           $out2 = ob_get_contents();
           ob_end_clean(); 
-          $mpdf=new mPDF('c','A4','');   
+          $mpdf=new mPDF('c','A4-L','');   
           $mpdf->SetDisplayMode('fullpage');   
           $stylesheet = file_get_contents('../../lib/mpdf/r_cetak.css');
           $mpdf->WriteHTML($stylesheet,1);  // The parameter 1 tells that this is css/style only and no body/html/text
@@ -114,8 +180,4 @@
           $mpdf->Output();
     }
 }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>

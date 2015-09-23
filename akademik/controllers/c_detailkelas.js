@@ -13,13 +13,17 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        cmbtahunajaran('filter','');
+        cmbdepartemen('filter','');
         contentFR += '<div style="overflow:scroll;height:550px;"  class="">'
                         +'<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
 
                         // header
-                       +'<table width="100%" >'
+                       +'<table class="table hovered bordered striped" width="100%" >'
+                            +'<tr>'
+                                +'<td width="25%" ><b>Departemen</b></td><td width="1%">:</td>'
+                                +'<td id="departemenDV"></td>'
+                            +'</tr>'
                             +'<tr>'
                                 +'<td  width="25%" ><b>Tahun Ajaran</b></td><td width="1%">:</td>'
                                 +'<td id="tahunajaranDV"></td>'
@@ -38,11 +42,11 @@ var contentFR = '';
                             +'</tr>'
                         +'</table>'
 
-                        // kapasitas
-                        +'<label>Kapasitas</label>'
-                        +'<div class="input-control text">'
-                            +'<input required type="number" min="1" max="1000" placeholder="kapasitas" name="kapasitasTB" id="kapasitasTB">'
-                        +'</div>'
+                        // // kapasitas
+                        // +'<label>Kapasitas</label>'
+                        // +'<div class="input-control text">'
+                        //     +'<input required type="number" min="1" max="1000" placeholder="kapasitas" name="kapasitasTB" id="kapasitasTB">'
+                        // +'</div>'
 
                         // wali kelas
                         +'<label>Wali Kelas (NIP/Nama Guru)</label>'
@@ -65,7 +69,7 @@ var contentFR = '';
     /*filtering*/
         // combo
         $('#departemenS').on('change',function(){
-            cmbtahunajaran('filter',$(this).val());
+            cmbtahunajaran('filter','');
         });
         $('#tahunajaranS').on('change',function (){
             cmbtingkat('filter','');
@@ -221,12 +225,13 @@ var contentFR = '';
                 ajax(dir,'aksi=ambiledit&replid='+id).done(function  (dt) {
                     // statis
                     $('#idformH').val(id);
-                    $('#tahunajaranDV').html(dt.datax.tahunajaran);
+                    cmbdepartemen('form',dt.datax.departemen);
+                    $('#tahunajaranDV').html(dt.datax.tahunajaran+' - '+(parseInt(dt.datax.tahunajaran)+1));
                     $('#tingkatDV').html(dt.datax.tingkat);
                     $('#subtingkatDV').html(dt.datax.subtingkat);
                     $('#kelasDV').html(dt.datax.kelas);
                     //dinamis
-                    $('#kapasitasTB').val(dt.datax.kapasitas);
+                    // $('#kapasitasTB').val(dt.datax.kapasitas);
                     $('#waliTB').val(dt.datax.wali);
                     $('#waliH').val(dt.datax.idwali);
                     autoSuggest(dt.datax.idwali,'wali','wali');
@@ -364,7 +369,7 @@ function notif(cont,clr) {
 // combo departemen  ---
     function cmbdepartemen(typ,dep){
         var u=dir5;
-        var d='aksi=cmb'+mnu5;
+        var d='aksi=cmb'+mnu5+(dep!=''?'&replid='+dep:'');
         ajax(u,d).done(function (dt) {
             var out='';
             if(dt.status!='sukses'){
@@ -375,9 +380,9 @@ function notif(cont,clr) {
                 });
                 if(typ=='filter'){
                     $('#departemenS').html(out);
-                    cmbtahunajaran('filter',dt.departemen[0].replid);
+                    cmbtahunajaran('filter','');
                 }else{
-                    $('#departemenTB').html('<option value="">-Pilih Departemen-</option>'+out);
+                    $('#departemenDV').html(dt.departemen[0].nama);
                 }
             }
         });
@@ -395,7 +400,7 @@ function notif(cont,clr) {
                     if(item.aktif=='1')
                         out+='<option selected value="'+item.replid+'"> '+item.tahunajaran+' (aktif)</option>';
                     else{
-                        out+='<option '+(item.replid==thn?'selected':'')+' value="'+item.replid+'"> '+item.tahunajaran+'</option>';
+                        out+='<option '+(item.replid==thn?'selected':'')+' value="'+item.replid+'"> '+item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1)+'</option>';
                     }
                 });
                 if(typ=='filter'){

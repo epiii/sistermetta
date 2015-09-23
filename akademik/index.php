@@ -39,7 +39,7 @@
     <script type="text/javascript" language="javascript" src="js/shCore.js"></script>
     <link rel="stylesheet" type="text/css" href="css/shCore.css">-->
 
-    <title>.: SISTERMETTA Akademik :.</title>
+    <title>.: SISTER Akademik :.</title>
 </head>
 
 <body class="metro">
@@ -151,8 +151,8 @@
                     case 'valumni':
                         require $d.'v_alumni.php';
                     break;
-                    case 'vsiswa':
-                        require $d.'v_siswa.php';
+                    case 'vsiswakelas':
+                        require $d.'v_siswakelas.php';
                     break;
                     case 'vsubtingkat':
                         require $d.'v_subtingkat.php';

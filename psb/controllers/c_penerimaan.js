@@ -45,12 +45,12 @@ var content_stat = content_det = '';
                         +'<legend>Silahkan lengkapi data berikut:</legend>'
                         +'<label>No Induk</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="NIS" required type="number" min="1" max="9999999999" name="nisTB" id="nisTB">'
+                            +'<input placeholder="NIS" required type="number" min="1" max="99999" name="nisTB" id="nisTB">'
                         +'</div>'
 
                         +'<label>NISN</label>'
                         +'<div class="input-control text">'
-                            +'<input   placeholder="NIS" required type="number" min="1" max="9999999999" name="nisnTB" id="nisnTB">'
+                            +'<input   placeholder="NIS" required type="number" min="1" max="99999" name="nisnTB" id="nisnTB">'
                         +'</div>'
                         
                         +'<div class="form-actions">' 

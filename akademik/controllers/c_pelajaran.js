@@ -8,19 +8,35 @@ var contentFR = '';
 
 // main function ---
     $(document).ready(function(){
-        viewTB();
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
+                        +'<label>Departemen</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" name="departemenH" id="departemenH">'
+                            +'<input disabled type="text" name="departemenTB" id="departemenTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'                        +'<label>Tahun Ajaran</label>'
+                        +'<div class="input-control text">'
+                            +'<input type="hidden" name="tahunajaranH" id="tahunajaranH">'
+                            +'<input disabled type="text" name="tahunajaranTB" id="tahunajaranTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
                         
                         +'<label>Mata Pelajaran</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="pelajaran" required name="namaTB" id="namaTB">'
+                            +'<input placeholder="pelajaran" required type="text" name="pelajaranTB" id="pelajaranTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
                         +'<label>Singkatan</label>'
                         +'<div class="input-control text">'
-                            +'<input placeholder="singkatan" required type="text" name="kodeTB" id="kodeTB">'
+                            +'<input placeholder="singkatan" required type="text" name="singkatanTB" id="singkatanTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+                        
+                        +'<label>SKM</label>'
+                        +'<div class="input-control text">'
+                            +'<input class="span1" placeholder="skm" required type="text" name="skmTB" id="skmTB">'
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         
@@ -34,6 +50,10 @@ var contentFR = '';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
+
+        // combo departemen
+        cmbdepartemen('');
+        // cmbdepartemen(false,'');
 
         //add form
         $("#tambahBC").on('click', function(){
@@ -176,30 +196,71 @@ var contentFR = '';
 
 // form ---
     function viewFR(id){
+        // alert(id);return false;
         $.Dialog({
             shadow: true,
             overlay: true,
             draggable: true,
-            width: '30%',
+            width: 500,
             padding: 10,
             onShow: function(){
                 var titlex;
-                var u =dir;
-                var d ='aksi=ambiledit&replid='+id;
-                if (id!='') { // edit mode
-                    ajax(u,d).done(function (dt) {
-                        $('#idformH').val(id);
-                        $('#namaTB').val(dt.nama);
-                        $('#kodeTB').val(dt.kode);
-                        $('#keteranganTB').val(dt.keterangan);
+                $.ajax({
+                        url:dir2,
+                        data:'aksi=cmb'+mnu2+'&replid='+$('#departemenS').val(),
+                        type:'post',
+                        dataType:'json',
+                        success:function(dt){
+                            $('#departemenH').val($('#departemenS').val());
+                            $('#tahunajaranH').val($('#tahunajaranS').val());
+                            var out;
+                            if(dt.status!='sukses'){
+                                out=dt.status;
+                            }else{
+                                out=dt.departemen[0].nama;
+                            }$('#departemenTB').val(out);
+                        // form :: tahun ajaran (disabled field) --------------
+                            $.ajax({
+                                url:dir3,
+                                data:'aksi=cmbtahunajaran&departemen='+$('#departemenS').val()+'&replid='+$('#tahunajaranS').val(),
+                                dataType:'json',
+                                type:'post',
+                                success:function(dt2){
+                                    var out2;
+                                    if(dt.status!='sukses'){
+                                        out2=dt2.status;
+                                    }else{
+                                        out2=dt2.tahunajaran[0].tahunajaran;
+                                    }$('#tahunajaranTB').val(out2);
+                                    
+                                    if (id!='') { // edit mode
+                                    // form :: edit :: tampilkan data 
+                                        $.ajax({
+                                            url:dir,
+                                            data:'aksi=ambiledit&replid='+id,
+                                            type:'post',
+                                            dataType:'json',
+                                            success:function(dt3){
+                                                $('#idformH').val(id);
+                                                $('#pelajaranTB').val(dt3.nama);
+                                                $('#singkatanTB').val(dt3.kode);
+                                                $('#skmTB').val(dt3.skm);
+                                                $('#keteranganTB').val(dt3.keterangan);
+                                            }
+                                        });
+                                    // end of form :: edit :: tampilkan data 
+                                        titlex='<span class="icon-pencil"></span> Ubah ';
+                                    }else{ //add mode
+                                        titlex='<span class="icon-plus-2"></span> Tambah ';
+                                    }
+                                }
+                            });
+                        //end of  form :: tahun ajaran (disabled field) --------------
+                        }
                     });
-                    titlex='<span class="icon-pencil"></span> Ubah ';
-                }else{ //add mode
-                    titlex='<span class="icon-plus-2"></span> Tambah ';
-                }
+                //end of form :: departemen (disabled field) -----------------------------
                 $.Dialog.title(titlex+' '+mnu);
                 $.Dialog.content(contentFR);
-                $('#namaTB').focus();
             }
         });
     }
@@ -251,25 +312,27 @@ var contentFR = '';
             success:function(dt){
                 var cont,clr;
                 if(dt.status!='sukses'){
-                    cont = dt.status;
+                    cont = '..Gagal Menghapus '+dt.terhapus+' ..';
                     clr  ='red';
-                    tim  = 5000;
                 }else{
-                    viewTB();
+                    viewTB($('#departemenS').val());
                     cont = '..Berhasil Menghapus '+dt.terhapus+' ..';
                     clr  ='green';
-                }notif(cont,clr,tim);
+                }
+                notif(cont,clr);
+                viewTB();
+
             }
         });
     }
 //end of del process ---
     
 // notifikasi
-    function notif(cont,clr,tim) {
+    function notif(cont,clr) {
         var not = $.Notify({
             caption : "<b>Notifikasi</b>",
             content : cont,
-            timeout : (typeof tim=='undefined'?3000:tim),
+            timeout : 3000,
             style :{
                 background: clr,
                 color:'white'
@@ -313,11 +376,6 @@ var contentFR = '';
     }
 //end of aktifkan process ---
 
-     function ajax (u,d) {
-        return $.ajax({
-            url:u,
-            data:d,
-            dataType:'json',
-            type:'post',
-        });        
-     }
+    // ---------------------- //
+    // -- created by epiii -- //
+    // ---------------------- //

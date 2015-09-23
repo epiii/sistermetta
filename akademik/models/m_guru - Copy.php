@@ -5,6 +5,9 @@
 	require_once '../../lib/pagination_class.php';
 	$tb = 'aka_guru';
 
+	// if(!isset($_POST['aksi'])){
+		// $out=json_encode(array('status'=>'invalid_no_post'));		
+		// $out=['status'=>'invalid_no_post'];		
 	if(!isset($_POST['aksi'])){
 		if(isset($_GET['aksi']) && $_GET['aksi']=='autocomp'){
 			$page       = $_GET['page']; // get the requested page
@@ -15,27 +18,19 @@
 
 			if(!$sidx) 
 				$sidx =1;
-			$ss='';
-			if(isset($_GET['subaksi']) && $_GET['subaksi']=='pegawai'){
-				$ss.='SELECT *
-					 FROM (
-							SELECT
-								k.nama,
-								k.nip,
-								k.id
-							FROM
-								hrd_karyawan k
-								LEFT JOIN aka_guru g ON g.pegawai = k.id
-							WHERE
-								'.(isset($_GET['pegawai']) && $_GET['pegawai']!=''?'k.id='.$_GET['pegawai'].' OR ':'').'
-								k.id NOT IN (SELECT gg.pegawai  FROM aka_guru gg WHERE gg.tahunajaran = '.$_GET['tahunajaran'].')
-						) tb
-					 WHERE
-			 			tb.nama LIKE "%'.$searchTerm.'%" OR 
-		 				tb.nip LIKE "%'.$searchTerm.'%"
-		 				';
-			}
-// var_dump($ss);exit();
+			$ss='SELECT * 
+				FROM(
+					SELECT p.nama,p.nip,p.replid
+					FROM hrd_pegawai p
+						LEFT JOIN aka_guru G ON p.replid=g.pegawai
+					where 
+						p.replid NOT IN (SELECT pegawai FROM aka_guru) 
+					)tb
+				WHERE	
+					tb.nama LIKE "%'.$searchTerm.'%"
+					OR tb.nip LIKE "%'.$searchTerm.'%"';
+							// '.(isset($_POST['barang'])and is_array($_POST['barang']) and !is_null($_POST['barang'])?'AND b.replid NOT IN ('.$_POST['barang'].')':'').'
+			// print_r($ss);exit();
 			$result = mysql_query($ss);
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -56,13 +51,11 @@
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {
-				if(isset($_GET['subaksi']) && $_GET['subaksi']=='pegawai'){
-					$rows[]= array(
-						'replid' =>$row['id'],
-						'nip'   =>$row['nip'],
-						'nama'   =>$row['nama']
-					);
-				}
+				$rows[]= array(
+					'replid' =>$row['replid'],
+					'nip'   =>$row['nip'],
+					'nama'   =>$row['nama']
+				);
 			}$response=array(
 				'page'    =>$page,
 				'total'   =>$total_pages,
@@ -76,24 +69,17 @@
 		switch ($_POST['aksi']) {
 			// -----------------------------------------------------------------
 			case 'tampil':
-				$tahunajaran = isset($_POST['tahunajaranS'])?filter($_POST['tahunajaranS']):'';
-				$nip         = isset($_POST['nipS'])?filter($_POST['nipS']):'';
-				$nama        = isset($_POST['namaS'])?filter($_POST['namaS']):'';
+				$departemen  = isset($_POST['departemenS'])?filter(trim($_POST['departemenS'])):'';
+				$tahunajaran = isset($_POST['tahunajaranS'])?filter(trim($_POST['tahunajaranS'])):'';
 				$pelajaran   = (isset($_POST['pelajaranS'])and !empty($_POST['pelajaranS']))?' AND g.pelajaran='.$_POST['pelajaranS']:'';
-				$sql = 'SELECT 
-							g.*,
-							t.tahunajaran, 
-							j.nama AS pelajaran, 
-							k.nip, 
-							k.nama
+				$sql = 'SELECT g.*,t.tahunajaran, j.nama AS pelajaran, p.nip, g.keterangan, p.nama
 						FROM aka_guru g
-							LEFT JOIN hrd_karyawan k  ON k.id=g.pegawai
+							LEFT JOIN hrd_pegawai p ON p.replid=g.pegawai
 							LEFT JOIN aka_pelajaran j ON j.replid=g.pelajaran
 							LEFT JOIN aka_tahunajaran t ON t.replid=g.tahunajaran
 						WHERE 
-							k.nama LIKE "%'.$nama.'%" AND
-							k.nip LIKE "%'.$nip.'%" AND
-							g.tahunajaran ='.$tahunajaran.$pelajaran.'
+							t.departemen ='.$departemen.' and 
+							t.replid ='.$tahunajaran.$pelajaran.'
 						ORDER 
 							BY g.replid asc';
 				// print_r($sql);exit();
@@ -103,7 +89,7 @@
 					$starting=0;
 				}
 
-				$recpage= 10;//jumlah data per halaman
+				$recpage= 5;//jumlah data per halaman
 				$obj 	= new pagination_class($sql,$starting,$recpage,'tampil','');
 				$result =$obj->result;
 
@@ -112,19 +98,18 @@
 				$out ='';
 				if($jum!=0){	
 					$nox 	= $starting+1;
-					while($res = mysql_fetch_assoc($result)){	
+					while($res = mysql_fetch_array($result)){	
 						$btn ='<td>
 									<button data-hint="ubah"  class="button" onclick="viewFR('.$res['replid'].');">
 										<i class="icon-pencil on-left"></i>
 									</button>
 									<button data-hint="hapus"  class="button" onclick="del('.$res['replid'].');">
 										<i class="icon-remove on-left"></i>
-									</button>
 								 </td>';
 						$out.= '<tr>
-									<td>'.$res['nip'].'</td>
-									<td>'.$res['nama'].'</td>
 									<td>'.$res['pelajaran'].'</td>
+									<td>'.$res['nama'].'</td>
+									<td>'.$res['nip'].'</td>
 									<td>'.$res['keterangan'].'</td>
 									'.$btn.'
 								</tr>';
@@ -143,7 +128,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s 		= $tb.' set 	pegawai 	= "'.$_POST['pegawaiH'].'",
+										// aktif 		= 1,
+				$s 		= $tb.' set 	pegawai 	= "'.$_POST['guruH'].'",
 										tahunajaran	= "'.$_POST['tahunajaran'].'",
 										pelajaran 	= "'.$_POST['pelajaranTB'].'",
 										keterangan  = "'.filter($_POST['keteranganTB']).'"';
@@ -166,18 +152,13 @@
 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s = ' SELECT
-							g.pegawai AS idpegawai,
-							k.nip,
-							k.nama,
-							g.pelajaran,
-							g.tahunajaran,
-							g.keterangan
-						FROM
-							aka_guru g 
-							LEFT JOIN  hrd_karyawan k on k.id = g.pegawai
-							LEFT JOIN aka_pelajaran p on p.replid = g.pelajaran
-						WHERE
+				$s 		= ' SELECT
+								h.nip,h.nama,g.pelajaran,g.tahunajaran,g.keterangan
+							FROM
+								aka_guru g
+							LEFT JOIN hrd_pegawai h ON g.pegawai = h.replid
+							LEFT JOIN aka_pelajaran p ON g.pelajaran = p.replid
+							WHERE
 							g.replid ='.$_POST['replid'];
 				// print_r($s);exit();
 				$e 		= mysql_query($s);
@@ -185,7 +166,6 @@
 				$stat 	= ($e)?'sukses':'gagal';
 				$out 	= json_encode(array(
 							'status'      =>$stat,
-							'idpegawai'   =>$r['idpegawai'], 
 							'nip'         =>$r['nip'],
 							'nama'        =>$r['nama'],
 							'pelajaran'   =>$r['pelajaran'],

@@ -14,23 +14,14 @@
 			$es = mysql_query($ss);
 		}
 	}
-	function getSemester($id){
-		$s = 'SELECT 
-				if(semester=1,"Ganjil","Genap") semester
-			  FROM aka_semester
-			  WHERE replid ='.$id;
-			  // var_dump($s);exit();
-		$e = mysql_query($s);
-		$r = mysql_fetch_assoc($e);
-		return $r['semester'];
-	}
+
+/*aka*/
 	function getTahunAjaran($typ,$id){
 		$s = 'SELECT '.$typ.'
 			  FROM aka_tahunajaran
 			  WHERE replid ='.$id;
 		$e = mysql_query($s);
 		$r = mysql_fetch_assoc($e);
-		// var_dump($r);exit();
 		return $r[$typ];
 	}
 	function getKelas($typ,$id){

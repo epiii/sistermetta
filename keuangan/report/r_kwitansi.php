@@ -6,9 +6,10 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
   $countx= isset($_GET['countx'])?filter($_GET['countx']):'';
-  $x     = $_SESSION['id_loginS'].$_GET['nomerH'].$_GET['jenistrans'].$countx;
+  $x     = $_SESSION['id_loginS'].$_GET['detjenistransH'].$_GET['nomerH'].$countx;
   $token = base64_encode($x);
 
+  // var_dump($x);exit();
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
@@ -33,8 +34,9 @@
       // var_dump($end);exit();
       
       $out.='<body>';
-      if($_GET['jenistrans']=='ju'){
+      if($_GET['detjenistransH']=='ju'){
         $s1 = 'SELECT * FROM keu_transaksi WHERE nomer = "'.$nomer.'"';
+        // var_dump($s1);exit();
         $e1 = mysql_query($s1) or die(mysql_error());
         $r1=mysql_fetch_assoc($e1);
         $out.='<table width="100%">
@@ -59,7 +61,7 @@
                     </tr>
                     <tr>
                       <td>Tanggal</td>
-                      <td>: '.tgl_indo5($r1['tanggal']).'</td>
+                      <td>: '.tgl_indo8($r1['tanggal']).'</td>
                     </tr>
                     <tr>
                       <td>Uraian</td>
@@ -122,7 +124,7 @@
                     </tr>
                     <tr>
                       <td>Tanggal</td>
-                      <td>: '.tgl_indo5($r1['tanggal']).'</td>
+                      <td>: '.tgl_indo8($r1['tanggal']).'</td>
                     </tr>
                     <tr>
                       <td>Uraian</td>
@@ -130,7 +132,7 @@
                     </tr>';
             if($jenisTrans=='pengeluaran'){
               $out.='<tr>
-                      <td>Anggaran</td>
+                      <td>Detail Anggaran</td>
                       <td>: '.getAnggaran($r1['detilanggaran']).'</td>
                     </tr>';
             }$out.='</table>';
@@ -186,9 +188,4 @@
         $mpdf->Output();
       }
   }
-  // ---------------------- //
-  // -- created by epiii -- //
-  // ---------------------- // 
-
 ?>
-      }else{

@@ -7,6 +7,13 @@ var contentFR = '';
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         
+                        // kode
+                        +'<label>kode</label>'
+                        +'<div class="input-control text">'
+                            +'<input required placeholder="kode" name="kodeTB" id="kodeTB">'
+                            +'<button class="btn-clear"></button>'
+                        +'</div>'
+
                         // tingkat
                         +'<label>tingkat</label>'
                         +'<div class="input-control text">'
@@ -34,16 +41,17 @@ var contentFR = '';
         });
 
         //search action
-        $('#tingkatS,#keteranganS').keydown(function(e){
+        $('#kodeS,#tingkatS,#keteranganS').keydown(function(e){
             if(e.keyCode==13) viewTB();
         });
 
         // search button
-        $('#cariBC').on('click',function(){
-            $('#cariTR').toggle('slow');
-            $('#tingkatS').val('');
-            $('#keteraganS').val('');
-        });
+        // $('#cariBC').on('click',function(){
+        //     $('#cariTR').toggle('slow');
+        //     $('#kodeS').val('');
+        //     $('#tingkatS').val('');
+        //     $('#keteraganS').val('');
+        // });
     }); 
 // end of save process ---
 
@@ -79,25 +87,42 @@ var contentFR = '';
 //end of save process ---
 
 // view table ---
-    function viewTB(){
+    function viewTB(subaksi){
         var aksi ='aksi=tampil';
-        var cari = '&tahunajaranS='+$('#tahunajaranS').val()
-                    +'&tingkatS='+$('#tingkatS').val()
-                    +'&keteranganS='+$('#keteranganS').val();
+        if(typeof subaksi!=='undefined'){
+            aksi+='&subaksi='+subaksi;
+        }
+        var cari ='';
+        var el,el2;
+
+        if(typeof subaksi!=='undefined'){ // multi paging
+            el  = '.'+subaksi+'_cari';
+            el2 = '#'+subaksi+'_tbody';
+        }else{ // single paging
+            el  = '.cari';
+            el2 = '#tbody';
+        }
+
+        $(el).each(function(){
+            var p = $(this).attr('id');
+            var v = $(this).val();
+            cari+='&'+p+'='+v;
+        });
+
         $.ajax({
             url : dir,
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $('#tbody').html('<tr><td align="center" colspan="7"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
-                    $('#tbody').html(dt).fadeIn();
+                    $(el2).html(dt).fadeIn();
                 },1000);
             }
         });
     }
-// end of view table ---
+// end of view table
 
 // form ---
     function viewFR(id){
@@ -115,6 +140,7 @@ var contentFR = '';
                     ajax(u,d).done(function (dt){
                         var out;
                         $('#idformH').val(id);
+                        $('#kodeTB').val(dt.kode);
                         $('#tingkatTB').val(dt.tingkat);
                         $('#keteranganTB').val(dt.keterangan);
                     });
