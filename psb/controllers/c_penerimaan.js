@@ -50,7 +50,7 @@ var content_stat = content_det = '';
 
                         +'<label>NISN</label>'
                         +'<div class="input-control text">'
-                            +'<input   placeholder="NIS" required type="number" min="1" max="9999999999" name="nisnTB" id="nisnTB">'
+                            +'<input   placeholder="NIS" type="number" min="1" max="9999999999" name="nisnTB" id="nisnTB">'
                         +'</div>'
                         
                         +'<div class="form-actions">' 
