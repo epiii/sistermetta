@@ -101,7 +101,8 @@ $namajenis=$data['nama'];
 $subtotalhargajual=getsubtotalhargajual($tglmulai,$tglakhir,$idjenis);
 $subtotalhargabeli=getsubtotalhargabeli($tglmulai,$tglakhir,$idjenis);
 $subtotalbiaya=getsubtotalbiaya($tglmulai,$tglakhir,$idjenis);
-$subtotalbayar = $subtotalhargajual - $subtotalhargabeli;
+//$subtotalbayar = $subtotalhargajual - $subtotalhargabeli;
+$subtotalbayar=getlabarugi($tglmulai,$tglakhir,$idjenis);
 $admin .='<tr>
 		<td>'.$namajenis.'</td>
 		<td>'.rupiah_format($subtotalbayar).'</td>
