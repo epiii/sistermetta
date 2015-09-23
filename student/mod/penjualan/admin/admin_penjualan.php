@@ -196,7 +196,13 @@ $kode=$data['kode'];
 $stok=$data['jumlah'];
 $harga=$data['hargajual'];
 //$hargabeli=$data['hargabeli'];
-$hargabeli = gethargabeliterbaru($kode);
+//$hargabeli = gethargabeliterbaru($kode);
+//HPP memakai average
+$hargabeli = gethargabelirata2x($kode);
+if(!$hargabeli){
+$hargabeli=$data['hargabeli'];	
+}
+//End HPP memakai average
 $jenjang=$data['jenjang'];
 $jenis=$data['jenis'];
 $error 	= '';
