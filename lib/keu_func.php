@@ -1,5 +1,4 @@
 <?php
-
 	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
 		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);
 		$biayaNett = ($biaya<$diskKhus?0:(intval($biaya) - intval($diskKhus)) );
@@ -58,7 +57,7 @@
 		}return $o;
 	}
 
-	function getKatAnggaran($id,$typ){
+	/*function getKatAnggaran($id,$typ){
 		$s='SELECT
 				k.*, IFNULL(da.kuotaNum, 0) kuotaNum,
 				IFNULL(t.totTerpakai, 0) terpakaiNum,
@@ -104,8 +103,33 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];
-	}
+	}*/
 	function getDetAnggaran($id,$typ){
+		$s='SELECT
+				(SUM(n.jml) * d.hargasatuan)kuotaNum,
+				ifnull(t1.terpakaiNum, 0) terpakaiNum,
+				ifnull(((SUM(n.jml) * d.hargasatuan) - t1.terpakaiNum),(SUM(n.jml) * d.hargasatuan)) sisaNum,
+				ifnull(round(((t1.terpakaiNum) / (SUM(n.jml) * d.hargasatuan) * 100)),0) terpakaiPerc
+			FROM
+				keu_detilanggaran d
+				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+				LEFT JOIN (
+					SELECT
+						t.detilanggaran,
+						SUM(t.nominal) terpakaiNum
+					FROM
+						keu_transaksi t
+					GROUP BY
+						t.detilanggaran
+				) t1 ON t1.detilanggaran = d.replid
+			WHERE
+				d.replid = '.$id;
+				// var_dump($s);exit();
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r[$typ];
+	}
+	function getAnggaranTahunan($id,$typ){
 		$s='SELECT
 				(SUM(n.jml) * d.hargasatuan)kuotaNum,
 				ifnull(t1.terpakaiNum, 0) terpakaiNum,

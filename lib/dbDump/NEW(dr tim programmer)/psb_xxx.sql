@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : lumba2
 Source Server Version : 50625
 Source Host           : 127.0.0.1:3306
-Source Database       : sister_siadu
+Source Database       : sistermetta
 
 Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-17 04:07:48
+Date: 2015-09-25 07:01:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1045,7 +1045,7 @@ CREATE TABLE `psb_detailbiaya` (
   CONSTRAINT `detailgelombangFK4` FOREIGN KEY (`detailgelombang`) REFERENCES `psb_detailgelombang` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `golonganFK2` FOREIGN KEY (`golongan`) REFERENCES `psb_golongan` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subtingkatFK2` FOREIGN KEY (`subtingkat`) REFERENCES `aka_subtingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4746 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3558 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_detailbiaya
@@ -1305,7 +1305,7 @@ CREATE TABLE `psb_detailgelombang` (
   CONSTRAINT `departemenFK` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `gelombangFK` FOREIGN KEY (`gelombang`) REFERENCES `psb_gelombang` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK3` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_detailgelombang
@@ -1587,26 +1587,27 @@ CREATE TABLE `psb_siswa` (
   `diasuh` enum('1','2','3','4') NOT NULL DEFAULT '1' COMMENT '1=ayah+ibu, 2=ayah, 3=ibu, 4=wali',
   PRIMARY KEY (`replid`),
   KEY `FK_calonsiswa_agama` (`agamasiswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_siswa
 -- ----------------------------
 INSERT INTO `psb_siswa` VALUES ('148', '1', null, 'Darren Evan Tin', '99', '144', 'dinhox', '1', 'brazil school', '2', '0', '1', 'L', 'rio de janeiro', '2015-09-19', 'brasil', '0', '70.0', '180.0', 'B', '5_dbeb1c3503.png', 'rio street', '808080', '30303030', '1919191', 'ronaldinho@gaucho.com', 'hitam', '1010101010', 'haus', 'rio de J.', 'rio de', 'mexico', '', null, 'portuguese', 'inggris', '4');
-INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'Megan Davis Zheng', '', '', 'vieira', '1', '', '0', '0', '0', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'Megan Davis Zheng', '5', '', 'vieira', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('158', '3', null, 'Justin Ong', '99', '', '', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '4_71c2ca0414.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('160', '5', null, 'Jordyn Edward Motanto', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('161', '6', null, 'Lunabelle Veloxia Taslim', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('162', '7', null, 'Aaron William Soemarno', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('160', '5', null, 'Jordyn Edward Motanto', '6', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('161', '6', null, 'Lunabelle Veloxia Taslim', '7', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('162', '7', null, 'Aaron William Soemarno', '8', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('163', '8', null, 'Kaylee Weng Okawida', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('164', '9', null, 'Adjie Reksa Nugroho', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('165', '10', null, 'Aldrin Reynard Herdianto', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('166', '11', null, 'Archie Oesjady', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('165', '10', null, 'Aldrin Reynard Herdianto', '9', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('166', '11', null, 'Archie Oesjady', '10', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('167', '12', null, 'Axel Oesjady', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('168', '13', null, 'Carly Rei Chen', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('169', '14', null, 'Cordelia Sucarita Wang', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('170', '15', null, 'Eugene Sinclair Sutanto', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('171', '16', null, 'George Maverick candra', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('172', '17', null, 'rhoma irama', '', '', 'bang haji', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
 -- Table structure for psb_siswa_copy
@@ -2599,7 +2600,7 @@ CREATE TABLE `psb_siswaayah` (
   PRIMARY KEY (`replid`),
   KEY `calonsiswa` (`siswa`) USING BTREE,
   CONSTRAINT `calonsiswaFk` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswaayah
@@ -2619,6 +2620,7 @@ INSERT INTO `psb_siswaayah` VALUES ('27', '168', 'Andy Prayitno', '', '0000-00-0
 INSERT INTO `psb_siswaayah` VALUES ('28', '169', 'Chitrahadi Sudirman', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('29', '170', 'David Sugianto Sutanto', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('30', '171', 'Hengky candra', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `psb_siswaayah` VALUES ('31', '172', 'bapak rhoma', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswabiaya
@@ -2635,7 +2637,7 @@ CREATE TABLE `psb_siswabiaya` (
   KEY `siswa` (`siswa`) USING BTREE,
   KEY `biaya` (`detailbiaya`) USING BTREE,
   CONSTRAINT `siswaFK2` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=578 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=581 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswabiaya
@@ -2652,9 +2654,9 @@ INSERT INTO `psb_siswabiaya` VALUES ('535', '158', '677', '6', 'diskon ahli musi
 INSERT INTO `psb_siswabiaya` VALUES ('536', '158', '650', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('537', '158', '668', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('538', '158', '659', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('542', '160', '668', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('543', '160', '677', '1', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('544', '160', '659', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('542', '160', '704', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('543', '160', '713', '1', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('544', '160', '695', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('545', '161', '668', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('546', '161', '677', '1', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('547', '161', '659', '0', '', '0');
@@ -2688,6 +2690,9 @@ INSERT INTO `psb_siswabiaya` VALUES ('574', '170', '659', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('575', '171', '668', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('576', '171', '677', '1', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('577', '171', '659', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('578', '172', '740', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('579', '172', '749', '5', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('580', '172', '731', '0', '', '0');
 
 -- ----------------------------
 -- Table structure for psb_siswadiskon
@@ -2725,7 +2730,7 @@ CREATE TABLE `psb_siswadokumen` (
   KEY `subdokumen` (`subdokumen`) USING BTREE,
   CONSTRAINT `siswaFK` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subdokumenFK` FOREIGN KEY (`subdokumen`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadokumen
@@ -2763,7 +2768,7 @@ CREATE TABLE `psb_siswaibu` (
   PRIMARY KEY (`replid`),
   KEY `calonsiswa` (`siswa`) USING BTREE,
   CONSTRAINT `psb_siswaibu_ibfk_1` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswaibu
@@ -2783,6 +2788,7 @@ INSERT INTO `psb_siswaibu` VALUES ('27', '168', 'Yoren Viryamarchyo', '', '0000-
 INSERT INTO `psb_siswaibu` VALUES ('28', '169', 'Meliana Kusuma', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('29', '170', 'Veronica Basuki', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('30', '171', 'Emilia Amsal', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `psb_siswaibu` VALUES ('31', '172', 'ibu rhoma', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswakontakdarurat

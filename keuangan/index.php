@@ -103,17 +103,20 @@
                     case 'saldorekening':
                         require $d.'v_saldorekening.php';
                     break;
-                    case 'anggaran':
-                        require $d.'v_anggaran.php';
+                    case 'kategorianggaran':
+                        require $d.'v_kategorianggaran.php';
                     break;
-                    case 'anggarantahunan':
-                        require $d.'v_anggarantahunan.php';
+                    case 'detilanggaran':
+                        require $d.'v_detilanggaran.php';
                     break;
                     case 'jenislaporan':
                         require $d.'v_jenislaporan.php';
                     break;
 
                     // transaksi
+                    case 'anggarantahunan':
+                        require $d.'v_anggarantahunan.php';
+                    break;
                     case 'transaksi':
                         require $d.'v_transaksi.php';
                     break;

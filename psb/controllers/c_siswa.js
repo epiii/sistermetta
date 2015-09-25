@@ -869,7 +869,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                 if(tipe=='form') $('#tingkatTBZ').html('<option value="">-Pilih Tingkat-</option>'+opt);
                 else {
                     $('#tingkatS').html(opt);
-                    viewTB('siswa');
+                    cmbsubtingkat('filter',dt.tingkat[0].replid,'');
                 }
             }
         });
@@ -1400,7 +1400,7 @@ function notif(cont,clr) {
                 }
                 if(typ=='filter'){
                     $('#subtingkatS').html('<option value="">-SEMUA-</option>'+out);
-                    viewTB();
+                    viewTB('siswa');
                 }else{
                     $('#subtingkatTB').html('<option value="">-Pilih Sub Tingkat-</option>'+out);
                 }

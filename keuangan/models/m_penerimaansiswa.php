@@ -4,10 +4,6 @@
 	require_once '../../lib/func.php';
 	require_once '../../lib/pagination_class.php';
 	require_once '../../lib/tglindo.php';
-	// note :
-	// ju : jurnal umum
-	// in : pemasukkan
-	// out : pengeluaran
 
 	$mnu  = 'pembayaran';
 	$mnu2 = 'rekening';
@@ -101,497 +97,87 @@
 
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
-				switch ($_POST['subaksi']) {
-					case 'formulir':
-						$pre           = 'formulir';
-						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-						$nama          = isset($_POST[$pre.'_namaS'])?filter($_POST[$pre.'_namaS']):'';
-						$nopendaftaran = isset($_POST[$pre.'_nopendaftaranS'])?filter($_POST[$pre.'_nopendaftaranS']):'';
-						$status        = (isset($_POST[$pre.'_statusS']) AND $_POST[$pre.'_statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
-						$sql = 'SELECT
-									t2.*
-								FROM
-									psb_calonsiswa c
-									LEFT JOIN (
-										SELECT 
-											if(t1.cicilan=t1.daftar,"lunas","belum")statbayar,
-											cs.replid,
-											cs.nama, 
-											t1.cicilan,
-											t1.daftar,
-											cs.kelompok,	 	
-											cs.nopendaftaran	 	
-										FROM psb_calonsiswa cs 
-											LEFT JOIN (
-												SELECT ss.replid,	p.cicilan,s.daftar
-												from  psb_calonsiswa ss
-													LEFT JOIN keu_pembayaran p on p.siswa= ss.replid
-													LEFT JOIN keu_modulpembayaran m on m.replid = p.modul
-													LEFT JOIN keu_katmodulpembayaran k on k.replid = m.katmodulpembayaran
-													LEFT JOIN psb_setbiaya s on s.replid = ss.setbiaya
-												WHERE k.nama = "formulir"
-											)t1 on t1.replid = cs.replid 
-									)t2 on t2.replid= c.replid
-								WHERE
-									c.kelompok = '.$kelompok.'
-									AND c.nama LIKE "%'.$nama.'%"
-									AND c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-									'.$status;
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ 
-							$starting=$_POST['starting'];
+				$nis           = isset($_POST['nisS'])?filter($_POST['nisS']):'';
+				$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
+				$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
+				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
+				$status        = (isset($_POST['statusS']) AND $_POST['statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
+				$sql = 'SELECT 	
+							s.replid,
+							s.namasiswa,	
+							s.nis,
+							s.nopendaftaran,
+							s.nisn
+						FROM psb_siswa s
+						WHERE
+							s.status!="2" AND 
+							s.namasiswa LIKE "%'.$namasiswa.'%" AND 
+							s.nis LIKE "%'.$nis.'%" AND 
+							s.nisn LIKE "%'.$nisn.'%" AND 
+							s.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+							'.$status;
+				// print_r($sql);exit(); 	
+				if(isset($_POST['starting'])){ 
+					$starting=$_POST['starting'];
+				}else{
+					$starting=0;
+				}
+
+				$recpage = 10;
+				$aksi    ='tampil';
+				$subaksi = '';
+				$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
+				$result  = $obj->result;
+
+				#ada data
+				$jum = mysql_num_rows($result);
+				$out ='';$totaset=0;
+				if($jum!=0){	
+					$nox = $starting+1;
+					while($res = mysql_fetch_assoc($result)){
+						/*$biaya    = getBiaya($pre,$res['replid']);
+						$terbayar = getTerbayar('joining fee',$res['replid']);
+						$status   = getStatusBayar('joining fee',$res['replid']);
+						if($status=='belum'){ // belum
+							$clr  = 'red';
+							$icon = 'empty';
+							$hint = 'belum bayar';
+							$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
 						}else{
-							$starting=0;
-						}
-
-						$recpage = 10;
-						$aksi    ='tampil';
-						$subaksi = $pre;
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$biaya    = getBiaya($pre,$res['replid']);
-								$terbayar = getTerbayar($pre,$res['replid']);
-								$status   = getStatusBayar($pre,$res['replid']);
-								// var_dump($status);exit();
-								if($status=='lunas'){ // lunas
-									$clr  = 'green';
-									$icon = 'full';
-									$hint = 'lunas';
-									$func = 'onclick="pembayaranFR(\''.$pre.'\','.$res['replid'].');"';
-								}else{ // belum lunas
-									$clr  = 'red';
-									$icon = 'empty';
-									$hint = 'belum lunas';
-									$func = 'onclick="pembayaranFR(\''.$pre.'\','.$res['replid'].');"';
-								}
-								$btn ='<td align="center">
-											<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
-												<i class="icon-battery-'.$icon.'"></i>
-											</button>
-									   </td>';
-							 	$out.= '<tr>
-											<td>'.$res['nopendaftaran'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td align="right">Rp. '.number_format(getBiaya('daftar',$res['replid'])).'</td>
-											<td  align="center">'.getTglTrans($res['replid'],'formulir').'</td>
-											'.$btn.'
-										</tr>';
+						 	if($status=='lunas'){ // lunas
+								$clr  = 'green';
+								$icon = 'full';
+								$hint = 'lunas';
+								$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
+							}else{ // kurang
+								$clr  = 'yellow';
+								$icon = 'half';
+								$hint = 'kurang';
+								$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
 							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// formulir 
-					
-					// joiing fee
-					case 'joiningf':
-						// $joiningf      = isset($_POST[$pre.'_joiningfS'])?filter($_POST[$pre.'_joiningfS']):'';
-						$pre = $_POST['subaksi'];
-						$kelompok      = isset($_POST['kelompokS'])?filter($_POST['kelompokS']):'';
-						$nama          = isset($_POST[$pre.'_namaS'])?filter($_POST[$pre.'_namaS']):'';
-						$nopendaftaran = isset($_POST[$pre.'_nopendaftaranS'])?filter($_POST[$pre.'_nopendaftaranS']):'';
-						$status        = (isset($_POST[$pre.'_statusS']) AND $_POST[$pre.'_statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
-						$sql = 'SELECT t2.*
-								FROM psb_calonsiswa c
-									LEFT JOIN (
-										SELECT	
-											case 
-												when t1.cicilan = 0 OR  t1.cicilan is NULL  then "belum"
-												when t1.cicilan = sb.joiningf then "lunas"
-												when t1.cicilan < sb.joiningf then "kurang"
-											end as statbayar,
-											sb.joiningf,
-											cs.replid,
-											cs.nama,
-											t1.cicilan,
-											cs.kelompok,
-											cs.nopendaftaran
-										FROM
-											psb_calonsiswa cs
-											LEFT JOIN psb_setbiaya sb on sb.replid = cs.setbiaya
-											LEFT JOIN (
-												SELECT
-													ss.replid,
-													sum(p.cicilan)cicilan
-												FROM
-													psb_calonsiswa ss
-													LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
-													LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
-													LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-													LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
-												WHERE
-													k.nama = "joining fee"
-												GROUP BY	
-													ss.replid
-											) t1 ON t1.replid = cs.replid
-									) t2 ON t2.replid = c.replid
-								WHERE
-									c.kelompok = '.$kelompok.'
-									AND c.nama LIKE "%'.$nama.'%"
-									AND c.nopendaftaran LIKE "%'.$nopendaftaran.'%"
-									'.$status;
-						// print_r($sql);exit(); 	
-						if(isset($_POST['starting'])){ 
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 10;
-						$aksi    ='tampil';
-						$subaksi = $pre;
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){
-								$biaya    = getBiaya($pre,$res['replid']);
-								$terbayar = getTerbayar('joining fee',$res['replid']);
-								$status   = getStatusBayar('joining fee',$res['replid']);
-								if($status=='belum'){ // belum
-									$clr  = 'red';
-									$icon = 'empty';
-									$hint = 'belum bayar';
-									$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
-								}else{
-								 	if($status=='lunas'){ // lunas
-										$clr  = 'green';
-										$icon = 'full';
-										$hint = 'lunas';
-										$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
-									}else{ // kurang
-										$clr  = 'yellow';
-										$icon = 'half';
-										$hint = 'kurang';
-										$func = 'onclick="pembayaranFR(\'joiningf\','.$res['replid'].');"';
-									}
-								}
-								$btn ='<td align="center">
-											<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
-												<i class="icon-battery-'.$icon.'"></i>
-											</button>
-									   </td>';
-							 	$out.= '<tr>
-											<td>'.$res['nopendaftaran'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td align="right">Rp. '.number_format($biaya).'</td>
-											<td align="right">Rp. '.number_format($biaya-$terbayar).'</td>
-											<td  align="center">'.getTglTrans($res['replid'],'joining fee').'</td>
-											'.$btn.'
-										</tr>';
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// joining fee 
-
-					// dpp
-					case 'dpp':
-						$pre = 'dpp_';
-						$angkatan = isset($_POST['angkatanS'])?filter($_POST['angkatanS']):'';
-						$nama     = isset($_POST['namaS'])?filter($_POST['namaS']):'';
-						$nis      = isset($_POST['nisS'])?filter($_POST['nisS']):'';
-						$status   = (isset($_POST[$pre.'statusS']) AND $_POST[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'statusS']).'"':'';
-						$sql = 'SELECT t2.*
-								FROM psb_calonsiswa c
-									LEFT JOIN (
-										SELECT	
-											case 
-												when t1.cicilan = 0 OR t1.cicilan is NULL  then "belum"
-												when t1.cicilan = sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))then "lunas"
-												when t1.cicilan < sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))then "kurang"
-											end as statbayar,
-											sb.nilai-(cs.discsaudara+cs.disctb+ifnull(sb.nilai*dt.nilai/100,0))biayanet,
-											cs.replid,
-											cs.nama,
-											t1.cicilan,
-											p.angkatan,
-											cs.nis
-										FROM
-											psb_calonsiswa cs
-											LEFT JOIN psb_disctunai dt on dt.replid = cs.disctunai
-											LEFT JOIN psb_setbiaya sb on sb.replid = cs.setbiaya
-											LEFT JOIN (
-												SELECT
-													ss.replid,
-													sum(p.cicilan)cicilan
-												FROM
-													psb_calonsiswa ss
-													LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
-													LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
-													LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-													LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
-												WHERE
-													k.nama = "dpp"
-												GROUP BY	
-													ss.replid
-											) t1 ON t1.replid = cs.replid
-											LEFT JOIN psb_kelompok k on k.replid = cs.kelompok
-											LEFT JOIN psb_proses p on p.replid = k.proses
-									) t2 ON t2.replid = c.replid
-								WHERE
-									t2.angkatan = '.$angkatan.' AND
-									t2.nama LIKE "%'.$nama.'%" AND
-									t2.nis LIKE "%'.$nis.'%" '.$status;
-	                  	// var_dump($sql);exit();
-						if(isset($_POST['starting'])){ 
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 10;
-						$aksi    ='tampil';
-						$subaksi ='dpp';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$status = getStatusBayar('dpp',$res['replid']);
-								if($status=='belum'){ // belum
-									$clr  = 'red';
-									$icon = 'empty';
-									$hint = 'belum bayar';
-									$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
-								}else{
-								 	if($status=='lunas'){ // lunas
-										$clr  = 'green';
-										$icon = 'full';
-										$hint = 'lunas';
-										$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
-									}else{ // kurang
-										$clr  = 'yellow';
-										$icon = 'half';
-										$hint = 'kurang';
-										$func = 'onclick="pembayaranFR(\'dpp\','.$res['replid'].');"';
-									}
-								}
-								$btn ='<td align="center">
-									<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
-										<i class="icon-battery-'.$icon.'"></i>
+						}*/
+									// <button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
+						$btn ='<td align="center">
+									<button data-hint="" class="fg-white bg-">
+										<i class="icon-battery-full"></i>
 									</button>
-								</td>';
-								$dpp      = getBiaya('dpp',$res['replid'])-getDiscTotal('dpp',$res['replid']);
-								$kurangan = $dpp-getTerbayar('dpp',$res['replid']);
-							 	$out.= '<tr>
+							   </td>';
+					 	$out.= '<tr>
+									<td>'.getNoPendaftaran2($res['replid']).'</td>
+									<td>'.$res['nisn'].'</td>
 									<td>'.$res['nis'].'</td>
-									<td>'.$res['nama'].'</td>
-									<td align="right">Rp. '.number_format($dpp).'</td>
-									<td align="right">Rp. '.number_format($kurangan).'</td>
-									<td  align="center">'.getTglTrans($res['replid'],'dpp').'</td>
+									<td>'.$res['namasiswa'].'</td>
 									'.$btn.'
 								</tr>';
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-								<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span>
-								</td>
-							</tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.= '<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// dpp 
-
-					// spp 
-					case 'spp':
-						$pre    = 'spp_';
-						$status = (isset($_POST[$pre.'statusS']) AND $_POST[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'statusS']).'"':'';
-						$kelas  = isset($_POST[$pre.'kelasS'])?filter($_POST[$pre.'kelasS']):'';
-						$nis    = isset($_POST[$pre.'nisS'])?filter($_POST[$pre.'nisS']):'';
-						$nama   = isset($_POST[$pre.'namaS'])?filter($_POST[$pre.'namaS']):'';
-						$sql    ='SELECT
-									t2.*
-								FROM
-									psb_calonsiswa c
-									LEFT JOIN aka_siswa_kelas a on a.siswa = c.replid
-									LEFT JOIN (
-										SELECT
-											IF (t1.cicilan = t1.spp,"lunas","belum") statbayar,
-											cs.replid,
-											cs.nama,
-											t1.cicilan,
-											t1.spp,
-											cs.kelompok,
-											cs.nis
-										FROM psb_calonsiswa cs
-											LEFT JOIN (
-												SELECT
-													ss.replid,
-													p.cicilan,
-													s.spp
-												FROM
-													psb_calonsiswa ss
-													LEFT JOIN keu_pembayaran p ON p.siswa = ss.replid
-													LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
-													LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
-													LEFT JOIN psb_setbiaya s ON s.replid = ss.setbiaya
-												WHERE
-													k.nama = "spp"
-											) t1 ON t1.replid = cs.replid
-									) t2 ON t2.replid = c.replid
-								WHERE
-									a.kelas = '.$kelas.'
-									AND c.nama LIKE "%'.$nama.'%"
-									AND c.nis LIKE "%'.$nis.'%" '.$status;
-						// print_r($sql);exit(); 		
-						if(isset($_POST['starting'])){
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 10;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='spp';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';
-						$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$status = getStatusBayar('spp',$res['replid']);
-								// var_dump($status);exit();
-								if($status=='belum'){ // belum
-									$clr  = 'red';
-									$icon = 'empty';
-									$hint = 'belum bayar';
-									$func = 'onclick="pembayaranFR(\'spp\','.$res['replid'].');"';
-								}else{
-								 	if($status=='lunas'){ // lunas
-										$clr  = 'green';
-										$icon = 'full';
-										$hint = 'lunas';
-										$func = 'onclick="pembayaranFR(\'spp\','.$res['replid'].');"';
-									}else{ // kurang
-										$clr  = 'yellow';
-										$icon = 'half';
-										$hint = 'kurang';
-										$func = 'onclick="pembayaranFR(\'spp\','.$res['replid'].');"';
-									}
-								}
-								$btn ='<td align="center">
-									<button data-hint="'.$hint.'" class="fg-white bg-'.$clr.'"   '.$func.'>
-										<i class="icon-battery-'.$icon.'"></i>
-									</button>
-								</td>';
-								
-								$spp = 'Rp '.number_format(getBiaya('spp',$res['replid']));
-								$out.= '<tr>
-											<td>'.$res['nis'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td align="right">'.$spp.'</td>
-											'.$btn.'
-										</tr>';
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// spp
-					 
-					// semua 
-					case 'semua':
-						$pre           = 'semua_';
-						$status        = (isset($_POST[$pre.'statusS']) AND $_POST[$pre.'statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'statusS']).'"':'';
-						$nama          = isset($_POST[$pre.'namaS'])?filter($_POST[$pre.'namaS']):'';
-						$nopendaftaran = isset($_POST[$pre.'nopendaftaranS'])?filter($_POST[$pre.'nopendaftaranS']):'';
-						$sql    ='SELECT
-									c.replid,
-									c.nopendaftaran,
-									c.nama
-								FROM
-									psb_calonsiswa c
-								WHERE
-									c.nama LIKE "%'.$nama.'%"
-									AND c.nopendaftaran LIKE "%'.$nopendaftaran.'%"';
-						// print_r($sql);exit(); 		
-						if(isset($_POST['starting'])){
-							$starting=$_POST['starting'];
-						}else{
-							$starting=0;
-						}
-
-						$recpage = 10;//jumlah data per halaman
-						$aksi    ='tampil';
-						$subaksi ='semua';
-						$obj     = new pagination_class($sql,$starting,$recpage,$aksi,$subaksi);
-						$result  = $obj->result;
-
-						#ada data
-						$jum = mysql_num_rows($result);
-						$out ='';
-						$totaset=0;
-						if($jum!=0){	
-							$nox = $starting+1;
-							while($res = mysql_fetch_assoc($result)){	
-								$formulir = getStatusBayar('formulir',$res['replid']);
-								$dpp      = getStatusBayar('dpp',$res['replid']);
-								$spp      = getStatusBayar('spp',$res['replid']);
-								$joiningf = getStatusBayar('joiningf',$res['replid']);
-								// var_dump($formulir);exit();
-								
-								$out.= '<tr>
-											<td>'.$res['nopendaftaran'].'</td>
-											<td>'.$res['nama'].'</td>
-											<td align="center"><button class="fg-white bg-'.($formulir=='lunas'?'green':($formulir=='kurang'?'orange':'red')).'" data-hint="'.$formulir.'"><!--<i class="icon-battery-full"></i></button>-->'.$formulir.'</td>
-											<td align="center"><button class="fg-white bg-'.($dpp=='lunas'?'green':($dpp=='kurang'?'orange':'red')).'" data-hint="'.$dpp.'"><!--<i class="icon-battery-full"></i></button>-->'.$dpp.'</td>
-											<td align="center"><button class="fg-white bg-'.($spp=='lunas'?'green':($spp=='kurang'?'orange':'red')).'" data-hint="'.$spp.'"><!--<i class="icon-battery-full"></i></button>-->'.$spp.'</td>
-											<td align="center"><button class="fg-white bg-'.($joiningf=='lunas'?'green':($joiningf=='kurang'?'orange':'red')).'" data-hint="'.$joiningf.'"><!--<i class="icon-battery-full"></i></button>-->'.$joiningf.'</td>
-										</tr>';
-											// <td data-hint="'.$formulir.'" class="'.($formulir=='lunas'?'green':($formulir=='kurang'?'orange':'red')).'" align="center">
-											// 	<i class="icon-battery-'.($formulir=='lunas'?'full':($formulir=='kurang'?'half':'empty')).'</i>
-											// </td>
-							}
-						}else{ #kosong
-							$out.= '<tr align="center">
-									<td  colspan=9 ><span style="color:red;text-align:center;">
-									... data tidak ditemukan...</span></td></tr>';
-						}
-						#link paging
-						$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
-						$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
-					break;
-					// semua
+					}
+				}else{ #kosong
+					$out.= '<tr align="center">
+							<td  colspan=9 ><span style="color:red;text-align:center;">
+							... data tidak ditemukan...</span></td></tr>';
 				}
+				#link paging
+				$out.= '<tr class="info"><td colspan=9>'.$obj->anchors.'</td></tr>';
+				$out.='<tr class="info"><td colspan=9>'.$obj->total.'</td></tr>';
 			break; 
 			// tampil ---------------------------------------------------------------------
 

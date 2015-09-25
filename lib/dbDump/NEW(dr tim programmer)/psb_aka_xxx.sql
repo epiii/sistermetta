@@ -4,13 +4,13 @@ Navicat MySQL Data Transfer
 Source Server         : lumba2
 Source Server Version : 50625
 Source Host           : 127.0.0.1:3306
-Source Database       : sister_siadu
+Source Database       : sistermetta
 
 Target Server Type    : MYSQL
 Target Server Version : 50625
 File Encoding         : 65001
 
-Date: 2015-09-17 04:07:48
+Date: 2015-09-25 07:01:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -1045,7 +1045,7 @@ CREATE TABLE `psb_detailbiaya` (
   CONSTRAINT `detailgelombangFK4` FOREIGN KEY (`detailgelombang`) REFERENCES `psb_detailgelombang` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `golonganFK2` FOREIGN KEY (`golongan`) REFERENCES `psb_golongan` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subtingkatFK2` FOREIGN KEY (`subtingkat`) REFERENCES `aka_subtingkat` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4746 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3558 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_detailbiaya
@@ -1305,7 +1305,7 @@ CREATE TABLE `psb_detailgelombang` (
   CONSTRAINT `departemenFK` FOREIGN KEY (`departemen`) REFERENCES `departemen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `gelombangFK` FOREIGN KEY (`gelombang`) REFERENCES `psb_gelombang` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK3` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=105 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_detailgelombang
@@ -1587,26 +1587,27 @@ CREATE TABLE `psb_siswa` (
   `diasuh` enum('1','2','3','4') NOT NULL DEFAULT '1' COMMENT '1=ayah+ibu, 2=ayah, 3=ibu, 4=wali',
   PRIMARY KEY (`replid`),
   KEY `FK_calonsiswa_agama` (`agamasiswa`)
-) ENGINE=InnoDB AUTO_INCREMENT=172 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=173 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of psb_siswa
 -- ----------------------------
 INSERT INTO `psb_siswa` VALUES ('148', '1', null, 'Darren Evan Tin', '99', '144', 'dinhox', '1', 'brazil school', '2', '0', '1', 'L', 'rio de janeiro', '2015-09-19', 'brasil', '0', '70.0', '180.0', 'B', '5_dbeb1c3503.png', 'rio street', '808080', '30303030', '1919191', 'ronaldinho@gaucho.com', 'hitam', '1010101010', 'haus', 'rio de J.', 'rio de', 'mexico', '', null, 'portuguese', 'inggris', '4');
-INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'Megan Davis Zheng', '', '', 'vieira', '1', '', '0', '0', '0', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('157', '2', null, 'Megan Davis Zheng', '5', '', 'vieira', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '5_9803460371.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('158', '3', null, 'Justin Ong', '99', '', '', '1', '', '0', '0', '1', 'P', '', '0000-00-00', '', '0', '0.0', '0.0', '', '4_71c2ca0414.jpeg', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('160', '5', null, 'Jordyn Edward Motanto', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('161', '6', null, 'Lunabelle Veloxia Taslim', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('162', '7', null, 'Aaron William Soemarno', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('160', '5', null, 'Jordyn Edward Motanto', '6', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('161', '6', null, 'Lunabelle Veloxia Taslim', '7', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('162', '7', null, 'Aaron William Soemarno', '8', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('163', '8', null, 'Kaylee Weng Okawida', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('164', '9', null, 'Adjie Reksa Nugroho', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('165', '10', null, 'Aldrin Reynard Herdianto', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
-INSERT INTO `psb_siswa` VALUES ('166', '11', null, 'Archie Oesjady', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('165', '10', null, 'Aldrin Reynard Herdianto', '9', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('166', '11', null, 'Archie Oesjady', '10', '', '', '1', '', '0', '0', '1', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('167', '12', null, 'Axel Oesjady', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('168', '13', null, 'Carly Rei Chen', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('169', '14', null, 'Cordelia Sucarita Wang', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('170', '15', null, 'Eugene Sinclair Sutanto', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 INSERT INTO `psb_siswa` VALUES ('171', '16', null, 'George Maverick candra', '', '', '', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
+INSERT INTO `psb_siswa` VALUES ('172', '17', null, 'rhoma irama', '', '', 'bang haji', '1', '', '0', '0', '0', 'L', '', '0000-00-00', '', '0', '0.0', '0.0', '', '', '', '', '', '', '', '', '', '', '', '', '', '', null, '', '', '1');
 
 -- ----------------------------
 -- Table structure for psb_siswa_copy
@@ -2599,7 +2600,7 @@ CREATE TABLE `psb_siswaayah` (
   PRIMARY KEY (`replid`),
   KEY `calonsiswa` (`siswa`) USING BTREE,
   CONSTRAINT `calonsiswaFk` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswaayah
@@ -2619,6 +2620,7 @@ INSERT INTO `psb_siswaayah` VALUES ('27', '168', 'Andy Prayitno', '', '0000-00-0
 INSERT INTO `psb_siswaayah` VALUES ('28', '169', 'Chitrahadi Sudirman', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('29', '170', 'David Sugianto Sutanto', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaayah` VALUES ('30', '171', 'Hengky candra', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `psb_siswaayah` VALUES ('31', '172', 'bapak rhoma', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswabiaya
@@ -2635,7 +2637,7 @@ CREATE TABLE `psb_siswabiaya` (
   KEY `siswa` (`siswa`) USING BTREE,
   KEY `biaya` (`detailbiaya`) USING BTREE,
   CONSTRAINT `siswaFK2` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=578 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=581 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswabiaya
@@ -2652,9 +2654,9 @@ INSERT INTO `psb_siswabiaya` VALUES ('535', '158', '677', '6', 'diskon ahli musi
 INSERT INTO `psb_siswabiaya` VALUES ('536', '158', '650', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('537', '158', '668', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('538', '158', '659', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('542', '160', '668', '0', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('543', '160', '677', '1', '', '0');
-INSERT INTO `psb_siswabiaya` VALUES ('544', '160', '659', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('542', '160', '704', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('543', '160', '713', '1', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('544', '160', '695', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('545', '161', '668', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('546', '161', '677', '1', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('547', '161', '659', '0', '', '0');
@@ -2688,6 +2690,9 @@ INSERT INTO `psb_siswabiaya` VALUES ('574', '170', '659', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('575', '171', '668', '0', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('576', '171', '677', '1', '', '0');
 INSERT INTO `psb_siswabiaya` VALUES ('577', '171', '659', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('578', '172', '740', '0', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('579', '172', '749', '5', '', '0');
+INSERT INTO `psb_siswabiaya` VALUES ('580', '172', '731', '0', '', '0');
 
 -- ----------------------------
 -- Table structure for psb_siswadiskon
@@ -2725,7 +2730,7 @@ CREATE TABLE `psb_siswadokumen` (
   KEY `subdokumen` (`subdokumen`) USING BTREE,
   CONSTRAINT `siswaFK` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `subdokumenFK` FOREIGN KEY (`subdokumen`) REFERENCES `psb_subdokumen` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswadokumen
@@ -2763,7 +2768,7 @@ CREATE TABLE `psb_siswaibu` (
   PRIMARY KEY (`replid`),
   KEY `calonsiswa` (`siswa`) USING BTREE,
   CONSTRAINT `psb_siswaibu_ibfk_1` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of psb_siswaibu
@@ -2783,6 +2788,7 @@ INSERT INTO `psb_siswaibu` VALUES ('27', '168', 'Yoren Viryamarchyo', '', '0000-
 INSERT INTO `psb_siswaibu` VALUES ('28', '169', 'Meliana Kusuma', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('29', '170', 'Veronica Basuki', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 INSERT INTO `psb_siswaibu` VALUES ('30', '171', 'Emilia Amsal', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
+INSERT INTO `psb_siswaibu` VALUES ('31', '172', 'ibu rhoma', '', '0000-00-00', '0', '', '0', '', '', '', '', '', '0', '', '', '', '', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for psb_siswakontakdarurat
@@ -3250,7 +3256,6 @@ END
 ;;
 DELIMITER ;
 
-
 -- ----------------------------
 -- Table structure for aka_absen
 -- ----------------------------
@@ -3396,7 +3401,7 @@ CREATE TABLE `aka_detailkelas` (
   KEY `kelas_2` (`kelas`),
   CONSTRAINT `kelasFK4` FOREIGN KEY (`kelas`) REFERENCES `aka_kelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `tahunajaranFK5` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=157 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=153 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_detailkelas
@@ -3820,7 +3825,7 @@ CREATE TABLE `aka_kelas` (
   PRIMARY KEY (`replid`),
   KEY `departemenFK` (`departemen`),
   KEY `subtingkatFK` (`subtingkat`)
-) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_kelas
@@ -6162,10 +6167,10 @@ INSERT INTO `aka_siswa_ibu` VALUES ('733', '732', 'Evy Lindayana', '', '0000-00-
 INSERT INTO `aka_siswa_ibu` VALUES ('734', '733', 'Shieny', '', '0000-00-00', '0', '', '', '', '0', '08121230099', '', '');
 
 -- ----------------------------
--- Table structure for aka_siswa_kelas
+-- Table structure for aka_siswa_kelas_copy
 -- ----------------------------
-DROP TABLE IF EXISTS `aka_siswa_kelas`;
-CREATE TABLE `aka_siswa_kelas` (
+DROP TABLE IF EXISTS `aka_siswa_kelas_copy`;
+CREATE TABLE `aka_siswa_kelas_copy` (
   `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `siswa` int(10) unsigned NOT NULL,
   `kelas` int(10) unsigned NOT NULL,
@@ -6173,371 +6178,371 @@ CREATE TABLE `aka_siswa_kelas` (
 ) ENGINE=MyISAM AUTO_INCREMENT=411 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
--- Records of aka_siswa_kelas
+-- Records of aka_siswa_kelas_copy
 -- ----------------------------
-INSERT INTO `aka_siswa_kelas` VALUES ('1', '1', '1');
-INSERT INTO `aka_siswa_kelas` VALUES ('2', '2', '1');
-INSERT INTO `aka_siswa_kelas` VALUES ('3', '4', '1');
-INSERT INTO `aka_siswa_kelas` VALUES ('4', '5', '2');
-INSERT INTO `aka_siswa_kelas` VALUES ('5', '7', '2');
-INSERT INTO `aka_siswa_kelas` VALUES ('6', '1', '41');
-INSERT INTO `aka_siswa_kelas` VALUES ('8', '4', '41');
-INSERT INTO `aka_siswa_kelas` VALUES ('10', '5', '41');
-INSERT INTO `aka_siswa_kelas` VALUES ('11', '7', '41');
-INSERT INTO `aka_siswa_kelas` VALUES ('12', '2', '101');
-INSERT INTO `aka_siswa_kelas` VALUES ('18', '2', '41');
-INSERT INTO `aka_siswa_kelas` VALUES ('19', '186', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('20', '187', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('21', '188', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('22', '189', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('23', '190', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('24', '191', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('25', '192', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('26', '193', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('27', '194', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('28', '195', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('29', '196', '60');
-INSERT INTO `aka_siswa_kelas` VALUES ('43', '146', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('44', '147', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('45', '148', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('46', '149', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('47', '150', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('48', '151', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('49', '152', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('50', '153', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('51', '154', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('52', '155', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('53', '156', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('54', '157', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('55', '158', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('56', '159', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('57', '160', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('58', '161', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('59', '162', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('60', '163', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('61', '164', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('62', '165', '33');
-INSERT INTO `aka_siswa_kelas` VALUES ('63', '166', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('64', '168', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('65', '167', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('66', '169', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('67', '170', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('68', '171', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('69', '172', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('70', '173', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('71', '174', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('72', '175', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('73', '176', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('74', '177', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('75', '179', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('76', '180', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('77', '183', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('78', '184', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('79', '185', '34');
-INSERT INTO `aka_siswa_kelas` VALUES ('80', '204', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('81', '205', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('82', '206', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('83', '207', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('84', '208', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('85', '209', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('86', '210', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('87', '211', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('88', '215', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('89', '220', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('90', '214', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('91', '216', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('92', '217', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('93', '218', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('94', '219', '37');
-INSERT INTO `aka_siswa_kelas` VALUES ('95', '221', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('96', '222', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('97', '223', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('98', '224', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('99', '225', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('100', '226', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('101', '227', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('102', '228', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('103', '229', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('104', '230', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('105', '231', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('106', '232', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('107', '236', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('108', '234', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('109', '235', '38');
-INSERT INTO `aka_siswa_kelas` VALUES ('110', '197', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('111', '198', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('112', '199', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('113', '200', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('114', '201', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('115', '202', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('116', '203', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('117', '237', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('118', '238', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('119', '239', '62');
-INSERT INTO `aka_siswa_kelas` VALUES ('121', '269', '46');
-INSERT INTO `aka_siswa_kelas` VALUES ('123', '98', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('124', '314', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('125', '316', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('126', '317', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('127', '318', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('128', '321', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('129', '322', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('130', '323', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('131', '324', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('132', '325', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('133', '305', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('134', '306', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('135', '95', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('136', '86', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('137', '308', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('138', '309', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('139', '310', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('140', '101', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('142', '313', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('143', '315', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('144', '319', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('145', '320', '13');
-INSERT INTO `aka_siswa_kelas` VALUES ('146', '344', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('147', '326', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('148', '328', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('149', '329', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('150', '330', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('151', '331', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('152', '332', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('153', '333', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('154', '334', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('155', '335', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('156', '337', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('157', '338', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('158', '339', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('159', '340', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('160', '341', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('161', '342', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('162', '343', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('163', '327', '14');
-INSERT INTO `aka_siswa_kelas` VALUES ('164', '345', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('165', '346', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('166', '347', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('167', '348', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('168', '349', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('169', '350', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('170', '351', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('171', '352', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('172', '353', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('173', '354', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('174', '355', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('175', '356', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('176', '357', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('177', '358', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('178', '359', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('179', '360', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('180', '361', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('181', '97', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('182', '363', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('183', '364', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('184', '365', '15');
-INSERT INTO `aka_siswa_kelas` VALUES ('185', '366', '17');
-INSERT INTO `aka_siswa_kelas` VALUES ('186', '371', '17');
-INSERT INTO `aka_siswa_kelas` VALUES ('187', '373', '17');
-INSERT INTO `aka_siswa_kelas` VALUES ('188', '374', '17');
-INSERT INTO `aka_siswa_kelas` VALUES ('189', '377', '17');
-INSERT INTO `aka_siswa_kelas` VALUES ('190', '470', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('191', '467', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('192', '465', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('193', '462', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('194', '459', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('195', '469', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('196', '468', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('197', '464', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('198', '461', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('199', '466', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('200', '463', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('201', '458', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('202', '457', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('203', '488', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('204', '484', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('205', '483', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('206', '475', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('207', '480', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('208', '479', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('209', '487', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('210', '486', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('211', '482', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('212', '481', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('213', '478', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('214', '473', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('215', '485', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('216', '474', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('217', '476', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('218', '472', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('219', '471', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('220', '477', '22');
-INSERT INTO `aka_siswa_kelas` VALUES ('245', '684', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('246', '683', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('247', '685', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('248', '686', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('249', '687', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('250', '691', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('251', '695', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('252', '696', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('253', '699', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('254', '700', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('255', '688', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('256', '689', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('257', '690', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('258', '692', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('259', '693', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('260', '698', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('261', '701', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('262', '702', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('263', '703', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('264', '704', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('265', '694', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('266', '697', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('267', '706', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('268', '707', '89');
-INSERT INTO `aka_siswa_kelas` VALUES ('269', '709', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('270', '710', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('271', '714', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('272', '715', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('273', '716', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('274', '719', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('275', '720', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('276', '721', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('277', '724', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('278', '725', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('279', '730', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('280', '728', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('281', '708', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('282', '711', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('283', '713', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('284', '718', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('285', '726', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('286', '731', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('287', '732', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('288', '729', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('289', '723', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('290', '722', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('291', '712', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('292', '733', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('293', '727', '90');
-INSERT INTO `aka_siswa_kelas` VALUES ('294', '598', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('295', '597', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('296', '595', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('297', '594', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('298', '592', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('299', '590', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('300', '589', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('301', '587', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('302', '586', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('303', '585', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('304', '584', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('305', '583', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('306', '582', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('307', '581', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('308', '593', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('309', '579', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('310', '578', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('311', '580', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('312', '591', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('313', '588', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('314', '596', '86');
-INSERT INTO `aka_siswa_kelas` VALUES ('315', '622', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('316', '621', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('317', '620', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('318', '619', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('319', '616', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('320', '615', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('321', '614', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('322', '613', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('323', '612', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('324', '610', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('325', '609', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('326', '608', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('327', '604', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('328', '603', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('329', '602', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('330', '601', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('331', '606', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('332', '605', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('333', '618', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('334', '617', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('335', '611', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('336', '607', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('337', '600', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('338', '599', '85');
-INSERT INTO `aka_siswa_kelas` VALUES ('339', '676', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('340', '680', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('341', '629', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('342', '628', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('343', '626', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('344', '624', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('345', '672', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('346', '681', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('347', '682', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('348', '623', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('349', '673', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('350', '674', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('351', '675', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('352', '677', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('353', '678', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('354', '679', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('355', '627', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('356', '625', '83');
-INSERT INTO `aka_siswa_kelas` VALUES ('357', '657', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('358', '661', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('359', '663', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('360', '664', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('361', '667', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('362', '655', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('363', '659', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('364', '670', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('365', '671', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('366', '653', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('367', '656', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('368', '660', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('369', '662', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('370', '654', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('371', '658', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('372', '665', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('373', '666', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('374', '668', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('375', '669', '82');
-INSERT INTO `aka_siswa_kelas` VALUES ('376', '635', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('377', '636', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('378', '637', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('379', '638', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('380', '639', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('381', '640', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('382', '641', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('383', '642', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('384', '643', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('385', '644', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('386', '645', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('387', '646', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('388', '647', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('389', '648', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('390', '649', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('391', '650', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('392', '651', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('393', '652', '81');
-INSERT INTO `aka_siswa_kelas` VALUES ('394', '460', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('395', '630', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('396', '631', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('397', '632', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('398', '633', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('399', '634', '23');
-INSERT INTO `aka_siswa_kelas` VALUES ('400', '495', '21');
-INSERT INTO `aka_siswa_kelas` VALUES ('401', '494', '21');
-INSERT INTO `aka_siswa_kelas` VALUES ('402', '499', '21');
-INSERT INTO `aka_siswa_kelas` VALUES ('403', '489', '21');
-INSERT INTO `aka_siswa_kelas` VALUES ('404', '490', '21');
-INSERT INTO `aka_siswa_kelas` VALUES ('405', '491', '21');
-INSERT INTO `aka_siswa_kelas` VALUES ('406', '521', '19');
-INSERT INTO `aka_siswa_kelas` VALUES ('407', '520', '19');
-INSERT INTO `aka_siswa_kelas` VALUES ('408', '518', '19');
-INSERT INTO `aka_siswa_kelas` VALUES ('409', '513', '19');
-INSERT INTO `aka_siswa_kelas` VALUES ('410', '519', '19');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('1', '1', '1');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('2', '2', '1');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('3', '4', '1');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('4', '5', '2');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('5', '7', '2');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('6', '1', '41');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('8', '4', '41');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('10', '5', '41');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('11', '7', '41');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('12', '2', '101');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('18', '2', '41');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('19', '186', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('20', '187', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('21', '188', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('22', '189', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('23', '190', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('24', '191', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('25', '192', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('26', '193', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('27', '194', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('28', '195', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('29', '196', '60');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('43', '146', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('44', '147', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('45', '148', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('46', '149', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('47', '150', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('48', '151', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('49', '152', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('50', '153', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('51', '154', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('52', '155', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('53', '156', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('54', '157', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('55', '158', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('56', '159', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('57', '160', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('58', '161', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('59', '162', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('60', '163', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('61', '164', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('62', '165', '33');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('63', '166', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('64', '168', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('65', '167', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('66', '169', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('67', '170', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('68', '171', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('69', '172', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('70', '173', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('71', '174', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('72', '175', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('73', '176', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('74', '177', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('75', '179', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('76', '180', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('77', '183', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('78', '184', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('79', '185', '34');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('80', '204', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('81', '205', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('82', '206', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('83', '207', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('84', '208', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('85', '209', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('86', '210', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('87', '211', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('88', '215', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('89', '220', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('90', '214', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('91', '216', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('92', '217', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('93', '218', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('94', '219', '37');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('95', '221', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('96', '222', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('97', '223', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('98', '224', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('99', '225', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('100', '226', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('101', '227', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('102', '228', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('103', '229', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('104', '230', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('105', '231', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('106', '232', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('107', '236', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('108', '234', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('109', '235', '38');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('110', '197', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('111', '198', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('112', '199', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('113', '200', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('114', '201', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('115', '202', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('116', '203', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('117', '237', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('118', '238', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('119', '239', '62');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('121', '269', '46');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('123', '98', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('124', '314', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('125', '316', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('126', '317', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('127', '318', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('128', '321', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('129', '322', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('130', '323', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('131', '324', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('132', '325', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('133', '305', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('134', '306', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('135', '95', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('136', '86', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('137', '308', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('138', '309', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('139', '310', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('140', '101', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('142', '313', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('143', '315', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('144', '319', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('145', '320', '13');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('146', '344', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('147', '326', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('148', '328', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('149', '329', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('150', '330', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('151', '331', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('152', '332', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('153', '333', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('154', '334', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('155', '335', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('156', '337', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('157', '338', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('158', '339', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('159', '340', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('160', '341', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('161', '342', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('162', '343', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('163', '327', '14');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('164', '345', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('165', '346', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('166', '347', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('167', '348', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('168', '349', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('169', '350', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('170', '351', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('171', '352', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('172', '353', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('173', '354', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('174', '355', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('175', '356', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('176', '357', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('177', '358', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('178', '359', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('179', '360', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('180', '361', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('181', '97', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('182', '363', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('183', '364', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('184', '365', '15');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('185', '366', '17');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('186', '371', '17');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('187', '373', '17');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('188', '374', '17');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('189', '377', '17');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('190', '470', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('191', '467', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('192', '465', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('193', '462', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('194', '459', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('195', '469', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('196', '468', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('197', '464', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('198', '461', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('199', '466', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('200', '463', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('201', '458', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('202', '457', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('203', '488', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('204', '484', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('205', '483', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('206', '475', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('207', '480', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('208', '479', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('209', '487', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('210', '486', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('211', '482', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('212', '481', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('213', '478', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('214', '473', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('215', '485', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('216', '474', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('217', '476', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('218', '472', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('219', '471', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('220', '477', '22');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('245', '684', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('246', '683', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('247', '685', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('248', '686', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('249', '687', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('250', '691', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('251', '695', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('252', '696', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('253', '699', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('254', '700', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('255', '688', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('256', '689', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('257', '690', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('258', '692', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('259', '693', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('260', '698', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('261', '701', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('262', '702', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('263', '703', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('264', '704', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('265', '694', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('266', '697', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('267', '706', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('268', '707', '89');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('269', '709', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('270', '710', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('271', '714', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('272', '715', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('273', '716', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('274', '719', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('275', '720', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('276', '721', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('277', '724', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('278', '725', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('279', '730', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('280', '728', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('281', '708', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('282', '711', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('283', '713', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('284', '718', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('285', '726', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('286', '731', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('287', '732', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('288', '729', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('289', '723', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('290', '722', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('291', '712', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('292', '733', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('293', '727', '90');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('294', '598', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('295', '597', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('296', '595', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('297', '594', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('298', '592', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('299', '590', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('300', '589', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('301', '587', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('302', '586', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('303', '585', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('304', '584', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('305', '583', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('306', '582', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('307', '581', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('308', '593', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('309', '579', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('310', '578', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('311', '580', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('312', '591', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('313', '588', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('314', '596', '86');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('315', '622', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('316', '621', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('317', '620', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('318', '619', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('319', '616', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('320', '615', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('321', '614', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('322', '613', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('323', '612', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('324', '610', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('325', '609', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('326', '608', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('327', '604', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('328', '603', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('329', '602', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('330', '601', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('331', '606', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('332', '605', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('333', '618', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('334', '617', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('335', '611', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('336', '607', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('337', '600', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('338', '599', '85');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('339', '676', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('340', '680', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('341', '629', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('342', '628', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('343', '626', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('344', '624', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('345', '672', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('346', '681', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('347', '682', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('348', '623', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('349', '673', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('350', '674', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('351', '675', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('352', '677', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('353', '678', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('354', '679', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('355', '627', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('356', '625', '83');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('357', '657', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('358', '661', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('359', '663', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('360', '664', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('361', '667', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('362', '655', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('363', '659', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('364', '670', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('365', '671', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('366', '653', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('367', '656', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('368', '660', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('369', '662', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('370', '654', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('371', '658', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('372', '665', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('373', '666', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('374', '668', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('375', '669', '82');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('376', '635', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('377', '636', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('378', '637', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('379', '638', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('380', '639', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('381', '640', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('382', '641', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('383', '642', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('384', '643', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('385', '644', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('386', '645', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('387', '646', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('388', '647', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('389', '648', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('390', '649', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('391', '650', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('392', '651', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('393', '652', '81');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('394', '460', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('395', '630', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('396', '631', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('397', '632', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('398', '633', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('399', '634', '23');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('400', '495', '21');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('401', '494', '21');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('402', '499', '21');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('403', '489', '21');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('404', '490', '21');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('405', '491', '21');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('406', '521', '19');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('407', '520', '19');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('408', '518', '19');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('409', '513', '19');
+INSERT INTO `aka_siswa_kelas_copy` VALUES ('410', '519', '19');
 
 -- ----------------------------
 -- Table structure for aka_siswa_keluarga
@@ -7884,6 +7889,33 @@ CREATE TABLE `aka_siswa_tes` (
 -- ----------------------------
 
 -- ----------------------------
+-- Table structure for aka_siswakelas
+-- ----------------------------
+DROP TABLE IF EXISTS `aka_siswakelas`;
+CREATE TABLE `aka_siswakelas` (
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `siswa` int(11) NOT NULL,
+  `detailkelas` int(11) NOT NULL,
+  PRIMARY KEY (`replid`),
+  KEY `siswa` (`siswa`) USING BTREE,
+  KEY `detailkelas` (`detailkelas`) USING BTREE,
+  CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
+
+-- ----------------------------
+-- Records of aka_siswakelas
+-- ----------------------------
+INSERT INTO `aka_siswakelas` VALUES ('48', '148', '2');
+INSERT INTO `aka_siswakelas` VALUES ('49', '157', '2');
+INSERT INTO `aka_siswakelas` VALUES ('50', '158', '2');
+INSERT INTO `aka_siswakelas` VALUES ('51', '160', '2');
+INSERT INTO `aka_siswakelas` VALUES ('52', '161', '2');
+INSERT INTO `aka_siswakelas` VALUES ('53', '162', '2');
+INSERT INTO `aka_siswakelas` VALUES ('54', '165', '2');
+INSERT INTO `aka_siswakelas` VALUES ('55', '166', '2');
+
+-- ----------------------------
 -- Table structure for aka_sks
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_sks`;
@@ -8106,7 +8138,7 @@ CREATE TABLE `aka_subtingkat` (
   `tingkat` int(10) NOT NULL,
   `keterangan` text NOT NULL,
   PRIMARY KEY (`replid`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_subtingkat
@@ -8206,7 +8238,7 @@ CREATE TABLE `aka_tingkat` (
   `ts` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`replid`),
   KEY `IX_tingkat_ts` (`ts`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_tingkat

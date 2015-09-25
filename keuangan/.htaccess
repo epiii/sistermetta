@@ -14,7 +14,8 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^kategori-rekening/?$   						index.php?page=kategorirekening
 	RewriteRule   ^detil-rekening/?$   							index.php?page=detilrekening
 	RewriteRule   ^saldo-rekening/?$   							index.php?page=saldorekening
-	RewriteRule   ^anggaran/?$   								index.php?page=anggaran
+	RewriteRule   ^kategori-anggaran/?$   						index.php?page=kategorianggaran
+	RewriteRule   ^detil-anggaran/?$   							index.php?page=detilanggaran
 	RewriteRule   ^anggaran-tahunan/?$   						index.php?page=anggarantahunan
 	RewriteRule   ^jenis-laporan/?$   							index.php?page=jenislaporan
 	
