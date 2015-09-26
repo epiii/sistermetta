@@ -188,6 +188,7 @@ $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*(
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodecustomer'] = $_POST['kodecustomer'];
 $kodebarang 		= $_POST['kodebarang'];
+$tgl 		= $_POST['tgl'];
 $jumlah 		= '1';
 $hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_produk WHERE kode='$kodebarang'" );
 $data = $koneksi_db->sql_fetchrow($hasil);
@@ -198,9 +199,12 @@ $harga=$data['hargajual'];
 //$hargabeli=$data['hargabeli'];
 //$hargabeli = gethargabeliterbaru($kode);
 //HPP memakai average
-$hargabeli = gethargabelirata2x($kode);
+$hargabeli = gethargabeliterbarutgl($kode,$tgl);
 if(!$hargabeli){
 $hargabeli=$data['hargabeli'];	
+}
+if(!$harga){
+$harga=$hargabeli;	
 }
 //End HPP memakai average
 $jenjang=$data['jenjang'];
