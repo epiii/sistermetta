@@ -1604,7 +1604,7 @@ function notif(cont,clr) {
                         +'<input type="hidden" name="iddetaildiskonTB['+idx+'][]" value="'+replid+'" />'
                     +'</td>'
                     +'<td>'+nilai+'</td>'
-                    +'<td><a href="#" class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+','+siswadiskon+'); return false;"><i class="icon-cancel-2"></a></i></td>'
+                    +'<td><a href="#" class="bg-white fg-red" onclick="detaildiskonDel('+idx+','+replid+',\''+siswadiskon+'\'); return false;"><i class="icon-cancel-2"></a></i></td>'
                 +'</tr>';
         $('#detaildiskon'+idx+'TBL').append(tr); 
         detaildiskonArr(idx);

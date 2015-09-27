@@ -97,26 +97,30 @@
 
 			// tampil ---------------------------------------------------------------------
 			case 'tampil':
+				$subtingkat    = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
+				$tingkat       = isset($_POST['tingkatS'])?filter($_POST['tingkatS']):'';
 				$nis           = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 				$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 				$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
 				$status        = (isset($_POST['statusS']) AND $_POST['statusS']!='') ?' AND t2.statbayar="'.filter($_POST[$pre.'_statusS']).'"':'';
 				$sql = 'SELECT 	
-							s.replid,
-							s.namasiswa,	
-							s.nis,
-							s.nopendaftaran,
-							s.nisn
-						FROM psb_siswa s
+							idsiswa,
+							namasiswa,	
+							nis,
+							nopendaftaran,
+							nisn
+						FROM vw_psb_siswa_kriteria
 						WHERE
-							s.status!="2" AND 
-							s.namasiswa LIKE "%'.$namasiswa.'%" AND 
-							s.nis LIKE "%'.$nis.'%" AND 
-							s.nisn LIKE "%'.$nisn.'%" AND 
-							s.nopendaftaran LIKE "%'.$nopendaftaran.'%"
+							status!="2" AND 
+							idtingkat ='.$tingkat.' AND 
+							idsubtingkat ='.$subtingkat.' AND 
+							namasiswa LIKE "%'.$namasiswa.'%" AND 
+							nis LIKE "%'.$nis.'%" AND 
+							nisn LIKE "%'.$nisn.'%" AND 
+							nopendaftaran LIKE "%'.$nopendaftaran.'%"
 							'.$status;
-				// print_r($sql);exit(); 	
+							// pr($sql);
 				if(isset($_POST['starting'])){ 
 					$starting=$_POST['starting'];
 				}else{
@@ -135,6 +139,7 @@
 				if($jum!=0){	
 					$nox = $starting+1;
 					while($res = mysql_fetch_assoc($result)){
+						
 						/*$biaya    = getBiaya($pre,$res['replid']);
 						$terbayar = getTerbayar('joining fee',$res['replid']);
 						$status   = getStatusBayar('joining fee',$res['replid']);
@@ -163,7 +168,7 @@
 									</button>
 							   </td>';
 					 	$out.= '<tr>
-									<td>'.getNoPendaftaran2($res['replid']).'</td>
+									<td>'.getNoPendaftaran2($res['idsiswa']).'</td>
 									<td>'.$res['nisn'].'</td>
 									<td>'.$res['nis'].'</td>
 									<td>'.$res['namasiswa'].'</td>

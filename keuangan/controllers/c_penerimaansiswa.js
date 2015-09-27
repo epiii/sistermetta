@@ -324,168 +324,35 @@ var contentFR ='';
     }
 
 // form pembayaran 
-    // pendaftaran
-    function pembayaranFR (typ,sis) {
-        ajax(dir,'aksi=ambiledit&subaksi='+typ+'&replid='+sis).done(function(dt){
+    function viewFR (idsiswa) {
+        ajax(dir,'aksi=ambiledit&replid='+idsiswa).done(function (dt){
             if(dt.status!=='sukses') notif('gagal menampilkan data','red');
             else{
-                if(typ=='formulir'){ // pendaftaran (formulir)
-                    // hidden
-                    $('#idsiswaH').val(dt.datax.idsiswa);
-                    $('#idmodulH').val(dt.datax.idmodul);
-                    $('#rekkasH').val(dt.datax.rekkas);
-                    $('#rekitemH').val(dt.datax.rekitem);
-                    // display
-                    $('#tanggalTB').val(dt.datax.tanggal);
-                    $('#nomerTB').val(dt.datax.nomer);
-                    $('#rek1TB').val(dt.datax.rek1);
-                    $('#rek2TB').val(dt.datax.rek2);
-                    $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
-                    $('#nominalTB').val(dt.datax.nominal);
-                    $('#pembayaranNAV').attr('style','display:none;');
-                    $('#rincianNAV').addClass('active');
-                    if(dt.datax.status=='lunas'){
-                        $('.simpanBC').attr('style','display:none;');
-                        icon = 'checkmark';
-                        clr  = 'green';
-                        info = 'lunas';
-                    }else{
-                        icon = 'minus-2';
-                        clr  = 'red';
-                        info = 'belum lunas';
-                    }var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
-                    $('#statusI').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
-                }else if(typ=='joiningf'){ // pendaftaran (joining fee)
-                    // hidden
-                    $('#idsiswaH').val(dt.datax.idsiswa);
-                    $('#idmodulH').val(dt.datax.idmodul);
-                    $('#rekkasH').val(dt.datax.rekkas);
-                    $('#rekitemH').val(dt.datax.rekitem);
-                    // display
-                    $('#tanggalTB').val(dt.datax.tanggal);
-                    $('#nomerTB').val(dt.datax.nomer);
-                    $('#rek1TB').val(dt.datax.rek1);
-                    $('#rek2TB').val(dt.datax.rek2);
-                    $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
-                    $('#nominalTB').val(dt.datax.nominal2);
-                    // data sudah terbayar 
-                    $('#terbayarTB').val(dt.datax.terbayar2);
-                    $('.joingrup').attr('style','display:visible;');
-                    // $('#akanbayar2TB').attr('max',dt.datax.maxbayar);
-                    $('.dppjoin').toggle('slow');
-                    $('.bayargrup').toggle('slow');
-                    // validasi nominal yg harus dibayar
-                    $('#akanbayar2TB').on('keyup',function(){
-                        validBayar('#akanbayar2TB','#akanbayarI',dt.datax.maxbayar,dt.datax.maxbayar2);
-                    });
-                    // cek history pembayaran
-                    $('#histBayar').on('click',function(){
-                        histBayar(dt.datax.idsiswa);
-                    });
-                    $('#pembayaranNAV').addClass('active');
-
-                    if(dt.datax.status=='lunas'){
-                        $('#akanbayar2TB').attr('style','display:none;');
-                        $('.simpanBC').attr('style','display:none;');
-                        $('#akanbayarLBL').attr('style','display:none;');
-                        icon = 'checkmark';
-                        clr  = 'green';
-                        info = 'lunas';
-                    }else if(dt.datax.status=='kurang'){
-                        $('#akanbayar2TB').attr('required',true);
-                        icon = 'minus-2';
-                        clr  = 'orange';
-                        info = 'kurang';
-                    }else{ //  belum pernah 
-                        $('#akanbayar2TB').attr('required',true);
-                        icon = 'minus-2';
-                        clr  = 'red';
-                        info = 'belum';
-                    }
-                    var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
-                    $('#statusI').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
-                }else if(typ=='dpp'){ // dpp (uang gedung)
-                   // hidden
-                    $('#idsiswaH').val(dt.datax.idsiswa);
-                    $('#idmodulH').val(dt.datax.idmodul);
-                    $('#rekkasH').val(dt.datax.rekkas);
-                    $('#rekitemH').val(dt.datax.rekitem);
-                    // display
-                        // info pembayaran 
-                        $('#tanggalTB').val(dt.datax.tanggal);
-                        $('#nomerTB').val(dt.datax.nomer);
-                        $('#rek1TB').val(dt.datax.rek1);
-                        $('#rek2TB').val(dt.datax.rek2);
-                        $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
-                        // detail pembayaran (nominal dll)
-                        $('#nominalTB').val(dt.datax.nominal);
-                        $('#nominalnetTB').val(dt.datax.nominalnet);
-                        $('#disctotalTB').val(dt.datax.disctotal);
-                        $('#jmlangsurTB').val(dt.datax.jmlangsur+' x '+dt.datax.angsuran);
-                        // data sudah terbayar 
-                        $('#terbayarTB').val(dt.datax.terbayar);
-                        // data akan dibayar
-                        cmbakanbayar('dpp',dt.datax.idsiswa);
-                    $('.dppgrup').toggle('slow');
-                    $('.dppjoin').toggle('slow');
-                    // cek history pembayaran
-                    $('#histBayar').on('click',function(){
-                        histBayar(dt.datax.idsiswa);
-                    });
-
-                    $('.bayargrup').toggle('slow');
-                    $('#pembayaranNAV').addClass('active');
-
-                    if(dt.datax.status=='lunas'){
-                        // $('.simpanBC').attr('style','display:none;');
-                        icon = 'checkmark';
-                        clr  = 'green';
-                        info = 'lunas';
-                    }else if(dt.datax.status=='kurang'){
-                        icon = 'minus-2';
-                        clr  = 'orange';
-                        info = 'kurang';
-                    }else{
-                        icon = 'minus-2';
-                        clr  = 'red';
-                        info = 'belum';
-                    }var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
-                    $('#statusI2').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
-
-                }else{ //spp
-                    // hidden
-                    $('#idsiswaH').val(dt.datax.idsiswa);
-                    $('#idmodulH').val(dt.datax.idmodul);
-                    $('#rekkasH').val(dt.datax.rekkas);
-                    $('#rekitemH').val(dt.datax.rekitem);
-                    // display
-                        // info pembayaran 
-                        $('#tanggalTB').val(dt.datax.tanggal);
-                        $('#nomerTB').val(dt.datax.nomer);
-                        $('#rek1TB').val(dt.datax.rek1);
-                        $('#rek2TB').val(dt.datax.rek2);
-                        $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nSiswa : '+dt.datax.siswa+' \nNIS : '+dt.datax.nis);
-                        // detail pembayaran (nominal dll)
-                        $('#nominalTB').val(dt.datax.nominal);
-                    $('#pembayaranNAV').attr('style','display:none;');
-                    $('#rincianNAV').addClass('active');
-                    if(dt.datax.status=='lunas'){
-                        $('.simpanBC').attr('style','display:none;');
-                        icon = 'checkmark';
-                        clr  = 'green';
-                        info = 'lunas';
-                    }else{
-                        icon = 'minus-2';
-                        clr  = 'red';
-                        info = 'belum lunas';
-                    }var ico ='<i class="icon-'+icon+' on-right on-left" style="background:'+clr+'; color: white; padding: 10px;border-radius: 50%"></i>';
-                    $('#statusI').html(ico+'<span style="padding:0px 10px 0px 10px ;" class="fg-white bg-'+clr+'">'+info+'</span>');
-                }
+                $('#idsiswaH').val(dt.datax.idsiswa);
+                $('#idmodulH').val(dt.datax.idmodul);
+                $('#rekkasH').val(dt.datax.rekkas);
+                $('#rekitemH').val(dt.datax.rekitem);
+                // display
+                $('#tanggalTB').val(dt.datax.tanggal);
+                $('#nomerTB').val(dt.datax.nomer);
+                $('#rek1TB').val(dt.datax.rek1);
+                $('#rek2TB').val(dt.datax.rek2);
+                $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
+                $('#nominalTB').val(dt.datax.nominal);
+                $('#pembayaranNAV').attr('style','display:none;');
+                $('#rincianNAV').addClass('active');
+                if(dt.datax.status=='lunas'){
+                    $('.simpanBC').attr('style','display:none;');
+                    icon = 'checkmark';
+                    clr  = 'green';
+                    info = 'lunas';
+                }else{
+                    icon = 'minus-2';
+                    clr  = 'red';
+                    info = 'belum lunas';
+                }loadModal(dt.datax.contentFR);
             }
         });
-        // setTimeout(function(){
-            loadModal(typ,contentFR);
-        // },500);
     }
 
     function cmbakanbayar(typ,sis){
@@ -511,10 +378,10 @@ var contentFR ='';
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 500,
+            width: '40%',
             padding: 10,
             onShow: function(){
-                $.Dialog.title(titl+' '+mnu); 
+                $.Dialog.title(''); 
                 $.Dialog.content(cont);
             }
         });
