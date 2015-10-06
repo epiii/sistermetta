@@ -362,7 +362,6 @@ $admin .= '
 		<th><b>Kode</b></</th>
 		<th><b>Nama</b></td>
 		<th><b>Stok</b></</td>
-				<th><b>H.Beli</b></</td>
 		<th><b>Jumlah</b></</td>
 		<th><b>Harga</b></</th>
 		<th><b>Discount</b></</th>
@@ -387,7 +386,7 @@ $admin .= '
 			<td>'.$kode.'</td>
 		<td>'.getnamabarang($kode).'</td>
 		<td>'.$stok.'</td>
-				<td>'.$hargabeli.'</td>
+
 		<td><input align="right" type="text" name="jumlahjual['.$k.']" value="'.$jumlah.'"class="form-control"></td>
 		<td><input align="right" type="text" name="harga['.$k.']" value="'.$harga.'"class="form-control"></td>
 		<td><input align="right" type="text" name="subdiscount['.$k.']" value="'.$subdiscount.'"class="form-control"></td>
