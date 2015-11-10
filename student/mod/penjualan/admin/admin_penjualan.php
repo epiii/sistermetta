@@ -185,6 +185,7 @@ $_SESSION['product_id'][$k]['subtotal'] =$_SESSION['product_id'][$k]['jumlah']*(
 }
 }
 }
+
 if(isset($_POST['tambahbarang'])){
 $_SESSION['kodecustomer'] = $_POST['kodecustomer'];
 $kodebarang 		= $_POST['kodebarang'];
