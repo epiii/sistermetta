@@ -55,6 +55,7 @@ $noretur  			= $data['noretur'];
 $tgl  			= $data['tgl'];
 $kodecustomer  			= $data['kodecustomer'];
 $total  			= $data['total'];
+$lihatslip = '<a href="cetak_notafaktur.php?kode='.$data['nofaktur'].'&lihat=ok"target="new">'.$data['nofaktur'].'</a>';
 	$error 	= '';
 		if (!$noretur) $error .= "Error: Kode Retur tidak terdaftar , silahkan ulangi.<br />";
 	if ($error){
@@ -71,7 +72,7 @@ echo '
 	<tr>
 		<td>Nomor Faktur</td>
 		<td>:</td>
-		<td>'.$nofaktur.'</td>
+		<td>'.$lihatslip.'</td>
 	</tr>';
 echo '
 	<tr>

@@ -154,7 +154,7 @@ $hargajual 		= int_filter($_POST['hargajual']);
 	}
 
 }
-$generatekode=generatekode('KPR','kode','pos_produk');
+$generatekode=generatekode('KPJ','kode','pos_produkjasa');
 $jenjang     		= !isset($jenjang) ? '' : $jenjang;
 $kode     		= !isset($kode) ? $generatekode : $kode;
 $nama     		= !isset($nama) ? '' : $nama;
