@@ -5,6 +5,36 @@
 	require_once  'psb_func.php';
 	require_once  'pus_func.php';
 
+	function delRecord($tb,$w){
+		$ww='';
+		foreach ($w as $i => $v) {
+			$ww.=' AND '.$i.'='.$v;
+		}
+		$www=substr($ww,4);
+		// pr($www);
+		$s='DELETE FROM '.$tb.' WHERE '.$www;
+		$e=mysql_query($s);
+		return $e;
+	}
+	function Terbilang($x) {
+		$ambil = array("", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan", "Sepuluh", "Sebelas");
+		if ($x < 12) 
+			return " " . $ambil[$x];
+		elseif ($x < 20)
+			return Terbilang($x - 10) . "Belas";
+		elseif ($x < 100)
+			return Terbilang($x / 10) . " Puluh" . Terbilang($x % 10);
+		elseif ($x < 200)
+			return " Seratus" . Terbilang($x - 100);
+		elseif ($x < 1000)
+			return Terbilang($x / 100) . " Ratus" . Terbilang($x % 100);
+		elseif ($x < 2000)
+			return " Seribu" . Terbilang($x - 1000);
+		elseif ($x < 1000000)
+			return Terbilang($x / 1000) . " Ribu" . Terbilang($x % 1000);
+		elseif ($x < 1000000000)
+			return Terbilang($x / 1000000) . " Juta" . Terbilang($x % 1000000);
+	}
 
 	function addRecord($f,$tb){
 		if(is_array($f)){
@@ -87,8 +117,10 @@
 			foreach ($w as $i => $v)  {
 				$ww.='AND '.$v[0].' '.$v[1].' "'.($v[1]=='LIKE'?'%':'').$v[2].($v[1]=='LIKE'?'%':'').'" ';// replid = 13
 			}$s.=substr($ww,4);
-		}$e = mysql_query($s);
-		$r=mysql_fetch_assoc($e);
+		}
+		// pr($s);
+		$e = mysql_query($s);
+		// $r=mysql_fetch_assoc($e);
 		return $r[$f];
 	}	
 	
@@ -154,9 +186,11 @@
 	// general function : query data 
 	function getField($f,$tb,$w='',$k=''){
 		$s = 'SELECT '.$f.' FROM '.$tb.($w!=''?' WHERE '.$w.' = "'.$k.'"':'');
+		// pr($s);
 		$e = mysql_query($s) or die(mysql_error());
 		$r = mysql_fetch_assoc($e);
-		return ($f=='*' || $f=='all'?$r:$r[$f]);
+		$ret = ($f=='*' || $f=='all'?$r:$r[$f]);
+		return $ret;
 	}
 	function vd($x){
 		echo '<pre>';

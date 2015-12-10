@@ -1,4 +1,125 @@
 <?php
+	// function getTahunAjaranByTgl(){
+	// 	$s='SELECT nominal FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
+	// 	$e=mysql_query($s);
+	// 	$r=mysql_fetch_assoc($e);
+	// 	return $r['nominal'];
+	// }
+	function getTahunAjaranTrans($tgl)	{
+		$s= 'SELECT getTahunAjaran("'.$tgl.'")idtahunajaran';
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['idtahunajaran'];
+	}
+	function getSaldoAwalRek($idRek,$idThn){
+		$s='SELECT nominal FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nominal'];
+	}
+
+	function getSaldoRekeningSkrg($idRek){
+		$s='SELECT getSaldoRekeningSkrg('.$idRek.') saldoRekening';
+		// pr($s);
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['saldoRekening'];
+	}	
+	// function getSaldoRek($idRek,$idThn){
+	// 	$s='SELECT nominal2 FROM keu_saldorekening WHERE detilrekening='.$idRek.' AND tahunajaran='.$idThn;
+	// 	$e=mysql_query($s);
+	// 	$r=mysql_fetch_assoc($e);
+	// 	return $r['nominal2'];
+	// }	
+	function getTglTransaksi($idTransaksi){
+		$s=getField('tanggal','keu_transaksi','replid',$idTransaksi);
+		return $s;
+	}
+	function getOptJurnal($detRek,$jenisRek){
+		$s='SELECT if(kr.jenistambah="'.$jenisRek.'","+","-")opt
+			FROM
+				keu_detilrekening dr
+				JOIN keu_kategorirekening kr on kr.replid = dr.kategorirekening
+			WHERE dr.replid ='.$detRek;
+		$e =mysql_query($s);
+		$r =mysql_fetch_assoc($e);
+		return $r['opt']; 
+	}
+	function editSaldoRek($idDetRek,$idThn,$jenisRek,$nominal){
+		$s='UPDATE keu_saldorekening 
+			SET nominal2=nominal2'.getOptJurnal($idDetRek,$jenisRek).$nominal.' 
+			WHERE 
+				detilrekening='.$idDetRek.' AND 
+				tahunajaran='.$idThn;
+		$e=mysql_query($s);
+		return $e?true:false;
+	}
+	function addJurnal($idTransaksi,$detRekBiaya,$nominal,$idThn){
+		$statSaldo=$statJurnal=true;
+		foreach ($detRekBiaya as $i => $v) {
+			$idDetRek = $v['detilrekening'];
+			$jenisRek = $v['jenisrekening'];
+			$s='INSERT INTO keu_jurnal SET 
+				transaksi     ='.$idTransaksi.',
+				detilrekening ='.$idDetRek.',
+				jenisrekening ="'.$jenisRek.'",
+				nominal       ='.$nominal;
+			$e            =mysql_query($s);
+			$statJurnal   =!$e?false:true;
+			$editSaldoRek =editSaldoRek($idDetRek,$idThn,$jenisRek,$nominal);
+			$statSaldo    =!$editSaldoRek?false:true;
+		}return $statJurnal;
+	}
+	function getRekeningBiaya($dep,$thn,$biaya){
+		$s='SELECT replid 
+			FROM keu_rekeningbiaya 
+			WHERE 
+				departemen='.$dep.' AND 
+				tahunajaran='.$thn.' AND 
+				biaya='.$biaya;
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['replid'];
+	}
+	function getDetRekeningBiayaArr($rekBiaya){
+		$s='SELECT detilrekening,jenisrekening 
+			FROM keu_detilrekeningbiaya 
+			WHERE rekeningbiaya='.$rekBiaya;
+		$e=mysql_query($s);
+		$arr=array();
+		while($r=mysql_fetch_assoc($e)) $arr[]=$r; 
+		return $arr;
+	}
+	function getTahunAjaranByBiaya($idsiswabiaya){
+		$r=getField('idtahunajaran','vw_siswa_biaya','idsiswabiaya',$idsiswabiaya);
+		return $r;
+	}
+	function getAllRekeningBiaya($biaya,$dep,$thn){
+		$s='SELECT 
+				if(drb.jenisrekening="d","Debit","Kredit")jenisrekening,
+				if(drb.jenisrekening="d","green","red")color,
+				kr.nama kategorirekening,
+				concat("[",dr.kode,"] ",dr.nama)detilrekening
+			FROM
+				keu_rekeningbiaya rb 
+				JOIN keu_detilrekeningbiaya drb on drb.rekeningbiaya = rb.replid
+				JOIN keu_detilrekening dr on dr.replid = drb.detilrekening
+				JOIN keu_kategorirekening kr on kr.replid = dr.kategorirekening
+			WHERE
+				rb.departemen ='.$dep.' AND
+				rb.tahunajaran ='.$thn.' AND
+				rb.biaya = '.$biaya.'
+			ORDER BY 
+				drb.jenisrekening ASC ';
+				// pr($s);
+		$e=mysql_query($s);
+		$rekList='';
+
+		while ($r=mysql_fetch_assoc($e)) {
+			$rekList.='<b class="fg-'.$r['color'].'">['.$r['jenisrekening'].']  '.$r['kategorirekening'].'</b> : '.$r['detilrekening'].'<br>';
+		}return $rekList;
+	}	
+
 	function getBiayaNett($idBiaya,$idDiskReg,$diskKhus){
 		$biaya = !is_null($idDiskReg)?getBiayaDiskReg($idBiaya,$idDiskReg):getField('nominal','psb_detailbiaya','replid',$idBiaya);
 		$biayaNett = ($biaya<$diskKhus?0:(intval($biaya) - intval($diskKhus)) );
@@ -29,6 +150,51 @@
 			}return $biaya;
 		}
 	}
+
+	function getAngsuranNominal($idSiswa,$idBiaya){
+				// a.angsuran
+				// JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				// JOIN psb_angsuran a on a.replid = sb.angsuran
+		$s='SELECT
+				IFNULL(a.angsuran,1)angsuran
+			FROM
+				psb_siswabiaya sb 
+				left JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				left JOIN psb_angsuran a on a.replid = sb.angsuran
+			WHERE
+				sb.siswa = '.$idSiswa.' AND 
+				db.biaya  = '.$idBiaya;
+		$e  = mysql_query($s);
+		$ra = mysql_fetch_assoc($e);
+		$angsuran  = $ra['angsuran'];
+		$biayaNett = getBiayaNett2($idSiswa,$idBiaya);			
+		$angsuranNominal = $biayaNett/$angsuran;
+		// pr($angsuran);
+		return $angsuranNominal;
+	}
+	function getBiayaNett2($idSiswa,$idBiaya){
+		$s1 = ' SELECT db.nominal biaya, sb.diskonkhusus
+				FROM psb_siswabiaya sb 
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				WHERE sb.siswa = '.$idSiswa.' and db.biaya = '.$idBiaya;
+		$e1 =mysql_query($s1);
+		$r1 =mysql_fetch_assoc($e1);
+
+		$s2 = '	SELECT dd.nilai
+				FROM psb_siswadiskon sd
+					JOIN psb_detaildiskon dd on dd.replid = sd.detaildiskon
+					JOIN psb_siswabiaya sb on sb.replid = sd.siswabiaya
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+				where  
+					sb.siswa = '.$idSiswa.' and  
+					db.biaya = '.$idBiaya;
+		$e2 =mysql_query($s2);
+		$biayaAwal = $r1['biaya'];
+		while ($r2 =mysql_fetch_assoc($e2)) {
+			$diskReg = intval($r2['nilai']);
+			$biayaAwal-=($biayaAwal*$diskReg/100);
+		}return $biayaAwal-intval($r1['diskonkhusus']);
+	}
 	function getBiaya($dgel,$subt,$gol){
 		$s = '	SELECT b.replid,db.nominal
 				FROM psb_detailbiaya db JOIN psb_biaya b on b.replid = db.biaya 
@@ -57,7 +223,7 @@
 		}return $o;
 	}
 
-	/*function getKatAnggaran($id,$typ){
+	function getKatAnggaran($id,$typ){
 		$s='SELECT
 				k.*, IFNULL(da.kuotaNum, 0) kuotaNum,
 				IFNULL(t.totTerpakai, 0) terpakaiNum,
@@ -103,7 +269,7 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];
-	}*/
+	}
 	function getDetAnggaran($id,$typ){
 		$s='SELECT
 				(SUM(n.jml) * d.hargasatuan)kuotaNum,
@@ -124,32 +290,7 @@
 				) t1 ON t1.detilanggaran = d.replid
 			WHERE
 				d.replid = '.$id;
-				// var_dump($s);exit();
-		$e=mysql_query($s);
-		$r=mysql_fetch_assoc($e);
-		return $r[$typ];
-	}
-	function getAnggaranTahunan($id,$typ){
-		$s='SELECT
-				(SUM(n.jml) * d.hargasatuan)kuotaNum,
-				ifnull(t1.terpakaiNum, 0) terpakaiNum,
-				ifnull(((SUM(n.jml) * d.hargasatuan) - t1.terpakaiNum),(SUM(n.jml) * d.hargasatuan)) sisaNum,
-				ifnull(round(((t1.terpakaiNum) / (SUM(n.jml) * d.hargasatuan) * 100)),0) terpakaiPerc
-			FROM
-				keu_detilanggaran d
-				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
-				LEFT JOIN (
-					SELECT
-						t.detilanggaran,
-						SUM(t.nominal) terpakaiNum
-					FROM
-						keu_transaksi t
-					GROUP BY
-						t.detilanggaran
-				) t1 ON t1.detilanggaran = d.replid
-			WHERE
-				d.replid = '.$id;
-				// var_dump($s);exit();
+pr($s);
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];
@@ -293,6 +434,31 @@
     return $terbilang;
   
 }
+	function getDetAnggaranFull($id){
+		$s='SELECT  
+				da.detilanggaran,
+				ka.kategorianggaran,
+				getAnggaranPerItem('.$id.')kuota 
+			FROM keu_anggarantahunan ath
+				JOIN keu_detilanggaran da on da.replid = ath.detilanggaran
+				JOIN keu_kategorianggaran ka on ka.replid = da.kategorianggaran
+			WHERE ath.replid='.$id;
+		// pr($s);
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['detilanggaran'].' ('.$r['kategorianggaran'].') | kuota : '.setuang($r['kuota']);
+	}
+	function getNamaAnggaran($ath){
+		$s='SELECT getNamaAnggaran('.$ath.')nama';
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['nama'];
+	}
+	// function getNamaKatAnggaran($id){
+	// 	$s=getField('kategorianggaran','keu_kategorianggaran','replid',$id);
+	// 	$e=mysql_query($s);
+	// 	return $r['detilanggaran'];
+	// }
 	function getKatAnggaran2($f,$id){
 		$s='SELECT '.$f.' FROM keu_kategorianggaran WHERE replid='.$id;
 		// print_r($s);exit();
@@ -304,26 +470,34 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['nama'];
-	}function getKuotaAnggaran($anggaran){
-		$s='SELECT
-				SUM(n.nominal)kuotaNum,
-				ifnull(t1.terpakaiNum,0)terpakaiNum,
-				ifnull((SUM(n.nominal)-t1.terpakaiNum),SUM(n.nominal))sisaNum,
-				ifnull(round(((t1.terpakaiNum)/SUM(n.nominal)*100)),0)terpakaiPerc
-			FROM
-				keu_detilanggaran d
-				LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
-				LEFT JOIN (
-					SELECT t.detilanggaran, SUM(t.nominal) terpakaiNum 
-					FROM keu_transaksi t
-					GROUP BY t.detilanggaran
-				)t1 on t1.detilanggaran = d.replid
-			WHERE d.replid='.$anggaran;
-		var_dump($s);
+	}
+	function getAnggaranKuota($idx){
+		$s='SELECT getAnggaranKuota('.$idx.')anggaranKuota';
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		return $r;
-	}function getPembayaran($siswa,$modul){
+		return $r['anggaranKuota'];
+	}
+	// function getKuotaAnggaran($anggaran){
+	// 	$s='SELECT
+	// 			SUM(n.nominal)kuotaNum,
+	// 			ifnull(t1.terpakaiNum,0)terpakaiNum,
+	// 			ifnull((SUM(n.nominal)-t1.terpakaiNum),SUM(n.nominal))sisaNum,
+	// 			ifnull(round(((t1.terpakaiNum)/SUM(n.nominal)*100)),0)terpakaiPerc
+	// 		FROM
+	// 			keu_detilanggaran d
+	// 			LEFT JOIN keu_nominalanggaran n ON n.detilanggaran = d.replid
+	// 			LEFT JOIN (
+	// 				SELECT t.detilanggaran, SUM(t.nominal) terpakaiNum 
+	// 				FROM keu_transaksi t
+	// 				GROUP BY t.detilanggaran
+	// 			)t1 on t1.detilanggaran = d.replid
+	// 		WHERE d.replid='.$anggaran;
+	// 	var_dump($s);
+	// 	$e=mysql_query($s);
+	// 	$r=mysql_fetch_assoc($e);
+	// 	return $r;
+	// }
+	function getPembayaran($siswa,$modul){
 		$s ='SELECT max(replid) modul
 			FROM keu_pembayaran
 			WHERE
@@ -339,7 +513,7 @@
 				max(t.tanggal)tgl
 			FROM
 				keu_transaksi t
-				LEFT JOIN keu_pembayaran p ON p.replid = t.pembayaran
+				LEFT JOIN keu_penerimaansiswa p ON p.replid = t.pembayaran
 				LEFT JOIN keu_modulpembayaran m ON m.replid = p.modul
 				LEFT JOIN keu_katmodulpembayaran k ON k.replid = m.katmodulpembayaran
 			WHERE
@@ -385,7 +559,8 @@
 		$angsurkali = getSiswaBy('jmlangsur',$siswa);
 		$ret = $biaya/$angsurkali;
 		return $ret;
-	}function akanBayarOpt($typ,$siswa){
+	}
+	function akanBayarOpt($typ,$siswa){
 		$biayaKotor = getBiaya($typ,$siswa);			// 15.000.000
 		$diskonTotal= getDiscTotal($typ,$siswa); 		// 	  900.000
 														// __________ -
@@ -407,8 +582,51 @@
 		}
 		return $ret;
 	}
+	function getTerbayar2($idSiswa,$idBiaya){ // to get : nominal yg telah terbayar
+		$s ='	SELECT 
+					count(*)angsuranke,
+					SUM(p.nominal)terbayarTotal,
+					p.nominal terbayarBaru
+				from  keu_penerimaansiswa p 
+					JOIN psb_siswabiaya sb on sb.replid = p.siswabiaya
+					JOIN psb_detailbiaya db on db.replid = sb.detailbiaya 
+					LEFT JOIN (
+						SELECT tt.replid,max(tt.tanggal)tanggal 
+						FROM (
+							SELECT 
+								pp.replid,
+								pp.tanggal
+							from  keu_penerimaansiswa pp 
+								JOIN psb_siswabiaya sb on sb.replid = pp.siswabiaya
+								JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
+							where 
+								sb.siswa = '.$idSiswa.' and 
+								db.biaya = '.$idBiaya.' 
+							ORDER BY 
+								pp.tanggal desc,
+								pp.replid desc
+						)tt 
+					)t on t.replid = p.replid 
+				where 
+					sb.siswa = '.$idSiswa.' and 
+					db.biaya = '.$idBiaya;
+					// pr($s);
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		return $r;
+	}function getTerbayarTotal($idSiswa,$idBiaya){
+		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		return $terbayar['terbayarTotal'];
+	}function getTerbayarAngsuranke($idSiswa,$idBiaya){
+		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		return $terbayar['angsuranke'];
+	}function getTerbayarBaru($idSiswa,$idBiaya){
+		$terbayar =  getTerbayar2($idSiswa,$idBiaya);
+		// pr($terbayar);
+		return $terbayar['terbayarBaru'];
+	}
 	function getTerbayar($typ,$siswa){ // to get : nominal yg telah terbayar
-		$s ='SELECT
+		$s ='SELECT	
 				SUM(p.cicilan) terbayar
 			FROM
 				keu_pembayaran p 
@@ -497,12 +715,16 @@
 		$r = mysql_fetch_assoc($e);
 		// var_dump($s);exit();
 		return $r[$x];
-	}function getJenisTrans($f,$id){
-		$s='SELECT * FROM keu_jenistrans WHERE replid='.$id;
+	}
+
+	function getJenisTransaksi($idDetJT){
+		$s='SELECT j.kode
+			FROM keu_jenistransaksi j
+				JOIN keu_detjenistransaksi dj on dj.jenistransaksi = j.replid 
+			WHERE dj.replid='.$idDetJT;
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		// var_dump($r);exit();
-		return $r[$f];
+		return $r['kode'];
 	}function getBuktiTrans2($id){
 		$s='SELECT * FROM keu_detjenistrans WHERE kode="'.$id.'"';
 		$e=mysql_query($s);
@@ -513,12 +735,18 @@
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r['bukti'];
-	}function getDetJenisTrans($f,$w,$k){
-		$s='SELECT '.$f.' FROM keu_detjenistrans WHERE '.$w.'="'.$k.'"';
+	}function getDetJenisTransaksi($jTrans,$katTrans){
+		$s='SELECT dj.replid
+			FROM keu_detjenistransaksi dj
+				JOIN keu_kategoritransaksi kt on kt.replid = dj.kategoritransaksi
+				JOIN keu_jenistransaksi jt  on jt.replid = dj.jenistransaksi
+			WHERE 
+				jt.kode = "'.$jTrans.'" AND 
+				kt.kategoritransaksi = "'.$katTrans.'"';
+		// pr($s);
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
-		// var_dump($s);exit();
-		return $r[$f];
+		return $r['replid'];
 	}function getKatModulPemb($nama){
 		$s='SELECT * FROM keu_katmodulpembayaran WHERE nama="'.($nama=='joiningf' || $nama=='joining fee'?'joining fee':$nama).'"';
 		// var_dump($s);exit();
@@ -526,23 +754,31 @@
 		$r=mysql_fetch_assoc($e);
 		return $r['detjenistrans'];
 	}
-	function getDetJenisTrans2($id){
+	function getNoKwitansi($id){
 		$s  = '	SELECT 
-					d.nama jenis,
+					b.buktitransaksi,
 					CASE j.kode
 						when "ju" then "blue" 
 						when "in" then "green"
 						else "red" 
 					end as warna
 				FROM keu_transaksi t
-					left  JOIN keu_detjenistrans d on d.replid = t.detjenistrans
-					left JOIN keu_jenistrans j on j.replid = d.jenistrans 
+					JOIN keu_detjenistransaksi d on d.replid = t.detjenistransaksi
+					JOIN keu_buktitransaksi b on b.replid = d.buktitransaksi
+					JOIN keu_jenistransaksi j on j.replid = d.jenistransaksi
 				WHERE t.replid='.$id;
-		$e     = mysql_query($s);
-		$r     = mysql_fetch_assoc($e);
+		// pr($s);
+		$tgl = getTglTransaksi($id);
+		$y=substr($tgl,0,4);
+		$m=substr($tgl,5,2);
+		$d=substr($tgl,8,2);
+		$e = mysql_query($s);
+		$r = mysql_fetch_assoc($e);
+		$idkwitansi = getField('idkwitansi','keu_transaksi','replid',$id);
+		// vd($idkwitansi);
+		$nomer = $r['buktitransaksi'].'-'.sprintf("%04d",$idkwitansi).'/'.$d.'/'.$m.'/'.$y;
 		$warna =$r['warna'];
-		$jenis =$r['jenis'];
-		$ret   ='<span style="font-weight:bold;" class="fg-'.$warna.'">'.$jenis.'</span>';
+		$ret   ='<span style="font-weight:bold;" class="fg-'.$warna.'">'.$nomer.'</span>';
 		return $ret;
 	}function getNoTrans2($typ){
 		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
@@ -555,6 +791,7 @@
 			$in=1;
 		}
 		$kode=getBuktiTrans2($typ).'-'.sprintf("%04d",$in).'/'.date("m").'/'.date("Y");
+		pr($kode);
 		return $kode;
 	}function getNoTrans($typ){
 		$s = 'SELECT LPAD(max(replid),4,0)replid from keu_transaksi';
@@ -660,5 +897,28 @@
 		$str = 'Rp. '.str_replace(',','.',number_format($str));
 		return $str;
 	}
-
+	function getIdKwitansi(){
+		$r=getField('max(idkwitansi)','keu_transaksi','','');
+		return $r==''?1:($r+1);
+	}
+	function kwitansiPenerimaanSiswa($idpenerimaansiswa){
+		$s='SELECT
+                date(p.tanggal)d,
+                month(p.tanggal)m,
+                year(p.tanggal)y,
+                ucase(b.biaya)biaya,	
+                lpad(p.idkwitansi,4,0)idkwitansi
+              FROM
+                keu_penerimaansiswa p
+                JOIN psb_siswabiaya sb ON sb.replid = p.siswabiaya
+                JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+                JOIN psb_biaya b ON b.replid = db.biaya
+                JOIN psb_siswa s ON s.replid = sb.siswa
+              WHERE
+                p.replid = '.$idpenerimaansiswa;
+        $e=mysql_query($s);
+        $r=mysql_fetch_assoc($e);
+        $o=$r['biaya'].' - '.$r['idkwitansi'].'/'.substr($keu_penerimaansiswa['d'],8).'/'.$r['m'].'/'.$r['y'];
+        return $o;
+	}
 ?>

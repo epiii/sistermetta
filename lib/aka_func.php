@@ -16,6 +16,14 @@
 	}
 
 /*aka*/
+	function getTahunAjaranByTgl($tgl)	{
+		$s= 'SELECT getTahunAjaran("'.$tgl.'")idtahunajaran';
+		// pr($s);
+		$e=mysql_query($s);
+		$r=mysql_fetch_assoc($e);
+		return $r['idtahunajaran'];
+	}
+
 	function getTahunAjaran($typ,$id){
 		$s = 'SELECT '.$typ.'
 			  FROM aka_tahunajaran
