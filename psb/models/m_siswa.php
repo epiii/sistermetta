@@ -147,14 +147,14 @@
 							$nox 	= $starting+1;
 							while($r = mysql_fetch_assoc($result)){	
 								$token=base64_encode($_SESSION['id_loginS'].$r['idsiswa']);
-											// <button data-hint="dokumen"   '.(isAksi('siswa','u')?'onclick="subdokumenFR('.$r['idsiswa'].')"':' disabled').' >
-											// 	<i class="icon-file"></i>
-											// </button>
 								$btn ='<td align="center">
+											<button data-hint="dokumen"   '.(isAksi('siswa','u')?'onclick="subdokumenFR('.$r['idsiswa'].')"':' disabled').' >
+												<i class="icon-file"></i>
+											</button>
 											<button data-hint="ubah"   '.(isAksi('siswa','u')?'onclick="viewFR('.$r['idsiswa'].')"':' disabled').' >
 												<i class="icon-pencil"></i>
 											</button>
-											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&idsiswa='.$r['idsiswa'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
+											<a class="button" '.(isAksi('siswa','r')?' href="report/r_siswa.php?token='.$token.'&replid='.$r['idsiswa'].'"':' disabled href="#"').'  target="_blank" data-hint="cetak">
 												<i class="icon-printer"></i>
 											</a>
 											<button data-hint="hapus"  '.(isAksi('siswa','d')?'onclick="del('.$r['idsiswa'].')"':' disabled').'>
@@ -272,35 +272,40 @@
 							$f=',sb.replid idsiswabiaya,
 								sb.angsuran,
 								sb.diskonkhusus,
+								sb.nodiskonkhusus,
+								sb.viabayar,
+								sb.isAngsur2,
 								sb.ketdiskonkhusus';
 							$j=' LEFT JOIN psb_detailbiaya db on db.biaya = b.replid
 								LEFT JOIN psb_siswabiaya sb on sb.detailbiaya = db.replid';
 							$w=' where sb.siswa ='.$_POST['siswa'];
 							$g=' GROUP BY b.replid';
 						}else {
-							$f='';$j='';$w='';$g=''; // add 
+							$f=$j=$w=$g=''; // add 
 						}
 
 						// biaya ----------------
 						$s='SELECT 	
 								b.replid, 
 								b.biaya, 
+								case b.ditagih
+									WHEN "0" THEN "Sekali" 
+									WHEN "1" THEN "Tahun" 
+									WHEN "2" THEN "Semester"
+									else "Bulan" 
+								end as ditagih, 
 								b.kode, 
-								b.isAngsur idIsAngsur,
-								case b.isAngsur
-									when 0 then "Tunai"
-									when 1 then "Angsur Reguler"
-									else "Angsur Bebas"
-								end as isAngsur,
-								b.isDiskon,
-								t.jenistagihan '.$f.'
+								b.isAngsur,
+								b.isDiskon
+								'.$f.'
 							FROM psb_biaya b
-								JOIN psb_jenistagihan t on t.replid = b.jenistagihan 
 								'.$j.$w.'
 							'.$g.'
 							ORDER BY 
 								b.biaya ASC';
-						// pr($s);	
+								// t.jenistagihan 
+								// JOIN psb_jenistagihan t on t.replid = b.jenistagihan 
+						// vd($s);	
 						$e=mysql_query($s);
 						$stat=!$e?'gagal':'sukses';
 						$n=mysql_num_rows($e);
@@ -314,22 +319,22 @@
 								// diskon reguler -----------
 								$biayaArr[]=array(
 									'replid'          =>$r['replid'],
-									'jenistagihan'    =>$r['jenistagihan'],
 									'kode'            =>$r['kode'],
 									'biaya'           =>$r['biaya'],
-									'idIsAngsur'      =>$r['idIsAngsur'],
+									'ditagih'           =>$r['ditagih'],
 									'idsiswabiaya'    =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['idsiswabiaya']:''),
 									'angsuran'        =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['angsuran']:''),
 									'diskonkhusus'    =>(isset($_POST['siswa']) && $_POST['siswa']!=''?setuang($r['diskonkhusus']):''),
 									'ketdiskonkhusus' =>(isset($_POST['siswa']) && $_POST['siswa']!=''?$r['ketdiskonkhusus']:''),
 									'isAngsur'        =>$r['isAngsur'],
+									'isAngsur2'       =>(isset($r['isAngsur2'])?$r['isAngsur2']:''),
+									'viabayar'        =>(isset($r['viabayar'])?$r['viabayar']:''),
 									'isDiskon'        =>$r['isDiskon'],
-									'jenistagihan'    =>$r['jenistagihan'],
 								);
 							}
 						}$out=json_encode(array('status'=>$stat,'levelurutan'=>$_SESSION['levelurutanS'],'biayaArr'=>$biayaArr));
-					break;
-				}
+						break;
+					}
 			break; 
 			// view -----------------------------------------------------------------
 
@@ -509,6 +514,7 @@
 							'tinggisiswa',	
 							'warganegarasiswa',
 						);
+						// pr($siswaF);
 						$siswaSV=(isset($_POST['idformTB']) && $_POST['idformTB']!='')?editRecord($siswaF,$tb,'replid',$_POST['idformTB']):addRecord($siswaF,$tb);
 						if(!$siswaSV['isSukses']) $stat='gagal_insert_siswa';
 						else{
@@ -521,6 +527,7 @@
 							}
 							// siswa - biaya  -----------------------------------------------------------------------------------------
 							$siswabiayaStat=true;$xx=$n=0;
+							$ss='';
 							if(isset($_POST['iddetailbiayaTB'])){
 								foreach ($_POST['iddetailbiayaTB'] as $i => $v) {
 									$biaya = getField('biaya','psb_detailbiaya','replid',$v);
@@ -533,12 +540,17 @@
 										$f   =' siswa="'.(isset($siswaSV['id'])?$siswaSV['id']:'').'",';
 										$w   ='';
 									}
-
-									$angsuran        = isset($_POST['angsuran'.$biaya.'TB'])?',angsuran ='.$_POST['angsuran'.$biaya.'TB']:'';
+									
+									$isAngsur2       = isset($_POST['isAngsur2'.$biaya.'TB'])?',isAngsur2 ="'.$_POST['isAngsur2'.$biaya.'TB'].'"':'';
+									$angsuran        = ',angsuran ='.($_POST['isAngsur2'.$biaya.'TB']=='1'?$_POST['angsuran'.$biaya.'TB']:'0');
+									$nodiskonkhusus  = isset($_POST['nodiskonkhusus'.$biaya.'TB'])?',nodiskonkhusus ='.getuang($_POST['nodiskonkhusus'.$biaya.'TB']):'';
 									$diskonkhusus    = isset($_POST['diskonkhusus'.$biaya.'TB'])?',diskonkhusus ='.getuang($_POST['diskonkhusus'.$biaya.'TB']):'';
 									$ketdiskonkhusus = isset($_POST['ketdiskonkhusus'.$biaya.'TB'])?',ketdiskonkhusus ="'.$_POST['ketdiskonkhusus'.$biaya.'TB'].'"':'';
-									$siswabiayaS 	 = $pre.' psb_siswabiaya SET '.$f.' detailbiaya ='.$v.'
-														'.$angsuran.$diskonkhusus.$ketdiskonkhusus.$w;
+									$viabayar        = isset($_POST['viabayar'.$biaya.'TB'])?',viabayar ="'.$_POST['viabayar'.$biaya.'TB'].'"':'';
+									$siswabiayaS     = $pre.' psb_siswabiaya SET '.$f.' detailbiaya ='.$v.'
+														'.$angsuran.$diskonkhusus.$nodiskonkhusus.$ketdiskonkhusus.$isAngsur2.$viabayar.$w;
+														// pr($siswabiayaS);
+									$ss.=$siswabiayaS;
 									$siswabiayaE    = mysql_query($siswabiayaS);
 									$siswabiayaID   = (isset($_POST['idsiswabiaya'.$biaya.'TB']) && $_POST['idsiswabiaya'.$biaya.'TB']!='')?$_POST['idsiswabiaya'.$biaya.'TB']:mysql_insert_id();
 									$siswabiayaStat =!$siswabiayaE?false:true;
@@ -560,6 +572,7 @@
 										}
 									}
 							 	}
+								// pr($ss);
 							}
 							if(!$siswabiayaStat){
 								$stat='gagal_insert_siswa_biaya';
@@ -766,76 +779,149 @@
 			break;
 			// delete -----------------------------------------------------------------
 
-			// ambiledit -----------------------------------------------------------------
+			// amxdit -----------------------------------------------------------------
 			case 'ambiledit':
-				$s =' 	SELECT s.*,a.*,i.*,
-							w.replid idsiswawali,
-							w.namawali,
-							w.jkelaminwali,
-							w.alamatwali,
-							w.kotawali,
-							w.telponwali,
-							case s.status
-								when "0" then "Belum Diterima"
-								when "1" then "Diterima"
-								else "Lulus"
-							end as statusiswa
-						FROM psb_siswa s 
-							JOIN psb_siswaayah a on a.siswa = s.replid
-							JOIN psb_siswaibu i on i.siswa = s.replid
-							LEFT JOIN psb_siswawali w on w.siswa = s.replid
-					 	WHERE s.replid='.$_POST['replid'];
+				$s ='SELECT
+						/*bio siswa*/
+						case s.`status`	
+							WHEN "0" then "Belum Diterima"
+							WHEN "1" then "Diterima"
+							else "Lulus"
+						end as status,
+						s.replid,
+						s.nopendaftaran,
+						s.namasiswa,
+						s.nis,
+						s.nisn,
+						s.panggilansiswa,
+						s.jkelaminsiswa,
+						s.tempatlahirsiswa,
+						s.tanggallahirsiswa,
+						s.sukusiswa,
+						s.warganegarasiswa,
+						s.agamasiswa,
+						s.photosiswa,
+						s.hpsiswa,
+						s.telponsiswa,
+						s.bahasasiswa1,
+						s.bahasasiswa2,
+						s.emailsiswa,
+						s.pinbbsiswa,
+						s.alamatsiswa,
+						s.kotasiswa,
+						s.kodepossiswa,
+						s.beratsiswa,
+						s.tinggisiswa,
+						s.darahsiswa,
+						s.penyakitsiswa,
+						s.catatankesehatansiswa,
+						s.diasuh,
+						s.sekolahasalsiswa,
+						s.kotasekolahasalsiswa,
+						s.negarasekolahasalsiswa,
+						/*ayah */
+						sa.namaayah,
+						sa.tempatlahirayah,
+						sa.tanggallahirayah,
+						sa.agamaayah,
+						sa.warganegaraayah,
+						sa.kodeposayah,
+						sa.kotaayah,
+						sa.pendidikanayah,
+						sa.bidangpekerjaanayah,
+						sa.pekerjaanayah,
+						sa.posisiayah,
+						sa.penghasilanayah,
+						sa.telponayah,
+						sa.emailayah,
+						sa.pinbbayah,
+						sa.alamatayah,
+						sa.hpayah,
+						sa.faxrumahayah,
+						sa.alamatkantorayah,
+						sa.telponkantorayah,
+						sa.faxkantorayah,
+						sa.gerejaayah,
+						/*siswa ibu*/
+						si.namaibu,
+						si.tempatlahiribu,
+						si.tanggallahiribu,
+						si.agamaibu,
+						si.warganegaraibu,
+						si.kodeposibu,
+						si.kotaibu,
+						si.pendidikanibu,
+						si.bidangpekerjaanibu,
+						si.pekerjaanibu,
+						si.posisiibu,
+						si.penghasilanibu,
+						si.telponibu,
+						si.emailibu,
+						si.pinbbibu,
+						si.alamatibu,
+						si.hpibu,
+						si.faxrumahibu,
+						si.alamatkantoribu,
+						si.telponkantoribu,
+						si.faxkantoribu,
+						si.gerejaibu,
+						/*siswa-wali*/
+						sw.replid idsiswawali,
+						sw.namawali,
+						sw.jkelaminwali,
+						sw.alamatwali,
+						sw.kotawali,
+						sw.telponwali,
+						/*tingkat dkk*/
+						st.replid subtingkat,
+						t.replid tingkat,
+						/*dept dkk*/
+						dg.departemen iddepartemen,
+						d.nama departemen,
+						dg.replid detailgelombang,
+						dg.tahunajaran idtahunajaran,
+						ta.tahunajaran,
+						db.golongan
+					FROM
+						psb_siswa s
+						JOIN psb_siswaayah sa ON sa.siswa = s.replid
+						JOIN psb_siswaibu si ON si.siswa = s.replid
+						LEFT JOIN psb_siswawali sw ON sw.siswa = s.replid
+						JOIN psb_siswabiaya sb ON sb.siswa = s.replid
+						JOIN psb_detailbiaya db ON db.replid = sb.detailbiaya
+						JOIN psb_detailgelombang dg ON dg.replid = db.detailgelombang
+						JOIN aka_subtingkat st ON st.replid = db.subtingkat
+						JOIN aka_tingkat t ON t.replid = st.tingkat
+						JOIN departemen d  ON d.replid = dg.departemen
+						JOIN aka_tahunajaran ta  ON ta.replid = dg.tahunajaran
+					WHERE
+						s.replid ='.$_POST['replid'].'
+					GROUP BY
+						s.replid';
+						// pr($s);
 				$e    = mysql_query($s) or die(mysql_error());
 				$r    = mysql_fetch_assoc($e);
 				$stat = !$e?'gagal':'sukses';
-
-				$deptNama =getKriteriaSiswa('departemen',$_POST['replid']);
-					$deptID =getField('replid','departemen','nama',$deptNama);
-				$thnNama  =getKriteriaSiswa('tahunajaran',$_POST['replid']);
-					$thnID  =getField('replid','aka_tahunajaran','tahunajaran',$thnNama);
-				$gelNama =getKriteriaSiswa('gelombang',$_POST['replid']);
-					$gelID   =getField('replid','psb_gelombang','gelombang',$gelNama);
-
-				$ww[]=['tahunajaran','=',$thnID]; 
-				$ww[]=['departemen','=',$deptID]; 
-				$ww[]=['gelombang','=',$gelID]; 
-					$dgelID =getFieldArr4('replid','psb_detailgelombang','',$ww);
-				$tingNama =getKriteriaSiswa('tingkat',$_POST['replid']);
-					$tingID   =getField('replid','aka_tingkat','tingkat',$tingNama);
-				$stingNama =getKriteriaSiswa('subtingkat',$_POST['replid']);
-					$stingID   =getField('replid','aka_subtingkat','subtingkat',$stingNama);
-				$golNama =getKriteriaSiswa('golongan',$_POST['replid']);
-					$golID   =getField('replid','psb_golongan','golongan',$golNama);
-				// pr($golID);
 
 				$kontakdaruratArr = getFieldArr2('*',$tb5,'siswa',$_POST['replid']);
 				$saudaraArr       = getFieldArr2('*',$tb6,'siswa',$_POST['replid']);
 				$biayaArr         = getFieldArr2('*',$tb7,'siswa',$_POST['replid']);
 				// TODO : fetch psb_siswabiaya (tingkat & subtingkat terakhir/paling tinggi )
 				// pr($biayaArr);
-				$out    = json_encode(array(
-							'status'          =>$stat,
-							'statussiswa'     =>$r['statusiswa'],
-							// kriteria siswa 
-							'departemen'      =>$deptID,
-							'departemennama'  =>$deptNama,
-							'tahunajaran'     =>$thnID,
-							'tahunajarannama' =>$thnNama.' - '.($thnNama+1),
-							'detailgelombang' =>$dgelID,
-							'tingkat'         =>$tingID,
-							'subtingkat'      =>$stingID,
-							'golongan'        =>$golID,
-							// biaya
-							'biayaArr'        =>$biayaArr,
-							// biodata siswa
+				$out = json_encode(array(
+							'status'                 =>$stat,
+							/*bio siswa*/
+							'statussiswa'            =>$r['status'],
+							'replid'                 =>$r['replid'],
 							'nopendaftaran'          =>getNoPendaftaran2($_POST['replid']),
+							// $r['nopendaftaran'],
 							'namasiswa'              =>$r['namasiswa'],
 							'nis'                    =>$r['nis'],
 							'nisn'                   =>$r['nisn'],
 							'panggilansiswa'         =>$r['panggilansiswa'],
 							'jkelaminsiswa'          =>$r['jkelaminsiswa'],
 							'tempatlahirsiswa'       =>$r['tempatlahirsiswa'],
-							'tanggallahirsiswa'      =>$r['tanggallahirsiswa']=='0000-00-00'?'':tgl_indo5($r['tanggallahirsiswa']),
+							'tanggallahirsiswa'      =>$r['tanggallahirsiswa'],
 							'sukusiswa'              =>$r['sukusiswa'],
 							'warganegarasiswa'       =>$r['warganegarasiswa'],
 							'agamasiswa'             =>$r['agamasiswa'],
@@ -858,10 +944,10 @@
 							'sekolahasalsiswa'       =>$r['sekolahasalsiswa'],
 							'kotasekolahasalsiswa'   =>$r['kotasekolahasalsiswa'],
 							'negarasekolahasalsiswa' =>$r['negarasekolahasalsiswa'],
-							//ayah
+							/*ayah */
 							'namaayah'               =>$r['namaayah'],
 							'tempatlahirayah'        =>$r['tempatlahirayah'],
-							'tanggallahirayah'      =>$r['tanggallahirayah']=='0000-00-00'?'':tgl_indo5($r['tanggallahirayah']),
+							'tanggallahirayah'       =>$r['tanggallahirayah'],
 							'agamaayah'              =>$r['agamaayah'],
 							'warganegaraayah'        =>$r['warganegaraayah'],
 							'kodeposayah'            =>$r['kodeposayah'],
@@ -870,7 +956,7 @@
 							'bidangpekerjaanayah'    =>$r['bidangpekerjaanayah'],
 							'pekerjaanayah'          =>$r['pekerjaanayah'],
 							'posisiayah'             =>$r['posisiayah'],
-							'penghasilanayah'        =>setuang($r['penghasilanayah']),
+							'penghasilanayah'        =>$r['penghasilanayah'],
 							'telponayah'             =>$r['telponayah'],
 							'emailayah'              =>$r['emailayah'],
 							'pinbbayah'              =>$r['pinbbayah'],
@@ -881,10 +967,10 @@
 							'telponkantorayah'       =>$r['telponkantorayah'],
 							'faxkantorayah'          =>$r['faxkantorayah'],
 							'gerejaayah'             =>$r['gerejaayah'],
-							//ibu
+							/*siswa ibu*/
 							'namaibu'                =>$r['namaibu'],
 							'tempatlahiribu'         =>$r['tempatlahiribu'],
-							'tanggallahiribu'      =>$r['tanggallahiribu']=='0000-00-00'?'':tgl_indo5($r['tanggallahiribu']),
+							'tanggallahiribu'        =>$r['tanggallahiribu'],
 							'agamaibu'               =>$r['agamaibu'],
 							'warganegaraibu'         =>$r['warganegaraibu'],
 							'kodeposibu'             =>$r['kodeposibu'],
@@ -893,7 +979,7 @@
 							'bidangpekerjaanibu'     =>$r['bidangpekerjaanibu'],
 							'pekerjaanibu'           =>$r['pekerjaanibu'],
 							'posisiibu'              =>$r['posisiibu'],
-							'penghasilanibu'         =>setuang($r['penghasilanibu']),
+							'penghasilanibu'         =>$r['penghasilanibu'],
 							'telponibu'              =>$r['telponibu'],
 							'emailibu'               =>$r['emailibu'],
 							'pinbbibu'               =>$r['pinbbibu'],
@@ -904,13 +990,25 @@
 							'telponkantoribu'        =>$r['telponkantoribu'],
 							'faxkantoribu'           =>$r['faxkantoribu'],
 							'gerejaibu'              =>$r['gerejaibu'],
-							// biodata wali
+							/*siswa-wali*/
 							'idsiswawali'            =>$r['idsiswawali'],
 							'namawali'               =>$r['namawali'],
 							'jkelaminwali'           =>$r['jkelaminwali'],
 							'alamatwali'             =>$r['alamatwali'],
 							'kotawali'               =>$r['kotawali'],
 							'telponwali'             =>$r['telponwali'],
+							/*tingkat dkk*/
+							// 'idsubtingkat'        =>$r['idsubtingkat'],
+							'subtingkat'             =>$r['subtingkat'],
+							// 'idtingkat'           =>$r['idtingkat'],
+							'tingkat'                =>$r['tingkat'],
+							'iddepartemen'             =>$r['iddepartemen'],
+							'departemen'             =>$r['departemen'],
+							'tahunajaran'            =>$r['tahunajaran'],
+							'detailgelombang'        =>$r['detailgelombang'],
+							'tahunajaran'        	 =>($r['tahunajaran'].' - '.($r['tahunajaran']+1)),
+							'idtahunajaran'        	 =>$r['idtahunajaran'],
+							'golongan'               =>$r['golongan'],
 							// kontak darurat
 							'kontakdaruratArr'       =>$kontakdaruratArr,
 							// saudara siswa

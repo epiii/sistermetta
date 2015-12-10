@@ -26,8 +26,7 @@
 							r.kode,
 							r.nama,
 							kr.jenis,
-							IFNULL(sr.nominal,0)saldo,
-							IFNULL(sr.nominal2,0)saldo2
+							IFNULL(sr.nominal,0)saldo
 						FROM
 							keu_detilrekening r
 							LEFT JOIN keu_saldorekening sr ON sr.detilrekening = r.replid
@@ -71,25 +70,12 @@
 											<i class="icon-pencil on-left"></i>
 										</button>
 								 </td>';
-						 	if($res['jenis']=='d'){ // kredit
-								$debit  = '<b>Rp. '.number_format($res['saldo']).'</b>'; 
-								$kredit  = 'Rp. 0';  
-								$debit2  = ($res['saldo2']!=0?'<b>Rp. '.number_format($res['saldo2']).'</b>':'Rp. 0'); 
-								$kredit2 = 'Rp. 0';  
-						 	}else{ // kredit
-								$debit   = 'Rp. 0'; 
-								$kredit  = '<b>Rp. '.number_format($res['saldo']).'</b>'; 
-								$debit2  = 'Rp. 0'; 
-								$kredit2 = ($res['saldo2']!=0?'<b>'.number_format($res['saldo2']).'</b>':'Rp. 0');  
-						 	}
-
+							$saldoAwal   = setuang($res['saldo']);
 							$out.= '<tr>
 										<td class="text-right">'.$res['kode'].'</td>
 										<td>'.$res['nama'].'</td>
-										<td class="text-right">'.$debit.',-</td>
-										<td class="text-right">'.$kredit.',-</td>
-										<td class="text-right">'.$debit2.',-</td>
-										<td class="text-right">'.$kredit2.',-</td>
+										<td class="text-right">'.($res['jenis']=='d'?'debit':'kredit').'</td>
+										<td class="text-right">'.$saldoAwal.',-</td>
 										'.$btn.'
 									</tr>';
 							$curKat=$res['idkategorirekening'];
@@ -108,9 +94,8 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				$s    =' UPDATE '.$tb.' set nominal 	= '.getuang(filter($_POST['nominalTB'])).', 
-											nominal2 	= '.getuang(filter($_POST['nominalTB'])).'
-									WHERE 	replid		='.$_POST['replid'];
+				$s    =' UPDATE '.$tb.' set nominal = '.getuang(filter($_POST['nominalTB'])).' 
+						WHERE replid ='.$_POST['replid'];
 								// pr($s);
 				$e    = mysql_query($s);
 				$stat = ($e)?'sukses':'gagal';

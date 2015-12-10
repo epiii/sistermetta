@@ -16,8 +16,8 @@
 <form id="filterFR">
     <!-- button -->
     <a href="#"  id="ju_addBC" onclick="loadFR('ju','');" class="button bg-blue fg-white" data-hint="Jurnal Umum"><i class="icon-plus-2"></i></a>
-    <a href="#" id="in_addBC"  onclick="loadFR('in_come','');"class="button bg-green fg-white" data-hint="Pemasukan"><i class="icon-download-2"></i></a>
-    <a href="#" id="out_addBC"  onclick="loadFR('out_come','');"class="button bg-red fg-white" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
+    <a href="#" id="in_addBC"  onclick="loadFR('in','');"class="button bg-green fg-white" data-hint="Pemasukan"><i class="icon-download-2"></i></a>
+    <a href="#" id="out_addBC"  onclick="loadFR('out','');"class="button bg-red fg-white" data-hint="Pengeluaran"><i class="icon-upload-3"></i></a>
     <a href="#" id="optionBC" data-hint="Selengkapnya..." class="button bg-gray fg-white"><i class="icon-grid"></i></a>
 
     <!-- filter :: tanggal -->
@@ -71,19 +71,21 @@
                 <li><a href="#nsTAB">Neraca Saldo</a></li>
                 <li><a href="#lnTAB">Laporan Neraca</a></li>
                 <li><a href="#lrTAB">Laporan Laba/Rugi</a></li>
-                <li><a href="#nlTAB">Neraca Lajur</a></li>
+                <!-- <li><a href="#nlTAB">Neraca Lajur</a></li> -->
                 <li><a href="#pkbTAB">Posisi Kas dan Bank</a></li>
-                <li><a href="#btTAB">Buku Tambahan</a></li>
+                <!-- <li><a href="#btTAB">Buku Tambahan</a></li> -->
                 <li><a href="#liTAB">Penerimaan & Pengeluaran</a></li>
                 <li><a href="#lsTAB">Laporan Sarpras </a></li>
             </ul>
 
-            <div style="background-color:#dddddd;"  class="frames">
+            <!-- <div style="background-color:#dddddd;"  class="frames"> -->
+            <div class="frames bg-white">
                 <!-- jurnal umum -->
                 <div class="frame" id="juTAB">    
-                    <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
+<!--                     <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button>
+ -->                    
                     <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
@@ -105,7 +107,7 @@
                                 <th style="display:visible;"class="text-center  uraianCOL">Detil Jurnal</th>
                                 <th class="text-center">Aksi</th>
                             </tr>
-                            <tr style="display:none;" id="juTR" class="info">
+                            <tr xstyle="display:none;" id="juTR" class="info">
                                 <th class="text-center"></th>
                                 <th class="text-center">
                                     <div class="input-control text">
@@ -135,10 +137,10 @@
                     <div class="input-control select span3">
                         <select class="bb_cari" onchange="viewTB('bb');" id="bb_detilrekeningS" name="bb_detilrekeningS"></select>
                     </div>
-<!--                     <button  class="bg-blue fg-white" id="bb_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="bb_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->                    <div id="bb_tbody"></div>
+                    <div id="bb_tbody"></div>
                 </div>
 
                 <!-- neraca saldo -->
@@ -146,10 +148,10 @@
 <!--                     <button  class="bg-blue fg-white" id="nsBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-search" ></i>
                     </button> -->
-<!--                     <button  class="bg-blue fg-white" id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ns_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->                    <table class="table hovered bordered striped">
+                    <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;"class="info">
                                 <th class="text-center">Kode Rekening </th>
@@ -173,10 +175,10 @@
                 </div>
 
                 <!-- neraca lajur-->
-                <div class="frame" id="nlTAB">
-<!--                     <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
+<!--                 <div class="frame" id="nlTAB">
+                    <button  class="bg-blue fg-white" id="nl_cetakBC" data-hint="Pencarian" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button> -->
+                    </button>
                     <table class="table hovered bordered striped">
                         <thead>
                             <tr style="color:white;" class="info">
@@ -199,33 +201,36 @@
                         <tfoot></tfoot>
                     </table>                 
                 </div>
-
+ -->
                 <!-- laba / rugi-->
                 <div class="frame" id="lrTAB">
-<!--                     <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="lr_cetakBC" data-hint="cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
                     </button>
- -->                    <div id="lr_tbody"></div>
+                    <div id="lr_tbody"></div>
                 </div>
 
                 <!-- laporan Neraca -->
                 <div class="frame" id="lnTAB">
+                    <button  class="bg-blue fg-white" id="ln_cetakBC" data-hint="cetak" data-hint-position="top">
+                        <i class="icon-printer" ></i>
+                    </button>
                     <div id="ln_tbody"></div>
                 </div>
 
                 <!-- posisi kas / bank -->
                 <div class="frame" id="pkbTAB">
-                    <!-- <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="pkb_cetakBC" data-hint="cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button> -->
+                    </button>
                     <div id="pkb_tbody"></div>
                 </div>
 
                 <!-- buku tambahan -->
-                <div class="frame" id="btTAB">
+<!--                 <div class="frame" id="btTAB">
                     <div id="bt_tbody"></div>
                 </div>
-
+ -->
                 <!-- Laporam Penerimaan-->
                 <div class="frame" id="liTAB">
                     <!--filtering  -->
@@ -233,18 +238,18 @@
                     <a data-hint="opsi rekening" target="_blank" href="jenis-laporan" class="button fg-white bg-orange place-right"><i class="icon-enter"></i></a>
                     <button id="li_cetakBC" data-hint="cetak" class="fg-white bg-blue place-right"><i class="icon-printer"></i></button>
                     <div class="input-control select size3">
-                        <select class="li_cari" name="li_departemenS" id="li_departemenS" data-hint="Departemen"></select>
+                        <select  class="li_cari" name="li_departemenS" id="li_departemenS" data-hint="Departemen"></select>
                     </div>    
                     <div class="input-control select size3">
-                        <select class="li_cari"  name="li_tahunajaranS" id="li_tahunajaranS" data-hint="Tahun Ajaran"></select>
+                        <select class="li_cari"  name="li_tingkatS" id="li_tingkatS" data-hint="Tingkat"><option value="">-semua-</option></select>
                     </div>    
                     <div class="input-control select size3">
-                        <select class="li_cari"  name="li_tingkatS" id="li_tingkatS" data-hint="Tingkat"></select>
+                        <select class="li_cari"  name="li_tahunajaranS" id="li_tahunajaranS" data-hint="Tahun Ajaran"><option value="">-semua-</option></select>
                     </div>    
                     <!-- group 2 -->
                     <div class="input-control select">
-                        <select class="span2 li_cari" name="li_tahunS" id="li_tahunS" data-hint="Tahun"></select>
-                        <select class="span2 li_cari" name="li_bulanS" id="li_bulanS" data-hint="Bulan"></select>
+                        <select class="span2 li_cari" name="li_semesterS" id="li_semesterS" data-hint="Semester"><option value="">-semua-</option></select>
+                        <select class="span2 li_cari" name="li_bulanS" id="li_bulanS" data-hint="Bulan"><option value="">-semua-</option></select>
                     </div>    
                     <!-- group 3 -->
                     <div class="input-control select size3">
@@ -288,9 +293,9 @@
                     <!-- <button class="bg-blue fg-white" id="juBC" data-hint="Pencarian" data-hint-position="top"> -->
                         <!-- <i class="icon-search" ></i> -->
                     <!-- </button> -->
-                    <!-- <button  class="bg-blue fg-white" id="ju_cetakBC" data-hint="Cetak" data-hint-position="top">
+                    <button  class="bg-blue fg-white" id="ls_cetakBC" data-hint="Cetak" data-hint-position="top">
                         <i class="icon-printer" ></i>
-                    </button> -->
+                    </button>
 
                     <table  class="table hovered bordered striped">
                         <thead>

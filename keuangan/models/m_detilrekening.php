@@ -91,6 +91,7 @@
 									nama             = "'.filter($_POST['namaTB']).'",
 									keterangan       = "'.filter($_POST['keteranganTB']).'"';
 				$s2   =(isset($_POST['replid']) and $_POST['replid']!='')?'UPDATE '.$s.' WHERE replid='.$_POST['replid']:'INSERT INTO '.$s;
+				// pr($s2);
 				$e    = mysql_query($s2);
 				$stat = !$e?'gagal':'sukses';
 				$out  = json_encode(array('status'=>$stat));

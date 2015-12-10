@@ -144,19 +144,26 @@
 
 			// cmbtingkat -----------------------------------------------------------------
 			case 'cmb'.$mnu:
-				$g=$j=$w='';
+				$f=$g=$j=$w='';
 				if(isset($_POST['replid'])){
+					$f.=',(
+						SELECT count(*) FROM aka_subtingkat st where st.tingkat = t.replid
+					)nsubtingkat';
 					$w='where replid ='.$_POST['replid'];
-					$s	= ' SELECT t.* 
-							from '.$tb.' t
-							'.$j.$w.$g.'		
-							ORDER  BY 
-								t.urutan asc';
 				}else{
 					if(isset($_POST['departemen'])){
-						$s='call listTingkatByDept('.$_POST['departemen'].')';
+						$j=' JOIN aka_subtingkat s on s.tingkat = t.replid';
+						$j.=' JOIN aka_kelas k on k.subtingkat = s.replid ';
+						$w=' where k.departemen='.$_POST['departemen'];
+						$g=' GROUP BY t.replid ';
 					}
 				}
+				
+				$s	= ' SELECT t.* '.$f.'
+						from '.$tb.' t
+						'.$j.$w.$g.'		
+						ORDER  BY  t.urutan asc';
+							// pr($s);
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar = $dt=array();

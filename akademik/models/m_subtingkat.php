@@ -115,7 +115,7 @@
 			break;
 			// ambiledit -----------------------------------------------------------------
 			// cmbsubtingkat -----------------------------------------------------------------
-			case 'cmb'.$mnu:
+			case 'cmbsubtingkat':
 				$w='';
 				if(isset($_POST['replid'])){
 					$w='where replid ='.$_POST['replid'];
@@ -128,7 +128,7 @@
 						'.$w.'		
 						ORDER  BY subtingkat asc';
 				// print_r($s);exit();
-// pr($s);
+
 				$e  = mysql_query($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();

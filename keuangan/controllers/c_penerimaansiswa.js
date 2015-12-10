@@ -5,220 +5,244 @@ var mnu6 ='tahunajaran';
 var mnu7 ='tingkat'; 
 var mnu8 ='subtingkat'; 
 var mnu9 ='kelas'; 
+var mnu10 ='viabayar'; 
+var mnu11 ='semester'; 
 
 var dir  ='models/m_'+mnu+'.php';
 var dir2 ='../akademik/models/m_'+mnu2+'.php';
-var dir3 ='../psb/models/m_'+mnu3+'.php';
+var dir3 ='models/m_'+mnu3+'.php';
 var dir6 ='../akademik/models/m_'+mnu6+'.php';
 var dir7 ='../akademik/models/m_'+mnu7+'.php';
 var dir8 ='../akademik/models/m_'+mnu8+'.php';
 var dir9 ='../akademik/models/m_'+mnu9+'.php';
+var dir10 ='../keuangan/models/m_'+mnu10+'.php';
+var dir11 ='../akademik/models/m_'+mnu11+'.php';
 
-var contentFR ='';
+var contentFR = contentFR2 ='';
 // main function load first 
     $(document).ready(function(){
-        cmbdepartemen('filter');
+        cmbdepartemen();
         //form content
-        contentFR+= '<form  style="overflow:scroll;height:600px;" autocomplete="off" onsubmit="pembayaranSV(this); return false;" id="'+mnu+'FR">'
-                        +'<input id="ju_idformH" type="hidden">' 
-                        +'<input id="idsiswaH" name="idsiswaH" type="hidden">' 
-                        +'<input id="idmodulH" name="idmodulH" type="hidden">' 
-                        +'<input id="rekkasH" name="rekkasH" type="hidden">' 
-                        +'<input id="rekitemH" name="rekitemH" type="hidden">' 
+        contentFR2+= '<div  style="overflow:scroll;height:500px;">'
+                        +'<table class="table">'
+                            +'<tr>'
+                                +'<td><b>Departemen</b></td>'
+                                +'<td id="departemen2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Tahun Ajaran</b></td>'
+                                +'<td id="tahunajaran2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Nama</b></td>'
+                                +'<td id="namasiswa2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Kelas</b> </td>'
+                                +'<td id="kelas2TD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>NIS</b> </td>'
+                                +'<td id="nis2TD"></td>'
+                            +'</tr>'
+                        +'</table>'
+                        +'<div id="buttonDV"></div>'
+                    +'</div>';
 
-                        +'<div  data-effect="fade" class="tab-control" data-role="tab-control">'
-                            +'<ul class="tabs">'
-                                +'<li id="keteranganNAV"><a href="#keteranganTAB">Keterangan </a></li>'
-                                +'<li id="rincianNAV"><a href="#rincianTAB">Rincian Biaya</a></li>'
-                                +'<li id="pembayaranNAV"><a href="#pembayaranTAB">Pembayaran</a></li>'
-                                // +'<li id="pembayaranNAV" class="active"><a href="#pembayaranTAB">Pembayaran</a></li>'
-                            +'</ul>'
+        contentFR+= '<form  style="overflow:scroll;height:500px;" autocomplete="off" onsubmit="simpanSV(this); return false;" id="'+mnu+'FR">'
+                        +'<input class="kwitansipenerimaansiswa_cari" id="idsiswabiayaTB" name="idsiswabiayaTB" type="hidden">' 
+                        +'<input id="idtahunajaranH" name="idtahunajaranH" type="hidden">' 
+                        
+                        // info header 
+                        +'<table class="table">'
+                            +'<tr>'
+                                +'<td><b>Nama</b> </td>'
+                                +'<td id="namasiswaTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Kelas</b> </td>'
+                                +'<td id="kelasTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>NIS</b> </td>'
+                                +'<td id="nisTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td><b>Biaya</b> </td>'
+                                +'<td id="biayaTD"></td>'
+                            +'</tr>'
+                            +'<tr id="tanggalTR">'
+                                +'<td><b>Tanggal</b> </td>'
+                                +'<td>'
+                                    +'<div class="input-control text span2" data-role="datepicker" data-format="dd mmmm yyyy" data-position="bottom" data-effect="slide">'
+                                        +'<input required type="text" id="tanggalTB" name="tanggalTB">'
+                                        +'<button class="btn-date"></button>'
+                                    +'</div>'
+                                +'</td>'
+                            +'</tr>'
+                        +'</table>'
 
-                            +'<div style="background-color:white;" class="frames">'
-                                +'<div class="frame" id="keteranganTAB">'
-                                    +'<label><b>Nomor</b></label>'
-                                    +'<div class="input-control text">'
-                                        +'<input disatype="text" disabled name="nomerTB" id="nomerTB" >'
-                                    +'</div>'
-                                    
-                                    +'<label>Tanggal </label>'
-                                    +'<div class="input-control text">'
-                                        +'<input disabled type="text" name="tanggalTB" id="tanggalTB">'
-                                    +'</div>'
-                                    
-                                    +'<label>Rekening Kas / Bank</label>'
-                                    +'<div class="input-control text">'
-                                        +'<input disabled type="text" id="rek1TB" name="rek1TB">'
-                                    +'</div>'
+                        +'<table class="table bordered ">'
+                            // header -------------------------
+                            +'<tr class="bg-blue fg-white">'
+                                +'<th>ITEM</th>'
+                                +'<th>VALUE</th>'
+                                +'<th>TOTAL</th>'
+                            +'</tr>'
+                            // harus dibayar  ---------------------------
+                            +'<tr>'
+                                +'<td class="bg-lightTeal" colspan="2"><b>Yang Harus dibayar</b> </td>'
+                                +'<td class="bg-lightTeal"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>* Sebelum Diskon</td>'
+                                +'<td class="text-right" id="biayaAwalTD"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>* Total Diskon</td>'
+                                +'<td class="text-right" id="totalDiskonTD"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>* Cara Bayar </td>'
+                                +'<td id="caraBayarTD"></td>'
+                                +'<td></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td>* Via (Rule) </td>'
+                                +'<td id="viaBayarTD"></td>'
+                                +'<td></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td colspan="2">* Setelah Diskon (Nett)</td>'
+                                +'<td style="font-weight:bold;"  class="bg-yellow fg-white text-right" id="biayaNettTD"></td>'
+                            +'</tr>'
+                            +'<tr>'
+                                +'<td colspan="4"></td>'
+                            +'</tr>'
+                            // Angsuran  ---------------------------
+                            +'<tr class="angsuranTR">'
+                                +'<td class="bg-lightTeal"  colspan="2"><b>Angsuran</b> </td>'
+                                +'<td class="bg-lightTeal"></td>'
+                            +'</tr>'
+                            +'<tr class="angsuranTR">'
+                                +'<td>* Jumlah Angsuran</td>'
+                                +'<td id="angsuranTD" class="text-right"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="angsuranTR">'
+                                +'<td>* Nominal Angsuran</td>'
+                                +'<td id="angsuranNominalTD" class="text-right"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="angsuranTR">'
+                                +'<td colspan="4"></td>'
+                            +'</tr>'
 
-                                    +'<label ><b>Pada :</b></label>'
-                                    +'<label>Rekening Perkiraan</label>'
-                                    +'<div class="input-control text">'
-                                        +'<input disabled type="text" id="rek2TB" name="rek2TB">'
-                                    +'</div>'
+                            // Sudah Dibayar  ---------------------------
+                            +'<tr class="sudahBayarTR">'
+                                +'<td  class="bg-lightTeal"  colspan="3"><b>Sudah Dibayar</b> '
+                                    +'<a href="#" onclick="histBayarFC()" class="place-right button fg-white bg-green"><i class="icon-history"></i></a>'
+                                +'</td>'
+                            +'</tr>'
+                            +'<tr class="sudahBayarTR" xstyle="display:none;">'
+                                +'<td  class="bg-lightTeal" colspan="3" id="histBayarTD">'
+                                    // tabel history bayar
+                                +'</td>'
+                            +'</tr>'
 
-                                    +'<label>Uraian</label>'
-                                    +'<div class="input-control textarea">'
-                                        +'<textarea readonly name="uraianTB" id="uraianTB"></textarea>'
-                                    +'</div>'
-                                +'</div>'
+                            +'<tr class="sudahBayarTR" id="terbayarAngsuranKeTR">'
+                                +'<td>* Angsuran ke - </td>'
+                                +'<td class="text-right" id="terbayarAngsurankeRuleTD"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="sudahBayarTR">'
+                                +'<td>* Sejumlah Nominal </td>'
+                                +'<td class="text-right" id="terbayarBaruTD"></td>'
+                                +'<td cxlass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="sudahBayarTR">'
+                                +'<td>* Total (Terbayar) </td>'
+                                +'<td></td>'
+                                +'<td style="font-weight:bold;" class="text-right fg-white bg-yellow" id="terbayarTotalTD"></td>'
+                            +'</tr>' 
+                            +'<tr class="sudahBayarTR">'
+                                +'<td colspan="4"></td>'
+                            +'</tr>'
 
-                                +'<div class="frame" id="rincianTAB">'
-                                    // ALL
-                                    +'<label>Nominal</label>'
-                                    +'<div class="input-control text4">'
-                                        +'<input disabled type="text" id="nominalTB" name="nominalTB">'
-                                        +'<span id="statusI"></span>'
-                                    +'</div>'
-                                    +'<input id="statusTB" type="text" disabled style="display:none;"/>'
+                            // akan  Dibayar  ---------------------------
+                            +'<tr class="akanBayarTR">'
+                                +'<td  class="bg-lightTeal"  colspan="2"><b>Akan Dibayar</b> </td>'
+                                +'<td class="bg-lightTeal"></td>'
+                            +'</tr>'
+                            +'<tr class="angsuranTR akanBayarTR">'
+                                +'<td>* Angsuran ke - </td>'
+                                +'<td class="text-right" id="akanBayarkeTD"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="akanBayarTR">'
+                                +'<td>* Via (de facto) </td>'
+                                +'<td><select required name="viaBayarTB" id="viaBayarTB" data-transform="input-control"></select></td>'
+                                +'<td></td>'
+                            +'</tr>'
+                            +'<tr class="akanBayarTR">'
+                                +'<td colspan="2">* Nominal <input type="hidden" id="kuranganAngsuranTB" /></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            // nominal bayar 1
+                            +'<tr class="akanBayarTR" id="pasTR">'
+                                +'<td><label class="place-right"><input onclick="pilihAkanBayarJenis();" id="akanBayarJenisTB1" checked value="1" name="akanBayarJenisTB" type="radio" > Pas  </label> </td>'
+                                +'<td class="text-right" id="akanBayarNominalTD"></td>'
+                                +'<td xclass="bg-yellow"><input id="akanBayarNominalTB1" type="hidden" name="akanBayarNominalTB1" /></td>'
+                            +'</tr>'
+                            // nominal bayar 2
+                            +'<tr class="akanBayarTR angsuranTR">'
+                                +'<td><label class="place-right"><input onclick="pilihAkanBayarJenis();"  id="akanBayarJenisTB2" type="radio" value="2" name="akanBayarJenisTB"> Krg. dari Angsuran </label> </td>'
+                                +'<td><div class="input-control text">'
+                                    +'<input id="akanBayarNominalTB2"  onkeyup="akanBayarSisaFC();" name="akanBayarNominalTB2" disabled onfocus="inputuang(this);" placeholder="masukkan nominal" type="text" class="text-right"></div>'
+                                    +'<div id="akanBayarNotif"></div>'
+                                    +'<div>Sisa Kurangan : <span id="akanBayarKuranganTD" class="place-right">Rp. 0</span></div>'
+                                +'</td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="akanBayarTR">'
+                                +'<td></td>'
+                                +'<td></td>'
+                                +'<td style="font-weight:bold;" id="akanBayarNominalTotTD" class="bg-yellow fg-white text-right"></td>'
+                            +'</tr>'                            
+                            +'<tr class="akanBayarTR">'
+                                +'<td colspan="4"></td>'
+                            +'</tr>'
 
-                                    // DPP grup
-                                    +'<div class="dppgrup" style="display:none;">'
-                                        +'<label>Total Diskon</label>'
-                                        +'<div class="input-control text">'
-                                            +'<input disabled type="text" id="disctotalTB" name="disctotalTB">'
-                                        +'</div>'
-                                        +'<label>Nominal Net(setelah dipotong diskon)</label>'
-                                        +'<div class="input-control text">'
-                                            +'<input disabled class="bg-lightTeal" type="text" id="nominalnetTB" name="nominalnetTB">'
-                                        +'</div>'
-                                        +'<label>Angsuran </label>'
-                                        +'<div class="input-control text">'
-                                            +'<input disabled type="text" id="jmlangsurTB" name="jmlangsurTB">'
-                                        +'</div>'
-                                    +'</div>'
-                                    //end of untuk DPP grup
-                                +'</div>'
-                               
-                                +'<div class="frame" id="pembayaranTAB">'
-                                    // DPP & pendaftaran (joining fee)
-                                    +'<div class="dppjoin" style="display:none;">'
-                                        +'<label><a id="histBayar" href="#" >Sudah Dibayar <span class="icon-history"></span></a> </label>'
-                                        +'<table id="histBayarT" style="display:none;" class="table hovered bordered striped">'
-                                            +'<thead>'
-                                                +'<tr class="info fg-white">'
-                                                    +'<th>Tgl Bayar</th>'
-                                                    +'<th>Angsuran</th>'
-                                                    // +'<th>hapus</th>'
-                                                +'</tr>'
-                                            +'</thead>'
-                                            +'<tbody id="histBayarTBL">'
-                                            +'</tbody>'
-                                        +'</table>'
-                                        +'<div class="input-control text">'
-                                            +'<input  disabled type="text"  class="text-right bg-yellow" id="terbayarTB" name="terbayarTB">'
-                                        +'</div>'
-                                    +'</div>'
+                            // yang belum  Dibayar  ---------------------------
+                            +'<tr class="belumBayarTR angsuranTR">'
+                                +'<td  class="bg-lightTeal"  colspan="2"><b>yang Belum Dibayar</b> </td>'
+                                +'<td class="bg-lightTeal"></td>'
+                            +'</tr>'
+                            +'<tr class="belumBayarTR angsuranTR">'
+                                +'<td>* Angsuran </td>'
+                                +'<td id="belumBayarAngsurankeTD" class="text-right"></td>'
+                                +'<td xclass="bg-yellow"></td>'
+                            +'</tr>'
+                            +'<tr class="belumBayarTR angsuranTR">'
+                                +'<td>* Total Nominal</td>'
+                                +'<td></td>'
+                                +'<td style="font-weight:bold;" id="belumBayarNominalTotTD" class="text-right bg-yellow fg-white"></td>'
+                            +'</tr>'
 
-                                    +'<label id="akanbayarLBL">Akan Dibayar </label>'
-                                    // DPP
-                                    +'<div class="input-control select dppgrup" style="display:none;">'
-                                        +'<select class="text-right" name="akanbayarTB" id="akanbayarTB"></select>'
-                                        +'<span id="statusI2"></span>'
-                                    +'</div>'
-                                    // pendaftaran (joining fee)
-                                    +'<div class="input-control text joingrup" style="display:none;">'
-                                        +'<input class="text-right" placeholder="isi nominal (angka)" name="akanbayar2TB" id="akanbayar2TB" onfocus="inputuang(this);" onclick="inputuang(this);">'
-                                        +'<span id="akanbayarI" class="fg-white bg-red"></span>'
-                                    +'</div>'   
-                                 +'</div>'
-    
-                            +'</div>'
-                        +'</div><br />'
-
+                        +'</table>'
 
                         +'<div class="form-actions">' 
-                            +'<button class="button primary simpanBC">Bayar <span class="icon-floppy"></span></button>&nbsp;'
-                            // +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
+                            +'<button id="simpanBC" class="button primary">Bayar <span class="icon-floppy"></span></button>&nbsp;'
                         +'</div>'
-
-                        // // +'<legend>Keterangan </legend>'
-                        // +'<div class="balloon bottom">'
-                        //     +'<div class="padding20">'
-                        //         // +'<label><b>Nomor</b></label>'
-                        //         // +'<div class="input-control text">'
-                        //         //     +'<input disatype="text" disabled name="nomerTB" id="nomerTB" >'
-                        //         // +'</div>'
-                                
-                        //         // +'<label>Tanggal </label>'
-                        //         // +'<div class="input-control text">'
-                        //         //     +'<input disabled type="text" name="tanggalTB" id="tanggalTB">'
-                        //         // +'</div>'
-                                
-                        //         // +'<label>Rekening Kas / Bank</label>'
-                        //         // +'<div class="input-control text">'
-                        //         //     +'<input disabled type="text" id="rek1TB" name="rek1TB">'
-                        //         // +'</div>'
-
-                        //         // +'<label ><b>Pada :</b></label>'
-                        //         // +'<label>Rekening Perkiraan</label>'
-                        //         // +'<div class="input-control text">'
-                        //         //     +'<input disabled type="text" id="rek2TB" name="rek2TB">'
-                        //         // +'</div>'
-
-                        //         // +'<label>Uraian</label>'
-                        //         // +'<div class="input-control textarea">'
-                        //         //     +'<textarea readonly name="uraianTB" id="uraianTB"></textarea>'
-                        //         // +'</div>'
-                        //     +'</div>'
-                        // +'</div>'
-
-                        // +'<legend >Rincian Biaya</legend>'
-                        // +'<div class="balloon bottom">'
-                        //     +'<div class="padding20">'
-                        //         // // ALL
-                        //         // +'<label>Nominal</label>'
-                        //         // +'<div class="input-control text">'
-                        //         //     +'<input disabled type="text" id="nominalTB" name="nominalTB">'
-                        //         // +'</div>'
-
-                        //         // // DPP grup
-                        //         // +'<div class="dppgrup" style="display:none;">'
-                        //         //     +'<label>Total Diskon</label>'
-                        //         //     +'<div class="input-control text">'
-                        //         //         +'<input disabled type="text" id="disctotalTB" name="disctotalTB">'
-                        //         //     +'</div>'
-                        //         //     +'<label>Nominal Net(setelah dipotong diskon)</label>'
-                        //         //     +'<div class="input-control text warning-state">'
-                        //         //         +'<input disabled class="bg-orange" type="text" id="nominalnetTB" name="nominalnetTB">'
-                        //         //     +'</div>'
-                        //         //     +'<label>Angsuran </label>'
-                        //         //     +'<div class="input-control text">'
-                        //         //         +'<input disabled type="text" id="jmlangsurTB" name="jmlangsurTB">'
-                        //         //     +'</div>'
-                        //         // +'</div>'
-                        //         // //end of untuk DPP grup
-
-                        //     +'</div>'
-                        // +'</div>'
-
-                        // +'<legend class="bayargrup" style="display:none;">Pembayaran</legend>'
-                        // +'<div class="balloon bottom bayargrup" style="display:none;">'
-                        //     +'<div class="padding20">'
-                        //         // // DPP & pendaftaran (joining fee)
-                        //         // +'<div class="dppjoin" style="display:none;">'
-                        //         //     +'<label>Sudah Dibayar </label>'
-                        //         //     +'<div class="input-control text">'
-                        //         //         +'<input disabled type="text"  class="bg-yellow" id="terbayarTB" name="terbayarTB">'
-                        //         //     +'</div>'
-                        //         // +'</div>'
-
-                        //         // +'<label>Akan Dibayar </label>'
-                        //         // // DPP
-                        //         // +'<div class="input-control select dppgrup" style="display:none;">'
-                        //         //     +'<select class="bg-lime" name="akanbayarTB" id="akanbayarTB"></select>'
-                        //         // +'</div>'
-                        //         // // pendaftaran (joining fee)
-                        //         // +'<div class="input-control text joingrup" style="display:none;">'
-                        //         //     +'<input  placeholder="isi nominal (angka)" name="akanbayar2TB" id="akanbayar2TB" onfocus="inputuang(this);" onclick="inputuang(this);">'
-                        //         //     +'<span id="akanbayarI" class="fg-white bg-red"></span>'
-                        //         // +'</div>'
-                        //     +'</div>'
-                        // +'</div>'
                     +'</form>';
 
         $('#nisS,#namasiswaS,#nisnS,#nopendaftaranS').on('keydown',function (e){ // kode grup
-            if(e.keyCode == 13) viewTB();
+            if(e.keyCode == 13) viewTB('penerimaansiswa');
+        });
+        $('#statusS').change(function (){
+            viewTB('penerimaansiswa');
         });
     }); 
 
@@ -247,7 +271,7 @@ var contentFR ='';
             type:"post",
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="8"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -287,7 +311,7 @@ var contentFR ='';
             type: 'post',
             data: aksi+cari,
             beforeSend:function(){
-                $(el2).html('<tr><td align="center" colspan="6"><img src="img/w8loader.gif"></td></tr></center>');
+                $(el2).html('<tr><td align="center" colspan="9"><img src="img/w8loader.gif"></td></tr></center>');
             },success:function(dt){
                 setTimeout(function(){
                     $(el2).html(dt).fadeIn();
@@ -307,73 +331,72 @@ var contentFR ='';
     }
 
 /*save (insert & update)*/
-    function pembayaranSV(e){
-        var url  = dir;
-        var data = $(e).serialize()+'&aksi=simpan&subaksi='+curTab();
-        if($('#akanbayarI').html()!='' || $('#akanbayarI').val()=='Rp. 0'){ 
-            return false;
-        }else{
+    function simpanSV(e){
+        if(confirm('Anda yakin membayar ?')){
+            var url  = dir;
+            var data = $(e).serialize()+'&aksi=simpan';
             ajax(url,data).done(function (dt) {
                 notif(dt.status,(dt.status=='sukses'?'green':'red'));
                 if (dt.status=='sukses') {
+                    printPDF('kwitansipenerimaansiswa',dt.idpembayaran);
                     $.Dialog.close();
-                    viewTB(curTab());
+                    viewTB('penerimaansiswa');
                 }
             });
         }
     }
 
-// form pembayaran 
-    function viewFR (idsiswa) {
-        ajax(dir,'aksi=ambiledit&replid='+idsiswa).done(function (dt){
-            if(dt.status!=='sukses') notif('gagal menampilkan data','red');
-            else{
-                $('#idsiswaH').val(dt.datax.idsiswa);
-                $('#idmodulH').val(dt.datax.idmodul);
-                $('#rekkasH').val(dt.datax.rekkas);
-                $('#rekitemH').val(dt.datax.rekitem);
-                // display
-                $('#tanggalTB').val(dt.datax.tanggal);
-                $('#nomerTB').val(dt.datax.nomer);
-                $('#rek1TB').val(dt.datax.rek1);
-                $('#rek2TB').val(dt.datax.rek2);
-                $('#uraianTB').val('Pembayaran '+dt.datax.modul+'. \nCalon Siswa : '+dt.datax.siswa+' \nNo. Pendaftaran : '+dt.datax.nopendaftaran);
-                $('#nominalTB').val(dt.datax.nominal);
-                $('#pembayaranNAV').attr('style','display:none;');
-                $('#rincianNAV').addClass('active');
-                if(dt.datax.status=='lunas'){
-                    $('.simpanBC').attr('style','display:none;');
-                    icon = 'checkmark';
-                    clr  = 'green';
-                    info = 'lunas';
-                }else{
-                    icon = 'minus-2';
-                    clr  = 'red';
-                    info = 'belum lunas';
-                }loadModal(dt.datax.contentFR);
+    // form pop up
+    function viewFR2(idsiswa){
+        $.Dialog({
+            shadow: true,
+            overlay: true,
+            draggable: true,
+            width: '33%',
+            padding: 10,
+            onShow: function(){
+                ajax(dir,'aksi=invoiceView&replid='+idsiswa+'&tahunajaran='+$('#tahunajaranS').val()).done(function (dt){
+                    $('#namasiswa2TD').html(': '+dt.namasiswa);
+                    $('#nis2TD').html(': '+dt.nis);
+                    $('#kelas2TD').html(': '+dt.kelas);
+                    $('#tahunajaran2TD').html(': '+dt.tahunajaran);
+                    $('#departemen2TD').html(': '+dt.departemen);
+                    var button='';
+                    $.each(dt.biayaArr, function (id,item) {
+                        statusBayar  = item.statusBayar;
+                        biayaKurang = 'Rp. '+(parseInt(item.biayaKurang).setCurr());
+                        if(statusBayar=='lunas'){ //lunas 
+                            info  = 'Lunas';
+                            color ='green';
+                            icon  ='checkmark';
+                            func  ='';
+                        }else if(statusBayar=='belum'){ //blum
+                            info  = 'Belum';
+                            color ='red';
+                            icon  ='cancel-2';
+                            func  ='onclick="printPDF(\'invoicepenerimaansiswa\','+item.idsiswabiaya+');"';
+                        }else{ // kurg
+                            info  = biayaKurang;
+                            color ='yellow';
+                            icon  ='minus-2';
+                            func  ='onclick="printPDF(\'invoicePenerimaanSiswa\','+item.idsiswabiaya+');"';
+                        }
+                        
+                        button+='<input type="hidden" id="idsiswabiayaTB" value="'+item.idsiswabiaya+'" />'
+                                +'<button '+func+' class="shortcut fg-white bg-'+color+'">'
+                                    +'<i class="icon-'+icon+'"></i>'
+                                    +item.biaya
+                                    +'<small class="bg-'+color+' fg-white"><b>'+info+'</b></small>'
+                                +'</button>&nbsp;';
+                    });$('#buttonDV').html(button);
+                });$.Dialog.title('Invoice'); 
+                $.Dialog.content(contentFR2);
             }
         });
     }
 
-    function cmbakanbayar(typ,sis){
-        var url  = dir;
-        var data = 'aksi=cmbakanbayar&siswa='+sis+'&subaksi='+typ;
-        ajax(url,data).done(function (dt) {
-            var out='';
-            if (dt.status=='sukses') {
-                $.each(dt.datax, function(id,item){
-                    out+='<option value="'+item.idAngsur+'"> '+item.nomAngsur+'</option>';
-                });
-            }else{
-                out+='<option value="">0</option>';
-                console.log(dt.status);
-                $('.simpanBC').attr('style','display:none;');
-            }$('#akanbayarTB').html(out);
-        });
-    }
-
     // form pop up
-    function loadModal(titl,cont){
+    function viewFR(idsiswa){
         $.Dialog({
             shadow: true,
             overlay: true,
@@ -381,8 +404,92 @@ var contentFR ='';
             width: '40%',
             padding: 10,
             onShow: function(){
-                $.Dialog.title(''); 
-                $.Dialog.content(cont);
+                var u = dir ;
+                var d = 'aksi=ambiledit&replid='+idsiswa+'&biaya='+$('#biayaS').val()+'&subtingkat='+$('#subtingkatS').val();
+                ajax(u,d).done(function (dt){
+                    if(dt.status!='sukses') notif(dt.status,'red'); 
+                    else {
+                        $('#idtahunajaranH').val($('#tahunajaranS').val());
+                    // save action (button)
+                        if(dt.datax.lunasTotalAngsuran){
+                            $('#simpanBC').attr('style','display:none;'); 
+                            $('#terbayarTotalTD').removeClass('bg-yellow').addClass('bg-green'); 
+                            $('#tanggalTR').attr('style','display:none;');
+                        } 
+                    // info header 
+                        $('#tanggalTB').val(getToday());
+                        $('#idsiswabiayaTB').val(dt.datax.idsiswabiaya);
+                        $('#namasiswaTD').html(': '+dt.datax.namasiswa);
+                        $('#kelasTD').html(': '+dt.datax.kelas);
+                        $('#nisTD').html(': '+dt.datax.nis);
+                        $('#biayaTD').html(': '+dt.datax.biaya);
+                    // harus bayar 
+                        var biayaNett = parseInt(getUang(dt.datax.biayaNett));
+                        $('#biayaAwalTD').html(dt.datax.biayaAwal);
+                        $('#totalDiskonTD').html(dt.datax.totalDiskon);
+                        $('#biayaNettTD').html(dt.datax.biayaNett);
+                        $('#caraBayarTD').html(dt.datax.isAngsur2=='1'?'Angsur':'Kontan');
+                        cmbviabayar('rule',dt.datax.viabayar);
+                        cmbviabayar('facto',dt.datax.viabayar);
+                    // angsuran 
+                        if(dt.datax.isAngsur2=='0') {
+                            $('.angsuranTR').attr('style','display:none;');
+                            $('#terbayarAngsuranKeTR').attr('style','display:none;');
+                        }else $('.angsuranTR').removeAttr('style');
+
+                        $('#angsuranTD').html(dt.datax.angsuran+' x');
+                        $('#angsuranNominalTD').html('@ '+dt.datax.angsuranNominal);
+                    // sudah terbayar 
+                        var isAngsur2     = dt.datax.isAngsur2;
+                        var terbayarTotal = parseInt(getUang(dt.datax.terbayarTotal));
+                        var tbyrke        = dt.datax.terbayarAngsurankeRule;
+                        var aknbyrke      = dt.datax.akanBayarke;
+                            var angsurNom    = parseInt(getUang(dt.datax.angsuranNominal));
+                            var kuranganAngs = parseInt(dt.datax.kuranganAngsuran);
+                        var krgNomInfo=krgKeInfo='';
+                        var akanBayarTot=0;
+
+                        if(dt.datax.lunasTotalAngsuran){ // lunas TOTAL
+                            console.log('masuk lunas totoal angsuran');
+                            $('.akanBayarTR').attr('style','display:none;');
+                            $('.belumBayarTR').attr('style','display:none;');
+                        }else{ // belum lunas TOTAL
+                            if(!dt.datax.lunasPerAngsuran){ // kurang per @ANGSURAN
+                                console.log('..... angsuran kurang');
+                                krgNomInfo = '</br><span class="fg-red">( - Rp. '+(dt.datax.kuranganAngsuran.setCurr())+' )';
+                                krgKeInfo  = '</br><span class="fg-red">( kurangan ) </span>';
+                                akanBayarTot+=kuranganAngs;
+                                $('#akanBayarNominalTB2').val('Rp. '+dt.datax.kuranganAngsuran.setCurr());
+                                $('#akanBayarJenisTB1').attr('disabled',true);
+                                $('#akanBayarJenisTB2').attr('checked',true);
+                                $('#akanBayarNominalTB2').removeAttr('disabled');
+                                $('#pasTR').attr('style','display:none');
+                                // var terbayarTotal = parseInt(dt.datax.terbayarTotal);
+                                var akanBayar     = kuranganAngs;
+                                var belumBayarNominalTot = biayaNett - (terbayarTotal+akanBayar);
+                                $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot).setCurr());
+                            }else{ // LUNAS per @angsuran
+                                console.log('..... @angsuran lunas');
+                                akanBayarTot+=angsurNom;
+                            }
+                        }
+                        $('#kuranganAngsuranTB').val(akanBayarTot); // max nominal untuk membayar
+                        $('#terbayarAngsurankeRuleTD').html(tbyrke);
+                        $('#terbayarBaruTD').html(dt.datax.terbayarBaru+krgNomInfo);
+                        $('#terbayarTotalTD').html(dt.datax.terbayarTotal);
+                   // akan bayar
+                        $('#akanBayarNominalTB1').val('Rp. '+(angsurNom).setCurr());
+                        $('#akanBayarkeTD').html(dt.datax.akanBayarke+krgKeInfo);
+                        $('#akanBayarNominalTD').html(dt.datax.angsuranNominal);
+                        $('#akanBayarNominalTotTD').html('Rp. '+(akanBayarTot.setCurr()));
+                    // belum bayar
+                        var belumBayarNominalTot = biayaNett-(terbayarTotal+akanBayarTot);
+                        $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot.setCurr()));
+                        $('#belumBayarAngsurankeTD').html(dt.datax.belumBayarAngsuranke+' x');
+                    }
+                });
+                $.Dialog.title('Pembayaran Siswa'); 
+                $.Dialog.content(contentFR);
             }
         });
     }
@@ -415,7 +522,7 @@ var contentFR ='';
 // end of notifikasi
 
 // print to PDF -------
-    function printPDF(mn){
+    function printPDF(mn,idx){
         var par='',tok='',p=v='';
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
@@ -423,9 +530,12 @@ var contentFR ='';
             par+='&'+p+'='+v;
             tok+=v;
         });
-        if(mn=='formulir' || mn=='joiningf') {
-            par+='&kelompokS='+$('#kelompokS').val();
-            tok+=$('#kelompokS').val();
+        // if(mn=='kwitansipenerimaansiswa') {
+        if(idx!='') {
+            if(mn=='kwitansipenerimaansiswa') par+='&idpenerimaansiswa='+idx;
+            else  par+='&idsiswabiaya='+idx;
+            
+            tok+=idx;
         }
         var x     = $('#id_loginS').val();
         var token = encode64(x+tok);
@@ -433,7 +543,7 @@ var contentFR ='';
     }
 
 // combo departemen ---
-    function cmbdepartemen(typ){
+    function cmbdepartemen(){
         var u = dir2;
         var d = 'aksi=cmb'+mnu2;
         ajax(u,d).done(function (dt){
@@ -444,17 +554,14 @@ var contentFR ='';
                 $.each(dt.departemen, function(id,item){
                     out+='<option value="'+item.replid+'"> '+item.nama+'</option>';
                 });
-            }
-            if(typ=='filter') {
-                $('#departemenS').html(out);
-                cmbtahunajaran('filter');
-            }else $('#departemenTB').html(out);
+            }$('#departemenS').html(out);
+            cmbtahunajaran();
         });
     }
 //end of combo departemen---
         
 // combo tingkat  ---
-    function cmbtingkat(typ){
+    function cmbtingkat(){
         var u = dir7;
         var d = 'aksi=cmb'+mnu7+'&departemen='+$('#departemenS').val();
         ajax(u,d).done(function (dt){
@@ -464,20 +571,15 @@ var contentFR ='';
             }else{
                 $.each(dt.tingkat, function(id,item){
                     out+='<option value="'+item.replid+'">'+item.tingkat+'</option>';
-                });
-                if(typ=='filter'){
-                    $('#tingkatS').html(out);
-                    cmbsubtingkat('filter');
-                }else{
-                    $('#subtingkatTB').html(out);
-                }
+                });$('#tingkatS').html(out);
+                cmbsubtingkat('filter');
             }
         });
     }
 //end of combo tingkat---
 
 // combo subtingkat  ---
-    function cmbsubtingkat(typ,tkt){
+    function cmbsubtingkat(tkt){
         var u = dir8;
         var d = 'aksi=cmb'+mnu8+'&tingkat='+$('#tingkatS').val();
         ajax(u,d).done(function (dt){
@@ -487,19 +589,14 @@ var contentFR ='';
             }else{
                 $.each(dt.subtingkat, function(id,item){
                     out+='<option value="'+item.replid+'">'+item.subtingkat+'</option>';
-                });
-                if(typ=='filter'){
-                    $('#subtingkatS').html(out);
-                    cmbbiaya('filter');
-                }else{
-                    $('#subtingkatTB').html(out);
-                }
+                });$('#subtingkatS').html(out);
+                cmbbiaya('filter');
             }
         });
     }
 
 // combo biaya  ---
-    function cmbbiaya(typ){
+    function cmbbiaya(){
         var u = dir3;
         var d = 'aksi=cmb'+mnu3;
         ajax(u,d).done(function (dt){
@@ -507,49 +604,87 @@ var contentFR ='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
-                $.each(dt.biaya, function(id,item){
+                $.each(dt.biaya, function (id,item){
                     out+='<option value="'+item.replid+'">'+item.biaya+'</option>';
                 });
-                if(typ=='filter'){
-                    $('#biayaS').html(out);
-                    viewTB();
+                $('#biayaS').html(out);
+                if(dt.biaya[0].ditagih=='2' || dt.biaya[0].ditagih=='12'){
+                    $('#semesterDV').removeAttr('style'); // @semester OR @bulan
+                    $('#bulanDV').removeAttr('style'); // @semester OR @bulan
                 }else{
-                    $('#biayaTB').html(out);
-                }
+                    $('#semesterDV').attr('style','display:none;'); // 1x, @thn 
+                    $('#bulanDV').attr('style','display:none;'); // 1x, @thn 
+                } 
+
+                cmbsemester($('#tahunajaranS').val());
             }
         });
     }
 
-// combo kelas  ---
-    function cmbkelas(typ,subt){
-        $.ajax({
-            url:dir9,
-            data:'aksi=cmb'+mnu9+'&subtingkat='+subt,
-            dataType:'json',
-            type:'post',
-            success:function(dt){
-                var out='';
-                if(dt.status!='sukses'){
-                    out+='<option value="">'+dt.status+'</option>';
-                }else{
-                    $.each(dt.kelas, function(id,item){
-                        out+='<option value="'+item.replid+'"> '+item.kelas+'</option>';
-                    });
-                    if(typ=='filter'){
-                        $('#spp_kelasS').html(out);
-                        viewTB('spp');
-                    }else{
-                        $('#kelasTB').html(out);
+// combo semester  ---
+    function cmbsemester(bia){
+        var u = dir11;
+        var d = 'aksi=cmb'+mnu11+'&tahunajaran='+$('#tahunajaranS').val()+(bia!=''?'&biaya='+bia:'');
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){
+                out+='<option value="">'+dt.status+'</option>';
+            }else{
+                if(dt.ditagih=='2' || dt.ditagih=='12'){ // filtering 
+                    $('#semesterDV').removeAttr('style');
+                    $.each(dt.semester, function (id,item){
+                        out+='<option value="'+item.replid+'">'+item.semester+'</option>';
+                    });$('#semesterS').html(out);
+
+                    if(dt.ditagih=='12'){ // bulanan 
+                        $('#bulanDV').removeAttr('style');
+                        cmbbulan(dt.semester[0].replid);
+                    }else{ // semesteran
+                        $('#bulanDV').attr('style','display:none;');
+                        viewTB('penerimaansiswa');
                     }
+                }else{
+                    $('#bulanDV').attr('style','display:none;');
+                    $('#semesterDV').attr('style','display:none;');
+                    viewTB('penerimaansiswa');
                 }
             }
         });
     }
-//end of combo kelas---
+//end of combo tahun ajaran---
+
+    function cmbbulan(sem){
+        var u = dir11; 
+        var d = 'aksi=cmb'+mnu11+'&replid='+sem; 
+        ajax(u,d).done(function (dt){
+            var out='';
+            if(dt.status!='sukses'){ // gagal
+                out+='<option value="">'+dt.status+'</option>';
+            }else{ //sukses
+                if(dt.semester.length==0){
+                    out+='<option value="">kosong</option>';
+                }else{
+                    var t1 = dt.semester[0].tglMulai;
+                    var t2 = dt.semester[0].tglSelesai;
+                        var y1 = parseInt(t1.substr(0,4));
+                        var y2 = parseInt(t2.substr(0,4));
+                        var m1 = parseInt(t1.substr(5,2));
+                        var m2 = parseInt(t2.substr(5,2)); 
+
+                    if(y1==y2){
+                        for (var i=m1; i<=m2; i++) out+='<option value="'+i+'">'+monthFormat(i)+' '+y1+'</option>';
+                    }else{
+                        for (var i=m1; i<=12; i++) out+='<option value="'+i+'">'+monthFormat(i)+' '+y1+'</option>';
+                        for (var i=1; i<=m2; i++) out+='<option value="'+i+'">'+monthFormat(i)+' '+y2+'</option>';
+                    }
+                }$('#bulanS').html(out);
+                viewTB('penerimaansiswa');
+            }
+        });
+    }
 
 // combo tahun ajaran  ---
-    function cmbtahunajaran(typ){
-        console.log('masuk tahu ajaran ');
+    function cmbtahunajaran(){
         var u= dir6;
         var d = 'aksi=cmb'+mnu6;
         ajax(u,d).done(function (dt){
@@ -560,13 +695,8 @@ var contentFR ='';
                 $.each(dt.tahunajaran, function(id,item){
                     var ta = item.tahunajaran+' - '+(parseInt(item.tahunajaran)+1);
                     out+='<option '+(item.aktif=='1'?'selected':'')+' value="'+item.replid+'">'+ta+'</option>';
-                });
-                if(typ=='filter'){
-                    $('#tahunajaranS').html(out);
-                    cmbtingkat('filter',dt.tahunajaran[0].replid);
-                }else{
-                    $('#tahunajaranTB').html(out);
-                }
+                });$('#tahunajaranS').html(out);
+                cmbtingkat(dt.tahunajaran[0].replid);
             }
         });
     }
@@ -587,29 +717,209 @@ var contentFR ='';
         else $(e2).html('');
     }
 
-    function histBayar(siswa){
-        var url  = dir;
-        var data = '&aksi=histBayar&subaksi='+(curTab()=='joiningf'?'joining fee':curTab())+'&siswa='+siswa;
-        $('#histBayarTBL').html('<tr><td colspan="2" align="center"><img src="img/w8loader.gif"></td></tr>');
-        ajax(url,data).done(function (dt) {
-            if (dt.status!='sukses') { //gagal
+    function histBayarFC(){
+        if($('#histBayarTD').html()!='') $('#histBayarTD').html('');
+        else{
+            var url  = dir;
+            var data = '&aksi=histBayar&siswabiaya='+$('#idsiswabiayaTB').val();
+            $('#histBayarTD').html('<tr><td colspan="2" align="center"><img src="img/w8loader.gif"></td></tr>');
+            ajax(url,data).done(function (dt) {
+                if (dt.status!='sukses') notif(dt.status,'red'); //gagal
+                else{ // sukses
+                    var out='<table class="table bordered striped bg-green fg-white ">'
+                            +'<thead>'
+                                +'<tr>'
+                                    +'<th>no.</th>'
+                                    +'<th>Tanggal</th>'
+                                    +'<th>Nominal</th>'
+                                    +'<th>Aksi</th>'
+                                +'</tr>'
+                            +'</thead>'
+                            +'<tbody class="text-center">';
+                    if(dt.datax.length==0) out+='<tr><td colspan="4" class="text-center fg-white bg-orange">belum pernah membayar</td></tr>'
+                    else{
+                        $.each(dt.datax,function (id,item){
+                            out+='<tr class="bg-lime">'
+                                    +'<td>'+item.angsuranKe+'</td>'
+                                    +'<td>'+item.tanggal+'</td>'
+                                    +'<td>'+item.nominal+'</td>'
+                                    +'<td>'
+                                        +'<a data-hint="batalkan" onclick="del('+item.replid+');" class="button bg-white fg-green"><i class="icon-cancel-2"></i></a>&nbsp;'
+                                        +'<a data-hint="kwitansi" onclick="printPDF(\'kwitansipenerimaansiswa\','+item.replid+');" class="button bg-white fg-green"><i class="icon-libreoffice"></i></a>'
+                                    +'</td>'
+                                +'</tr>';
+                        });
+                            out+='</tbody>'
+                            +'<tfoot>'
+                                +'<tr>'
+                                    +'<th colspan="2" align="right">Total Terbayar </th>'
+                                    +'<th id="histBayarTotTD">'+dt.totNominal+'</th>'
+                                +'</tr>'
+                            +'</tfoot>'
+                        +'</table>';
+                    }$('#histBayarTD').html(out);
+                }
+            });
+        }
+    }
+    
+    function pilihAkanBayarJenis () {
+        $('#akanBayarNominalTB2').val('');
+        $('#akanBayarKuranganTD').html('');
+        $('#akanBayarNotif').html('');
+        if($('#akanBayarJenisTB1').is(':checked')){
+            $('#akanBayarNominalTB2').attr('disabled',true).removeAttr('required');
+            $('#akanBayarNominalTotTD').html($('#akanBayarNominalTB1').val());
+        }else{
+            $('#akanBayarNominalTB2').attr('required',true).removeAttr('disabled');
+            $('#akanBayarNominalTotTD').html($('#akanBayarNominalTB1').val());
+        }belumBayarFC();
+    }
+
+    function akanBayarSisaFC() {
+        var bayarNominal =getUang($('#akanBayarNominalTB2').val());
+        var angsuranNominal = parseInt(getUang($('#angsuranNominalTD').html()));
+        if($('#kuranganAngsuranTB').val()<angsuranNominal){ // ada tunggakan angsuran yang kurang
+            maxbyr  = parseInt($('#kuranganAngsuranTB').val()); // 9.212.500
+            kuranganNominal = maxbyr - bayarNominal;
+            if(kuranganNominal<0) $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(maxbyr).setCurr())+'</span>');
+            else $('#akanBayarNotif').html('');
+        }else{ // tifak ada tunggakan angsuran yg kurang 
+            maxbyr = angsuranNominal;
+            kuranganNominal = maxbyr - bayarNominal; 
+            if(kuranganNominal<=0) $('#akanBayarNotif').html('<span align="justify" class="fg-white bg-red ">Max Rp. '+(parseInt(maxbyr).setCurr())+'</span>');
+            else $('#akanBayarNotif').html('');
+        }$('#akanBayarKuranganTD').html(parseInt(kuranganNominal).setCurr());
+        $('#akanBayarNominalTotTD').html('Rp. '+parseInt(bayarNominal).setCurr());
+        belumBayarFC();
+    }
+
+    function belumBayarFC () {
+        var biayaNett=parseInt(getUang($('#biayaNettTD').html()));
+        var terbayarTotal=parseInt(getUang($('#terbayarTotalTD').html()));
+        var akanBayarNominalTot=parseInt(getUang($('#akanBayarNominalTotTD').html()));
+        var belumBayarNominalTot=biayaNett - (terbayarTotal+akanBayarNominalTot); 
+        console.log('nett='+biayaNett);
+        console.log('telah terbayar='+terbayarTotal);
+        console.log('akan terbayar='+akanBayarNominalTot);
+        console.log('belum bayar='+belumBayarNominalTot);
+        $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot.setCurr()));
+    }
+    // number to currency (ex : 500000 -> 500.000)  
+    Number.prototype.setCurr=function(){
+        return this.toFixed(0).replace(/(\d)(?=(\d{3})+\b)/g,'$1.');
+    }
+
+
+// cmbo viabayar 
+    function cmbviabayar(typ,via) {
+        var d = 'aksi=cmb'+mnu10+(typ=='rule'?'&replid='+via:'');
+        ajax(dir10,d).done(function (dt){
+            var out='';
+            if (dt.status!='sukses') {
                 notif(dt.status,'red');
-            }else{ // sukses
-                $('#histBayarT').attr('style','display:visible;');
-                var out='';
-                if(dt.datax.length==0)
-                    out+='<tr><td colspan="2" class="text-center fg-white bg-orange">belum ada angsuran</td></tr>'
-                else{
-                    $.each(dt.datax,function(id,item){
-                        out+='<tr>'
-                            +'<td>'+item.tanggal+'</td>'
-                            +'<td align="right">'+item.cicilan+'</td>'
-                            // +'<td><a href="#" hint="hapus" onclick="alert('+item.replid+');"><span class="icon-remove"></span></a></href="#" td>'
-                        +'</tr>'
-                    });
-                }setTimeout(function(){
-                    $('#histBayarTBL').html(out);
-                },500);
+                out+='<option value="">'+dt.status+'</option>'
+            }else{
+                $.each(dt.viabayar,function (id,item){
+                    out+='<option '+(via==item.replid?'selected':'')+' value="'+item.replid+'">'+item.viabayar+'</option>'
+                });
+                if(typ=='rule') {
+                    $('#viaBayarTD').html(dt.viabayar[0].viabayar);
+                }else {
+                    $('#viaBayarTB').html(out);
+                }
+            }
+        });
+    }   
+
+//    4.882.000
+//      600.000
+//    5.482.000
+
+// left pad (replace with 0)
+    function lpadZero (n, length){
+        var str = (n > 0 ? n : -n) + "";
+        var zeros = "";
+        for (var i = length - str.length; i > 0; i--)
+            zeros += "0";
+        zeros += str;
+        return n >= 0 ? zeros : "-" + zeros;
+    }
+
+    function validUang () {
+        //TODO
+    }
+
+/*about date*/ 
+// get month format -------------
+    function monthFormat(mon){
+        switch(mon){
+            case 1:return 'Jan';break;
+            case 2:return 'Feb';break;
+            case 3:return 'Mar';break;
+            case 4:return 'Apr';break;
+            case 5:return 'May';break;
+            case 6:return 'Jun';break;
+            case 7:return 'Jul';break;
+            case 8:return 'Aug';break;
+            case 9:return 'Sep';break;
+            case 10:return 'Oct';break;
+            case 11:return 'Nov';break;
+            case 12:return 'Dec';break;
+        }
+    }
+        // var dob  ='2015-09-16';
+    function tgl_indo5(str){
+        var m = monthFormat(parseInt(str.substring(7,5)));
+        var d = str.substring(8);
+        var y = str.substring(0,4);
+        return d+' '+m+' '+y;
+    }
+    // console.log(tgl_indo5(dob));    }
+
+
+//date format -----------------
+    function dateFormatx(typ,d,m,y){
+        if(typ=='id') // 25 Dec 2014
+            return d+' '+m+' '+y;
+        else // 2014-12-25
+            return y+'-'+m+'-'+d;
+    }
+
+//global u/ tanggal --------
+    var now  = new Date();
+    var dd   = now.getDate();
+    var mm   = now.getMonth()+1;
+    var yyyy = now.getFullYear();
+
+//tanggal terakhir : dd
+    function lastDate(m,y){
+        return 32 - new Date(y, (m-1), 32).getDate();
+    }
+// tanggal hari ini : dd mm yyyy
+    function getToday() {
+        // function addLeadingZeros (n, length){
+        return dateFormatx('id',lpadZero(dd,2),monthFormat(mm),yyyy);
+    }
+// tanggal pertama bulan ini : dd mm yyyy 
+    function getFirstDate() {
+        return dateFormatx('id','01',monthFormat(mm),yyyy);
+    }
+// tanggal terakhir bulan ini  : dd mm yyyy
+    function getLastDate() {
+        var dd = lastDate(mm,yyyy);
+        return dateFormatx('id',dd,monthFormat(mm),yyyy);
+    }
+
+    function del(idx){
+        if(confirm('hapus data ?'))
+        ajax(dir,'aksi=hapus&replid='+idx).done(function (dt){
+            if(dt.status!='sukses') notif(dt.status,'red');
+            else{
+                notif(dt.status,'green');
+                $('#histBayarTD').html('');histBayarFC();
+                viewTB('penerimaansiswa');
+                $.Dialog.close();
             }
         });
     }

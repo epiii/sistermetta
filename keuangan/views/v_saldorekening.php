@@ -22,17 +22,11 @@
     <table class="table hovered bordered striped">
         <thead>
             <tr style="color:white;"class="info">
-                <th class="text-center" rowspan="2">Kode</th>
-                <th class="text-center" rowspan="2">Rekening</th>
-                <th class="text-center" colspan="2">Saldo Awal</th>
-                <th class="text-center" colspan="2">Saldo Sementara</th>
-                <th class="text-center" rowspan="2">Aksi</th>
-            </tr>
-            <tr style="color:white;" class="info">
-                <th>debit</th>
-                <th>kredit</th>
-                <th>debit</th>
-                <th>kredit</th>
+                <th class="text-center" >Kode</th>
+                <th class="text-center" >Rekening</th>
+                <th class="text-center">Jenis</th>
+                <th class="text-center">Saldo Awal</th>
+                <th class="text-center" >Aksi</th>
             </tr>
             <tr id="cariTR" class="selected">
                 <th><div class="input-control text"><input  class="cari" placeholder="cari ..." id="kodeS" name="kodeS"></div></th>

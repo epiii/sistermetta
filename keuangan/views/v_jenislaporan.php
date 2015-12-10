@@ -12,7 +12,7 @@
 <h4 style="color:white;">Jenis Laporan</h4>
 <div id="loadarea"></div>
 <button data-hint="Tambah Data"  id="tambahBC"><span class="icon-plus-2"></span> </button>
-<button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button>
+<!-- <button data-hint="Field Pencarian" xclass="large" id="cariBC"><span class="icon-search"></span> </button> -->
 
 <table class="table hovered bordered striped">
     <thead>
@@ -22,7 +22,7 @@
             <th class="text-center">Jenis Transaksi</th>
             <th class="text-center">Aksi</th>
         </tr>
-        <tr style="display:none;" id="cariTR" class="selected">
+        <tr xstyle="display:none;" id="cariTR" class="selected">
             <th class="text-center"><div class="input-control text"><input  class="cari" placeholder="cari...." id="rekeningS" name="rekeningS"></div></th>
             <th class="text-center"><div class="input-control select">
                 <select  class="cari" name="kategoriS" id="kategoriS">

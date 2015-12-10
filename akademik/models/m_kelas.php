@@ -216,15 +216,13 @@
 			// ambiledit -----------------------------------------------------------------
 
 		// cmbkelas ---------------------------------------------------------
-			case 'cmb'.$mnu:
+			case 'cmbkelas':
 				$w='';
 				if(isset($_POST['replid'])){
 					$w.='where replid ='.$_POST['replid'];
 				}else{
 					if(isset($_POST[$mnu])){
 						$w.='where '.$mnu.'='.$_POST[$mnu];
-					}elseif(isset($_POST['subtingkat']) && isset($_POST['departemen']) ){
-						$w.='where subtingkat ='.$_POST['subtingkat'].' AND departemen ='.$_POST['departemen'];
 					}elseif(isset($_POST['subtingkat'])){
 						$w.='where subtingkat ='.$_POST['subtingkat'];
 					}
@@ -234,8 +232,8 @@
 						from '.$tb.'
 						'.$w.'		
 						ORDER  BY '.$mnu.' asc';
-				// pr($s);
 				$e  = mysql_query($s);
+				// var_dump($s);
 				$n  = mysql_num_rows($e);
 				$ar =$dt=array();
 

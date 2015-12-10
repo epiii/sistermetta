@@ -10,20 +10,23 @@ var mnu9  = 'subtingkat';
 var mnu10 = 'dokumen';
 var mnu11 = 'agama';
 var mnu12 = 'suku';
+var mnu13 = 'viabayar';
 
 var dir   = 'models/m_'+mnu+'.php';
 var dir2  = '../akademik/models/m_'+mnu2+'.php';
 var dir3  = '../akademik/models/m_'+mnu3+'.php';
 var dir4  = '../akademik/models/m_'+mnu4+'.php';
 var dir5  = 'models/m_'+mnu5+'.php';
-var dir6  = 'models/m_'+mnu6+'.php';
+var dir6  = '../keuangan/models/m_'+mnu6+'.php';
 var dir7  = 'models/m_'+mnu7+'.php';
 var dir8  = 'models/m_'+mnu8+'.php';
 var dir9  = '../akademik/models/m_'+mnu9+'.php';
 var dir10 = 'models/m_'+mnu10+'.php';
 var dir11 = 'models/m_'+mnu11+'.php';
 var dir12 = 'models/m_'+mnu12+'.php';
+var dir13 = '../keuangan/models/m_'+mnu13+'.php';
 var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
+
 
 // main function ---
     $(document).ready(function(){
@@ -132,16 +135,16 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // tingkat
                                             +'<label>Tingkat</label>'
-                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya(); subdokumenFC();" id="tingkatTBZ" name="tingkatTB"></select>'
+                                            +'<select data-transform="input-control"  required onchange="cmbsubtingkat(\'form\',$(\'#tingkatTBZ\').val()); getBiaya();" id="tingkatTBZ" name="tingkatTB"></select>'
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // subtingkat
                                             +'<label>Sub Tingkat</label>'
                                             +'<select  data-transform="input-control" onchange=" getBiaya();"  required id="subtingkatTB" name="subtingkatTB"></select>'
                                             +'<sub class="fg-red place-right">*wajib diisi</sub>'
                                             // golongan
-                                            +'<label>Golongan</label>'
-                                            +'<select data-transform="input-control"  onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
-                                            +'<sub class="fg-red place-right">*wajib diisi</sub>'
+                                            +'<label style="display:none;">Golongan</label>'
+                                            +'<select  style="display:none;" data-transform="input-control"  onchange=" getBiaya();"  required id="golonganTBZ" name="golonganTBs"></select>'
+                                            +'<sub  style="display:none;" class="fg-red place-right">*wajib diisi</sub>'
                                         +'</div>'
                                             
                                         // kolom2
@@ -492,32 +495,33 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                         +'<div class="span4">'
                                             // cek
                                             +'<label>'
-                                                +'<input checked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
+                                                // +'<input checked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
+                                                +'<input Xchecked onclick="enableWali(this);" type="checkbox" id="siswawaliTB" name="siswawaliTB">'
                                                 +'Wali murid'
                                             +'</label>'
                                             // nama
                                             +'<label>Nama</label>'
                                             +'<input type="hidden" id="idsiswawaliTB" name="idsiswawaliTB" />'
-                                            +'<input required class="waliTB"  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
+                                            +'<input Xrequired  disabled class="waliTB"  type="text" data-transform="input-control" placeholder="nama" id="namawaliTB" name="namawaliTB">'
                                             // kelamin
                                             +'<label>Jenis Kelamin</label>'
-                                            +'<select  class="waliTB"  data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
+                                            +'<select disabled class="waliTB"  data-transform="input-control" xrequired id="jkelaminwaliTB" name="jkelaminwaliTB">'
                                                 +'<option value="">-Pili Kelamin-</option>'
                                                 +'<option value="L">Laki</option>'
                                                 +'<option value="P">Perempuan</option>'
                                             +'</select>'
                                             // alamatwali
                                             +'<label>Alamat</label>'
-                                            +'<input   class="waliTB"  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
+                                            +'<input disabled class="waliTB"  type="text" data-transform="input-control" placeholder="alamat" id="alamatwaliTB" name="alamatwaliTB">'
                                         +'</div>'
                                         // kolom2 
                                         +'<div class="span4">'
                                             // kotawali
                                             +'<label>Kota </label>'
-                                            +'<input   class="waliTB"  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
+                                            +'<input disabled  class="waliTB"  type="text" data-transform="input-control" placeholder="kota" id="kotawaliTB" name="kotawaliTB">'
                                             // telponwali
                                             +'<label>Telpon</label>'
-                                            +'<input  class="waliTB"   type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
+                                            +'<input disabled class="waliTB"   type="text" data-transform="input-control" placeholder="telpon" id="telponwaliTB" name="telponwaliTB">'
                                         +'</div>'
 
                                     +'</div>'
@@ -561,7 +565,7 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                                     +'<div class="row">'
                                         // kolom1 
                                         +'<div class="span12">'
-                                            +'<a  class="button"  href="#" onclick="saudaraFC();return false;"><i class="icon-plus-2"></i></a>'
+                                            +'<a  class="button"  href="#" onclick="saudaraFC(); return false;"><i class="icon-plus-2"></i></a>'
                                             +'<table class="table bordered hovered striped">'
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<tr>'
@@ -949,10 +953,26 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
             }else{
                 var opt = '';
                 $.each(dt.angsuran,function(id,item){
-                    opt+='<option '+(ang==item.replid?'selected':'')+' value="'+item.replid+'">'+item.angsuran+' x </option>'
+                    opt+='<option '+(ang==item.replid?'selected':'')+' '+(item.angsuran=='1'?'style="display:none;"':'')+' value="'+item.replid+'">'+item.angsuran+' x </option>'
                 });
-            }
-            $('#angsuran'+idx+'TB').html(opt);
+            }$('#angsuran'+idx+'TB').html('<option value="">-Pilih Angsuran-</option>'+opt);
+        });
+    }
+// combo cara bayar
+    function cmbviabayar (idx,via) {
+        var u = dir13;
+        var d ='aksi=cmb'+mnu13;
+        ajax(u,d).done(function (dt){
+            var opt='';
+            if (dt.status!='sukses') {
+                notif(dt.status,'red');
+                opt+='<option value="">'+dt.status+'</option>'
+            }else{
+                var opt = '';   
+                $.each(dt.viabayar,function (id,item){
+                    opt+='<option '+(via==item.replid?'selected':'')+' value="'+item.replid+'">'+item.viabayar+' </option>'
+                });
+            }$('#viabayar'+idx+'TB').html(opt);
         });
     }
 
@@ -1090,10 +1110,10 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                         if(dt.status!='sukses') notif(dt.status,'red');
                         else{
                         // kriteria siswa 
-                            cmbdepartemen('form',dt.departemen);
-                            cmbtahunajaran('form',dt.tahunajaran);
-                            cmbdetailgelombang('form',dt.detailgelombang,dt.departemen,dt.tahunajaran);
-                            cmbtingkatZ('form',dt.tingkat,dt.departemen);
+                            cmbdepartemen('form',dt.iddepartemen);
+                            cmbtahunajaran('form',dt.idtahunajaran);
+                            cmbdetailgelombang('form',dt.detailgelombang,dt.iddepartemen,dt.idtahunajaran);
+                            cmbtingkatZ('form',dt.tingkat,dt.iddepartemen);
                             cmbsubtingkat('form',dt.tingkat,dt.subtingkat);
                             cmbgolongan('form',dt.golongan);
                         // biaya 
@@ -1213,8 +1233,8 @@ var subdokumen_contentFR =siswa_contentFR = status_contentFR='';
                     cmbgolongan('form','');
                     cmbangsuran('');
                     biayaFC('');
-                    subdokumenFC();
-                    kontakdaruratFC();
+                    // subdokumenFC();
+                    // kontakdaruratFC();
                 }
                 // $("#form1").scrollbar({height: 355,axis: 'y'});
                 titlex='<span class="icon-plus-2"></span> Tambah ';
@@ -1425,7 +1445,8 @@ function notif(cont,clr) {
                 $('#golonganS').html(out);
                 viewTB();
             }else{
-                $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
+                // $('#golonganTBZ').html('<option value="">-Pilih Golongan -</option>'+out);
+                $('#golonganTBZ').html(out);
             }
         });
     }
@@ -1465,17 +1486,17 @@ function notif(cont,clr) {
                                     +'</tr>';
 
                                 // diskon reguler
-                                if(item.isDiskon=='1' || item.isDiskon=='3' ) { // 1=reg or 3=reg & khusus
+                                if(item.isDiskon=='1' || item.isDiskon=='3' ) { // 1=reg ||  (3=reg & khusus)
                                     out+='<tr>'
                                         +'<td>Diskon Reguler</td>'
                                         +'<td>'
-                                            +'<div class="input-control text"><input class="detaildiskonTB" '+(siswa==''?'disabled':'')+' onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon .. " type="text" id="detaildiskon'+item.replid+'TB"></div>'
+                                            +'<div class="input-control text"><input class="detaildiskonTB" '+(siswa==''?'disabled':'')+' onfocus="multiAutoSuggest(\'detaildiskon\','+item.replid+')" onkeyup="multiAutoSuggest(\'detaildiskon\','+item.replid+')" placeholder="cari diskon (backspace / panah bawah) " type="text" id="detaildiskon'+item.replid+'TB"></div>'
                                             +'<table width="100%">'
                                                 +'<thead class="fg-white bg-blue">'
                                                     +'<th align="center">Diskon</th>'
                                                     +'<th align="center">Nilai</th>'
-                                                    // +'<th align="center">Keterangan</th>'
-                                                    +'<th align="center"><a onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></a></th>'
+                                                    +'<th align="center">Hapus</th>'
+                                                    // +'<th align="center"><a onclick="$(\'#detaildiskon'+item.replid+'TBL\').html(\'\');getBiayaNett('+item.replid+'); return false;" class="fg-white bg-blue"><i class="icon-cancel-2"></i></a></th>'
                                                 +'</thead>'
                                                 +'<tbody class="detaildiskonTBL" id="detaildiskon'+item.replid+'TBL">'
                                                     +'<tr><td class="bg-white fg-red text-center" colspan="4">..kosong..</td></tr>'
@@ -1487,10 +1508,13 @@ function notif(cont,clr) {
                                 }
 
                                 // Diskon Khusus
-                                if(item.isDiskon=='2' || item.isDiskon=='3' ) { // 2=khusus or 3=reg & khusus
+                                if(item.isDiskon=='2' || item.isDiskon=='3' ) { // 2=khusus || (3=reg & khusus)
                                     out+='<tr>'
                                         +'<td>Diskon Khusus </td>'
-                                        +'<td><div class="input-control text"><input value="'+(item.ketdiskonkhusus!=''?item.ketdiskonkhusus:'')+'" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="ketdiskonkhusus'+item.replid+'TB"':'disabled')+' placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div></td>'
+                                        +'<td><div class="input-control text">'
+                                            +'<input data-hint="No.SK" data-transform="input-control" type="text" placeholder="no. SK" id="noskTB" name="noskTB" />'
+                                            +'<input data-hint="Keterangan" value="'+(item.ketdiskonkhusus!=''?item.ketdiskonkhusus:'')+'" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="ketdiskonkhusus'+item.replid+'TB"':'disabled')+' placeholder="keterangan diskon" type="text" id="ketdiskonkhusus'+item.replid+'TB" /></div>'
+                                        +'</td>'
                                         +'<td>'
                                             +'<div class="input-control text"><input onkeyup="getBiayaNett('+item.replid+');" value="'+(item.diskonkhusus!=''?item.diskonkhusus:'Rp. 0')+'" class="text-right diskonkhususTB" onfocus="inputuang(this);" placeholder="nominal" type="text" id="diskonkhusus'+item.replid+'TB" '+(dt.levelurutan==1 || dt.levelurutan==2?' name="diskonkhusus'+item.replid+'TB"':'disabled')+'></div>'
                                             +'<sup style="font-weight:bold;" class="fg-red">* Diisi oleh Petugas Khusus </sup>'
@@ -1507,42 +1531,66 @@ function notif(cont,clr) {
                                 }
 
                                     // jenis tagihan 
-                                    out+='<tr>'
-                                        +'<td>Ditagih</td>'
-                                        +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
-                                        +'<td></td>'
-                                    +'</tr>';
+                                    // out+='<tr>'
+                                    //     +'<td>Ditagih</td>'
+                                    //     +'<td>'+(item.jenistagihan!='sekali'?'per ':'')+item.jenistagihan+'</td>'
+                                    //     +'<td></td>'
+                                    // +'</tr>';
 
                                 // cara bayar
-                                if(item.idIsAngsur=='1') { // 1= angsur reg.
+                                // if(item.idIsAngsur=='1') { // 1= angsur reg.
                                     out+='<tr>'
-                                        +'<td>Angsuran </td>'
+                                        +'<td>Cara Bayar </td>'
                                         +'<td>' 
-                                            +'<div class="input-control select">'
-                                                +'<select class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
+                                            +'<div xclass="input-control radio">'
+                                                +'<label><input id="isAngsur2'+item.replid+'0TB" onclick="isAngsur2FC('+item.replid+',0)" value="0" required name="isAngsur2'+item.replid+'TB" '+(item.isAngsur=='0'?'checked':'')+' type="radio"> Kontan</label>'
+                                                +'<label '+(item.isAngsur=='0'?'class="fg-gray"':'')+' >'
+                                                    +'<input  id="isAngsur2'+item.replid+'1TB" onclick="isAngsur2FC('+item.replid+',1)"  value="1" required name="isAngsur2'+item.replid+'TB"  '+(item.isAngsur=='0'?'disabled':'')+' type="radio"> Angsur'
+                                                +'</label>'
                                             +'</div>'
+                                            +'<select style="display:none;" data-transform="input-control" class="text-center" id="angsuran'+item.replid+'TB" name="angsuran'+item.replid+'TB"><option value=""></option></select>'
                                         +'</td>'
                                         +'<td class="text-right" id="'+item.isDiskon+'TD"></td>'
                                     +'</tr>';
-                                }
+                                // }
+                                out+='<tr>'
+                                    +'<td>Via</td>'
+                                    +'<td>'
+                                        +'<select data-transform="input-control" name="viabayar'+item.replid+'TB" id="viabayar'+item.replid+'TB"></select>'
+                                    +'</td>'
+                                    +'<td></td>'
+                                +'</tr>';
+
+                                out+='<tr>'
+                                    +'<td>Ditagih Per</td>'
+                                    +'<td>'+item.ditagih+'</td>'
+                                    +'<td></td>'
+                                +'</tr>';
  
                                 out+='</tbody>'
                             +'</table>'; 
                     });
                     $('#biayaDV').html(out);
-                }
+                    $.each(dt.biayaArr, function (id,item){
+                        getBiaya();
+                        if(siswa!=''){
+                            $('#isAngsur2'+item.replid+(item.isAngsur2=='1'?'1':'0')+'TB').attr('checked',true);
+                            isAngsur2FC(item.replid,item.isAngsur2);
+                        } 
 
-                $.each(dt.biayaArr, function (id,item){
-                    getBiaya();
-                    if(item.idIsAngsur=='1') cmbangsuran(item.replid,(item.angsuran!=''?item.angsuran:''));
-                    // detail_diskon / diskon_reguler 
-                    ajax(dir,'aksi=tampil&subaksi=detaildiskon&siswabiaya='+item.idsiswabiaya).done(function (dtx){
-                        console.log('loop diskon reg @biaya ='+item.idsiswabiaya);
-                        $.each(dtx.detaildiskonArr, function (idx,itemx){
-                            detaildiskonAdd (item.replid,itemx.idsiswadiskon,itemx.replid,itemx.diskon,itemx.nilai,itemx.keterangan);
+                        cmbviabayar(item.replid,(item.viabayar!=''||item.viabayar!='0'?item.viabayar:''));
+                        cmbangsuran(item.replid,(item.angsuran!=''?item.angsuran:''));
+                        
+                        // detail_diskon / diskon_reguler 
+                        ajax(dir,'aksi=tampil&subaksi=detaildiskon&siswabiaya='+item.idsiswabiaya).done(function (dtx){
+                            console.log('loop diskon reg @biaya ='+item.idsiswabiaya);
+                            $.each(dtx.detaildiskonArr, function (idx,itemx){
+                                detaildiskonAdd (item.replid,itemx.idsiswadiskon,itemx.replid,itemx.diskon,itemx.nilai,itemx.keterangan);
+                            });
                         });
                     });
-                });
+                }
+
             }
         });
     }
@@ -1815,12 +1863,12 @@ function notif(cont,clr) {
                     if(dt.status!='sukses') notif(dt.status,'red');
                     else{
                         $('#idstatusTB').val(idsiswa);
-                        $('#namasiswaTD').html(dt.namasiswa);
-                        $('#nopendaftaranTD').html(dt.nopendaftaran);
+                        $('#namasiswaTD').html(': '+dt.namasiswa);
+                        $('#nopendaftaranTD').html(': '+dt.nopendaftaran);
                         $('#statussiswaTD').addClass('fg-white bg-'+(dt.statussiswa!='Belum Diterima'?(dt.statussiswa=='Diterima'?'green':'lightBlue'):'red'));
                         $('#statussiswaTD').html(dt.statussiswa);
-                        $('#departemenTD').html(dt.departemennama);
-                        $('#tahunajaranTD').html(dt.tahunajarannama);
+                        $('#departemenTD').html(': '+dt.departemen);
+                        $('#tahunajaranTD').html(': '+dt.tahunajaran);
                         $('#nisTB').val(dt.nis);
                         $('#nisnTB').val(dt.nisn);
                     }
@@ -1912,3 +1960,14 @@ function notif(cont,clr) {
         });
         // console.log(iSaudaraDelTR);
     } 
+
+    function  isAngsur2FC (e,typ) {
+        if(typ=='1') { // angsur
+            $('#angsuran'+e+'TB').removeAttr('style').attr('required',true).val('');
+            console.log('angsur e='+e+' typ='+typ);
+        }else{ // tunai
+            $('#angsuran'+e+'TB').attr('style','display:none').removeAttr('required').val('');        
+            console.log('tunai e='+e+' typ='+typ);
+        } 
+    }
+

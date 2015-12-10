@@ -18,12 +18,23 @@ ErrorDocument 404 Maaf-halaman-tidak-ditemukan
 	RewriteRule   ^detil-anggaran/?$   							index.php?page=detilanggaran
 	RewriteRule   ^anggaran-tahunan/?$   						index.php?page=anggarantahunan
 	RewriteRule   ^jenis-laporan/?$   							index.php?page=jenislaporan
+	RewriteRule   ^angsuran/?$   								index.php?page=angsuran
+	RewriteRule   ^biaya/?$   									index.php?page=biaya
+	RewriteRule   ^detail-biaya/?$   							index.php?page=detailbiaya
+	#RewriteRule   ^diskon/?$   									index.php?page=diskon
+	#RewriteRule   ^detail-diskon/?$   							index.php?page=detaildiskon
+	RewriteRule   ^via-bayar/?$   								index.php?page=viabayar
 	
-	#transaksi keuangan
-	RewriteRule   ^transaksi/?$			   						index.php?page=transaksi
+	#transaksi keuangan siswa
+	RewriteRule   ^pemutihan-penerimaan-siswa/?$			   		index.php?page=pemutihanpenerimaansiswa
 	RewriteRule   ^kategori-modul/?$			   				index.php?page=katmodulpembayaran
 	RewriteRule   ^modul-pembayaran/?$			   				index.php?page=modulpembayaran
 	RewriteRule   ^penerimaan-siswa/?$			   				index.php?page=penerimaansiswa
+	RewriteRule   ^rekapitulasi-penerimaan-siswa/?$				index.php?page=rekapitulasipenerimaansiswa
+	RewriteRule   ^rekening-biaya/?$							index.php?page=rekeningbiaya
+
+	#transaksi keuangan umum
+	RewriteRule   ^transaksi/?$			   						index.php?page=transaksi
 	RewriteRule   ^sarpras/?$	   								index.php?page=sarpras
 	
 	RewriteRule   ^keluar/?$ 									index.php?page=logout 

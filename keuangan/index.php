@@ -93,7 +93,7 @@
                 require $d.'v_home.php';
             }else{
                 switch ($_GET['page']) {
-                    // referensi
+                    // master
                     case 'kategorirekening':
                         require $d.'v_kategorirekening.php';
                     break;
@@ -112,6 +112,27 @@
                     case 'jenislaporan':
                         require $d.'v_jenislaporan.php';
                     break;
+                    case 'pemutihanpenerimaansiswa':
+                        require $d.'v_pemutihanpenerimaansiswa.php';
+                    break;
+                    // case 'diskon':
+                    //     require $d.'v_diskon.php';
+                    // break;
+                    // case 'detaildiskon':
+                    //     require $d.'v_detaildiskon.php';
+                    // break;
+                    case 'angsuran':
+                        require $d.'v_angsuran.php';
+                    break;
+                    case 'biaya':
+                        require $d.'v_biaya.php';
+                    break;
+                    case 'detailbiaya':
+                        require $d.'v_detailbiaya.php';
+                    break;
+                    case 'viabayar':
+                        require $d.'v_viabayar.php';
+                    break;
 
                     // transaksi
                     case 'anggarantahunan':
@@ -129,8 +150,14 @@
                     case 'penerimaansiswa':
                         require $d.'v_penerimaansiswa.php';
                     break;
+                    case 'rekapitulasipenerimaansiswa':
+                        require $d.'v_rekapitulasipenerimaansiswa.php';
+                    break;
                     case 'sarpras':
                         require $d.'v_sarpras.php';
+                    break;
+                    case 'rekeningbiaya':
+                        require $d.'v_rekeningbiaya.php';
                     break;
 
                     // case 'aktivitas':

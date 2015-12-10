@@ -5,17 +5,19 @@
   require_once '../../lib/mpdf/mpdf.php';
   require_once '../../lib/tglindo.php';
   require_once '../../lib/func.php';
-  $countx= isset($_GET['countx'])?filter($_GET['countx']):'';
-  $x     = $_SESSION['id_loginS'].$_GET['detjenistransH'].$_GET['nomerH'].$countx;
-  $token = base64_encode($x);
 
-  // var_dump($x);exit();
+  // $countx= isset($_GET['countx'])?filter($_GET['countx']):'';
+  $arr=explode(',', $_GET['transArr']);
+  $n=count($arr);
+  // $x     = $_SESSION['id_loginS'].$_GET['transArr'];
+  // $token = base64_encode($x);
+
   if(!isset($_SESSION)){ // belum login  
     echo 'user has been logout';
   }else{ // sudah login 
-    if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
-      echo 'Token URL tidak sesuai';
-    }else{ //token benar
+    // if(!isset($_GET['token']) OR  $token!==$_GET['token']){ //token salah 
+    //   echo 'Token URL tidak sesuai';
+    // }else{ //token benar
       ob_start(); // digunakan untuk convert php ke html
       $out='<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -23,22 +25,19 @@
             <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
             <title>SISTER::Keu - Kwitansi Transaksi '.$mnu.'</title>
           </head>';
-      $nomer    = isset($_GET['nomerH'])?filter($_GET['nomerH']):'';
-      // grouping 
-      $depan    = substr($nomer,0,3);
-      $tengah   = substr($nomer,5,3);
-      $belakang = substr($nomer,8,8);
-      // u/ looping nomer transaksi --> query
-      $start    = intval($tengah);
-      $end      = intval($countx)+$start;
-      // var_dump($end);exit();
-      
+
       $out.='<body>';
-      if($_GET['detjenistransH']=='ju'){
-        $s1 = 'SELECT * FROM keu_transaksi WHERE nomer = "'.$nomer.'"';
-        // var_dump($s1);exit();
+
+      $idDJTrans=getField('detjenistransaksi','keu_transaksi','replid',$arr[0]);
+      $idJTrans = getField('jenistransaksi','keu_detjenistransaksi','replid',$idDJTrans);
+      $kodeJTrans= getField('kode','keu_jenistransaksi','replid',$idJTrans);
+      $JTrans= getField('jenistransaksi','keu_jenistransaksi','replid',$idJTrans);
+      // pr($kodeJTrans);
+
+      if($kodeJTrans=='ju'){
+        $s1 = 'SELECT * FROM keu_transaksi WHERE replid='.$arr[0];
         $e1 = mysql_query($s1) or die(mysql_error());
-        $r1=mysql_fetch_assoc($e1);
+        $r1 = mysql_fetch_assoc($e1);
         $out.='<table width="100%">
                   <tr>
                     <td width="34%">
@@ -53,7 +52,7 @@
           $out.='<table width="100%">
                     <tr>
                       <td width="20%" >Kode Transaksi </td>
-                      <td>: '.$r1['nomer'].'</td>
+                      <td>: '.getNoKwitansi($r1['replid']).'</td>
                     </tr>
                     <tr>
                       <td>No. Bukti</td>
@@ -68,12 +67,10 @@
                       <td>: '.$r1['uraian'].'</td>
                     </tr>';
           $out.='</table>';
-          $s2 = ' SELECT replid,rek,nominal,jenis
+          $s2 = ' SELECT replid,detilrekening,nominal,jenisrekening
                   FROM keu_jurnal 
-                  WHERE 
-                    transaksi ='.$r1['replid'].'
-                  ORDER BY 
-                    jenis ASC';
+                  WHERE transaksi ='.$r1['replid'].'
+                  ORDER BY jenisrekening ASC';
           $e2 = mysql_query($s2);
           $out.='<table class="isi" width="100%">
                 <tr class="head">
@@ -81,46 +78,49 @@
                   <td align="center">Debit</td>
                   <td align="center">Kredit</td>
                 </tr>';
+          $debitTot=$krditTot=0;
           while ($r2 = mysql_fetch_assoc($e2)){
-            $debit  =($r2['jenis']=='d'?$r2['nominal']:0);
-            $kredit =($r2['jenis']=='k'?$r2['nominal']:0);
+            $debit  =($r2['jenisrekening']=='d'?$r2['nominal']:0);
+            $kredit =($r2['jenisrekening']=='k'?$r2['nominal']:0);
+            $debitTot+=$debit;
+            $kreditTot+=$kredit;
             $out.='<tr>
-              <td>'.getRekening($r2['rek']).'</td>
-              <td>Rp. '.number_format($debit).'</td>
-              <td>Rp. '.number_format($kredit).'</td>
+              <td>'.getRekening($r2['detilrekening']).'</td>
+              <td align="right" >'.setuang($debit).'</td>
+              <td align="right">'.setuang($kredit).'</td>
             </tr>';
-          }$out.='</table>';
+          }
+          $out.='<tr class="head">
+            <td></td>
+            <td align="right">'.setuang($debitTot).'</td>
+            <td align="right">'.setuang($kreditTot).'</td>
+          </tr>';
+          $out.='</table><br>';
+          $out.='</table>';
 
-      }else{
-        $nomerArr ='';
-        for ($i =$start; $i<=$end ; $i++) { 
-          $nomerArr.=',"'.$depan.'-'.sprintf('%04d',$i).$belakang.'"';      
-        }$nomerArr=substr($nomerArr,1);
-        
-        $s1 = 'SELECT * FROM keu_transaksi WHERE nomer IN ('.$nomerArr.')';
+      }else{ // in / out 
+        $s1 = 'SELECT * FROM keu_transaksi WHERE replid IN ('.$_GET['transArr'].')';
         $e1 = mysql_query($s1) or die(mysql_error());
         while($r1 = mysql_fetch_assoc($e1)){
-          $jenisTrans  =getJenisTrans('nama',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
-          $jenisTrans2 =getJenisTrans('kode',getDetJenisTrans('jenistrans','replid',$r1['detjenistrans']));
           $out.='<table width="100%">
                   <tr>
                     <td width="36%">
                       <img width="100" src="../../images/logo.png" alt="" />
                     </td>
                     <td>
-                      <b>Kwitansi Transaksi '.$jenisTrans.'</b>
+                      <b>Kwitansi Transaksi '.$JTrans.'</b>
                     </td>
                   </tr>
                 </table><br />';
           // start of header
           $out.='<table width="100%">
                     <tr>
-                      <td width="20%" >Kode Transaksi </td>
-                      <td>: '.$r1['nomer'].'</td>
+                      <td width="20%" >No. Kwitansi </td>
+                      <td>: '.getNoKwitansi($r1['replid']).'</td>
                     </tr>
                     <tr>
                       <td>No. Bukti</td>
-                      <td>: '.$r1['nobukti'].'</td>
+                      <td>: '.($r1['nobukti']==''?'-':$r1['nobukti']).'</td>
                     </tr>
                     <tr>
                       <td>Tanggal</td>
@@ -130,10 +130,10 @@
                       <td>Uraian</td>
                       <td>: '.$r1['uraian'].'</td>
                     </tr>';
-            if($jenisTrans=='pengeluaran'){
+            if($JTrans=='pengeluaran'){
               $out.='<tr>
                       <td>Detail Anggaran</td>
-                      <td>: '.getAnggaran($r1['detilanggaran']).'</td>
+                      <td>: '.getDetAnggaranFull($r1['anggarantahunan']).'</td>
                     </tr>';
             }$out.='</table>';
             // end of header
@@ -145,32 +145,25 @@
                       <td align="center">Debit</td>
                       <td align="center">Kredit</td>
                     </tr>';
-            $totbayar =0;
-
-            if($jenisTrans2!='ju'){
-              if($jenisTrans2=='out'){
-                $debit1  =0;
-                $kredit1 =$r1['nominal'];
-                $debit2  =$r1['nominal'];
-                $kredit2 =0;
-              }else{ // in
-                $debit1  =$r1['nominal'];
-                $kredit1 =0;
-                $debit2  =0;
-                $kredit2 =$r1['nominal'];
-              }
-            }$out.='<tr>
-                      <td>'.getRekening($r1['rekkas']).'</td>
-                      <td align="right">Rp. '.number_format($debit1).'</td>
-                      <td align="right">Rp. '.number_format($kredit1).'</td>
-                </tr><tr>
-                      <td>'.getRekening($r1['rekitem']).'</td>
-                      <td align="right">Rp. '.number_format($debit2).'</td>
-                      <td align="right">Rp. '.number_format($kredit2).'</td>
-                </tr>';
+            $s2='SELECT * FROM keu_jurnal WHERE transaksi ='.$r1['replid'].' ORDER BY jenisrekening ASC';
+            $e2=mysql_query($s2);
+            $debitTot=$krditTot=0;
+            while($r2=mysql_fetch_assoc($e2)){
+              $debit = $r2['jenisrekening']=='d'?$r2['nominal']:0;
+              $kredit = $r2['jenisrekening']=='k'?$r2['nominal']:0;
+              $debitTot+=$debit;
+              $kreditTot+=$kredit;
+              $out.='<tr>
+                        <td>'.getRekening($r2['detilrekening']).'</td>
+                        <td align="right">'.setuang($debit).'</td>
+                        <td align="right">'.setuang($kredit).'</td>
+                  </tr>';
+            }
+              
             $out.='<tr class="head">
-              <td ></td>
-              <td colspan="2" align="center">Rp. '.number_format($r1['nominal']).'</td>
+              <td></td>
+              <td align="right">'.setuang($debitTot).'</td>
+              <td align="right">'.setuang($kreditTot).'</td>
             </tr>';
             $out.='</table><br>';
           }// end of detail table
@@ -186,6 +179,6 @@
         $mpdf->WriteHTML($stylesheet,1);  
         $mpdf->WriteHTML($out);
         $mpdf->Output();
-      }
+      // }
   }
 ?>

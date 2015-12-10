@@ -19,18 +19,23 @@
 <button <?php echo isAksi('siswa','c')?'onclick="viewFR(\'\')"':'disabled  '; ?> data-hint="Tambah Data" id="tambahBC"><span class="icon-plus-2"></span> </button>
 
 <div class="input-control select span3">
+    <label class="fg-white">Departemen</label>
     <select class="aktif_cari" data-hint="Departemen" name="departemenS" id="departemenS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span2">
+    <label class="fg-white">Tahun Ajaran</label>
     <select class="aktif_cari" data-hint="Tahun Ajaran" name="tahunajaranS" id="tahunajaranS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span2">
+    <label class="fg-white">Tingkat</label>
     <select  class="aktif_cari" data-hint="Tingkat" name="tingkatS" id="tingkatS"></select>
 </div>
-<div class="input-control select span3">
+<div class="input-control select span2">
+    <label class="fg-white">SubTingkat</label>
     <select  class="aktif_cari" data-hint="Sub Tingkat" name="subtingkatS" id="subtingkatS"></select>
 </div>
 <div class="input-control select span3">
+    <label class="fg-white">Detail Kelas</label>
     <select  class="aktif_cari" data-hint="Kelas" name="detailkelasS" id="detailkelasS"></select>
 </div>
 <!-- <form id="aktifFR"> -->
@@ -45,9 +50,9 @@
                   </label>
                 </div>
               </th>
+              <th class="text-center">Nama </th>
               <th class="text-center">NIS</th>
               <th class="text-center">NISN</th>
-              <th class="text-center">Nama </th>
               <th class="text-center">Tempat, Tanggal Lahir</th>
               <th class="text-center">Aksi</th>
           </tr>
@@ -55,9 +60,9 @@
               <th class="text-center">
                   <button onclick="delSomeTR(); return false;" id="hapussemuaBC" style="display:none;" data-hint="hapus terpilih" class="bg-red fg-white"><i class="icon-cancel-2 "></i></button>
               </th>
+              <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="Nama" id="aktif_namasiswaS"></th>
               <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="NIS" id="aktif_nisS"></th>
               <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="NISN" id="aktif_nisnS"></th>
-              <th class="text-center"><input type="text" data-transform="input-control" class="aktif_cari" placeholder="Nama" id="aktif_namasiswaS"></th>
               <th class="text-center"></th>
               <th class="text-center"></th>
           </tr>
