@@ -28,12 +28,14 @@
             <tr class="bg-blue fg-white">
                 <th rowspan="2" class="text-center">Tingkat</th>
                 <th  rowspan="2" class="text-center">Terbayar</th>
-                <th class="text-center" colspan="2">Kurang</th>
-                <th  rowspan="2" class="text-center">Total</th>
-            </tr>
-            <tr class="bg-blue fg-white">
-                <th>Belum Membayar</th>
-                <th>Pemutihan</th>
+                <th class="text-center">Kurang</th>
+                <!-- <th class="text-center" colspan="2">Kurang</th> -->
+                <th  class="text-center">Total</th>
+                <!-- <th  rowspan="2" class="text-center">Total</th> -->
+            <!-- </tr> -->
+            <!-- <tr class="bg-blue fg-white"> -->
+                <!-- <th>Belum Membayar</th> -->
+                <!-- <th>Pemutihan</th> -->
             </tr>
         </thead>
         <tbody id="rekapitulasipenerimaansiswa_tbody"></tbody>

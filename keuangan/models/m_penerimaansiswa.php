@@ -97,13 +97,14 @@
 				$subtingkat  = isset($_POST['subtingkatS'])?filter($_POST['subtingkatS']):'';
 				$biaya       = isset($_POST['biayaS'])?filter($_POST['biayaS']):'';
 				// opsional 
-				$semester    = isset($_POST['semesterS']) && $_POST['semesterS']!=''?filter($_POST['semesterS']):'';
+				$semester    = isset($_POST['semesterS']) && $_POST['semesterS']!='' && $_POST['semesterS']!='null'?' AND idsemester ='.filter($_POST['semesterS']):'';
+				$bulan       = isset($_POST['bulanS']) && $_POST['bulanS']!='' && $_POST['bulanS']!='null'?' AND idsemester ='.filter($_POST['bulanS']):'';
 				
 				$nis           = isset($_POST['nisS'])?filter($_POST['nisS']):'';
 				$nisn          = isset($_POST['nisnS'])?filter($_POST['nisnS']):'';
 				$namasiswa     = isset($_POST['namasiswaS'])?filter($_POST['namasiswaS']):'';
 				$nopendaftaran = isset($_POST['nopendaftaranS'])?filter($_POST['nopendaftaranS']):'';
-				$statusbayar = isset($_POST['statusS']) && $_POST['statusS']!=''?' AND getStatusBayar(sb.replid) ="'.filter($_POST['statusS']).'"':'';
+				$statusbayar   = isset($_POST['statusS']) && $_POST['statusS']!=''?' AND getStatusBayar(idsiswabiaya) ="'.filter($_POST['statusS']).'"':'';
 
 				$sql = 'SELECT
 							idsiswa,
@@ -126,6 +127,7 @@
 							AND namasiswa LIKE "%'.$namasiswa.'%" 
 							AND nis LIKE "%'.$nis.'%" 
 							AND nisn LIKE "%'.$nisn.'%" 
+							'.$statusbayar.$semester.'
 						GROUP BY
 							idsiswa
 						ORDER BY
@@ -183,16 +185,19 @@
 
 			// add / edit -----------------------------------------------------------------
 			case 'simpan':
-				// pr(getTahunAjaranByBiaya(654));
+				// $ditagih = getField('ditagih','vw_siswa_biaya','idsiswabiaya',$_POST['idsiswabiayaTB']);
 				$idkww   = intval(getField('max(idkwitansi)',$tb,'',''));
 				$idkw    = $idkww==''?1:($idkww+1);
 				$nominal = getuang($_POST['akanBayarJenisTB']=='1'?$_POST['akanBayarNominalTB1']:$_POST['akanBayarNominalTB2']);
-				$s = 'INSERT INTO '.$tb.' set 	siswabiaya = '.$_POST['idsiswabiayaTB'].',
-												nominal    = '.$nominal.',
-												viabayar2  = '.$_POST['viaBayarTB'].',
-												tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'",
-												idkwitansi = '.$idkw;
-												// pr($s);
+						// semester   = '.($ditagih=='12'||$ditagih=='2'?$_POST['semesterH']:'').',
+						// bulan      = '.($ditagih=='12'||$ditagih=='2'?$_POST['bulanH']:'').',
+				$s = 'INSERT INTO '.$tb.' set 	
+						siswabiaya = '.$_POST['idsiswabiayaTB'].',
+						nominal    = '.$nominal.',
+						viabayar2  = '.$_POST['viaBayarTB'].',
+						tanggal    = "'.tgl_indo6($_POST['tanggalTB']).'",
+						idkwitansi = '.$idkw;
+						// pr($s);
 
 				$e  = mysql_query($s);
 				$idPenerimaanSiswa = mysql_insert_id();
@@ -316,32 +321,37 @@
 				));
 			break;
 
-
 			// ambiledit ------------------------------------------------------------------
 			case 'ambiledit':
-				$s= 'SELECT sb.replid idsiswabiaya,	
-							v.namasiswa,	
-							v.nis,
-							concat(v.tingkat," ",v.subtingkat,"-",k.kelas)kelas,
-							b.biaya,
-							db.nominal biayaAwal,
-							sb.angsuran,
-							sb.isAngsur2,
-							sb.viabayar
-						FROM 
-							psb_siswabiaya sb 
-							JOIN psb_detailbiaya db on db.replid = sb.detailbiaya
-							JOIN psb_biaya b  on b.replid = db.biaya
-							JOIN vw_psb_siswa_kriteria v on sb.siswa = v.idsiswa 
-							JOIN aka_siswakelas sk on sk.siswa = v.idsiswa 
-							JOIN aka_detailkelas dk on dk.replid = sk.detailkelas
-							JOIN aka_kelas k on k.replid = dk.kelas 
+				$s= '	SELECT
+							idsiswa,
+							idsiswabiaya,
+							namasiswa,
+							nopendaftaran,
+							nis,
+							biaya,
+							ditagih,
+							isAngsur2,
+							angsuran,
+							namasiswa,
+							concat(tingkat," ",subtingkat," ",kelas)kelas,
+							viabayar,
+							biayaAwal,
+							biayaNett,
+							biayaKurang,
+							biayaTerbayar,
+							idsemester
+						FROM vw_siswa_biaya 
 						WHERE
-							db.biaya  ='.$_POST['biaya'].' and 
-							v.idsiswa  ='.$_POST['replid'].' AND 
-							v.idsubtingkat = '.$_POST['subtingkat'].'
+							status != "2" and
+							idbiaya  ='.$_POST['biaya'].' and 
+							idsiswa  ='.$_POST['replid'].' AND 
+							idsubtingkat = '.$_POST['subtingkat'].'
 						GROUP BY
-							sb.replid';
+							idsiswabiaya
+						ORDER BY
+							idsubtingkat asc,
+							namasiswa asc';
 				// pr($s); 
 				$e    = mysql_query($s);
 				$r    = mysql_fetch_assoc($e);
@@ -354,48 +364,50 @@
 				$terbayarBaru         = getTerbayarBaru($_POST['replid'],$_POST['biaya']);
 				$terbayarTotal        = getTerbayarTotal($_POST['replid'],$_POST['biaya']);
 				$terbayarAngsurankeRule = ceil($terbayarTotal/$angsuranNominal);
-				// pr($terbayarAngsuranke2);
 			// akan bayar
-				// $akanBayarke          = $terbayarBaru<$angsuranNominal?$terbayarAngsurankeRule:($terbayarAngsuranke+1);
 				$akanBayarke          = ($terbayarTotal%$angsuranNominal==0)?($terbayarAngsurankeRule+1):$terbayarAngsurankeRule;
 				$lunasPerAngsuran     =($terbayarTotal%$angsuranNominal==0)?true:false;
 				$lunasTotalAngsuran   = $terbayarTotal==$biayaNett?true:false;
 				$kuranganAngsuran     = $terbayarAngsurankeRule==$akanBayarke?$angsuranNominal-$terbayarBaru:0;
 			//belum bayar
-				// $belumBayarNominalTot = $biayaNett-($terbayarTotal+$angsuranNominal);
 				$belumBayarAngsuranke = intval($r['angsuran'])-intval($akanBayarke);
-
+				
+				$semester = getField('semester','aka_semester','replid',$r['idsemester']);
 				$out  = json_encode(array(
 							'status' =>$stat,
 							'datax'  =>array(
-							// header
-								'idsiswabiaya'         =>$r['idsiswabiaya'],
-								'namasiswa'            =>$r['namasiswa'],
-								'kelas'                =>$r['kelas'],
-								'biaya'                =>$r['biaya'],
-								'nis'                  =>$r['nis'],
-							// harus dibayar
-								'biayaAwal'            =>setuang($r['biayaAwal']),
-								'biayaNett'            =>setuang($biayaNett),
-								'totalDiskon'          =>setuang($r['biayaAwal']-$biayaNett),
-							//angsuran
-								'kuranganAngsuran'     => $kuranganAngsuran,
-								'viabayar'             => $r['viabayar'],
-								'isAngsur2'            => $r['isAngsur2'],
-								'angsuran'             => $r['angsuran'],
-								'angsuranNominal'      => setuang($angsuranNominal),
-								'lunasPerAngsuran'=>$lunasPerAngsuran,
-								'lunasTotalAngsuran'=>$lunasTotalAngsuran,
-							//sudah bayar
-								'terbayarAngsurankeReal'   => $terbayarAngsurankeReal,
-								'terbayarAngsurankeRule'   => $terbayarAngsurankeRule,
-								'terbayarBaru'         => setuang($terbayarBaru),
-								'terbayarTotal'        => setuang($terbayarTotal),
-							//akan bayar
-								'akanBayarke'          => $akanBayarke,
-							//belum bayar
+								// header
+								'idsiswabiaya'            =>$r['idsiswabiaya'],
+								'ditagih'                 =>$r['ditagih'],
+								'idsemester'              =>$r['idsemester'],
+								'idsemester'              =>$r['idsemester'],
+								'semester'                =>($semester=='1'?'Ganjil':'Genap'),
+								'namasiswa'               =>$r['namasiswa'],
+								'kelas'                   =>$r['kelas'],
+								'biaya'                   =>$r['biaya'],
+								'nis'                     =>$r['nis'],
+								// harus dibayar
+								'biayaAwal'               =>setuang($r['biayaAwal']),
+								'biayaNett'               =>setuang($biayaNett),
+								'totalDiskon'             =>setuang($r['biayaAwal']-$biayaNett),
+								//angsuran
+								'kuranganAngsuran'        => $kuranganAngsuran,
+								'viabayar'                => $r['viabayar'],
+								'isAngsur2'               => $r['isAngsur2'],
+								'angsuran'                => $r['angsuran'],
+								'angsuranNominal'         => setuang($angsuranNominal),
+								'lunasPerAngsuran'        =>$lunasPerAngsuran,
+								'lunasTotalAngsuran'      =>$lunasTotalAngsuran,
+								//sudah bayar
+								'terbayarAngsurankeReal'  => $terbayarAngsurankeReal,
+								'terbayarAngsurankeRule'  => $terbayarAngsurankeRule,
+								'terbayarBaru'            => setuang($terbayarBaru),
+								'terbayarTotal'           => setuang($terbayarTotal),
+								//akan bayar
+								'akanBayarke'             => $akanBayarke,
+								//belum bayar
 								// 'belumBayarNominalTot' => setuang($belumBayarNominalTot),
-								'belumBayarAngsuranke' => $belumBayarAngsuranke,
+								'belumBayarAngsuranke'    => $belumBayarAngsuranke,
 						)));					
 			break;
 			

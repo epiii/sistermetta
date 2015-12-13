@@ -106,7 +106,7 @@
 							vk.idtingkat
 						ORDER BY
 							vk.urutan asc';
-							pr($sql);
+							// pr($sql);
 				if(isset($_POST['starting'])){ 
 					$starting=$_POST['starting'];
 				}else{
