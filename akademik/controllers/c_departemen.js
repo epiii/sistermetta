@@ -6,7 +6,7 @@ var contentFR ='';
     $(document).ready(function(){
         contentFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
 
-                        +'<input id="idformH" type="text">' 
+                        +'<input id="idformH" type="hidden">' 
                         +'<label>Departemen</label>'
                         +'<div class="input-control text">'
                             +'<input required type="text" name="namaTB" id="namaTB">'

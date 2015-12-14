@@ -25,13 +25,15 @@
     <thead>
         <tr class="bg-blue fg-white">
             <th class="text-center">Biaya</th>
-            <th class="text-center" colspan="2">Rekening (COA)</th>
+            <th class="text-center">Rekening (COA)</th>
+            <!-- <th class="text-center" colspan="2">Rekening (COA)</th> -->
             <th class="text-center">Aksi</th>
-        </tr>
+        <!-- </tr> -->
         <tr id="cariTR" class="bg-blue fg-white">
             <th><input type="text" data-transform="input-control" class="cari" placeholder="cari ..." id="biayaS"></th>
-            <th>Pembayarn</th>
-            <th>Pemutihan</th>
+            <!-- <th>Pembayarn</th> -->
+            <!-- <th>Pemutihan</th> -->
+            <th></th>
             <th></th>
         </tr>
     </thead>

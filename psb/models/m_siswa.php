@@ -921,7 +921,7 @@
 							'panggilansiswa'         =>$r['panggilansiswa'],
 							'jkelaminsiswa'          =>$r['jkelaminsiswa'],
 							'tempatlahirsiswa'       =>$r['tempatlahirsiswa'],
-							'tanggallahirsiswa'      =>$r['tanggallahirsiswa'],
+							'tanggallahirsiswa'      =>tgl_indo5($r['tanggallahirsiswa']),
 							'sukusiswa'              =>$r['sukusiswa'],
 							'warganegarasiswa'       =>$r['warganegarasiswa'],
 							'agamasiswa'             =>$r['agamasiswa'],
@@ -947,7 +947,7 @@
 							/*ayah */
 							'namaayah'               =>$r['namaayah'],
 							'tempatlahirayah'        =>$r['tempatlahirayah'],
-							'tanggallahirayah'       =>$r['tanggallahirayah'],
+							'tanggallahirayah'       =>tgl_indo5($r['tanggallahirayah']),
 							'agamaayah'              =>$r['agamaayah'],
 							'warganegaraayah'        =>$r['warganegaraayah'],
 							'kodeposayah'            =>$r['kodeposayah'],
@@ -970,7 +970,7 @@
 							/*siswa ibu*/
 							'namaibu'                =>$r['namaibu'],
 							'tempatlahiribu'         =>$r['tempatlahiribu'],
-							'tanggallahiribu'        =>$r['tanggallahiribu'],
+							'tanggallahiribu'        =>tgl_indo5($r['tanggallahiribu']),
 							'agamaibu'               =>$r['agamaibu'],
 							'warganegaraibu'         =>$r['warganegaraibu'],
 							'kodeposibu'             =>$r['kodeposibu'],

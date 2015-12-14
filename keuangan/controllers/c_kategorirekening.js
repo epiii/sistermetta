@@ -19,13 +19,13 @@ var contentFR = '';
                             +'<button class="btn-clear"></button>'
                         +'</div>'
                         // normal
-                        +'<label>Jenis Normal</label>'
-                        +'<div class="input-control select">'
-                            +'<select required name="jenisTB" id="jenisTB">'
-                                +'<option value="d">DEBIT</option>'
-                                +'<option value="k">KREDIT</option>'
-                            +'</select>'
-                        +'</div>'
+                        // +'<label>Jenis Normal</label>'
+                        // +'<div class="input-control select">'
+                        //     +'<select required name="jenisTB" id="jenisTB">'
+                        //         +'<option value="d">DEBIT</option>'
+                        //         +'<option value="k">KREDIT</option>'
+                        //     +'</select>'
+                        // +'</div>'
                         // penambahan
                         +'<label>Penambahan </label>'
                         +'<div class="input-control select">'
@@ -141,7 +141,7 @@ var contentFR = '';
                             $('#idformH').val(id);
                             $('#kodeTB').val(dt.kode);
                             $('#namaTB').val(dt.nama);
-                            $('#jenisTB').val(dt.jenis);
+                            // $('#jenisTB').val(dt.jenis);
                             $('#jenistambahTB').val(dt.jenistambah);
                             $('#jeniskurangTB').val(dt.jeniskurang);
                         }

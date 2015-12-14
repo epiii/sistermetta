@@ -67,16 +67,15 @@
                   <table  width="100%">
                     <tr>
                       <td xwidth="40%">
-                        <img width="100" src="../../images/logo2.png" alt="" />
+                        <img width="100" src="../../images/logo.png" alt="" />
                       </td>
                       <td colspan="2">
-                        <small>
-                          Jl. Raya Sukomanunggal Jaya No. 33 A Surabaya 60187 <br />
-                          Telp. (031) 732 5999 | fax. (031) 734 5464 <br />
-                          Jl. Raya Kali Rungkut No.5 Ruko Rungkut Megah Raya A-25 Surabaya 60293 <br />
-                          Telp. (031) 879 8896 | fax. (031) 879 8896 <br />
-                          www.elyon.sch.id | info@elyon.sch.id 
-                        </small>
+                        <b>METTA SCHOOL </b><br />
+                        <small>';
+                        $sd='SELECT * FROM departemen order by nama asc';
+                        $ed=mysql_query($sd);
+                        while($rd=mysql_fetch_array($ed)) $out.=$rd['alamat'].'<br />Telp. '.$rd['telepon'];
+                        $out.='</small>
                       </td>
                     </tr>
                     <tr>

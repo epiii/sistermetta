@@ -28,7 +28,7 @@ CREATE
 ALGORITHM=UNDEFINED 
 DEFINER=`root`@`localhost` 
 SQL SECURITY DEFINER 
-VIEW `vw_psb_kriteria` AS 
+VIEW `vw_psb_siswa_kriteria` AS 
 SELECT
 	`siswa`.`replid` AS `idsiswa`,
 	`siswa`.`nis` AS `nis`,
@@ -235,8 +235,23 @@ SELECT
 	j.detilrekening iddetilrekening,
 	j.jenisrekening,
 	j.nominal,
-	getOperatorDetRekening(j.replid,j.jenisrekening)operator
+	getOperatorDetRekening(j.detilrekening,j.jenisrekening)operator
 FROM
 	keu_transaksi t
 	JOIN keu_jurnal j on j.transaksi = t.replid ;
 
+
+/*getSaldoRekeningByTgl*/
+DELIMITER $$
+CREATE DEFINER = `root`@`localhost` FUNCTION `getSaldoRekeningByTgl`(`idDetRek` int,`tgl1` date,`tgl2` date) RETURNS decimal(14,0)
+BEGIN
+	DECLARE saldoRekening DECIMAL(14);
+		SELECT IFNULL(sum(concat(operator,nominal)),0) into saldoRekening
+		FROM vw_transaksi
+		WHERE 
+			(tanggal BETWEEN  tgl1 and tgl2 )
+			and iddetilrekening = idDetRek
+		ORDER BY tanggal ASC;
+	RETURN saldoRekening;
+END $$
+DELIMITER ;

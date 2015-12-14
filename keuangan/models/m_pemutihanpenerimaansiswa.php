@@ -57,8 +57,9 @@
 						AND idtahunajaran ='.$_GET['idtahunajaran'].'	
 						and biaya LIKE "%'.$searchTerm.'%" 
 						AND getBiayaTerbayar(idsiswabiaya)!=getBiayaNett(idsiswabiaya)';
+				$ss.=' GROUP BY biaya ';
 			}
-// pr($ss);
+			
 			$result = mysql_query($ss) or die(mysql_error());
 			$row    = mysql_fetch_array($result,MYSQL_ASSOC);
 			$count  = mysql_num_rows($result);
@@ -76,6 +77,7 @@
 				$ss.='ORDER BY '.$sidx.' '.$sord;
 			}
 
+// pr($ss);
 			$result = mysql_query($ss) or die("Couldn t execute query.".mysql_error());
 			$rows 	= array();
 			while($row = mysql_fetch_assoc($result)) {

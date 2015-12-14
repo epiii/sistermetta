@@ -121,9 +121,9 @@
 						$out.= '<tr>
 									<td>'.$res['biaya'].'</td>
 									<td>'.getAllRekeningBiaya($res['idbiaya'],$departemen,$tahunajaran).'</td>
-									<td>'.getAllRekeningBiaya($res['idbiaya'],$departemen,$tahunajaran).'</td>
 									'.$btn.'
 								</tr>';
+									// <td>'.getAllRekeningBiaya($res['idbiaya'],$departemen,$tahunajaran).'</td>
 					}
 				}else{ #kosong
 					$out.= '<tr align="center">
@@ -169,7 +169,7 @@
 				$out  = json_encode(array('status'=>$stat,'terhapus'=>$d[$mnu]));
 			break;
 			// delete -----------------------------------------------------------------
-
+// 
 			// ambiledit -----------------------------------------------------------------
 			case 'ambiledit':
 				$s = '	SELECT rb.departemen,rb.tahunajaran,b.biaya

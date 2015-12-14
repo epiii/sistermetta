@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-12-13 19:51:18
+Date: 2015-12-14 21:03:06
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -245,18 +245,6 @@ INSERT INTO `aka_detailkelas` VALUES ('77', '39', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('78', '39', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('79', '40', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('80', '40', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('81', '41', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('82', '41', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('83', '42', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('84', '42', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('85', '43', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('86', '43', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('87', '44', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('88', '44', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('89', '45', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('90', '45', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('91', '46', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('92', '46', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('93', '47', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('94', '47', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('95', '48', '3', '0');
@@ -317,10 +305,6 @@ INSERT INTO `aka_detailkelas` VALUES ('149', '75', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('150', '75', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('151', '76', '3', '0');
 INSERT INTO `aka_detailkelas` VALUES ('152', '76', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('153', '77', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('154', '77', '5', '0');
-INSERT INTO `aka_detailkelas` VALUES ('155', '78', '3', '0');
-INSERT INTO `aka_detailkelas` VALUES ('156', '78', '5', '0');
 INSERT INTO `aka_detailkelas` VALUES ('157', '1', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('158', '2', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('159', '3', '12', '0');
@@ -361,14 +345,6 @@ INSERT INTO `aka_detailkelas` VALUES ('193', '37', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('194', '38', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('195', '39', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('196', '40', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('197', '41', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('198', '42', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('199', '43', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('200', '44', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('201', '45', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('202', '46', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('203', '77', '12', '0');
-INSERT INTO `aka_detailkelas` VALUES ('204', '78', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('205', '47', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('206', '48', '12', '0');
 INSERT INTO `aka_detailkelas` VALUES ('207', '49', '12', '0');
@@ -723,12 +699,6 @@ INSERT INTO `aka_kelas` VALUES ('37', '1', 'C', '17', '20', '', '2015-08-19 18:0
 INSERT INTO `aka_kelas` VALUES ('38', '1', 'A', '18', '20', '', '2015-08-19 18:05:38');
 INSERT INTO `aka_kelas` VALUES ('39', '1', 'B', '18', '20', '', '2015-08-19 18:05:56');
 INSERT INTO `aka_kelas` VALUES ('40', '1', 'C', '18', '20', '', '2015-08-19 18:07:24');
-INSERT INTO `aka_kelas` VALUES ('41', '1', 'A', '19', '20', '', '2015-08-19 18:07:39');
-INSERT INTO `aka_kelas` VALUES ('42', '1', 'B', '19', '20', '', '2015-08-19 18:07:49');
-INSERT INTO `aka_kelas` VALUES ('43', '1', 'C', '19', '20', '', '2015-08-19 18:08:12');
-INSERT INTO `aka_kelas` VALUES ('44', '1', 'A', '20', '20', '', '2015-08-19 18:08:27');
-INSERT INTO `aka_kelas` VALUES ('45', '1', 'B', '20', '20', '', '2015-08-19 18:08:36');
-INSERT INTO `aka_kelas` VALUES ('46', '1', 'C', '20', '20', '', '2015-08-19 18:08:45');
 INSERT INTO `aka_kelas` VALUES ('47', '2', 'A', '9', '20', '', '2015-08-23 13:24:06');
 INSERT INTO `aka_kelas` VALUES ('48', '2', 'B', '9', '20', '', '2015-08-23 13:24:20');
 INSERT INTO `aka_kelas` VALUES ('49', '2', 'A', '10', '20', '', '2015-08-23 13:24:34');
@@ -759,8 +729,6 @@ INSERT INTO `aka_kelas` VALUES ('73', '3', '1', '7', '20', '', '2015-08-24 03:36
 INSERT INTO `aka_kelas` VALUES ('74', '3', '2', '7', '20', '', '2015-08-24 03:37:09');
 INSERT INTO `aka_kelas` VALUES ('75', '3', '2', '8', '20', '', '2015-08-24 03:37:30');
 INSERT INTO `aka_kelas` VALUES ('76', '3', '2', '8', '20', '', '2015-08-24 03:37:47');
-INSERT INTO `aka_kelas` VALUES ('77', '1', '1', '24', '20', '', '2015-08-27 06:08:46');
-INSERT INTO `aka_kelas` VALUES ('78', '1', '2', '24', '20', '', '2015-08-27 06:08:56');
 
 -- ----------------------------
 -- Table structure for aka_komennilai
@@ -4763,40 +4731,17 @@ CREATE TABLE `aka_siswakelas` (
   KEY `detailkelas` (`detailkelas`) USING BTREE,
   CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_siswakelas
 -- ----------------------------
-INSERT INTO `aka_siswakelas` VALUES ('15', '180', '22');
-INSERT INTO `aka_siswakelas` VALUES ('16', '183', '22');
-INSERT INTO `aka_siswakelas` VALUES ('17', '184', '22');
-INSERT INTO `aka_siswakelas` VALUES ('18', '185', '22');
-INSERT INTO `aka_siswakelas` VALUES ('19', '186', '22');
-INSERT INTO `aka_siswakelas` VALUES ('20', '187', '22');
-INSERT INTO `aka_siswakelas` VALUES ('21', '188', '22');
-INSERT INTO `aka_siswakelas` VALUES ('22', '189', '22');
-INSERT INTO `aka_siswakelas` VALUES ('23', '190', '22');
-INSERT INTO `aka_siswakelas` VALUES ('24', '191', '22');
-INSERT INTO `aka_siswakelas` VALUES ('31', '190', '170');
-INSERT INTO `aka_siswakelas` VALUES ('32', '181', '170');
-INSERT INTO `aka_siswakelas` VALUES ('33', '182', '170');
-INSERT INTO `aka_siswakelas` VALUES ('35', '183', '170');
-INSERT INTO `aka_siswakelas` VALUES ('36', '184', '170');
-INSERT INTO `aka_siswakelas` VALUES ('37', '185', '170');
-INSERT INTO `aka_siswakelas` VALUES ('38', '186', '170');
-INSERT INTO `aka_siswakelas` VALUES ('39', '187', '170');
-INSERT INTO `aka_siswakelas` VALUES ('40', '188', '170');
-INSERT INTO `aka_siswakelas` VALUES ('41', '189', '170');
-INSERT INTO `aka_siswakelas` VALUES ('42', '191', '170');
-INSERT INTO `aka_siswakelas` VALUES ('44', '180', '170');
-INSERT INTO `aka_siswakelas` VALUES ('45', '193', '157');
-INSERT INTO `aka_siswakelas` VALUES ('46', '194', '157');
-INSERT INTO `aka_siswakelas` VALUES ('48', '196', '157');
-INSERT INTO `aka_siswakelas` VALUES ('49', '197', '157');
-INSERT INTO `aka_siswakelas` VALUES ('51', '199', '161');
-INSERT INTO `aka_siswakelas` VALUES ('52', '200', '2');
-INSERT INTO `aka_siswakelas` VALUES ('53', '201', '22');
+INSERT INTO `aka_siswakelas` VALUES ('54', '205', '159');
+INSERT INTO `aka_siswakelas` VALUES ('55', '193', '2');
+INSERT INTO `aka_siswakelas` VALUES ('56', '230', '2');
+INSERT INTO `aka_siswakelas` VALUES ('57', '233', '2');
+INSERT INTO `aka_siswakelas` VALUES ('58', '238', '2');
+INSERT INTO `aka_siswakelas` VALUES ('59', '240', '2');
 
 -- ----------------------------
 -- Table structure for aka_sks
@@ -5042,9 +4987,6 @@ INSERT INTO `aka_subtingkat` VALUES ('15', '1', '7', '0', '12');
 INSERT INTO `aka_subtingkat` VALUES ('16', '2', '7', '0', '13');
 INSERT INTO `aka_subtingkat` VALUES ('17', '3', '7', '0', '14');
 INSERT INTO `aka_subtingkat` VALUES ('18', '4', '7', '0', '15');
-INSERT INTO `aka_subtingkat` VALUES ('19', '1', '8', '0', '16');
-INSERT INTO `aka_subtingkat` VALUES ('20', '2', '8', '0', '17');
-INSERT INTO `aka_subtingkat` VALUES ('24', '3', '3', '0', '');
 
 -- ----------------------------
 -- Table structure for aka_tahunajaran
@@ -5133,11 +5075,10 @@ CREATE TABLE `aka_tingkat` (
 -- Records of aka_tingkat
 -- ----------------------------
 INSERT INTO `aka_tingkat` VALUES ('1', 'Toddler', 'Tod', '-', '1', '2015-06-02 20:52:51');
-INSERT INTO `aka_tingkat` VALUES ('2', 'Playgroup', 'PG', '-', '2', '2015-06-02 20:53:05');
+INSERT INTO `aka_tingkat` VALUES ('2', 'Pre School', 'PS', '-', '2', '2015-06-02 20:53:05');
 INSERT INTO `aka_tingkat` VALUES ('3', 'Kindergarten', 'KG ', '-', '3', '2015-06-02 20:53:30');
 INSERT INTO `aka_tingkat` VALUES ('6', 'Primary', 'P', '', '4', '2015-08-18 21:50:54');
 INSERT INTO `aka_tingkat` VALUES ('7', 'Secondary', 'S', '', '5', '2015-08-18 21:51:15');
-INSERT INTO `aka_tingkat` VALUES ('8', 'High School', 'HS', '', '6', '2015-08-18 21:51:35');
 
 -- ----------------------------
 -- Table structure for aka_tmp_saudara

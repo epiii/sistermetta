@@ -495,7 +495,7 @@
 									j.detilrekening replid, 
 									dr.kode,
 									dr.nama,
-									getSaldoRekeningByTgl(j.detilrekening,"2015-11-01","2016-11-01")saldoRekening
+									getSaldoRekeningByTgl(j.detilrekening,"'.tgl_indo6($_POST['tgl1']).'","'.tgl_indo6($_POST['tgl2']).'")saldoRekening
 								FROM keu_jurnal j 
 									JOIN keu_detilrekening dr on dr.replid = j.detilrekening
 									JOIN keu_transaksi t on t.replid = j.transaksi
