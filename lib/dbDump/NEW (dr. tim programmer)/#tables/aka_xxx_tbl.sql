@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50616
 File Encoding         : 65001
 
-Date: 2015-11-02 20:37:04
+Date: 2015-12-13 19:51:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -903,25 +903,26 @@ CREATE TABLE `aka_ruang` (
 -- ----------------------------
 DROP TABLE IF EXISTS `aka_semester`;
 CREATE TABLE `aka_semester` (
-  `replid` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `semester` varchar(50) NOT NULL,
-  `tahunajaran` int(10) unsigned NOT NULL,
-  `aktif` enum('1','0') NOT NULL DEFAULT '1',
-  `tglMulai` date DEFAULT NULL,
+  `replid` int(11) NOT NULL AUTO_INCREMENT,
+  `semester` enum('1','2') NOT NULL,
+  `tahunajaran` int(11) NOT NULL,
+  `aktif` enum('1','0') NOT NULL DEFAULT '0',
+  `tglMulai` date NOT NULL,
   `tglSelesai` date NOT NULL,
   PRIMARY KEY (`replid`),
-  KEY `FK_semester_departemen` (`tahunajaran`)
+  KEY `tahunajaran` (`tahunajaran`) USING BTREE,
+  CONSTRAINT `tahunajaranFK16` FOREIGN KEY (`tahunajaran`) REFERENCES `aka_tahunajaran` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of aka_semester
 -- ----------------------------
-INSERT INTO `aka_semester` VALUES ('1', 'Ganjil', '1', '0', '0000-00-00', '0000-00-00');
-INSERT INTO `aka_semester` VALUES ('2', 'Genap', '1', '1', '0000-00-00', '0000-00-00');
-INSERT INTO `aka_semester` VALUES ('3', 'Ganjil', '2', '0', '0000-00-00', '0000-00-00');
-INSERT INTO `aka_semester` VALUES ('4', 'Genap', '2', '1', '0000-00-00', '0000-00-00');
-INSERT INTO `aka_semester` VALUES ('5', '1', '3', '0', '2014-07-01', '2014-12-31');
-INSERT INTO `aka_semester` VALUES ('6', '2', '3', '1', '2015-01-01', '2015-06-30');
+INSERT INTO `aka_semester` VALUES ('1', '1', '3', '0', '2014-07-01', '2014-12-31');
+INSERT INTO `aka_semester` VALUES ('2', '2', '3', '0', '2015-01-01', '2015-06-30');
+INSERT INTO `aka_semester` VALUES ('3', '1', '5', '0', '2015-07-01', '2015-12-31');
+INSERT INTO `aka_semester` VALUES ('4', '2', '5', '0', '2016-01-01', '2016-06-30');
+INSERT INTO `aka_semester` VALUES ('5', '1', '12', '0', '2016-09-01', '2017-02-28');
+INSERT INTO `aka_semester` VALUES ('6', '2', '12', '1', '2017-03-01', '2017-08-31');
 
 -- ----------------------------
 -- Table structure for aka_setting
@@ -4762,7 +4763,7 @@ CREATE TABLE `aka_siswakelas` (
   KEY `detailkelas` (`detailkelas`) USING BTREE,
   CONSTRAINT `detailkelas` FOREIGN KEY (`detailkelas`) REFERENCES `aka_detailkelas` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `siswa` FOREIGN KEY (`siswa`) REFERENCES `psb_siswa` (`replid`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=54 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of aka_siswakelas
@@ -4793,8 +4794,9 @@ INSERT INTO `aka_siswakelas` VALUES ('45', '193', '157');
 INSERT INTO `aka_siswakelas` VALUES ('46', '194', '157');
 INSERT INTO `aka_siswakelas` VALUES ('48', '196', '157');
 INSERT INTO `aka_siswakelas` VALUES ('49', '197', '157');
-INSERT INTO `aka_siswakelas` VALUES ('50', '198', '157');
 INSERT INTO `aka_siswakelas` VALUES ('51', '199', '161');
+INSERT INTO `aka_siswakelas` VALUES ('52', '200', '2');
+INSERT INTO `aka_siswakelas` VALUES ('53', '201', '22');
 
 -- ----------------------------
 -- Table structure for aka_sks
@@ -5153,3 +5155,214 @@ CREATE TABLE `aka_tmp_saudara` (
 -- ----------------------------
 -- Records of aka_tmp_saudara
 -- ----------------------------
+DROP TRIGGER IF EXISTS `ins_aka_kelas`;
+DELIMITER ;;
+CREATE TRIGGER `ins_aka_kelas` AFTER INSERT ON `aka_kelas` FOR EACH ROW BEGIN
+
+/*untuk aka_detailkelas*/
+BLOCK1: begin
+    declare v_col1 int;                     
+    declare no_more_rows1 INT DEFAULT 0;  
+    declare cursor1 cursor for              
+        select replid
+        from  aka_tahunajaran;
+    declare continue handler for not found  
+        set no_more_rows1 =1;           
+    open cursor1;
+    LOOP1: loop
+        fetch cursor1
+        into  v_col1;
+        if no_more_rows1 then
+            close cursor1;
+            leave LOOP1;
+        end if;
+        INSERT INTO aka_detailkelas SET 
+          kelas = NEW.replid, 
+          tahunajaran = v_col1;
+    end loop LOOP1;
+end BLOCK1;
+
+END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `ins_aka_subtingkat`;
+DELIMITER ;;
+CREATE TRIGGER `ins_aka_subtingkat` AFTER INSERT ON `aka_subtingkat` FOR EACH ROW BEGIN
+
+/*INSERT psb_detailbiaya*/
+/*detailgelombang-----------------------------------------------------------------------*/
+BLOCK2: begin
+    declare v_col2 int;
+    declare no_more_rows2 INT DEFAULT 0;  
+    declare cursor2 cursor for
+        SELECT s.replid
+        FROM aka_kelas k
+          JOIN aka_subtingkat s on s.replid = k.subtingkat
+        WHERE k.departemen = v_col1
+        GROUP BY s.replid;
+   declare continue handler for not found
+       set no_more_rows2 =1;
+    open cursor2;
+    LOOP2: loop
+        fetch cursor2
+        into  v_col2;
+        if no_more_rows2 then
+            close cursor2;
+            leave LOOP2;
+        end if;
+        /*biaya---------------------------------------------------------------*/
+        BLOCK3: begin
+              declare v_col3 int;
+              declare no_more_rows3 INT DEFAULT 0;  
+              declare cursor3 cursor for
+                  select replid
+                  from  psb_biaya;
+             declare continue handler for not found
+                 set no_more_rows3 =1;
+              open cursor3;
+              LOOP3: loop
+                  fetch cursor3
+                  into  v_col3;
+                  if no_more_rows3 then
+                      close cursor3;
+                      leave LOOP3;
+                  end if;
+                  /*golongan ---------------------------------------------------------------*/
+                  BLOCK4: begin
+                        declare v_col4 int;
+                        declare no_more_rows4 INT DEFAULT 0;  
+                        declare cursor4 cursor for
+                            select replid
+                            from  psb_golongan;
+                       declare continue handler for not found
+                           set no_more_rows3 =1;
+                        open cursor4;
+                        LOOP4: loop
+                            fetch cursor4
+                            into  v_col4;
+                            if no_more_rows4 then
+                                close cursor4;
+                                leave LOOP4;
+                            end if;
+                  
+                            INSERT INTO psb_detailbiaya SET 
+                              biaya = v_col3, 
+                              subtingkat = v_col2, 
+                              detailgelombang = NEW.replid, 
+                              golongan = v_col4;
+                        end loop LOOP4;
+                  end BLOCK4;
+            end loop LOOP3;
+          end BLOCK3;
+    end loop LOOP2;
+end BLOCK2;
+
+END
+;;
+DELIMITER ;
+DROP TRIGGER IF EXISTS `ins_aka_tahunajaran`;
+DELIMITER ;;
+CREATE TRIGGER `ins_aka_tahunajaran` AFTER INSERT ON `aka_tahunajaran` FOR EACH ROW BEGIN
+
+/*untuk psb_deteailgelombang*/
+BLOCK1: begin
+    declare v_col1 int;                     
+    declare no_more_rows1 INT DEFAULT 0;  
+    declare cursor1 cursor for              
+        select replid
+        from  psb_gelombang;
+    declare continue handler for not found  
+    		set no_more_rows1 =1;           
+    open cursor1;
+    LOOP1: loop
+        fetch cursor1
+        into  v_col1;
+        if no_more_rows1 then
+            close cursor1;
+            leave LOOP1;
+        end if;
+        BLOCK2: begin
+            declare v_col2 int;
+            declare no_more_rows2 INT DEFAULT 0;  
+						declare cursor2 cursor for
+                select replid
+                from  departemen;
+           declare continue handler for not found
+               set no_more_rows2 =1;
+            open cursor2;
+            LOOP2: loop
+                fetch cursor2
+                into  v_col2;
+                if no_more_rows2 then
+                    close cursor2;
+                    leave LOOP2;
+                end if;
+								INSERT INTO psb_detailgelombang SET 
+									tahunajaran = NEW.replid, 
+            			gelombang  = v_col1, 
+            			departemen = v_col2;
+            end loop LOOP2;
+        end BLOCK2;
+    end loop LOOP1;
+end BLOCK1;
+
+/*untuk psb_detaildiskon*/
+/*diskon*/
+BLOCK3: begin
+    declare v_col3 int;                     
+    declare no_more_rows3 INT DEFAULT 0;  
+    declare cursor3 cursor for              
+        select replid
+        from   psb_diskon;
+    declare continue handler for not found  
+    		set no_more_rows3 =1;           
+    open cursor3;
+    LOOP3: loop
+        fetch cursor3
+        into  v_col3;
+        if no_more_rows3 then
+            close cursor3;
+            leave LOOP3;
+        end if;
+				INSERT INTO psb_detaildiskon SET 
+					tahunajaran = NEW.replid, 
+					diskon = v_col3;
+    end loop LOOP3;
+end BLOCK3;
+
+/*untuk aka_detailkelas*/
+BLOCK5: begin
+    declare v_col5 int;                     
+    declare no_more_rows5 INT DEFAULT 0;  
+    declare cursor5 cursor for              
+        select replid
+        from  aka_kelas;
+    declare continue handler for not found  
+    		set no_more_rows5 =1;           
+    open cursor5;
+    LOOP5: loop
+        fetch cursor5
+        into  v_col5;
+        if no_more_rows5 then
+            close cursor5;
+            leave LOOP5;
+        end if;
+				INSERT INTO aka_detailkelas SET 
+					tahunajaran = NEW.replid, 
+					kelas = v_col5;
+    end loop LOOP5;
+end BLOCK5;
+
+/*untuk aka_detailkelas*/
+BLOCK6: begin
+		DECLARE hasil INT DEFAULT 0;
+		SET @i= 1;
+		WHILE @i <= 2 DO
+			INSERT INTO aka_semester SET 	tahunajaran = NEW.replid,semester = i;
+			SET @i= @i+1;
+		END WHILE;
+end BLOCK6;
+
+END
+;;
+DELIMITER ;

@@ -71,6 +71,10 @@ var contentFR = contentFR2 ='';
                                 +'<td><b>Biaya</b> </td>'
                                 +'<td id="biayaTD"></td>'
                             +'</tr>'
+                            // +'<tr stlye="display:none;" id="semesterTR">'
+                                // +'<td><b>Semester</b> <input type="hidden" id="semesterH" name="semesterH" /><input type="text" id="bulanH" name="bulanH" /></td>'
+                                // +'<td id="semesterTD"></td>'
+                            // +'</tr>'
                             +'<tr id="tanggalTR">'
                                 +'<td><b>Tanggal</b> </td>'
                                 +'<td>'
@@ -244,7 +248,7 @@ var contentFR = contentFR2 ='';
         $('#statusS').change(function (){
             viewTB('penerimaansiswa');
         });
-    }); 
+    });
 
 //paging ---
     function pagination(page,aksix,subaksi){ 
@@ -423,6 +427,15 @@ var contentFR = contentFR2 ='';
                         $('#kelasTD').html(': '+dt.datax.kelas);
                         $('#nisTD').html(': '+dt.datax.nis);
                         $('#biayaTD').html(': '+dt.datax.biaya);
+                        if(dt.datax.ditagih=='2' || dt.datax.ditagih=='12'){
+                            $('#semesterTR').removeAttr('style');
+                            $('#semesterTD').html(': '+dt.datax.semester);
+                            $('#semesterH').val(dt.datax.idsemester);
+                            if(dt.datax.ditagih=='12') $('#bulanH').val(dt.datax.idsemester);
+                        }else{
+                            $('#semesterTR').attr('style','display:none;');
+                            $('#semesterH').val('');
+                        }
                     // harus bayar 
                         var biayaNett = parseInt(getUang(dt.datax.biayaNett));
                         $('#biayaAwalTD').html(dt.datax.biayaAwal);
@@ -487,8 +500,7 @@ var contentFR = contentFR2 ='';
                         $('#belumBayarNominalTotTD').html('Rp. '+(belumBayarNominalTot.setCurr()));
                         $('#belumBayarAngsurankeTD').html(dt.datax.belumBayarAngsuranke+' x');
                     }
-                });
-                $.Dialog.title('Pembayaran Siswa'); 
+                });$.Dialog.title('Pembayaran Siswa'); 
                 $.Dialog.content(contentFR);
             }
         });
@@ -526,7 +538,7 @@ var contentFR = contentFR2 ='';
         var par='',tok='',p=v='';
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
-            v=$(this).val();
+            v=$(this).val()==null?'':$(this).val();
             par+='&'+p+'='+v;
             tok+=v;
         });
@@ -608,15 +620,15 @@ var contentFR = contentFR2 ='';
                     out+='<option value="'+item.replid+'">'+item.biaya+'</option>';
                 });
                 $('#biayaS').html(out);
-                if(dt.biaya[0].ditagih=='2' || dt.biaya[0].ditagih=='12'){
-                    $('#semesterDV').removeAttr('style'); // @semester OR @bulan
-                    $('#bulanDV').removeAttr('style'); // @semester OR @bulan
-                }else{
-                    $('#semesterDV').attr('style','display:none;'); // 1x, @thn 
-                    $('#bulanDV').attr('style','display:none;'); // 1x, @thn 
-                } 
-
-                cmbsemester($('#tahunajaranS').val());
+                // if(dt.biaya[0].ditagih=='2' || dt.biaya[0].ditagih=='12'){
+                //     $('#semesterDV').removeAttr('style'); // @semester OR @bulan
+                //     $('#bulanDV').removeAttr('style'); // @semester OR @bulan
+                // }else{
+                //     $('#semesterDV').attr('style','display:none;'); // 1x, @thn 
+                //     $('#bulanDV').attr('style','display:none;'); // 1x, @thn 
+                // } 
+                viewTB('penerimaansiswa');
+                // cmbsemester($('#tahunajaranS').val());
             }
         });
     }
@@ -630,24 +642,26 @@ var contentFR = contentFR2 ='';
             if(dt.status!='sukses'){
                 out+='<option value="">'+dt.status+'</option>';
             }else{
-                if(dt.ditagih=='2' || dt.ditagih=='12'){ // filtering 
-                    $('#semesterDV').removeAttr('style');
+                // if(dt.ditagih=='2' || dt.ditagih=='12'){ // filtering 
+                    // $('#semesterDV').removeAttr('style');
                     $.each(dt.semester, function (id,item){
                         out+='<option value="'+item.replid+'">'+item.semester+'</option>';
                     });$('#semesterS').html(out);
 
-                    if(dt.ditagih=='12'){ // bulanan 
-                        $('#bulanDV').removeAttr('style');
-                        cmbbulan(dt.semester[0].replid);
-                    }else{ // semesteran
-                        $('#bulanDV').attr('style','display:none;');
-                        viewTB('penerimaansiswa');
-                    }
-                }else{
-                    $('#bulanDV').attr('style','display:none;');
-                    $('#semesterDV').attr('style','display:none;');
-                    viewTB('penerimaansiswa');
-                }
+                    // if(dt.ditagih=='12'){ // bulanan 
+                    //     $('#bulanDV').removeAttr('style');
+                    //     cmbbulan(dt.semester[0].replid);
+                    // }else{ // semesteran
+                    //     $('#bulanDV').attr('style','display:none;');
+                    //     viewTB('penerimaansiswa');
+                    // }
+                // }else{
+                //     $('#semesterS').html('');
+                //     $('#bulanS').html('');
+                //     $('#bulanDV').attr('style','display:none;');
+                //     $('#semesterDV').attr('style','display:none;');
+                //     viewTB('penerimaansiswa');
+                // }
             }
         });
     }

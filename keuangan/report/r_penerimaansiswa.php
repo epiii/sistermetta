@@ -7,9 +7,8 @@
   require_once '../../lib/tglindo.php';
   require_once '../../lib/mpdf/mpdf.php';
 
-  // pr($_GET);
   $mod   ='PSB';
-  $x     = $_SESSION['id_loginS'].$_GET['departemenS'].$_GET['tahunajaranS'].$_GET['tingkatS'].$_GET['subtingkatS'].$_GET['biayaS'].$_GET['nopendaftaranS'].$_GET['namasiswaS'].$_GET['nisnS'].$_GET['nisS'].$_GET['statusS'];
+  $x     = $_SESSION['id_loginS'].$_GET['departemenS'].$_GET['tahunajaranS'].$_GET['tingkatS'].$_GET['subtingkatS'].$_GET['biayaS'].$_GET['semesterS'].$_GET['bulanS'].$_GET['nopendaftaranS'].$_GET['namasiswaS'].$_GET['nisnS'].$_GET['nisS'].$_GET['statusS'];
   $token = base64_encode($x);
 
   if(!isset($_SESSION)){ // belum login  

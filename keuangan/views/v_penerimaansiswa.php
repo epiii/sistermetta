@@ -28,7 +28,8 @@
         <select onchange="cmbbiaya('filter');" class="penerimaansiswa_cari" data-hint="subtingkat" name="penerimaansiswa_cari_subtingkatS" id="subtingkatS"></select>
     </div><div class="input-control select span2">
         <label class="fg-white">Biaya   </label>
-        <select onchange="cmbsemester($(this).val());" class="penerimaansiswa_cari" data-hint="biaya" name="biayaS" id="biayaS"></select>
+        <select onchange="viewTB('penerimaansiswa');" class="penerimaansiswa_cari" data-hint="biaya" name="biayaS" id="biayaS"></select>
+        <!-- <select onchange="cmbsemester($(this).val());" class="penerimaansiswa_cari" data-hint="biaya" name="biayaS" id="biayaS"></select> -->
     </div><div style="display:none;" id="semesterDV" class="input-control select span2">
         <label class="fg-white">Semester   </label>
         <select onchange="cmbbulan($(this).val());" class="penerimaansiswa_cari" data-hint="penerimaansiswa" name="semesterS" id="semesterS"></select>

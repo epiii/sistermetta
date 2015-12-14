@@ -153,10 +153,11 @@
 				if($jum!=0){	
 					$nox =$starting+1;
 					while($res = mysql_fetch_assoc($result)){	
-						$btn ='<td align="center">
-									<button '.(isAksi($mnu,'u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
-										<i class="icon-pencil"></i>
-									</button>
+						// 			<button '.(isAksi($mnu,'u')?'onclick="viewFR('.$res['replid'].');"':'disabled').' data-hint="ubah"  >
+						// 				<i class="icon-pencil"></i>
+						// 			</button>
+						$btn ='
+						<td align="center">
 									<button '.(isAksi($mnu,'d')?'onclick="del('.$res['replid'].');"':'disabled').' data-hint="hapus" >
 										<i class="icon-remove"></i>
 									</button>
