@@ -225,7 +225,7 @@ echo '
 <td class="text-center">'.$no.'</td>
 <td>'.$lihatslip.'</td>
 <td>'.tanggalindo($tgl).'</td>
-<td>'.getnamacustomer($kodecustomer).''.$kodecustomer.'</td>
+<td>'.getnamacustomer($kodecustomer).'</td>
 <td>'.$carabayar.'</td>
 <td>'.getjenisbarang($kodebarang).'</td>
 <td>'.getjenjangbarang($kodebarang).'</td>
