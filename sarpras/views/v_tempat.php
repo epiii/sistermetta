@@ -1,3 +1,7 @@
+<?php 
+error_reporting(0);
+session_start();
+?>
 <script src="controllers/c_tempat.js"></script>
 <script src="js/metro/metro-button-set.js"></script>
 <script src="js/metro/metro-hint.js"></script>
@@ -12,7 +16,7 @@
 <div class="input-control select span3">
     <select data-hint="lokasi" class="main_cari" id="lokasiS"></select>
 </div>
-
+<input value="<?php echo $_SESSION['id_loginS']; ?>" id="id_loginS"  type="hidden">
 <table class="table hovered bordered striped">
     <thead>
         <tr style="color:white;"class="info">

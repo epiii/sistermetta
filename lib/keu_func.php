@@ -290,7 +290,7 @@
 				) t1 ON t1.detilanggaran = d.replid
 			WHERE
 				d.replid = '.$id;
-pr($s);
+// pr($s);
 		$e=mysql_query($s);
 		$r=mysql_fetch_assoc($e);
 		return $r[$typ];

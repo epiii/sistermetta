@@ -6,6 +6,49 @@ var c_mainFR =c_detailFR='';
 
 // main function ---
     $(document).ready(function(){
+        c_detailFR+='<div style="overflow:scroll;width:1000px;height:500px;">'
+                    +'<input type="hidden" id="detail_tempatH" class="detail_cari" >'
+                    +'<table width="100%" class="table" >'
+                        +'<tr>'
+                            +'<td  width="5%" ><b>Lokasi</b></td><td width="1%">:</td>'
+                            +'<td colspan="2" id="lokasiDV"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Tempat</b></td><td  width="1%">:</td>'
+                            +'<td colspan="2" id="tempatDV"></td>'
+                        +'</tr>'
+                        +'<tr>'
+                            +'<td><b>Keterangan</b></td><td  width="1%">:</td>'
+                            +'<td id="keteranganDV"></td>'
+                            +'<td class="place-right"><button data-hint="cetak" onclick="printPDF(\'detail\');" class="button"><i class="icon-printer"></i></button></td>'
+                        +'</tr>'
+                    +'</table>'
+                    +'<table width="80%" class="table hovered bordered striped">'
+                        +'<thead>'
+                            +'<tr class="info fg-white">'
+                                +'<th>Kode</th>'
+                                +'<th>Nama</th>'
+                                +'<th>Barcode</th>'
+                                +'<th>Sumber</th>'
+                                +'<th>Harga</th>'
+                                +'<th>Kondisi</th>'
+                                +'<th>Status</th>'
+                                +'<th>Keterangan</th>'
+                            +'</tr>'
+                            +'<tr id="detail_cariTR" class="info ">'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_kodeS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_namaS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_barkodeS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_sumberS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_hargaS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_kondisiS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_statusS"  class="detail_cari"></th>'
+                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_keteranganS"  class="detail_cari"></th>'
+                            +'</tr>'
+                        +'</thead>'
+                        +'<tbody id="detail_tbody"></tbody>'
+                    +'</table>'
+                    +'</div>';
         c_mainFR += '<form autocomplete="off" onsubmit="simpan();return false;" id="'+mnu+'FR">' 
                         +'<input id="idformH" type="hidden">' 
                         +'<label>Lokasi</label>'
@@ -38,49 +81,6 @@ var c_mainFR =c_detailFR='';
                             +'<button class="button" type="button" onclick="$.Dialog.close()">Batal</button> '
                         +'</div>'
                     +'</form>';
-        c_detailFR+='<div style="overflow:scroll;height:600px;">'
-                    +'<input type="hidden" id="detail_tempatH" class="detail_cari" >'
-                    +'<table width="100%" >'
-                        +'<tr>'
-                            +'<td  width="5%" ><b>Lokasi</b></td><td width="1%">:</td>'
-                            +'<td colspan="2" id="lokasiDV"></td>'
-                        +'</tr>'
-                        +'<tr>'
-                            +'<td><b>Tempat</b></td><td  width="1%">:</td>'
-                            +'<td colspan="2" id="tempatDV"></td>'
-                        +'</tr>'
-                        +'<tr>'
-                            +'<td><b>Keterangan</b></td><td  width="1%">:</td>'
-                            +'<td id="keteranganDV"></td>'
-                            +'<td class="place-right"><button data-hint="cetak" onclick="printPDF(\'main\');" class="button"><i class="icon-printer"></i></button></td>'
-                        +'</tr>'
-                    +'</table>'
-                    +'<table class="table hovered bordered striped">'
-                        +'<thead>'
-                            +'<tr class="info fg-white">'
-                                +'<th>Kode</th>'
-                                +'<th>Nama</th>'
-                                +'<th>Barcode</th>'
-                                +'<th>Sumber</th>'
-                                +'<th>Harga</th>'
-                                +'<th>Kondisi</th>'
-                                +'<th>Status</th>'
-                                +'<th>Keterangan</th>'
-                            +'</tr>'
-                            +'<tr id="detail_cariTR" class="info ">'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_kodeS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_namaS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_barkodeS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_sumberS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_hargaS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_kondisiS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_statusS"  class="detail_cari"></th>'
-                                +'<th class="text-center"><div class="input-control"><input onkeyup="viewTB(\'detail\');" placeholder="cari..." id="detail_keteranganS"  class="detail_cari"></th>'
-                            +'</tr>'
-                        +'</thead>'
-                        +'<tbody id="detail_tbody"></tbody>'
-                    +'</table>'
-                    +'</div>';
 
         cmblokasi('filter','');
         
@@ -230,8 +230,9 @@ var c_mainFR =c_detailFR='';
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 850,
-            padding: 10,
+            width: '30px',
+            // width: '80%',
+            // padding: 10,
             onShow: function(){
                 var titlex;
                 var data = 'aksi=ambiledit&replid='+id;
@@ -254,7 +255,7 @@ var c_mainFR =c_detailFR='';
             shadow: true,
             overlay: true,
             draggable: true,
-            width: 500,
+            width: '80%',
             padding: 10,
             onShow: function(){
                 var titlex;
@@ -383,10 +384,14 @@ function notif(cont,clr) {
         $('.'+mn+'_cari').each(function(){
             p=$(this).attr('id');
             v=$(this).val();
+        // par+=$('#detail_tempatH').val();
             par+='&'+p+'='+v;
             tok+=v;
-        });var x  = $('#id_loginS').val();
+        });
+        var x  = $('#id_loginS').val();
         var token = encode64(x+tok);
+        console.log(token);
+        // return false;
         window.open('report/r_'+mn+'.php?token='+token+par,'_blank');
     }
     // ---------------------- //

@@ -219,12 +219,11 @@ FROM
 	JOIN departemen d on d.replid = k.departemen 
 	JOIN aka_tahunajaran ta on ta.replid = dk.tahunajaran ;
 
-
 CREATE 
 ALGORITHM=UNDEFINED 
 DEFINER=`root`@`localhost` 
 SQL SECURITY DEFINER 
-VIEW `vw_transaksi` AS 
+VIEW `vw_transaksi`AS 
 SELECT
 	t.replid idtransaksi,
 	t.tanggal,
@@ -235,10 +234,15 @@ SELECT
 	j.detilrekening iddetilrekening,
 	j.jenisrekening,
 	j.nominal,
+	t.anggarantahunan idanggarantahunan,
+	d.replid iddetilanggaran,
+	d.detilanggaran,
 	getOperatorDetRekening(j.detilrekening,j.jenisrekening)operator
 FROM
 	keu_transaksi t
-	JOIN keu_jurnal j on j.transaksi = t.replid ;
+	JOIN keu_jurnal j on j.transaksi = t.replid 
+	LEFT JOIN keu_anggarantahunan a on a.replid = t.anggarantahunan
+	LEFT JOIN keu_detilanggaran d on d.replid = a.detilanggaran ;
 
 
 /*getSaldoRekeningByTgl*/
@@ -255,3 +259,16 @@ BEGIN
 	RETURN saldoRekening;
 END $$
 DELIMITER ;
+
+/*getAnggaranTerpakai*/
+DELIMITER $$
+CREATE DEFINER = `root`@`localhost` FUNCTION `getAnggaranTerpakai`(`idAnggThn` INT) RETURNS decimal(14,0)
+BEGIN
+	DECLARE nom DECIMAL;
+	SELECT IFNULL(sum(nominal),0) INTO nom
+	FROM vw_transaksi
+	WHERE idanggarantahunan = idAnggThn;
+	RETURN nom;
+END $$
+DELIMITER ;
+
