@@ -311,11 +311,11 @@ $admin .= '
 		<td>Customer</td>
 		<td>:</td>
 		<td><select name="kodecustomer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_siswa ORDER BY namasiswa asc");
 $admin .= '<option value="">== Customer ==</option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
 $pilihanj = ($datasj['replid']==$kodecustomer)?"selected":'';
-$admin .= '<option value="'.$datasj['replid'].'"'.$pilihanj.'>'.$datasj['nama'].'</option>';
+$admin .= '<option value="'.$datasj['replid'].'"'.$pilihanj.'>'.$datasj['namasiswa'].'</option>';
 }
 $admin .='</select>
 					

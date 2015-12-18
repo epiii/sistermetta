@@ -170,10 +170,10 @@ $admin .= '
 $admin .= '<tr>
 	<td>Customer </td>
 	<td><select name="customer" id="combobox">';
-$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_calonsiswa ORDER BY nama asc");
+$hasilj = $koneksi_db->sql_query("SELECT * FROM psb_siswa ORDER BY namasiswa asc");
 $admin .= '<option value="Semua"> Semua </option>';
 while ($datasj =  $koneksi_db->sql_fetchrow ($hasilj)){
-$admin .= '<option value="'.$datasj['replid'].'">'.$datasj['nama'].'</option>';
+$admin .= '<option value="'.$datasj['replid'].'">'.$datasj['namasiswa'].'</option>';
 }
 $admin .='</select></td>
 </tr>';
