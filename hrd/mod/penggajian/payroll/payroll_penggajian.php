@@ -120,7 +120,7 @@ $admin  .='<legend>Administrasi Penggajian Karyawan</legend>';
 $admin .='<ol class="breadcrumb">
 <li><a href="?pilih=penggajian&amp;mod=yes">Data Karyawan</a></li>
 <li><a href="?pilih=penggajian&amp;mod=yes&amp;aksi=laporanbulanan">Laporan Bulanan</a></li>
-<li><a href="?pilih=penggajian&amp;mod=yes&amp;aksi=setting">BPJS</a></li>
+<li><a href="?pilih=penggajian&amp;mod=yes&amp;aksi=setting">Asuransi</a></li>
 <li><a href="?pilih=penggajian&amp;mod=yes&amp;aksi=golongan">Golongan</a></li>
 <li><a href="?pilih=penggajian&amp;mod=yes&amp;aksi=struktural">Struktural</a></li>
 <li><a href="?pilih=penggajian&amp;mod=yes&amp;aksi=fungsional">Fungsional</a></li>
@@ -978,7 +978,11 @@ $jamsostek		= $data['jamsostek'];
 
 $admin .='<form class="form-horizontal" method="post" action=""><table class="table table-striped" width="80%">
 <tr>
-	<td>Setting BPJS</td>
+	<td>Nama Asuransi</td>
+	<td>'.$namaasuransi.'</td>
+</tr>
+<tr>
+	<td>Setting '.$namaasuransi.'</td>
 	<td><input type="text" name="jamsostek" size="10" class="form-control" value="'.$jamsostek.'"> % x Jumlah Tunjangan</td>
 </tr>
 <tr>

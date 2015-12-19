@@ -50,7 +50,7 @@ $admin .= '<div align="center">
 <a href="admin.php?pilih=penggajian&mod=yes&aksi=laporanbulanan"><br>Laporan
 </a></td>
 <td>
-<a href="admin.php?pilih=penggajian&mod=yes&aksi=setting"><br>Setting BPJS
+<a href="admin.php?pilih=penggajian&mod=yes&aksi=setting"><br>Setting Asuransi
 </a></td>
 <td>
 <a href="admin.php?pilih=penggajian&mod=yes&aksi=golongan"><br>Golongan
@@ -76,10 +76,6 @@ $admin .= '<div align="center">
 <img src="images/setting.jpg" width="50px"><br>
 </a></td>
 <td>
-<a href="admin.php?pilih=penggajian&mod=yes&aksi=uangmakan">
-<img src="images/setting.jpg" width="50px"><br>
-</a></td>
-<td>
 <a href="admin.php?pilih=penggajian&mod=yes&aksi=uangtransport">
 <img src="images/setting.jpg" width="50px"><br>
 </a></td>
@@ -98,9 +94,6 @@ $admin .= '<div align="center">
 </a></td>
 <td>
 <a href="admin.php?pilih=penggajian&mod=yes&aksi=istrianak"><br>Istri-Anak
-</a></td>
-<td>
-<a href="admin.php?pilih=penggajian&mod=yes&aksi=uangmakan"><br>Uang Makan
 </a></td>
 <td>
 <a href="admin.php?pilih=penggajian&mod=yes&aksi=uangtransport"><br>Uang Transport

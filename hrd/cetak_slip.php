@@ -2,6 +2,7 @@
 
 include 'includes/config.php';
 include 'includes/mysql.php';
+
 $idkary = int_filter($_GET['idkary']);
 $id = int_filter($_GET['id']);
 global $koneksi_db,$translateKal,$url_situs;
@@ -114,7 +115,7 @@ if($pph21){
 echo "<tr><td>PPH21</td><td>:</td><td>".rupiah_format($pph21)."</td></tr>";
 }
 if($jamsostek){
-echo "<tr><td>BPJS</td><td>:</td><td>".rupiah_format($jamsostek)."</td></tr>";
+echo "<tr><td>$namaasuransi</td><td>:</td><td>".rupiah_format($jamsostek)."</td></tr>";
 }
 
 echo "</table>";

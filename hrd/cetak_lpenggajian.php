@@ -2,6 +2,7 @@
 
 include 'includes/config.php';
 include 'includes/mysql.php';
+
 $bulan = int_filter($_GET['bulan']);
 $tahun = int_filter($_GET['tahun']);
 $pbulan= getbulan($bulan);
@@ -54,7 +55,7 @@ echo '<table class="border">
 <th>T.Lain-Lain</th>
 <th>Total Gaji</th>
 <th>Pot.Pinjaman</th>
-<th>BPJS</th>
+<th>'.$namaasuransi.'</th>
 <th>PPH21</th>
 <th>Gaji Bersih</th>
 </tr></thead><tbody>';

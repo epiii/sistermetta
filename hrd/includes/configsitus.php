@@ -41,4 +41,5 @@ $publishwebsite=$data['publishwebsite'];
 $publishnews=$data['publishnews'];
 $tags=$_META['keywords'];
 $maxgalleridata = $data['maxgalleridata'];
+
 ?>
