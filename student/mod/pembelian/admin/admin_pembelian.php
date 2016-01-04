@@ -154,6 +154,7 @@ $jenjang=$data['jenjang'];
 $error 	= '';
 if (!$_SESSION['kodesupplier'])  	$error .= "Error:  Kode Supplier Tidak di Temukan<br />";
 if (!$kode)  	$error .= "Error:  Kode Barang Tidak di Temukan<br />";
+if ( ceksaldoawal($kode) < 1) $error .= "Error: Produk Harus melakukan Stok Awal.<br />";
 if ($error){
 $admin .= '<div class="error">'.$error.'</div>';
 }else{
