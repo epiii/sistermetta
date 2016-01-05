@@ -27,7 +27,7 @@ $password0 = md5($_POST["password0"]);
 $password1 = $_POST['password1'];
 $password2 = $_POST['password2'];
 
-$hasil = $koneksi_db->sql_query( "SELECT password,email FROM useraura WHERE user='$user'" );
+$hasil = $koneksi_db->sql_query( "SELECT password,email FROM pos_useraura WHERE user='$user'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)){
 	$password=$data['password'];
 	$email0=$data['email'];
@@ -39,14 +39,14 @@ if (!$password2)  $error .= "Error: Please retype your your new password!<br />"
 if (!is_valid_email($email)) $error .= "Error, E-Mail address invalid!<br />";
 if ($password0 != $password)  $error .= "Invalid old pasword, silahkan ulangi lagi.<br />";
 if ($password1 != $password2)   $error .= "New password dan retype berbeda, silahkan ulangi.<br />";
-if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM useraura WHERE email='$email' and user!='$user'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
+if ($koneksi_db->sql_numrows($koneksi_db->sql_query("SELECT email FROM pos_useraura WHERE email='$email' and user!='$user'")) > 0) $error .= "Error: Email ".$email." sudah terdaftar , silahkan ulangi.<br />";
 
 if ($error) {
 $tengah.='<div class="error">'.$error.'</div>';
 } else {
 
 $password3=md5($password1);
-$hasil = $koneksi_db->sql_query( "UPDATE useraura SET email='$email', password='$password3' WHERE user='$user'" );
+$hasil = $koneksi_db->sql_query( "UPDATE pos_useraura SET email='$email', password='$password3' WHERE user='$user'" );
 
 $tengah.='<div class="sukses"><b>Infromasi Admin telah di updated</b><br />Silahkan <a href="?aksi=logout" target="_top">Logout</a> kemudian <a href="?pilih=login" target="_top">Login</a> lagi!</div>';
 }
@@ -54,7 +54,7 @@ $tengah.='<div class="sukses"><b>Infromasi Admin telah di updated</b><br />Silah
 }
 
 $user =  $_SESSION['UserName'];
-$hasil =  $koneksi_db->sql_query( "SELECT * FROM useraura WHERE user='$user'" );
+$hasil =  $koneksi_db->sql_query( "SELECT * FROM pos_useraura WHERE user='$user'" );
 while ($data = $koneksi_db->sql_fetchrow($hasil)) {
 	$id=$data[0];
 	$user=$data[1];
