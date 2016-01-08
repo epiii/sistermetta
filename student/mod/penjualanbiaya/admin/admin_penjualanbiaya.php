@@ -279,7 +279,7 @@ $admin .= '
 	<tr>
 			<td>'.$no.'</td>
 			<td>'.$kode.'</td>
-		<td>'.getnamajasa($kode).'</td>
+		<td>'.getnamabiaya($kode).'</td>
 		<td><input align="right" type="text" name="jumlahjual['.$k.']" value="'.$jumlah.'"class="form-control"></td>
 		<td><input align="right" type="text" name="harga['.$k.']" value="'.$harga.'"class="form-control"></td>
 		<td><input align="right" type="text" name="subdiscount['.$k.']" value="'.$subdiscount.'"class="form-control"></td>
