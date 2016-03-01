@@ -57,6 +57,7 @@ echo '<table class="border">
 <th>Pot.Pinjaman</th>
 <th>'.$namaasuransi.'</th>
 <th>PPH21</th>
+<th>Pot.Lain</th>
 <th>Gaji Bersih</th>
 </tr></thead><tbody>';
 $no =1;
@@ -77,6 +78,7 @@ $gajibruto = $datas['gajibruto'];
 $tlain  	=	 $datas['tlain'];
 $totalgaji = $datas['totalgaji'];
 $pph21  	= $datas['pph21'];
+$potlain2  	= $datas['potlain2'];
 $jamsostek  = $datas['jamsostek'];
 $ppinjaman  = $datas['ppinjaman'];
 $gajibersih = $datas['gajibersih'];
@@ -119,13 +121,14 @@ echo '
 <td>'.rupiah_format2($ppinjaman).'</td>
 <td>'.rupiah_format2($jamsostek).'</td>
 <td>'.rupiah_format2($pph21).'</td>
+<td>'.rupiah_format2($potlain2).'</td>
 <td>'.rupiah_format2($gajibersih).'</td></tr>';
 $tgajibersih+=$gajibersih;
 $no++;
 }
 echo '
 <tr align="left">
-<td colspan="24"><div align="right"><b>Total Gaji&nbsp;</b></div></td>
+<td colspan="25"><div align="right"><b>Total Gaji&nbsp;</b></div></td>
 <td><b>'.rupiah_format2($tgajibersih).'</b></td></tr>';
 echo '</table>';
 echo "</body</html>";

@@ -33,6 +33,7 @@ $tlain  			= $data2['tlain'];
 $ppinjaman  			= $data2['ppinjaman'];
 $jamsostek  			= $data2['jamsostek'];
 $pph21  			= $data2['pph21'];
+$potlain2  			= $data2['potlain2'];
 $gajibruto  			= $data2['gajibruto'];
 $totalgaji  			= $data2['totalgaji'];
 $gajibersih  			= $data2['gajibersih'];
@@ -117,7 +118,9 @@ echo "<tr><td>PPH21</td><td>:</td><td>".rupiah_format($pph21)."</td></tr>";
 if($jamsostek){
 echo "<tr><td>$namaasuransi</td><td>:</td><td>".rupiah_format($jamsostek)."</td></tr>";
 }
-
+if($potlain2){
+echo "<tr><td>Potongan lain-Lain(Denda/Absensi/Dll)</td><td>:</td><td>".rupiah_format($potlain2)."</td></tr>";
+}
 echo "</table>";
 echo "</td></tr>";
 echo "</td></tr>";

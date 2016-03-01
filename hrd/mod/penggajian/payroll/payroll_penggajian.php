@@ -221,12 +221,13 @@ $tlain  			= $_POST['tlain'];
 $ppinjaman  			= $_POST['ppinjaman'];
 $jamsostek  			= $_POST['jamsostek'];
 $pph21  			= $_POST['pph21'];
+$potlain2  			= $_POST['potlain2'];
 $pid  			= $_POST['pid'];
 $tglnow = date("Y-m-d");
 ////////////////////////////////////////////////////////
 $gajibruto =  ($gajipokok+$tstruktural+$tfungsional+$tpengabdian+$tistrianak+$tuangtransport+$tbebantugas+$twalikelas+$tkhusus);
 $totalgaji = $gajibruto+$tlain;
-$gajibersih = $totalgaji-($ppinjaman+$jamsostek+$pph21);
+$gajibersih = $totalgaji-($ppinjaman+$jamsostek+$pph21+$potlain2);
 /*******************************************************/
 $total = $koneksi_db->sql_query( "SELECT * FROM hrd_karyawan WHERE nip = '".$_POST['nip']."' and id != '".$id."'");
 $jumlah = $koneksi_db->sql_numrows( $total );
@@ -246,7 +247,7 @@ $hasil = $koneksi_db->sql_query( "INSERT INTO hrd_bayar (tgl,bayar,karyawan,pid)
 $hasil = $koneksi_db->sql_query( "SELECT MAX(id) as idbayar FROM hrd_bayar where pid='$pid' limit 1");
 $data = $koneksi_db->sql_fetchrow($hasil);
 $idbayar  			= $data['idbayar'];
-$hasil = $koneksi_db->sql_query( "INSERT INTO hrd_penggajian (karyawan,bulan,tahun,tkt,gajipokok,tstruktural,tfungsional,tpengabdian,tistrianak,tuangtransport,tbebantugas,twalikelas,tkhusus,gajibruto,tlain,totalgaji,ppinjaman,jamsostek,pph21,gajibersih,idbayar) VALUES ('$id','$bulan','$tahun','$tkt','$gajipokok','$tstruktural','$tfungsional','$tpengabdian','$tistrianak','$tuangtransport','$tbebantugas','$twalikelas','$tkhusus','$gajibruto','$tlain','$totalgaji','$ppinjaman','$jamsostek','$pph21','$gajibersih','$idbayar')" );
+$hasil = $koneksi_db->sql_query( "INSERT INTO hrd_penggajian (karyawan,bulan,tahun,tkt,gajipokok,tstruktural,tfungsional,tpengabdian,tistrianak,tuangtransport,tbebantugas,twalikelas,tkhusus,gajibruto,tlain,totalgaji,ppinjaman,jamsostek,pph21,potlain2,gajibersih,idbayar) VALUES ('$id','$bulan','$tahun','$tkt','$gajipokok','$tstruktural','$tfungsional','$tpengabdian','$tistrianak','$tuangtransport','$tbebantugas','$twalikelas','$tkhusus','$gajibruto','$tlain','$totalgaji','$ppinjaman','$jamsostek','$pph21','$potlain2','$gajibersih','$idbayar')" );
 
 $admin.='<div class="alert alert-success"><strong>Berhasil!</strong> Data  berhasil di Tambah</div>';
 $style_include[] ='<meta http-equiv="refresh" content="1; url=admin.php?pilih=penggajian&mod=yes&aksi=add_penggajian&id='.$id.'" />'; 
@@ -291,6 +292,7 @@ $dtlain  			= $data3['tlain'];
 $dppinjaman  			= $data3['ppinjaman'];
 $djamsostek  			= $data3['jamsostek'];
 $dpph21  			= $data3['pph21'];
+$dpotlain2  			= '0';
 //////////////////////////////////////////
 $ntstruktural=getntstruktural($struktural);
 $ntfungsional=getntfungsional($fungsional);
@@ -341,7 +343,7 @@ $tlain		= !isset($tlain) ? '0' : $tlain;
 $ppinjaman		= !isset($ppinjaman) ? $tsisabayar : $ppinjaman;
 $jamsostek		= !isset($jamsostek) ? $djamsostek : $jamsostek;
 $pph21		= !isset($pph21) ? $dpph21 : $pph21;
-
+$potlain2		= !isset($potlain2) ? $dpotlain2 : $potlain2;
 $admin .= '<form class="form-inline" method="post" action="" enctype ="multipart/form-data" id="posts">
 <table class="table  table-hover">
 <tr>
@@ -445,12 +447,16 @@ $admin.='
 </tr>
 
 <tr>
-	<td>BPJS</td>
+	<td>'.$namaasuransi.'</td>
 	<td><input type="text" name="jamsostek" size="25" class="form-control" value="'.$jamsostek.'"></td>
 </tr>
 <tr>
 	<td>Potongan PPH21</td>
 	<td><input type="text" name="pph21" size="25" class="form-control" value="'.$pph21.'"></td>
+</tr>
+<tr>
+	<td>Potongan Lain-Lain(Denda/Absensi/Dll)</td>
+	<td><input type="text" name="potlain2" size="25" class="form-control"value="'.$potlain2.'"></td>
 </tr>
 <tr>
 	<td></td>
@@ -508,12 +514,13 @@ $tlain  			= $_POST['tlain'];
 $ppinjaman  			= $_POST['ppinjaman'];
 $jamsostek  			= $_POST['jamsostek'];
 $pph21  			= $_POST['pph21'];
+$potlain2  			= $_POST['potlain2'];
 $pid  			= $_POST['pid'];
 $tglnow = date("Y-m-d");
 ////////////////////////////////////////////////////////
 $gajibruto =  ($gajipokok+$tstruktural+$tfungsional+$tpengabdian+$tistrianak+$tuangtransport+$tbebantugas+$twalikelas+$tkhusus);
 $totalgaji = $gajibruto+$tlain;
-$gajibersih = $totalgaji-($ppinjaman+$jamsostek+$pph21);
+$gajibersih = $totalgaji-($ppinjaman+$jamsostek+$pph21+$potlain2);
 /*******************************************************/
 $error = '';
 
@@ -523,7 +530,7 @@ $admin.='<div class="alert alert-danger">'.$error.'</div>';
 if($ppinjaman>'0'){
 $hasil = $koneksi_db->sql_query( "update hrd_bayar set bayar=$ppinjaman where id='$idbayar'" );
 }
-$hasil = $koneksi_db->sql_query( "update hrd_penggajian set tkt='$tkt',gajipokok='$gajipokok',tstruktural='$tstruktural',tfungsional='$tfungsional',tpengabdian='$tpengabdian',tistrianak='$tistrianak',tuangtransport='$tuangtransport',tbebantugas='$tbebantugas',twalikelas='$twalikelas',tkhusus='$tkhusus',gajibruto='$gajibruto',tlain='$tlain',totalgaji='$totalgaji',ppinjaman='$ppinjaman',jamsostek='$jamsostek',pph21='$pph21',gajibersih='$gajibersih' where id='$idgaji'");
+$hasil = $koneksi_db->sql_query( "update hrd_penggajian set tkt='$tkt',gajipokok='$gajipokok',tstruktural='$tstruktural',tfungsional='$tfungsional',tpengabdian='$tpengabdian',tistrianak='$tistrianak',tuangtransport='$tuangtransport',tbebantugas='$tbebantugas',twalikelas='$twalikelas',tkhusus='$tkhusus',gajibruto='$gajibruto',tlain='$tlain',totalgaji='$totalgaji',ppinjaman='$ppinjaman',jamsostek='$jamsostek',pph21='$pph21',potlain2='$potlain2',gajibersih='$gajibersih' where id='$idgaji'");
 $admin.='<div class="alert alert-success"><strong>Berhasil!</strong> Data  berhasil di Edit</div>';
 
 }
@@ -563,6 +570,7 @@ $dtlain  			= $data3['tlain'];
 $dppinjaman  			= $data3['ppinjaman'];
 $djamsostek  			= $data3['jamsostek'];
 $dpph21  			= $data3['pph21'];
+$dpotlain2  			= $data3['potlain2'];
 $dplain  			= $data3['plain'];
 $dbulan 			= $data3['bulan'];
 $dtahun  			= $data3['tahun'];
@@ -604,6 +612,7 @@ $tlain		= !isset($tlain) ? $dtlain : $tlain;
 $ppinjaman		= !isset($ppinjaman) ? $dppinjaman : $ppinjaman;
 $jamsostek		= !isset($jamsostek) ? $djamsostek : $jamsostek;
 $pph21		= !isset($pph21) ? $dpph21 : $pph21;
+$potlain2		= !isset($potlain2) ? $dpotlain2 : $potlain2;
 $bulan		= !isset($bulan) ? $dbulan : $bulan;
 $tahun		= !isset($tahun) ? $dtahun : $tahun;
 $admin .= '<form class="form-inline" method="post" action="" enctype ="multipart/form-data" id="posts">
@@ -707,6 +716,10 @@ $admin.='
 <tr>
 	<td>Potongan PPH21</td>
 	<td><input type="text" name="pph21" size="25" class="form-control" value="'.$pph21.'"></td>
+</tr>
+<tr>
+	<td>Potongan Lain-Lain(Denda/Absensi/Dll)</td>
+	<td><input type="text" name="potlain2" size="25" class="form-control"value="'.$potlain2.'"></td>
 </tr>
 <tr>
 	<td></td>
